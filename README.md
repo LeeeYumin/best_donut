@@ -56,7 +56,7 @@
     <td><b>팀장</b></td>
     <td><b>부팀장</b></td>
     <td><b>DB</b></td>
-    <td><b></b></td>
+    <td><b>개발환경구축</b></td>
     <td><b>깃허브</b></td>
   </tr>
 </table>
