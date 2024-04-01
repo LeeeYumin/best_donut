@@ -5,10 +5,61 @@
 <head>
 <meta charset="UTF-8">
 <title>stockList.html</title>
+<!-- Toast UI CDN -->
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 </head>
 <body>
 	<div layout:fragment="content">
 		<h1>자재 재고 조회</h1>
+		<div id="stockList"></div>
+		<script type="text/javascript">
+		getMaterialsList();
+		
+			const grid = new tui.Grid({
+				el: document.getElementById('stockList'),
+				scrollX : false,
+				scrollY : false,
+				columns : [ 
+					{
+						header : '자재코드',
+						name : 'mat_code'
+					}, 
+					{
+						header : '자재명',
+						name : 'mat_name',
+					},
+					{
+						header : '거래처코드',
+						name : 'company_code',
+					},
+					{
+						header : '거래처명',
+						name : 'company_name',
+					},
+					{
+						header : '재고량',
+						name : 'stock_cnt'
+					},
+					{
+						header : '안전재고량',
+						name : 'safe_stock_cnt'
+					}
+				]
+			});
+			
+			// 재고 조회(ajax)
+			async function getMaterialsList(){
+				await fetch("/ajax/materials")
+				.then(res => res.json())
+				.then(res => {
+					// ajax로 불러온 데이터 그리드에 넣음
+					grid.resetData(res);
+					console.log(res);
+				})
+			};	
+		</script>
 	</div>
 </body>
 </html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.materials.mapper.MaterialsMapper">
+
+	<select id="getMaterials" resultType="map">   
+		SELECT m.MAT_CODE AS "mat_code", m.MAT_NAME "mat_name", m.STOCK_CNT "stock_cnt", m.SAFE_STOCK_CNT as "safe_stock_cnt", c.COMPANY_CODE as "company_code", c.COMPANY_NAME as "company_name"
+		  FROM mat m JOIN mat_detail d
+            ON m.mat_code = d.mat_code
+    	  JOIN company c
+            ON d.company_code = c.company_code
+      GROUP BY m.mat_code, m.mat_name, m.safe_stock_cnt, m.stock_cnt, c.company_code, c.company_name
+	</select>
+	
+</mapper>
