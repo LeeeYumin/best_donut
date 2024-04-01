@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.users.mapper.UsersMapper">
+
+	<select id="getUsers" resultType="UsersVO">
+		SELECT USERS_CODE
+				, USERS_NAME
+				, POSITION
+				, LOCAL_TEL
+				, BUSINESS_PERM
+				, PROD_PERM
+				, MAT_PERM
+				, QLTY_PERM
+				, EQM_MNG_PERM
+				, MASTER
+				, USERS_STATUS
+		FROM USERS
+	</select>
+
+</mapper>
