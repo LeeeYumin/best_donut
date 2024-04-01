@@ -1,14 +1,71 @@
 <!DOCTYPE html>
+<!-- Thymeleaf 템플릿 주소 -->
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/index}">
 <head>
 <meta charset="UTF-8">
 <title>prodPlan.html</title>
+<!-- Toast UI CDN -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 </head>
+
 <body>
+	<!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
-		<h1>생산계획 등록</h1>
+	
+		<h2>생산계획</h2>
+		
+		<!-- ToastUI 그리드 띄우는 div -->
+		<div id="grid"></div>
+		
+		
+		<!-- script 태그 => 타임리프 div 안에서 작성 -->
+		<script>
+		
+		getProdReq();
+			
+			// Toast UI grid
+			// 그리드 속성, 헤더 정의 / html 요소와 연결
+			const grid = new tui.Grid({
+				el : document.getElementById('grid'),
+				scrollX : false,
+				scrollY : false,
+				columns : [ 
+					{
+						header : 'prodReqCode',
+						name : 'prodReqCode'
+					}, 
+					{
+						header : 'totalReqCnt',
+						name : 'totalReqCnt',
+					}, 
+					{
+						header : 'reqDate',
+						name : 'reqDate'
+					}, 
+					{
+						header : 'usersCode',
+						name : 'usersCode'
+					}
+				]
+			});
+			
+			// 주문 조회(ajax)
+			async function getProdReq(){
+				await fetch("/ajax/prodPlan")
+				.then(res => res.json())
+				.then(res => {
+					// ajax로 불러온 데이터 그리드에 넣음
+					grid.resetData(res);
+					console.log(res);
+				})
+			};
+			  
+		</script>
+		
+		
 	</div>
 </body>
 </html>
