@@ -1,11 +1,11 @@
 package com.example.demo.orders.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.orders.OrdersVO;
 import com.example.demo.orders.mapper.OrdersMapper;
 import com.example.demo.orders.service.OrdersService;
 
@@ -13,9 +13,10 @@ import com.example.demo.orders.service.OrdersService;
 public class OrdersServiceImpl implements OrdersService{
 
 	@Autowired OrdersMapper ordersMapper;
-	
+
 	@Override
-	public List<OrdersVO> getOrders() {
+	public List<Map<String, Object>> getOrders() {
 		return ordersMapper.getOrders();
 	}
+	
 }
