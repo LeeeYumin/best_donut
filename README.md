@@ -21,7 +21,7 @@
   <tr>
     <td>
         <a href="">
-            <img src="">
+            <img src="https://github.com/LeeeYumin/best_donut/assets/152114081/babd1c36-d794-4ff2-8eee-2395c81eb13a.png" width="100" height="100">
         </a>
     </td>
     <td>
