@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>usersMain.html</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h2>사용자 목록</h2>
+		<div id="grid"></div>
+		
+		<script>
+			getUsersList();
+		
+		
+		
+			function createRows() {
+		      const rows = [];
+		      for (let i = 0; i < 50; i += 1) {
+		        const row = {};
+		        for (let j = 0; j < 5; j += 1) {
+		          row[`c${j}`] = (Math.random() * 100000000000).toFixed();
+		        }
+		        rows.push(row);
+		      }
+		      return rows;
+		    }
+		    
+		    const columns = [];
+
+		    for (let i = 0; i < 5; i += 1) {
+		      const name = `c${i}`;
+		      columns.push({ name, header: name });
+		    }
+
+		    const grid = new tui.Grid({
+		      el: document.getElementById('grid'),
+		      bodyHeight: 500,
+		      data: createRows(),
+		      columns,
+		      rowHeaders: ['rowNum']
+		    });
+
+		    grid.on('scrollEnd', () => {
+		      grid.appendRows(createRows());
+		    })
+		    
+		    
+		    
+   			async function getUsersList(){
+				await fetch("/ajax/users")
+				.then(res => res.json())
+				.then(res => {
+					grid.resetData(res);
+				})
+			};
+		</script>
+		
+	</div>
+</body>
+</html>

@@ -14,9 +14,5 @@ public class OrdersRestController {
 
 	@Autowired OrdersService ordersService;
 	
-	// 주문 조회(ajax)
-	@GetMapping("/ajax/orders")	// fetch 함수에 들어가는 uri
-	public List<OrdersVO> getOrders(){
-		return ordersService.getOrders();
-	}
+
 }
