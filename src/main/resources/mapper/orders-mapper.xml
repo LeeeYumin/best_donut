@@ -2,10 +2,20 @@
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.orders.mapper.OrdersMapper">
-
-	<select id="getOrders" resultType="OrdersVO">
-		SELECT *
-		FROM   orders
+	
+	<!-- 주문목록조회 -->
+	<select id="getOrders" resultType="Map">
+		SELECT o.orders_code
+			   , o.orders_date
+			   , o.due_date
+			   , o.total_orders_price
+			   , o.orders_status
+			   , c.company_name
+			   , u.users_name
+		  FROM orders o 
+		  JOIN company c ON o.company_code = c.company_code
+		  JOIN USERS u   ON o.users_code = u.users_code
+	     ORDER BY 1
 	</select>
 	
 </mapper>

@@ -28,35 +28,59 @@
 			const grid = new tui.Grid({
 				el : document.getElementById('grid'),
 				scrollX : false,
-				scrollY : false,
+				scrollY : true,
+				rowHeaders: ['checkbox'],
 				columns : [ 
 					{
-						header : 'ordersCode',
-						name : 'ordersCode'
+						header : '주문코드',
+						name : 'ORDERS_CODE',
+						align : "center",
 					}, 
 					{
-						header : 'ordersDate',
-						name : 'ordersDate',
+						header : '주문일자',
+						name : 'ORDERS_DATE',
+						align : "center",
+						formatter: function(date) {
+							let dateForm = new Date(date.value);
+							let year = dateForm.getFullYear();
+							let month = ('0' + (dateForm.getMonth() + 1)).slice(-2);
+							let day = ('0' + dateForm.getDate()).slice(-2);
+							let dateStr = `${year}/${month}/${day}`;
+							return dateStr;
+						}
 					}, 
 					{
-						header : 'dueDate',
-						name : 'dueDate'
+						header : '납기일자',
+						name : 'DUE_DATE',
+						align : "center",
+						formatter: function(date) {
+							let dateForm = new Date(date.value);
+							let year = dateForm.getFullYear();
+							let month = ('0' + (dateForm.getMonth() + 1)).slice(-2);
+							let day = ('0' + dateForm.getDate()).slice(-2);
+							let dateStr = `${year}/${month}/${day}`;
+							return dateStr;
+						}
 					}, 
 					{
-						header : 'totalOrdersPrice',
-						name : 'totalOrdersPrice'
+						header : '총주문금액',
+						name : 'TOTAL_ORDERS_PRICE',
+						align : "center",
 					}, 
 					{
-						header : 'ordersStatus',
-						name : 'ordersStatus'
+						header : '주문상태',
+						name : 'ORDERS_STATUS',
+						align : "center",
 					}, 
 					{
-						header : 'usersCode',
-						name : 'usersCode'
+						header : '담당자명',
+						name : 'USERS_NAME',
+						align : "center",
 					}, 
 					{
-						header : 'companyCode',
-						name : 'companyCode'
+						header : '거래처명',
+						name : 'COMPANY_NAME',
+						align : "center",
 					} 
 				]
 			});
@@ -67,6 +91,7 @@
 				.then(res => res.json())
 				.then(res => {
 					// ajax로 불러온 데이터 그리드에 넣음
+					console.log(res);
 					grid.resetData(res);
 				})
 			};

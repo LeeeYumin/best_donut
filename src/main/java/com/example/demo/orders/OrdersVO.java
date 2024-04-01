@@ -8,7 +8,7 @@ import lombok.Data;
 public class OrdersVO {
 	
 	private String ordersCode;
-	private String ordersDate;
+	private Date ordersDate;
 	private Date dueDate;
 	private Integer totalOrdersPrice;
 	private String ordersStatus;
