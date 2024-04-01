@@ -10,10 +10,10 @@ import com.example.demo.test.mapper.TestMapper;
 public class TestController {
 	@Autowired
 	TestMapper mapper;
-	
+
 	@RequestMapping("/")
 	public String test() {
 		System.out.println(mapper.getText());
-		return "index"; // "/template(기본값-동적 컨텐츠)/index.html"
+		return "layout/index"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
 }
