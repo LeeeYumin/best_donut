@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.production.mapper.ProdPlanMapper">
+
+	<select id="getProdReq" resultType="ProdPlanVO">
+		SELECT *
+		FROM   prod_req
+	</select>
+	
+	<select id="getProdReqDetail" resultType="ProdPlanVO">
+		SELECT *
+		FROM   prod_req_detail
+	</select>
+	
+</mapper>
