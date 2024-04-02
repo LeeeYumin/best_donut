@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 템플릿 주소 -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>ordersMain.html</title>
+<!-- Toast UI CDN -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+</head>
+<body>
+	<!-- Thymeleaf 레이아웃 div -->
+	<div layout:fragment="content">
+		<h2>주문 관리</h2>
+
+		<form class="form" name="formSearch" method="post" action="ajax/ordersList">
+			<div>
+				<label>주문코드</label>
+				<input class="inputbox" type="text" name="ordersCode">
+			</div>
+			<div>
+				<label>주문일자</label>
+				<input class="inputbox" type="date" name="ordersDate">
+			</div>
+			<button type="button" onclick="searchOrders()">검색</button>
+			<button type="button">초기화</button>
+		</form>
+		
+		<!-- ToastUI 그리드 띄우는 div -->
+		<div id="grid"></div>
+		
+		<!-- script 태그 => 타임리프 div 안에서 작성 -->
+		<script src="/js/orders/ordersList.js"></script>
+	</div>
+</body>
+
+</html>

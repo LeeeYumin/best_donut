@@ -18,5 +18,10 @@ public class OrdersServiceImpl implements OrdersService{
 	public List<Map<String, Object>> getOrders() {
 		return ordersMapper.getOrders();
 	}
+
+	@Override
+	public List<Map<String, Object>> getOrdersDetail(String ordersCode) {
+		return ordersMapper.getOrdersDetail(ordersCode);
+	}
 	
 }
