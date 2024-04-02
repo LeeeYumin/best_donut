@@ -15,8 +15,8 @@ public class OrdersServiceImpl implements OrdersService{
 	@Autowired OrdersMapper ordersMapper;
 
 	@Override
-	public List<Map<String, Object>> getOrders() {
-		return ordersMapper.getOrders();
+	public List<Map<String, Object>> getOrders(String ordersCode) {
+		return ordersMapper.getOrders(ordersCode);
 	}
 
 	@Override

@@ -15,19 +15,15 @@
 	<div layout:fragment="content">
 		<h2>주문 관리</h2>
 
-		<form class="form" name="formSearch" method="post" action="ajax/ordersList">
-			<div>
+			<div id="searchForm">
 				<label>주문코드</label>
-				<input class="inputbox" type="text" name="ordersCode">
-			</div>
-			<div>
+				<input class="inputbox" type="text" id="ordersCode">
 				<label>주문일자</label>
-				<input class="inputbox" type="date" name="ordersDate">
+				<input class="inputbox" type="date" id="ordersDate">
+				<button type="button" onclick="searchOrders()">검색</button>
+				<button type="button">초기화</button>
 			</div>
-			<button type="button" onclick="searchOrders()">검색</button>
-			<button type="button">초기화</button>
-		</form>
-		
+				
 		<!-- ToastUI 그리드 띄우는 div -->
 		<div id="grid"></div>
 		

@@ -1,4 +1,5 @@
-getOrdersList();
+let ordersCode = '';
+getOrdersList(ordersCode);
 
 // Toast UI grid
 // 그리드 속성, 헤더 정의 / html 요소와 연결
@@ -51,20 +52,23 @@ const grid = new tui.Grid({
 	]
 })
 
-grid.on('click', (event) => {
-	  console.log(event);
-	})
-
 // 주문 조회(ajax)
-async function getOrdersList(){
-	await fetch("/ajax/ordersList")
+async function getOrdersList(ordersCode){
+	console.log('ordersCode : ' + ordersCode);
+	await fetch(`ajax/ordersList?ordersCode=${ordersCode}`)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
-		console.log(res);
 		grid.resetData(res);
 	})
 };
+
+// 주문 검색버튼 클릭 이벤트
+function searchOrders(){
+	let ordersCode = document.querySelector('#ordersCode').value;
+	console.log(ordersCode);
+	getOrdersList(ordersCode);
+}
 
 // 날짜 포맷 함수
 function dateFormat(date) {
@@ -80,9 +84,4 @@ function dateFormat(date) {
 function priceFormat(price) {
 	let result = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 	return result;
-}
-
-function searchOrders(){
-	console.log(formSearch.ordersCode.value);
-	formSearch.submit();
 }

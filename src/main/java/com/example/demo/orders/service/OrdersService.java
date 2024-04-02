@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface OrdersService {
 	
-	public List<Map<String, Object>> getOrders();
+	public List<Map<String, Object>> getOrders(String ordersCode);
 	public List<Map<String, Object>> getOrdersDetail(String ordersCode);
 }

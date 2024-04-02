@@ -31,10 +31,10 @@ public class OrdersController {
 	}
 	
 	// 주문 조회(ajax)
-	@GetMapping("/ajax/ordersList")	// fetch 함수에 들어가는 uri
+	@GetMapping("ajax/ordersList")	// fetch 함수에 들어가는 uri
 	@ResponseBody
-	public List<Map<String, Object>> getOrders(){
-		return ordersService.getOrders();
+	public List<Map<String, Object>> getOrders(String ordersCode){
+		return ordersService.getOrders(ordersCode);
 	}
 	
 	// 주문상세 페이지 이동

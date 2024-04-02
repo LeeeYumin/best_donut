@@ -16,7 +16,8 @@ public class OrdersServiceTest {
 	
 	@Test
 	public void 주문조회() {
-		List<Map<String,Object>> ordersList = ordersMapper.getOrders();
+		String ordersCode = "";
+		List<Map<String,Object>> ordersList = ordersMapper.getOrders(ordersCode);
 		for (Map<String, Object> list : ordersList) {
 			System.out.println(list);
 		}
