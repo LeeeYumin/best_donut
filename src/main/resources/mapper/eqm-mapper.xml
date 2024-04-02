@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.eqm.mapper.EqmMapper">
+
+	<select id="getEqm" resultType="EqmVO">
+		SELECT EQM_CODE
+				, EQM_NAME
+				, MODEL_NAME
+				, MAKER
+				, PURPOSE
+				, INSTALL_PLACE
+				, BUY_COMPANY
+				, BUY_PRICE
+				, BUY_DATE
+				, DUMP_DATE
+				, CHECK_CYCLE
+				, LAST_CHECK_DATE
+				, EQM_STATUS
+				, OPR_STATUS
+		FROM EQM
+	</select>
+
+</mapper>

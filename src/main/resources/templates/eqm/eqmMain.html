@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>eqmMain.html</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<h2>설비 목록</h2>
+
+		<div id="grid"></div>
+		
+		<script>
+	 		tui.Grid.applyTheme('clean');
+
+		 	const grid = new tui.Grid({
+		      el: document.getElementById('grid'),
+		      scrollX: false,
+		      scrollY: false,
+		      rowHeaders: ['rowNum'],
+		      columns: [
+		        {
+		          header: '설비코드',
+		          name: 'eqmCode',
+		          sortingType: 'asc',
+		          sortable: true,
+		          align: 'center'
+		        },
+		        {
+		          header: '설비명',
+		          name: 'eqmName',
+		          sortingType: 'asc',
+		          sortable: true,
+		          align: 'center'
+		        },
+		        {
+		          header: '모델명',
+		          name: 'modelName',
+		          sortingType: 'asc',
+		          sortable: true,
+		          align: 'center'
+		        },
+		        {
+		          header: '최근점검일',
+		          name: 'lastCheckDate',
+		          sortingType: 'asc',
+		          sortable: true,
+		          align: 'center'
+		        },
+		        {
+		          header: '설비상태',
+		          name: 'eqmStatus',
+		          align: 'center'
+		        },
+		        {
+		          header: '가동현황',
+		          name: 'oprStatus',
+		          align: 'center'
+		        }
+		      ]
+		    });
+		 	
+		 	
+		 	
+		 	
+   			async function getEqmList(){
+				await fetch("/ajax/eqm")
+				.then(res => res.json())
+				.then(res => {
+					grid.resetData(res)
+				})
+			};
+			getEqmList();
+
+		    
+		    
+
+
+
+			
+
+
+		</script>
+		
+	</div>
+</body>
+</html>
+
+<style>
+h2 {
+	text-align: center;
+}
+</style>

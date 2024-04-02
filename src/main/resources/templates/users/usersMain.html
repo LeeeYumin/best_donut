@@ -12,6 +12,22 @@
 <body>
 	<div layout:fragment="content">
 		<h2>사용자 목록</h2>
+		
+		<table border="1">
+			<tr>
+				<th>검색어</th>
+			</tr>
+			<tr>
+				<td><input type="text" name="search" id="search"></td>
+				<button onclick="searchValue()">검색</button>
+			</tr>			
+		</table>
+
+
+<!-- 		<input type="text" name="search">
+		<button onclick="getList()">검색</button> -->
+
+		
 		<div id="grid"></div>
 		
 		<script>
@@ -38,7 +54,8 @@
 		          name: 'usersCode',
 		          sortingType: 'asc',
 		          sortable: true,
-		          align: 'center'
+		          align: 'center',
+		          filter: 'text'
 		        },
 		        {
 		          header: '사용자명',
@@ -89,23 +106,64 @@
 		    
 		    
 
+/* 			const state = {
+			  code: 'eq',
+			  value: 'USE00001'
+			};
+			const filterState = {columnName: 'usersCode', columnFilterState: state };
+			const filterOpt = {
+					  type: 'text',
+					  showApplyBtn: true,
+					  showClearBtn: false,
+					  operator: 'OR',
+					}; */
 		    
+			
+			
+			
+			
+			
    			async function getUsersList(){
 				await fetch("/ajax/users")
 				.then(res => res.json())
 				.then(res => {
-					grid.resetData(res);
+					grid.resetData(res)
 				})
 			};
 			getUsersList();
 			
-			function change(word) {
-				if(word == "TRUE") {
-					word = "○";
-				} else {
-					word = ""
-				}
+/* 			const code = 'USE00001'; */
+
+			
+ 			
+
+			
+/* 			const code1 = ''; */
+			async function searchValue(){
+			const code1 = document.getElementById('search').value;
+			console.log(code1);
+			
+			
+ 			const state1 = {
+ 					  code: 'eq',
+ 					  value: code1
+ 					};
+			
+				
+				await fetch("/ajax/users")
+				.then(res => res.json())
+				.then(res => {
+					grid.resetData(res)
+				})
+				.then(res => {
+					grid.filter('usersCode', [state1])
+				})
+			
 			}
+
+/*  					grid.filter('usersCode', [state1]); */
+			
+			
 
 		</script>
 		
