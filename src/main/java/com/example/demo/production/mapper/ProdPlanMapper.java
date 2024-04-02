@@ -9,8 +9,8 @@ import com.example.demo.production.ProdPlanVO;
 @Mapper
 public interface ProdPlanMapper {
 
-	//생산요청
+	// 생산요청
 	public List<ProdPlanVO> getProdReq();
-	public List<ProdPlanVO> getProdReqDetail();
-	
+	public List<ProdPlanVO> getProdReqDetail(String prodReqCode);
+
 }

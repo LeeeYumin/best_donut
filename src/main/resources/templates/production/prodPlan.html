@@ -9,6 +9,13 @@
 <!-- Toast UI CDN -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<style>
+/* 	#plreq {
+		align-item: center;
+	} */
+</style>
+
 </head>
 
 <body>
@@ -16,9 +23,13 @@
 	<div layout:fragment="content">
 	
 		<h2>생산계획</h2>
+		<div style="padding-top: 30px;"></div>
 		
 		<!-- ToastUI 그리드 띄우는 div -->
-		<div id="grid"></div>
+
+		<h4>주간 생산요청</h4>
+		<div id="plreq"></div>
+		<div id="plreqD" style="padding-top: 20px;"></div>
 		
 		
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->
@@ -28,44 +39,90 @@
 			
 			// Toast UI grid
 			// 그리드 속성, 헤더 정의 / html 요소와 연결
-			const grid = new tui.Grid({
-				el : document.getElementById('grid'),
+			const plreq = new tui.Grid({
+				el : document.getElementById('plreq'),
 				scrollX : false,
 				scrollY : false,
-				columns : [ 
+				bodyHeight: 40,
+				minBodyHeight: 40,
+				columns : [
 					{
-						header : 'prodReqCode',
-						name : 'prodReqCode'
+						header : '생산요청일자',
+						name : 'reqDate',
+						align: 'center',
+						formatter: function dateFormat(dt) {
+							/* console.log(dt) */
+							let date = new Date(dt.value);
+							let year = date.getFullYear();
+							let month = ( 1 + date.getMonth() );
+							let day = date.getDate();
+							
+							month = month >= 10 ? month : '0' + month; //10미만일 시 앞에 0을 붙혀서 저장
+							day = day >= 10 ? day : '0' + day;
+							
+							return `${year}년 ${month}월 ${day}일`;
+						}
+					},
+					{
+						header : '생산요청코드',
+						name : 'prodReqCode',
+						align: 'center'
 					}, 
 					{
-						header : 'totalReqCnt',
+						header : '총 요청수량',
 						name : 'totalReqCnt',
+						align: 'center'
 					}, 
 					{
-						header : 'reqDate',
-						name : 'reqDate'
+						header : '담당자',
+						name : 'usersCode',
+						align: 'center'
+					}
+				]
+			});
+			const plreqD = new tui.Grid({
+				el : document.getElementById('plreqD'),
+				scrollX : false,
+				scrollY : false,
+
+				columns : [
+					{
+						header : '생산요청상세코드',
+						name : 'prodReqDetailCode',
+						align: 'center'
+					},
+					{
+						header : '제품코드',
+						name : 'productCode',
+						align: 'center'
 					}, 
 					{
-						header : 'usersCode',
-						name : 'usersCode'
+						header : '수량',
+						name : 'reqCnt',
+						align: 'center'
 					}
 				]
 			});
 			
-			// 주문 조회(ajax)
+			// 생산요청조회(ajax)
 			async function getProdReq(){
-				await fetch("/ajax/prodPlan")
+				await fetch("/ajax/prodReq")
 				.then(res => res.json())
 				.then(res => {
-					// ajax로 불러온 데이터 그리드에 넣음
-					grid.resetData(res);
 					console.log(res);
+
+					plreq.resetData(res.prodReq); //ServiceImpl에서 넘겨 준 변수명
+					plreqD.resetData(res.prodReqDe);
 				})
 			};
+			
+			
 			  
 		</script>
+
 		
 		
 	</div>
+
 </body>
 </html>

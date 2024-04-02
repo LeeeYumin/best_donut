@@ -1,6 +1,7 @@
 package com.example.demo.production;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -12,11 +13,9 @@ public class ProdPlanVO {
 	private String totalReqCnt;
 	private Date reqDate;
 	private String usersCode;
-	//생산요청상세
-	private String prodReqDetailCode;
-	private int reqCnt;
-	private String productCode;
 	
+	//생산요청상세
+	List<ProdPlanDeVO> prodReqDetail;
 	
 	//생산계획
 	

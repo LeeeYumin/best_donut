@@ -3,14 +3,28 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.production.mapper.ProdPlanMapper">
 
+<!-- 생산요청 -->
 	<select id="getProdReq" resultType="ProdPlanVO">
-		SELECT *
-		FROM   prod_req
+		SELECT req_date 
+		     , prod_req_code
+		     , total_req_cnt
+		     , users_code
+		FROM prod_req
+		WHERE req_date BETWEEN SYSDATE - 8 AND SYSDATE
+	</select>
+
+<!-- 생산요청상세 -->	
+	<select id="getProdReqDetail" resultType="ProdPlanDeVO">
+		SELECT prod_req_code
+		     , prod_req_detail_code
+		     , product_code
+		     , req_cnt
+		FROM prod_req_detail
+		WHERE prod_req_code = #{prodReqCode}
 	</select>
 	
-	<select id="getProdReqDetail" resultType="ProdPlanVO">
-		SELECT *
-		FROM   prod_req_detail
-	</select>
+	
+<!-- 생산계획 -->	
+	
 	
 </mapper>
