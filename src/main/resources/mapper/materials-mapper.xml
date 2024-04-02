@@ -2,14 +2,36 @@
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.materials.mapper.MaterialsMapper">
-
-	<select id="getMaterials" resultType="map">   
-		SELECT m.MAT_CODE AS "mat_code", m.MAT_NAME "mat_name", m.STOCK_CNT "stock_cnt", m.SAFE_STOCK_CNT as "safe_stock_cnt", c.COMPANY_CODE as "company_code", c.COMPANY_NAME as "company_name"
-		  FROM mat m JOIN mat_detail d
-            ON m.mat_code = d.mat_code
-    	  JOIN company c
-            ON d.company_code = c.company_code
-      GROUP BY m.mat_code, m.mat_name, m.safe_stock_cnt, m.stock_cnt, c.company_code, c.company_name
+	<select id="getMaterials" resultType="MaterialVO" parameterType="String">   
+		SELECT mat_code, 
+               mat_name,
+               stock_cnt,
+               safe_stock_cnt
+          FROM mat
+         WHERE 1=1
+         <!-- 검색 조건 -->
+         <if test="matName != null and matName != ''">
+			AND mat_name LIKE '%'||#{matName}||'%'         
+         </if>
+      ORDER BY mat_code
 	</select>
 	
+	<select id="getMaterialDetails" resultType="MaterialReadVO" parameterType="String">
+		SELECT d.mat_lot_code,
+               d.warehousing_cnt,
+               d.check_done_cnt,
+               d.out_cnt,
+               d.remain_cnt,
+               d.exp_date,
+               d.qlty_check_status,
+               d.mat_status,
+               d.dump_date,
+               d.unit_price,
+               d.mat_code,
+               d.company_code,
+               m.mat_name
+  	      FROM mat_detail d 
+  	      		JOIN mat m	ON d.mat_code= m.mat_code
+	     WHERE d.mat_code=#{matCode} 
+	</select>
 </mapper>
