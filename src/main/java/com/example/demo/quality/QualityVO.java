@@ -17,4 +17,6 @@ public class QualityVO {
 	private Integer goodCnt;
 	private String usersCode;
 	
+	
+	
 }

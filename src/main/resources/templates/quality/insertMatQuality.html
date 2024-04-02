@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+<head>
+<meta charset="UTF-8">
+<title>qualityInsert.html</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.css">
+<script src="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+	<h3>자재 품질 등록</h3>
+	<div class="btnClass">
+		<button id="saveBtn" type="button">저장</button>
+
+	</div>
+	<div id="grid"></div>
+
+	<script>
+
+	getMatInfo();
+
+	const grid = new tui.Grid({
+		el : document.getElementById('grid'),
+		scrollX : false,
+		scrollY : true,
+		rowHeaders: ['checkbox'],
+		columns : [
+			{
+				header : '자재코드',
+				name : 'MAT_CODE',
+				align : "center",
+			},
+			{
+				header : '입고날짜',
+				name : 'INOUT_DATE',
+				align : "center",
+				formatter: function(date) {
+					let dateForm = new Date(date.value);
+					let year = dateForm.getFullYear();
+					let month = ('0' + (dateForm.getMonth() + 1)).slice(-2);
+					let day = ('0' + dateForm.getDate()).slice(-2);
+					let dateStr = `${year}/${month}/${day}`;
+					return dateStr;
+				}
+			},
+			{
+				header : '입고수량',
+				name : 'INOUT_CNT',
+				align : "center",
+
+			},
+			{
+				header : '입고차량검사',
+				name : 'WAREHOUSING_VEHICLES_CHECK',
+				align : "center",
+				formatter : 'listItemText',
+				editor: {
+		            type: 'select',
+		            options: {
+		              listItems: [
+		                { text: '적합', value: '1' },
+		                { text: '부적합', value: '2' },
+		                { text: '차량검사 해당없음', value: '3' }
+		              ],
+		            }
+		          }
+			},
+			{
+				header : '이물질',
+				name : 'FOREIGN_EXIST',
+				align : "center",
+				formatter : 'listItemText',
+				editor: {
+		            type: 'select',
+		            options: {
+		              listItems: [
+		                { text: '유', value: '1' },
+		                { text: '무', value: '2' }
+		              ]
+		            }
+		          }
+			},
+			{
+				header : '포장상태',
+				name : 'PACK_STATUS',
+				align : "center",
+				formatter : 'listItemText',
+				editor: {
+		            type: 'select',
+		            options: {
+		              listItems: [
+		                { text: '양호', value: '1' },
+		                { text: '불량', value: '2' }
+		              ]
+		            }
+		          }
+			},
+			{
+				header : '부적합기준(total)',
+				name : 'LAST_RESULT',
+				align : "center",
+				formatter : 'listItemText',
+				editor: {
+		            type: 'select',
+		            options: {
+		              listItems: [
+		                { text: '부적합', value: '1' },
+		                { text: '적합', value: '2' }
+		              ]
+		            }
+		          }
+			},
+			{
+				header : '부적합일지',
+				name : 'BAD_SEP',
+				align : "center",
+			}
+		]
+
+	});
+
+
+	async function getMatInfo(){
+		await fetch("ajax/matInfo")
+		.then(res => res.json())
+		.then(res => {
+			console.log(res);
+			grid.resetData(res);
+		})
+	};
+	</script>
+
+
+
+</div>
+
+</body>
+</html>
+
+<style>
+.saveBtn {
+ 		display : flex;
+		justify-content : flex-end;
+ 		margin-bottom:20px;
+ 	}
+.btnClass {
+	text-align: right;
+}
+
+</style>

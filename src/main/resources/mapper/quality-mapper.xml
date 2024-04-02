@@ -3,8 +3,29 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.quality.mapper.QualityMapper">
 
-<select id="getMatQuality">
+<!-- 자재LOT코드(자재 상세s), 입고날짜/입고수량,발주코드(자재 입출 내역h)  -->
+<insert id="insertMatQuality" parameterType="QualityVO">
+	INSERT INTO WAREHOUSING_VEHICLES_CHECK
+				, FOREIGN_EXIST
+				, PACK_STATUS
+				, LAST_RESULT
+		VALUES (
+				#{warehousingVehiclesCheck}
+				,#{foreignExist}
+				,#{packStatus}
+				,#{lastResult}
+				)
+</insert>
 
+<select id="getMatInfo" resultType="Map">
+	SELECT s.MAT_CODE
+		   , h.INOUT_DATE
+		   , h.INOUT_CNT
+	  FROM MAT_DETAIL S JOIN MAT_INOUT_HISTORY H
+		ON S.MAT_LOT_CODE = H.MAT_LOT_CODE
+	 WHERE s.qlty_check_status = '미검사'
+	   AND h.inout_sep = 'IN'
 </select>
+
 
 </mapper>
