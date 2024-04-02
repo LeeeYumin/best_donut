@@ -3,8 +3,16 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.orders.mapper.OrdersMapper">
 	
+	<sql id="condition">
+		<where>
+		 	<if test="ordersCode != null and ordersCode != ''">
+		 		orders_code = LIKE '%' || #{ordersCode} || '%'
+		 	</if>
+		 </where> 
+	</sql>
+	
 	<!-- 주문목록조회 -->
-	<select id="getOrders" resultType="Map">
+	<select id="getOrders" resultType="Map" >
 		SELECT o.orders_code
 			   , o.orders_date
 			   , o.due_date
@@ -15,7 +23,23 @@
 		  FROM orders o 
 		  JOIN company c ON o.company_code = c.company_code
 		  JOIN USERS u   ON o.users_code = u.users_code
+	     <include refid="condition" />
 	     ORDER BY 1
+	</select>
+	
+	<!-- 주문상세목록 -->
+	<select id="getOrdersDetail" resultType="Map" parameterType="String">
+		SELECT d.orders_detail_code
+		       , d.orders_cnt
+			   , d.supply_price
+			   , d.tax
+			   , d.total_supply_price
+			   , d.orders_code
+			   , d.product_code
+			   , p.product_name
+		  FROM orders_detail d 
+		  JOIN product p ON d.product_code = p.product_code
+		 WHERE d.orders_code = #{ordersCode}
 	</select>
 	
 </mapper>

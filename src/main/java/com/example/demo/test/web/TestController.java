@@ -16,4 +16,9 @@ public class TestController {
 		System.out.println(mapper.getText());
 		return "layout/index"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
+	
+	@RequestMapping("/sample")
+	public String sample() {
+		return "test/sample";
+	}
 }
