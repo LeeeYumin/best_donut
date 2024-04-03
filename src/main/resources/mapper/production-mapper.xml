@@ -4,7 +4,7 @@
 <mapper namespace="com.example.demo.production.mapper.ProdPlanMapper">
 
 <!-- 생산요청 -->
-	<select id="getProdReq" resultType="ProdPlanVO">
+	<select id="getProdReq" resultType="ProdPlanBVO">
 		SELECT req_date 
 		     , prod_req_code
 		     , total_req_cnt
@@ -25,6 +25,39 @@
 	
 	
 <!-- 생산계획 -->	
-	
+<!-- 	<insert id="insertProdPlan" parameterType="ProdPlanVO">
+		INSERT INTO prod_plan
+		( )
+		VALUES (
+			#{donut.nextval('PPL')}
+		)
+		
+	</insert> -->
+  	<select id="getProdPlan" resultType="ProdPlanVO">
+		SELECT prod_plan_code
+     		 , prod_req_code
+     		 , plan_date
+     		 , all_plan_status
+     		 , users_code
+		FROM prod_plan
+	</select>
+
+	<select id="getProdPlanAll" resultType="ProdPlanAllVO" parameterType="String">
+		SELECT d.prod_plan_detail_code
+		     , p.prod_plan_code
+		     , d.prod_req_detail_code
+		     , d.product_code
+		     , d.fix_cnt
+		     , d.req_cnt
+		     , d.plan_cnt
+		     , d.not_instruct_cnt
+		     , d.instruct_done_cnt
+		     , d.plan_detail_status
+		FROM prod_plan p JOIN prod_plan_detail d
+		                    ON p.prod_plan_code = d.prod_plan_code
+		WHERE p.prod_plan_code = #{prodPlanCode}
+	</select>
+
+
 	
 </mapper>

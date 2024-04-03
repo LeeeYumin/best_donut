@@ -10,26 +10,25 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
-<style>
-/* 	#plreq {
-		align-item: center;
-	} */
-</style>
-
 </head>
 
 <body>
 	<!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
 	
-		<h2>생산계획</h2>
+		<h2>생산계획 등록</h2>
 		<div style="padding-top: 30px;"></div>
 		
-		<!-- ToastUI 그리드 띄우는 div -->
-
 		<h4>주간 생산요청</h4>
 		<div id="plreq"></div>
-		<div id="plreqD" style="padding-top: 20px;"></div>
+		<div id="plreqD" style="padding-top: 20px; padding-bottom: 20px;"></div>
+		
+		
+		<h4>생산계획</h4>
+		<form action="" method="post">
+			생산계획코드 <input name="">
+			
+		</form>
 		
 		
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->
@@ -115,6 +114,9 @@
 					plreqD.resetData(res.prodReqDe);
 				})
 			};
+			
+			
+			//생산계획 등록
 			
 			
 			  

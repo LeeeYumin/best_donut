@@ -7,6 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.production.ProdPlanAllVO;
+import com.example.demo.production.ProdPlanBVO;
+import com.example.demo.production.ProdPlanDeVO;
 import com.example.demo.production.ProdPlanVO;
 import com.example.demo.production.mapper.ProdPlanMapper;
 import com.example.demo.production.service.ProdPlanService;
@@ -22,7 +25,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	@Override
 	public Map<String,Object> getProdReq() {
 		Map<String,Object> map = new HashMap<>();
-		List<ProdPlanVO> list = prodPlanMapper.getProdReq();
+		List<ProdPlanBVO> list = prodPlanMapper.getProdReq();
 		
 		//요청
 		map.put("prodReq", list);
@@ -32,6 +35,17 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 			map.put("prodReqDe", prodPlanMapper.getProdReqDetail(list.get(0).getProdReqCode()));
 		}
 		return map;
+	}
+
+
+	//생산계획
+	@Override
+	public List<ProdPlanVO> getProdPlan() {
+		return prodPlanMapper.getProdPlan();
+	}
+	@Override
+	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode) {
+		return prodPlanMapper.getProdPlanAll(prodPlanCode);
 	}
 
 
