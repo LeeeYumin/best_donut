@@ -2,15 +2,7 @@
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.orders.mapper.OrdersMapper">
-	
-	<sql id="condition">
-		<where>
-			<if test="ordersCode != null and ordersCode != ''">
-				orders_code LIKE '%' || #{ordersCode} || '%'
-			</if>
-		</where> 
-	</sql>
-	
+		
 	<!-- 주문목록 조회 -->
 	<select id="getOrders" resultType="Map">
 		SELECT o.orders_code
@@ -23,7 +15,11 @@
 		  FROM orders o 
 		  JOIN company c ON o.company_code = c.company_code
 		  JOIN USERS u   ON o.users_code = u.users_code
-			<include refid="condition" />
+		<where>
+			<if test="ordersCode != null and ordersCode != ''">
+				orders_code LIKE '%' || #{ordersCode} || '%'
+			</if>
+		</where> 
 		 ORDER BY 1
 	</select>
 	
