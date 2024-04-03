@@ -12,6 +12,6 @@ import com.example.demo.quality.QualityVO;
 public interface QualityMapper {
 
 	public List<QualityVO> insertMatQuality();
-	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate);
+	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate); //LOT,등록날짜 검색
 
 }

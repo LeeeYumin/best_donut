@@ -10,15 +10,15 @@
 </head>
 <body>
 <div layout:fragment="content">
-	<h3>자재 품질 등록</h3>
-	
+	<h3>자재 품질 관리</h3>
+
 	<div id="grid"></div>
-	
+
 	<script>
-	
+
 	 class CustomTextEditor {
 	      constructor(props) {
-	    	
+
 	        const el = document.createElement('input');
 	        const { maxLength } = props.columnInfo.editor.options;
 
@@ -41,113 +41,63 @@
 	        this.el.select();
 	      }
 	    }
-	
+
 	getMatInfo();
-	
+
 	const grid = new tui.Grid({
 		el : document.getElementById('grid'),
 		scrollX : false,
 		scrollY : true,
 		rowHeaders: ['checkbox'],
-		columns : [ 
+		columns : [
 			{
 				header : '자재코드',
 				name : 'MAT_CODE',
 				align : "center",
-			}, 
+			},
 			{
-				header : '입고날짜',
-				name : 'INOUT_DATE',
+				header : '자재명',
+				name : '',
 				align : "center",
-				formatter: function(date) {
-					let dateForm = new Date(date.value);
-					let year = dateForm.getFullYear();
-					let month = ('0' + (dateForm.getMonth() + 1)).slice(-2);
-					let day = ('0' + dateForm.getDate()).slice(-2);
-					let dateStr = `${year}/${month}/${day}`;
-					return dateStr;
-				}
-			}, 
+			},
 			{
-				header : '입고수량',
+				header : '검사명',
 				name : 'INOUT_CNT',
 				align : "center",
-			
-			}, 
+
+			},
 			{
-				header : '입고차량검사',
+				header : '검사 종결여부',
 				name : 'WAREHOUSING_VEHICLES_CHECK',
 				align : "center",
 				editor: {
 		            type: 'select',
 		            options: {
 		              listItems: [
-		                { text: '적합', value: '1' },
-		                { text: '부적합', value: '2' },
-		                { text: '차량검사 해당없음', value: '3' }
+		                { text: '미검사', value: '1' },
+		                { text: '검사중', value: '2' },
+		                { text: '검사 완료', value: '3' }
 		              ]
 		            }
 		          }
-			}, 
+			},
 			{
-				header : '이물질',
-				name : 'FOREIGN_EXIST',
-				align : "center",
-				editor: {
-		            type: 'select',
-		            options: {
-		              listItems: [
-		                { text: '유', value: '1' },
-		                { text: '무', value: '2' }
-		              ]
-		            }
-		          }
-			}, 
-			{
-				header : '포장상태',
-				name : 'PACK_STATUS',
-				align : "center",
-				editor: {
-		            type: 'select',
-		            options: {
-		              listItems: [
-		                { text: '양호', value: '1' },
-		                { text: '불량', value: '2' }
-		              ]
-		            }
-		          }
-			}, 
-			{
-				header : '부적합기준(total)',
-				name : 'LAST_RESULT',
-				align : "center",
-				editor: {
-		            type: 'select',
-		            options: {
-		              listItems: [
-		                { text: '부적합', value: '1' },
-		                { text: '적합', value: '2' }
-		              ]
-		            }
-		          }
-			}, 
-			{
-				header : '부적합일지',
+				header : '적합수량',
 				name : 'BAD_SEP',
 				align : "center",
-			} 
+			}
 		]
-	
+
 	});
-	
+
 	grid.on('beforeChange', ev => {
 	      console.log('before change:', ev);
 	    });
     grid.on('afterChange', ev => {
       console.log('after change:', ev);
     })
-	  
-	
+
+
 	async function getMatInfo(){
 		await fetch("ajax/matInfo")
 		.then(res => res.json())

@@ -3,7 +3,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.quality.mapper.QualityMapper">
 
-<!-- 자재LOT코드(자재 상세s), 입고날짜/입고수량,발주코드(자재 입출 내역h)  -->
+<!-- 자재품질등록 / 자재LOT코드(자재 상세s), 입고날짜/입고수량,발주코드(자재 입출 내역h)  -->
 <insert id="insertMatQuality" parameterType="QualityVO">
 	INSERT INTO WAREHOUSING_VEHICLES_CHECK
 				, FOREIGN_EXIST
@@ -17,7 +17,7 @@
 				)
 </insert>
 
-<!-- 자재LOT번호, 입고날짜 검색 -->
+<!--  자재품질등록 / 자재LOT번호, 입고날짜 검색 -->
 <select id="getMatInfo" resultType="Map">
 	SELECT s.MAT_LOT_CODE
 		   , h.INOUT_DATE
@@ -36,6 +36,8 @@
 		</where>
 		ORDER BY 1
 </select>
+
+<!-- 자재품질관리 / 자재코드, 자재명, 검사명 -->
 
 
 </mapper>
