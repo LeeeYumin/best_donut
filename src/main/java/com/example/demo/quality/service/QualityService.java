@@ -8,5 +8,5 @@ import com.example.demo.quality.QualityVO;
 public interface QualityService {
 
 	public List<QualityVO> insertMatQuality();
-	public List<Map<String, Object>> getMatInfo();
+	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate);
 }

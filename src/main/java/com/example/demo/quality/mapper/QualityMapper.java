@@ -1,5 +1,6 @@
 package com.example.demo.quality.mapper;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,5 +12,6 @@ import com.example.demo.quality.QualityVO;
 public interface QualityMapper {
 
 	public List<QualityVO> insertMatQuality();
-	public List<Map<String, Object>> getMatInfo();
+	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate);
+
 }
