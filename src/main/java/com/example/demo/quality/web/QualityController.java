@@ -15,17 +15,20 @@ public class QualityController {
 	
 	@Autowired
 	QualityService qualityService;
+	
 	//자재 품질 등록
 	@GetMapping("insertMatQuality") // url
 	public String insertMatQuality () { // 함수이름
-		return "quality/insertMatQuality"; // 파일위치(qualityMain 이름변경)
+		return "quality/insertMatQuality"; // 파일위치(qualityMain 에서 이름변경)
 	}
 	
 	@GetMapping("ajax/matInfo") //정보를 가져오는 ajax
 	@ResponseBody
-	public List<Map<String, Object>> getMatInfo(){
-		return qualityService.getMatInfo();
+	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate){
+		return qualityService.getMatInfo(matLotCode, inoutDate);
 	}
+	
+	
 	
 	
 	//자재 품질 관리

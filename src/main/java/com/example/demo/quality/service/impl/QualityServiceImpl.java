@@ -1,5 +1,6 @@
 package com.example.demo.quality.service.impl;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,9 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getMatInfo() {
-		return qualityMapper.getMatInfo();
+	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate) {
+		return qualityMapper.getMatInfo(matLotCode, inoutDate);
 	}
+
 
 }
