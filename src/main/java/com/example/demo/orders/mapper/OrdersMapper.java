@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.bind.annotation.PathVariable;
+
+import com.example.demo.orders.OrdersVO;
 
 @Mapper
 public interface OrdersMapper {
 
-	public List<Map<String, Object>> getOrders(String ordersCode);
-	public List<Map<String, Object>> getOrdersDetail(String ordersCode);
+	public List<Map<String, Object>> getOrders(String ordersCode);			// 주문조회
+	public List<Map<String, Object>> getOrdersDetail(String ordersCode);	// 주문상세조회
+	public int insertOrders(OrdersVO vo);
+	
 }
