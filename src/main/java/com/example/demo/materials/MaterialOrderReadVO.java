@@ -8,21 +8,20 @@ import lombok.Data;
 
 @Data
 public class MaterialOrderReadVO {
-	private String matOrdersDetailCode;
-	private Integer ordersCnt;
-	private Integer totalPrice;
-	private String ordersStatus;
 	private String matOrdersCode;
-	private String matCode;
-	private String matName;
 	private String companyCode;
 	private String companyName;
-	
-	
-	private String prodPlanCode;
-	private String usersCode;
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Date ordersDate;
+	private String matCode;
+	private String matName;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date deliveryDate;
+	private Integer matTotalOrdersPrice;
+	private String totalOrdersStatus;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date ordersDate;
+	private String usersCode;
+	
+	private String matOrdersDetailCode;
+	private String prodPlanCode;
+	private Integer ordersCnt;
 }
