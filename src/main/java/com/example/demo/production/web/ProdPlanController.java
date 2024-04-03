@@ -1,6 +1,7 @@
 package com.example.demo.production.web;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.production.ProdPlanAllVO;
+import com.example.demo.production.ProdPlanDeVO;
+import com.example.demo.production.ProdPlanVO;
 import com.example.demo.production.service.ProdPlanService;
 
 @Controller
@@ -27,6 +31,28 @@ public class ProdPlanController {
 	public Map<String, Object> getProdeReq(){
 		return prodPlanService.getProdReq();
 	}
+	
+	
+	//< 생산계획 >
+	@GetMapping("prodPlanList") // 페이지 uri
+	public String prodPlanList() {
+		return "production/prodPlanList"; // html 파일 위치
+	}
+	
+	//생산계획
+	@GetMapping("/ajax/prodPlanList")
+	@ResponseBody
+	public List<ProdPlanVO> getProdPlanList(){
+		return prodPlanService.getProdPlan();
+	}
+	//상세 데이터
+	@GetMapping("/ajax/prodPlanAll")	// fetch 함수에 들어가는 uri
+	@ResponseBody
+	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode){
+		return prodPlanService.getProdPlanAll(prodPlanCode);
+	}
+	
+	
 	
 	
 }
