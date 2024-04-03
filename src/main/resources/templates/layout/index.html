@@ -24,10 +24,7 @@
 >
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
     <title>Best Donut</title>
 
@@ -66,9 +63,19 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="/assets/js/config.js"></script>
     <!-- Toast UI CDN -->
-	<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+    <!-- 공용 메서드 js파일 import -->
+    <script src="/js/common/common.js"></script>
+    
+    <!-- csrf token 토큰값 세팅 -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+	
+	<!-- csrf headers js파일 import -->
+    <script src="/js/common/csrfHeaders.js"></script>
+	
   </head>
 
   <body>
@@ -136,7 +143,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="/orders" class="menu-link">
+                  <a href="/ordersList" class="menu-link">
                     <div data-i18n="Basic">주문 관리</div>
                   </a>
                 </li>
@@ -510,5 +517,6 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+	
   </body>
 </html>

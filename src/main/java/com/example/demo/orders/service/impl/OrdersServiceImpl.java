@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.orders.OrdersVO;
 import com.example.demo.orders.mapper.OrdersMapper;
 import com.example.demo.orders.service.OrdersService;
 
@@ -22,6 +23,11 @@ public class OrdersServiceImpl implements OrdersService{
 	@Override
 	public List<Map<String, Object>> getOrdersDetail(String ordersCode) {
 		return ordersMapper.getOrdersDetail(ordersCode);
+	}
+
+	@Override
+	public boolean insertOrders(OrdersVO vo) {
+		return ordersMapper.insertOrders(vo) == 1 ? true : false;
 	}
 	
 }
