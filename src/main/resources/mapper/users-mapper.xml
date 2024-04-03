@@ -23,11 +23,11 @@
 	<sql id="condition">
 		<where>
 			<if test="keyword != null and keyword != ''">
-				USERS_CODE LIKE '%' || UPPER(#{keyword}) || '%'			
-				OR USERS_NAME LIKE '%' ||  UPPER(#{keyword}) || '%'
+				(USERS_CODE LIKE '%' || UPPER(#{keyword}) || '%'			
+				OR USERS_NAME LIKE '%' ||  UPPER(#{keyword}) || '%')
 			</if>
 			<if test="status != null and status != ''">
-				AND USERS_STATUS == #{status}
+				AND USERS_STATUS = #{status}
 			</if>
 		</where>
 	</sql>
