@@ -17,12 +17,12 @@ public class EqmVO {
 	private String installPlace;
 	private String buyCompany;
 	private Integer buyPrice;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date buyDate;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date dumpDate;
 	private String checkCycle;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date lastCheckDate;
 	private String eqmStatus;
 	private String oprStatus;

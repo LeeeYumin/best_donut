@@ -5,9 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>usersMain.html</title>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
 </head>
 <body>
 	<div layout:fragment="content">
@@ -15,157 +14,52 @@
 		
 		<table border="1">
 			<tr>
-				<th>검색어</th>
-			</tr>
-			<tr>
+				<th>사용자검색</th>
 				<td><input type="text" name="search" id="search"></td>
-				<button onclick="searchValue()">검색</button>
 			</tr>			
-		</table>
+		</table><br>
+		<div><button onclick="searchValue()">검색</button></div>
 
 
 <!-- 		<input type="text" name="search">
 		<button onclick="getList()">검색</button> -->
-
 		
-		<div id="grid"></div>
 		
-		<script>
-	 		tui.Grid.applyTheme('clean');
-
-		 	const grid = new tui.Grid({
-		      el: document.getElementById('grid'),
-		      scrollX: false,
-		      scrollY: false,
-		      rowHeaders: ['rowNum'],
-		      header: {
-		          height: 70,
-		          complexColumns: [
-				        {
-				          header: '사용자권한',
-				          name: 'mergeColumn1',
-						  childNames: ['businessPerm', 'prodPerm', 'matPerm', 'qltyPerm', 'eqmMngPerm', 'master']
-				        },
-	        	  ]
-		      },
-		      columns: [
-		        {
-		          header: '사용자코드',
-		          name: 'usersCode',
-		          sortingType: 'asc',
-		          sortable: true,
-		          align: 'center',
-		          filter: 'text'
-		        },
-		        {
-		          header: '사용자명',
-		          name: 'usersName',
-		          sortingType: 'asc',
-		          sortable: true,
-		          align: 'center'
-		        },
-		        {
-		          header: '영업',
-		          name: 'businessPerm',
-		          align: 'center'
-		        },
-		        {
-		          header: '생산',
-		          name: 'prodPerm',
-		          align: 'center'
-		        },
-		        {
-		          header: '자재',
-		          name: 'matPerm',
-		          align: 'center'
-		        },
-		        {
-		          header: '품질',
-		          name: 'qltyPerm',
-		          align: 'center'
-		        },
-		        {
-		          header: '설비',
-		          name: 'eqmMngPerm',
-		          align: 'center'
-		        },		    
-		        {
-		          header: '마스터',
-		          name: 'master',
-		          align: 'center'
-		        },		    			        
-		        {
-		          header: '사용자상태',
-		          name: 'usersStatus',
-		          align: 'center'
-		        }
-		      ]
-		    });
-		 	
-
-		    
-		    
-
-/* 			const state = {
-			  code: 'eq',
-			  value: 'USE00001'
-			};
-			const filterState = {columnName: 'usersCode', columnFilterState: state };
-			const filterOpt = {
-					  type: 'text',
-					  showApplyBtn: true,
-					  showClearBtn: false,
-					  operator: 'OR',
-					}; */
-		    
-			
-			
-			
-			
-			
-   			async function getUsersList(){
-				await fetch("/ajax/users")
-				.then(res => res.json())
-				.then(res => {
-					grid.resetData(res)
-				})
-			};
-			getUsersList();
-			
-/* 			const code = 'USE00001'; */
-
-			
- 			
-
-			
-/* 			const code1 = ''; */
-			async function searchValue(){
-			const code1 = document.getElementById('search').value;
-			console.log(code1);
-			
-			
- 			const state1 = {
- 					  code: 'eq',
- 					  value: code1
- 					};
-			
-				
-				await fetch("/ajax/users")
-				.then(res => res.json())
-				.then(res => {
-					grid.resetData(res)
-				})
-				.then(res => {
-					grid.filter('usersCode', [state1])
-				})
-			
-			}
-
-/*  					grid.filter('usersCode', [state1]); */
-			
-			
-
-		</script>
+		<div>
+			<div>
+				<label>사용자검색</label>
+				<input type="text" id="keyword" placeholder="사용자코드 / 사용자명 입력" class="searchBox">
+			</div><hr>
+			<div>
+				<div>사용자권한</div>
+				<input type="checkbox" id="perm1" value="order">
+				<label for="perm1">영업관리</label>
+				<input type="checkbox" id="perm2" value="prod">
+				<label for="perm2">생산관리</label>
+				<input type="checkbox" id="perm3" value="mat">
+				<label for="perm3">자재관리</label>
+				<input type="checkbox" id="perm4" value="qlty">
+				<label for="perm4">품질관리</label>
+				<input type="checkbox" id="perm5" value="eqm">
+				<label for="perm5">설비관리</label>
+				<input type="checkbox" id="perm6" value="master">
+				<label for="perm6">마스터</label>
+			</div><hr>
+			<div>
+				<label>사용자상태</label>
+				<input type="radio" name="status" id="status1" value="활성">
+				<label for="status">활성</label>
+				<input type="radio" name="status" id="status2" value="비활성">
+				<label for="status2">비활성</label>
+			</div><hr>
+			<div>
+				<button type="button" id="searchBtn">검색</button>	
+				<button type="reset" id="resetBtn">초기화</button>
+			</div>
+		</div>
+		
+		<div id="usersList"></div>
+		<script src="/js/users/usersList.js"></script>
 		
 	</div>
 </body>

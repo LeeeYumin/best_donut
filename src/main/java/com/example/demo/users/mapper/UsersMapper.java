@@ -9,6 +9,6 @@ import com.example.demo.users.UsersVO;
 @Mapper
 public interface UsersMapper {
 	
-	public List<UsersVO> getUsers();
+	public List<UsersVO> getUsers(UsersVO vo);
 	
 }

@@ -11,12 +11,15 @@ public class NotOprVO {
 
 	private String notOprCode;
 	private String notOprSep;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date beginDate;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date endDate;
 	private String contentsContents;
 	private String usersCode;
 	private String eqmCode;
+	
+	private String eqmName;
+	private String usersName;
 	
 }
