@@ -1,3 +1,4 @@
+// 주문등록
 async function saveInsert() {
 	let formData = new FormData(document.frm);
 
@@ -39,3 +40,51 @@ async function saveInsert() {
 //     console.log(res);
 //   })
 // }
+
+// grid 
+const grid = new tui.Grid({
+	el : document.getElementById('grid'),
+	scrollX : false,
+	scrollY : true,
+	rowHeaders: ['checkbox'],
+	header:[
+		align = 'center',
+	],
+	columns : [ 
+    {
+      header : '완제품코드',
+      name : 'PRODUCT_CODE',
+      align : 'center',
+    }, 
+		{
+			header : '주문수량',
+			name : 'ORDERS_CNT',
+			align : 'center',
+		}, 
+		{
+			header : '공급가액',
+			name : 'SUPPLY_PRICE',
+			align : 'center',
+
+			formatter: function(date) {
+				return dateFormat(date);
+			},
+		}, 
+		{
+			header : '부가세',
+			name : 'TAX',
+			align : 'center',
+			formatter: function(date) {
+				return dateFormat(date);
+			}
+		}, 
+		{
+			header : '총공급대가',
+			name : "TOTAL_SUPPLY_PRICE",
+			align : 'center',
+			formatter: function(price) {
+				return priceFormat(price.value);
+			}
+		}, 
+	]
+})
