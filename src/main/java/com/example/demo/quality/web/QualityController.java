@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.quality.service.QualityService;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 @Controller
 public class QualityController {
 	
