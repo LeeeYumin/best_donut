@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Mapper
 public interface OrdersMapper {
 
-	public List<Map<String, Object>> getOrders();
+	public List<Map<String, Object>> getOrders(String ordersCode);
 	public List<Map<String, Object>> getOrdersDetail(String ordersCode);
 }

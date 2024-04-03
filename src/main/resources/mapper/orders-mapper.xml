@@ -5,10 +5,10 @@
 	
 	<sql id="condition">
 		<where>
-		 	<if test="ordersCode != null and ordersCode != ''">
-		 		orders_code = LIKE '%' || #{ordersCode} || '%'
-		 	</if>
-		 </where> 
+			<if test="ordersCode != null and ordersCode != ''">
+				orders_code LIKE '%' || #{ordersCode} || '%'
+			</if>
+		</where> 
 	</sql>
 	
 	<!-- 주문목록조회 -->
