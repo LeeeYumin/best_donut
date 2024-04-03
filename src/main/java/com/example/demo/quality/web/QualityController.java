@@ -30,9 +30,11 @@ public class QualityController {
 	
 	
 	
-	
 	//자재 품질 관리
-	
+	@GetMapping("adminMatQuality")
+	public String adminMatQuality () {
+		return "quality/adminMatQuality";
+	}
 	
 	//완제품 품질 등록
 	
