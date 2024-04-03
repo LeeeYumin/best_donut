@@ -34,4 +34,11 @@
   	      		JOIN mat m	ON d.mat_code= m.mat_code
 	     WHERE d.mat_code=#{matCode} 
 	</select>
+	
+	<select id="getMaterialOrders" resultType="MaterialOrderVO">
+		SELECT *
+		FROM mat_orders
+	</select>
+	
+	
 </mapper>

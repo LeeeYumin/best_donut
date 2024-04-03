@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.materials.MaterialOrderVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.mapper.MaterialsMapper;
@@ -24,6 +25,11 @@ public class MaterialsServiceImpl implements MaterialsService {
 	@Override
 	public List<MaterialReadVO> getMaterialDetails(String matCode) {
 		return materialsMapper.getMaterialDetails(matCode);
+	}
+
+	@Override
+	public List<MaterialOrderVO> getMaterialOrders() {
+		return materialsMapper.getMaterialOrders();
 	}
 
 }
