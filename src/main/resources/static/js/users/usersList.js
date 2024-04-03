@@ -107,20 +107,20 @@ const grid = new tui.Grid({
 				let param = "keyword=" + keyword + "&status=" + status;*/
 				
 				const keyword = document.getElementById('keyword').value;
+        const status = document.querySelector("[name=status]:checked").value;
+        console.log(status);
 				
-				const obj = {keyword: keyword};
+				const obj = {keyword : keyword, status : status};
 
 				const data = {
 					method : 'POST',
-					  headers: {
-					    'Content-type': 'application/json'
-					  },
+					  headers: jsonHeaders,
 					body : JSON.stringify(obj)
 				};
 
         console.log(data);
 				
-				await fetch('/ajax/users', {data})
+				await fetch('/ajax/users', data)
 				.then(res => res.json())
 				.then(res => {
           console.log(res)
