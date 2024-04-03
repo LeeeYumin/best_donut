@@ -35,6 +35,7 @@
 	     WHERE d.mat_code=#{matCode} 
 	</select>
 	
+<<<<<<< HEAD
 	<!-- 자재 발주 관리 -->
 	<select id="getMaterialOrders" resultType="MaterialOrderReadVO">
 		SELECT DISTINCT o.mat_orders_code,
@@ -56,4 +57,12 @@
                     					ON s.mat_code = d.mat_code
 	  		   ORDER BY o.mat_orders_code
 	</select>
+=======
+	<select id="getMaterialOrders" resultType="MaterialOrderVO">
+		SELECT *
+		FROM mat_orders
+	</select>
+	
+	
+>>>>>>> 59a1ab41afa69351dcef86b436a8f4f5ed8d7682
 </mapper>
