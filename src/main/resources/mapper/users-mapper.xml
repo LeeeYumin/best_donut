@@ -16,6 +16,20 @@
 				, MASTER
 				, USERS_STATUS
 		FROM USERS
+		<include refid="condition"></include>
+		ORDER BY 1
 	</select>
+	
+	<sql id="condition">
+		<where>
+			<if test="keyword != null and keyword != ''">
+				USERS_CODE LIKE '%' || UPPER(#{keyword}) || '%'			
+				OR USERS_NAME LIKE '%' ||  UPPER(#{keyword}) || '%'
+			</if>
+			<if test="status != null and status != ''">
+				AND USERS_STATUS == #{status}
+			</if>
+		</where>
+	</sql>
 
 </mapper>

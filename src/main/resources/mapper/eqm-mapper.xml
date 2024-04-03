@@ -19,6 +19,7 @@
 				, EQM_STATUS
 				, OPR_STATUS
 		FROM EQM
+		ORDER BY 1
 	</select>
 
 </mapper>

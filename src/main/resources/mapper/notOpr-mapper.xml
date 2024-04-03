@@ -4,14 +4,19 @@
 <mapper namespace="com.example.demo.notOpr.mapper.NotOprMapper">
 
 	<select id="getNotOpr" resultType="NotOprVO">
-		SELECT NOT_OPR_CODE
-				, NOT_OPR_SEP
-				, BEGIN_DATE
-				, END_DATE
-				, CONTENTS_CONTENTS
-				, USERS_CODE
-				, EQM_CODE
-		FROM NOT_OPR
+		SELECT n.NOT_OPR_CODE
+	          , n.NOT_OPR_SEP
+	          , n.BEGIN_DATE
+	          , n.END_DATE
+	          , n.CONTENTS_CONTENTS
+	          , n.USERS_CODE
+	          , n.EQM_CODE
+	          , e.EQM_NAME
+	          , u.USERS_NAME
+		FROM NOT_OPR n
+		JOIN EQM e ON n.EQM_CODE = e.EQM_CODE
+		JOIN USERS u ON n.USERS_CODE = u.USERS_CODE
+		ORDER BY 1
 	</select>	
 
 </mapper>

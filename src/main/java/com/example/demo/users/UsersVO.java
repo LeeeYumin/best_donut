@@ -16,5 +16,8 @@ public class UsersVO {
 	private String eqmMngPerm;
 	private String master;
 	private String usersStatus;
+	
+	private String keyword;
+	private String status;
 
 }

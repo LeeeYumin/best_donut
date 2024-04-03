@@ -15,8 +15,8 @@ public class UsersServiceImpl implements UsersService{
 	@Autowired UsersMapper usersMapper;
 
 	@Override
-	public List<UsersVO> getUsers() {
-		return usersMapper.getUsers();
+	public List<UsersVO> getUsers(UsersVO vo) {
+		return usersMapper.getUsers(vo);
 	}
 	
 	
