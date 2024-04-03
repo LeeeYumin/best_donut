@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>stockList.html</title>
+<link rel="stylesheet" href="/css/material.css">
+</head>
+<body>
+	<div layout:fragment="content">
+		<h3>자재 재고 조회</h3>
+		<!-- 검색 폼 -->
+		<div class="row mb-3 searchForm">
+			<h5>검색조건</h5>
+			<div class="input-group" style="margin-bottom: inherit;">
+				<span class="input-group-text" id="basic-addon1">자재명</span> <input
+					type="text" class="form-control" id="matName" name="matName"
+					placeholder="검색하고자하는 자재명을 입력하세요.">
+				<button class="btn btn-outline-secondary" type="button"
+					id="searchBtn">검색</button>
+				<button class="btn btn-outline-secondary" type="button"
+					id="resetBtn">초기화</button>
+			</div>
+		</div>
+
+		<!-- 자재 목록 -->
+		<h5>자재 재고 목록</h5>
+		<div id="materialsList"></div>
+		<!-- 자재 상세 목록 -->
+		<h5>LOT별 자재 재고 목록</h5>
+		<div id="materialDetails"></div>
+
+		<!-- materialStockManagement.js -->
+		<script src="/js/materials/materialStockManagement.js"></script>
+	</div>
+</body>
+</html>
