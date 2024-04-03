@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.materials.MaterialOrderReadVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.service.MaterialsService;
@@ -44,12 +46,20 @@ public class MaterialsController {
 		return "materials/materialOrders"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
 	
-	// 자재 발주 등록 페이지 이동
+	// 자재 발주 목록 페이지 이동
 	@RequestMapping("/materials/ordersList")
 	public String ordersList() {
 		return "materials/materialOrdersList"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
 
+	// 자재 발주 목록 조회(ajax)
+	@RequestMapping("/ajax/materialorders")
+	@ResponseBody
+	public List<MaterialOrderReadVO> getMaterialOrders(){
+		return materialsService.getMaterialOrders();
+	}
+	
+	
 	// 자재 입고 등록 페이지 이동
 	@RequestMapping("/materials/warehousing")
 	public String warehousing() {

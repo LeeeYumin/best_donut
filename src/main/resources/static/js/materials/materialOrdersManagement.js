@@ -7,26 +7,41 @@ const grid1 = new tui.Grid({
 	rowHeaders: ['checkbox'],
 	columns: [
 		{
-			header: '자재코드',
-			name: 'matCode',
+			header: '발주코드',
+			name: 'matOrdersCode',
 			align: 'center',
 			sortable: true
 		},
 		{
-			header: '자재명',
-			name: 'matName',
+			header: '거래처코드',
+			name: 'companyCode',
 			align: 'center'
 		},
 		{
-			header: '재고량',
-			name: 'stockCnt',
+			header: '자재코드',
+			name: 'matCode',
 			align: 'center',
 			sortable: true,
 			validation: {}
 		},
 		{
-			header: '안전재고량',
-			name: 'safeStockCnt',
+			header: '납기요청일',
+			name: 'deliveryDate',
+			align: 'center'
+		},
+		{
+			header: '금액(원)',
+			name: 'matTotalOrdersPrice',
+			align: 'center'
+		},
+		{
+			header: '발주진행상태',
+			name: 'totalOrdersStatus',
+			align: 'center'
+		},
+		{
+			header: '발주일자',
+			name: 'ordersDate',
 			align: 'center'
 		}
 	]
@@ -35,7 +50,7 @@ const grid1 = new tui.Grid({
 // 재고 조회(ajax)
 async function getMaterialOrdersList() {
 	const matName = document.getElementById('matName').value;
-	await fetch("/ajax/materials?matName=" + matName)
+	await fetch("/ajax/materialorders?matName=" + matName)
 		.then(res => res.json())
 		.then(res => {
 			// ajax로 불러온 데이터 그리드에 넣음
