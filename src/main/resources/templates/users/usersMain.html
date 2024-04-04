@@ -32,24 +32,28 @@
 			</div><hr>
 			<div>
 				<label>사용자권한</label>
-				<input type="checkbox" id="perm1" value="order" name="perm">
-				<label for="perm1">영업관리</label>
-				<input type="checkbox" id="perm2" value="prod" name="perm">
-				<label for="perm2">생산관리</label>
-				<input type="checkbox" id="perm3" value="mat" name="perm">
-				<label for="perm3">자재관리</label>
-				<input type="checkbox" id="perm4" value="qlty" name="perm">
-				<label for="perm4">품질관리</label>
-				<input type="checkbox" id="perm5" value="eqm" name="perm">
-				<label for="perm5">설비관리</label>
-				<input type="checkbox" id="perm6" value="master" name="perm">
-				<label for="perm6">마스터</label>
+				<input type="checkbox" id="perm0" value="master" name="master">
+				<label for="perm0">전체</label>
+				<div id="perm" style="display:inline-block;">
+					<input type="checkbox" id="perm1" value="PER00001" name="perm">
+					<label for="perm1">영업관리</label>
+					<input type="checkbox" id="perm2" value="PER00002" name="perm">
+					<label for="perm2">생산관리</label>
+					<input type="checkbox" id="perm3" value="PER00003" name="perm">
+					<label for="perm3">자재관리</label>
+					<input type="checkbox" id="perm4" value="PER00004" name="perm">
+					<label for="perm4">품질관리</label>
+					<input type="checkbox" id="perm5" value="PER00005" name="perm">
+					<label for="perm5">설비관리</label>
+				</div>
 			</div><hr>
 			<div>
 				<label>사용자상태</label>
-				<input type="radio" name="status" id="status1" value="활성" checked>
-				<label for="status">활성</label>
-				<input type="radio" name="status" id="status2" value="비활성">
+				<input type="radio" name="status" id="status0" value="" checked>
+				<label for="status0">전체</label>
+				<input type="radio" name="status" id="status1" value="USY">
+				<label for="status1">활성</label>
+				<input type="radio" name="status" id="status2" value="USN">
 				<label for="status2">비활성</label>
 			</div><hr>
 			<div>
@@ -64,9 +68,3 @@
 	</div>
 </body>
 </html>
-
-<style>
-h2 {
-	text-align: center;
-}
-</style>
