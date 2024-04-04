@@ -2,7 +2,8 @@ package com.example.demo.materials.service;
 
 import java.util.List;
 
-import com.example.demo.materials.MaterialOrderReadVO;
+import com.example.demo.materials.MaterialOrderDetailVO;
+import com.example.demo.materials.MaterialOrderlVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 
@@ -13,6 +14,8 @@ public interface MaterialsService {
 	public List<MaterialReadVO> getMaterialDetails(String matCode);
 
 	// 자재 발주 관리
-	public List<MaterialOrderReadVO> getMaterialOrders();
+	public List<MaterialOrderlVO> getMaterialOrders();
+	
+	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String matOrdersCode);
 
 }

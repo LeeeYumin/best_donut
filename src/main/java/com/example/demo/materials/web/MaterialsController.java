@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.materials.MaterialOrderReadVO;
+import com.example.demo.materials.MaterialOrderDetailVO;
+import com.example.demo.materials.MaterialOrderlVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.service.MaterialsService;
@@ -55,10 +56,16 @@ public class MaterialsController {
 	// 자재 발주 목록 조회(ajax)
 	@RequestMapping("/ajax/materialorders")
 	@ResponseBody
-	public List<MaterialOrderReadVO> getMaterialOrders(){
+	public List<MaterialOrderlVO> getMaterialOrders(){
 		return materialsService.getMaterialOrders();
 	}
 	
+	// 발주서 미리보기(ajax)
+	@GetMapping("/ajax/matorderdetail")
+	@ResponseBody
+	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String matOrdersCode) {
+		return materialsService.getMaterialOrderDetail(matOrdersCode);
+	}
 	
 	// 자재 입고 등록 페이지 이동
 	@RequestMapping("/materials/warehousing")

@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.demo.materials.MaterialOrderReadVO;
+import com.example.demo.materials.MaterialOrderDetailVO;
+import com.example.demo.materials.MaterialOrderlVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 
@@ -16,5 +17,7 @@ public interface MaterialsMapper {
 	public List<MaterialReadVO> getMaterialDetails(String matCode);
 	
 	// 자재 발주 관리
-	public List<MaterialOrderReadVO> getMaterialOrders();
+	public List<MaterialOrderlVO> getMaterialOrders();
+	
+	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String matOrdersCode);
 }
