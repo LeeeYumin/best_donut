@@ -14,7 +14,7 @@ public class ProdPlanAllVO {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date planDate;
 	private String prodReqCode;
-	private String allPlanStatus;
+	private String prodPlanStatus;
 	private String usersCode;
 	
 	//생산계획상세
@@ -27,6 +27,5 @@ public class ProdPlanAllVO {
 	private int planCnt;
 	private int notInstructCnt;
 	private int instructDoneCnt;
-	private String planDetailStatus;
 	
 }

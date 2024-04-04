@@ -33,6 +33,7 @@
 			el : document.getElementById('plList'),
 			scrollX : false,
 			scrollY : false,
+			
 			columns : [
 				{
 					header : '생산계획코드',
@@ -52,7 +53,7 @@
 				},
 				{
 					header : '상태',
-					name : 'allPlanStatus',
+					name : 'prodPlanStatus',
 					align: 'center'
 				}, 
 				{
@@ -122,13 +123,13 @@
 					name : 'instructDoneCnt',
 					align: 'center'
 				},
-				{
-					header : '상태',
-					name : 'planDetailStatus',
-					align: 'center'
-				},
 				
 			]
+		});
+		plList.on("click", (e) => {
+			let plCode = plList.getValue(e.rowKey, "prodPlanCode")
+			getProdPlanAll(plCode);        
+			console.log("prodPlanCode: " + plCode);      
 		});
 		
  		async function getProdPlanAll(plCode){
@@ -141,15 +142,15 @@
 			})
 		};
 		
-		plList.on("click", (e) => {
-			let plCode = plList.getValue(e.rowKey, "prodPlanCode")
-			getProdPlanAll(plCode);        
-			console.log("prodPlanCode: " + plCode);      
-		});
+
+		
+		
+		
+
 		
 		</script>
 	
-	
+		
 	
 	
 	</div>

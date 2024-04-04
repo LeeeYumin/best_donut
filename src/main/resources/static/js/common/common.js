@@ -13,3 +13,4 @@ function priceFormat(price) {
 	let result = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 	return result;
 }
+
