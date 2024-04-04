@@ -24,16 +24,8 @@
 	</select>
 	
 	
-<!-- 생산계획 -->	
-<!-- 	<insert id="insertProdPlan" parameterType="ProdPlanVO">
-		INSERT INTO prod_plan
-		( )
-		VALUES (
-			#{donut.nextval('PPL')}
-		)
-		
-	</insert> -->
-  	<select id="getProdPlan" resultType="ProdPlanVO">
+<!-- 생산계획 -->
+	<select id="getProdPlan" resultType="ProdPlanVO">
 		SELECT prod_plan_code
      		 , prod_req_code
      		 , plan_date
@@ -57,6 +49,73 @@
 		                    ON p.prod_plan_code = d.prod_plan_code
 		WHERE p.prod_plan_code = #{prodPlanCode}
 	</select>
+
+	
+<!-- 	<insert id="insertProdPlan" parameterType="ProdPlanVO">
+		 <selectKey keyProperty="pplnCd" resultType="String" order="BEFORE">
+			SELECT prod_plan FROM dual
+		 </selectKey>
+		INSERT INTO prod_plan
+			( prod_plan_code
+     		 , prod_req_code
+     		 , plan_date
+     		 , all_plan_status
+     		 , users_code 
+     		 )
+		VALUES 
+			( #{donut.nextval('PPL')}
+			, #{prodPlanCode}
+			, #{prodReqCode}
+			, #{planDate}
+			, #{allPlanStatus}
+			, #{usersCode}
+			)
+	</insert> -->
+	<insert id="insertProdPlan" parameterType="ProdPlanVO">
+		INSERT INTO prod_plan
+			( prod_plan_code
+     		 , prod_req_code
+     		 , plan_date
+     		 , all_plan_status
+     		 , users_code 
+     		 )
+		VALUES 
+			( #{prodPlanCode}
+			, #{prodPlanCode}
+			, #{prodReqCode}
+			, #{planDate}
+			, #{allPlanStatus}
+			, #{usersCode}
+			)
+	</insert>
+		<insert id="insertProdPlanDetail" parameterType="ProdPlanDeVO">
+		INSERT INTO prod_plan_detail
+			( PROD_PLAN_DETAIL_CODE
+     		 , PROD_PLAN_CODE
+     		 , PROD_REQ_DETAIL_CODE
+     		 , PRODUCT_CODE
+     		 , FIX_CNT
+     		 , REQ_CNT
+     		 , PLAN_CNT
+     		 , NOT_INSTRUCT_CNT
+     		 , INSTRUCT_DONE_CNT
+     		 , PLAN_DETAIL_STATUS 
+     		 )
+		VALUES 
+			( #{prodPlanDetailCode}
+			, #{prodPlanCode}
+			, #{prodReqDetailCode}
+			, #{productCode}
+			, #{fixCnt}
+			, #{reqCnt}
+			, #{planCnt}
+			, #{notInstructCnt}
+			, #{instructDoneCnt}
+			, #{planDetailStatus}
+			)
+	</insert>
+	
+  	
 
 
 	

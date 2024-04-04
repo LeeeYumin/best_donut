@@ -37,7 +37,17 @@
 		ORDER BY 1
 </select>
 
-<!-- 자재품질관리 / 자재코드, 자재명, 검사명 -->
+<!-- 자재품질관리 / 자재코드 자재명(MAT 테이블), 검사명 -->
+<insert id="adminMatQuality" parameterType="Map">
+	INSERT INTO MAT_CODE
+				, MAT_NAME
+				, CHECK_CODE
+		VALUES (
+				#{matCode}
+				,#{matName}
+				,#{checkCode}
+				)
+</insert>
 
 
 </mapper>
