@@ -24,7 +24,7 @@
 	</select>
 	
 	<!-- 주문상세목록 조회 -->
-	<select id="getOrdersDetail" resultType="Map" parameterType="String">
+	<select id="getOrdersDetail" resultType="OrdersDetailVO" parameterType="String">
 		SELECT d.orders_detail_code
 		       , d.orders_cnt
 			   , d.supply_price
