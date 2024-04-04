@@ -14,12 +14,14 @@
 	</select>
 
 <!-- 생산요청상세 -->	
-	<select id="getProdReqDetail" resultType="ProdPlanDeVO">
+	<select id="getProdReqDetail" resultType="ProdPlanBDeVO">
 		SELECT prod_req_code
-		     , prod_req_detail_code
-		     , product_code
-		     , req_cnt
-		FROM prod_req_detail
+		     , prd.prod_req_detail_code
+		     , prd.product_code
+         , p.product_name
+		     , prd.req_cnt
+		FROM prod_req_detail prd JOIN product p
+                              ON prd.product_code = p.product_code
 		WHERE prod_req_code = #{prodReqCode}
 	</select>
 	

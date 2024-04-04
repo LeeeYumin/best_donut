@@ -74,33 +74,33 @@ getProdReq();
 						header : '요청수량',
 						name : 'reqCnt',
 						align: 'center',
-            // formatter: function(price) {
-            //   return priceFormat(price.value);
-            // }
+            formatter: function(price) {
+              return priceFormat(price.value);
+            }
 					},
 					{
 						header : '계획수량',
 						name : 'planCnt',
 						align: 'center',
-            // formatter: function(price) {
-            //   return priceFormat(price.value);
-            // }
+            formatter: function(price) {
+              return priceFormat(price.value);
+            }
 					},
 					{
 						header : '미지시수량',
 						name : 'notInstructCnt',
 						align: 'center',
-            // formatter: function(price) {
-            //   return priceFormat(price.value);
-            // }
+            formatter: function(price) {
+              return priceFormat(price.value);
+            }
 					},
           {
 						header : '지시수량',
 						name : 'instructDoneCnt',
 						align: 'center',
-            // formatter: function(price) {
-            //   return priceFormat(price.value);
-            // }
+            formatter: function(price) {
+              return priceFormat(price.value);
+            }
 					}
 				]
 			});
@@ -116,12 +116,12 @@ getProdReq();
         });
 	    		
 			});
+      //행 삭제
 			let delRowBtn = document.getElementById('delRowBtn');
 			delRowBtn.addEventListener('click', function() {
 				plDeInsert.removeRow({});
 			});
-			
-			
+
 			//생산요청상세 => 생산계획상세 폼에 입력
 
 			//생산요청코드 => 생산계획입력 폼에
@@ -164,6 +164,7 @@ getProdReq();
 					}
 				]
 			});
+      /* < 생산요청 상세 > */
 			const plreqD = new tui.Grid({
 				el : document.getElementById('plreqD'),
 				scrollX : false,
@@ -178,6 +179,11 @@ getProdReq();
 					{
 						header : '제품코드',
 						name : 'productCode',
+						align: 'center'
+					}, 
+          {
+						header : '제품명',
+						name : 'productName',
 						align: 'center'
 					}, 
 					{
@@ -202,11 +208,21 @@ getProdReq();
 			
 			
 			
-			//생산요청=>생산계획
+			//생산요청 => 생산계획
 			plreq.on("click", (e) => {
 				console.log(e);
 				let prcode = plreq.getValue(e.rowKey, "prodReqCode");
 				plInsert.setValue(0, "prodReqCode", prcode) //setValue(0, "prodReqCode", prcode, false) false가 기본값
 			})
+
+      //생산요청 상세 => 생산계획 상세 (check된 값)
+      let addInputBtn = document.getElementById('addInputBtn');
+      addInputBtn.addEventListener('click', function() {
+        let checked = plreqD.getCheckedRows();
+        plDeInsert.appendRows(checked);
+
+      })
+
+
 
 			  
