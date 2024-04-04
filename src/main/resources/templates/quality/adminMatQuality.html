@@ -4,111 +4,49 @@
  		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
 <head>
 <meta charset="UTF-8">
-<title>qualityInsert.html</title>
+<title>adminMatQuality.html</title>
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
 	<h3>자재 품질 관리</h3>
+		<div class="btnClass">
+			<label>자재 코드</label>
+				<input id="matCode" type="text" name="matCode"><br>
+			<label for="date">입고 날짜
+  			<input type="date"
+         		id="inDate"
+         		max="2100-12-31"
+         		min="1970-01-01"
+         		value=today>
+			</label><br>
+			<button id="findBtn" type="button" onclick="findMat()">검색</button>
+		</div>
 
 	<div id="grid"></div>
 
-	<script>
 
-	 class CustomTextEditor {
-	      constructor(props) {
+<script src="/js/quality/adminMatQuality.js"></script>
 
-	        const el = document.createElement('input');
-	        const { maxLength } = props.columnInfo.editor.options;
-
-	        el.type = 'text';
-	        el.maxLength = maxLength;
-	        el.value = String(props.value);
-
-	        this.el = el;
-	      }
-
-	      getElement() {
-	        return this.el;
-	      }
-
-	      getValue() {
-	        return this.el.value;
-	      }
-
-	      mounted() {
-	        this.el.select();
-	      }
-	    }
-
-	getMatInfo();
-
-	const grid = new tui.Grid({
-		el : document.getElementById('grid'),
-		scrollX : false,
-		scrollY : true,
-		rowHeaders: ['checkbox'],
-		columns : [
-			{
-				header : '자재코드',
-				name : 'MAT_CODE',
-				align : "center",
-			},
-			{
-				header : '자재명',
-				name : '',
-				align : "center",
-			},
-			{
-				header : '검사명',
-				name : 'INOUT_CNT',
-				align : "center",
-
-			},
-			{
-				header : '검사 종결여부',
-				name : 'WAREHOUSING_VEHICLES_CHECK',
-				align : "center",
-				editor: {
-		            type: 'select',
-		            options: {
-		              listItems: [
-		                { text: '미검사', value: '1' },
-		                { text: '검사중', value: '2' },
-		                { text: '검사 완료', value: '3' }
-		              ]
-		            }
-		          }
-			},
-			{
-				header : '적합수량',
-				name : 'BAD_SEP',
-				align : "center",
-			}
-		]
-
-	});
-
-	grid.on('beforeChange', ev => {
-	      console.log('before change:', ev);
-	    });
-    grid.on('afterChange', ev => {
-      console.log('after change:', ev);
-    })
-
-
-	async function getMatInfo(){
-		await fetch("ajax/matInfo")
-		.then(res => res.json())
-		.then(res => {
-			console.log(res);
-			grid.resetData(res);
-		})
-	};
-	</script>
-
-
+<div class="downBtn">
+	<button id="selDelBtn" type="button">선택삭제</button><br>
+	<button id="updateBtn" type="button">수정</button>
+</div>
 </div>
 </body>
 </html>
+
+<style>
+
+.btnClass {
+	text-align : right;
+	margin-right : 10px;
+	padding : 10px;
+}
+.downBtn {
+	text-align : right;
+	margin-top : 10px;
+}
+
+</style>

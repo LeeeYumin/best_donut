@@ -12,6 +12,7 @@ public class ProdPlanBDeVO {
 	private String prodReqDetailCode;
 	private int reqCnt;
 	private String productCode;
+	private String productName;
 
 	
 }

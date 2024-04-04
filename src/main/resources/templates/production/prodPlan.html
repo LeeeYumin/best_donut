@@ -10,6 +10,19 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
+<style>
+.btn-addrow,
+.btn-addinput,
+.btn-insert {
+	width: 50px;
+	margin-left: auto; /* display:flex 적용되어 있어 float: right X */
+}
+.btn-delrow {
+	width: 50px;
+	float: right;
+}
+
+</style>
 </head>
 
 <body>
@@ -19,110 +32,22 @@
 		<h2>생산계획 등록</h2>
 		<div style="padding-top: 30px;"></div>
 		
+		<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn">등록</button>
+		
+		<div id="plInsert" style="padding-bottom: 30px;"></div>
+
+		<button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">추가</button>
+		<button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">삭제</button>		
+		<div id="plDeInsert"></div>
+
+		<div style="padding-top: 50px;"></div>
 		<h4>주간 생산요청</h4>
 		<div id="plreq"></div>
-		<div id="plreqD" style="padding-top: 20px; padding-bottom: 20px;"></div>
-		
-		
-		<h4>생산계획</h4>
-		<form action="" method="post">
-			생산계획코드 <input name="prod_plan_code"> <br>
-			생산요청코드 <input name="prod_req_code"> <br>
-			생산계획일자 <input name="plan_date"> <br>
-			담당자 <input name="users_code"> <br>
-		</form>
-		
+		<div id="plreqD" style="padding-top: 20px; padding-bottom: 10px"></div>
+		<button type="button" class="btn btn-primary btn-sm btn-addinput" id="addInputBtn">입력</button>
 		
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->
-		<script>
-		
-		getProdReq();
-			
-			// Toast UI grid
-			// 그리드 속성, 헤더 정의 / html 요소와 연결
-			const plreq = new tui.Grid({
-				el : document.getElementById('plreq'),
-				scrollX : false,
-				scrollY : false,
-				bodyHeight: 40,
-				minBodyHeight: 40,
-				columns : [
-					{
-						header : '생산요청일자',
-						name : 'reqDate',
-						align: 'center',
-						formatter: function dateFormat(dt) {
-							/* console.log(dt) */
-							let date = new Date(dt.value);
-							let year = date.getFullYear();
-							let month = ( 1 + date.getMonth() );
-							let day = date.getDate();
-							
-							month = month >= 10 ? month : '0' + month; //10미만일 시 앞에 0을 붙혀서 저장
-							day = day >= 10 ? day : '0' + day;
-							
-							return `${year}년 ${month}월 ${day}일`;
-						}
-					},
-					{
-						header : '생산요청코드',
-						name : 'prodReqCode',
-						align: 'center'
-					}, 
-					{
-						header : '총 요청수량',
-						name : 'totalReqCnt',
-						align: 'center'
-					}, 
-					{
-						header : '담당자',
-						name : 'usersCode',
-						align: 'center'
-					}
-				]
-			});
-			const plreqD = new tui.Grid({
-				el : document.getElementById('plreqD'),
-				scrollX : false,
-				scrollY : false,
-
-				columns : [
-					{
-						header : '생산요청상세코드',
-						name : 'prodReqDetailCode',
-						align: 'center'
-					},
-					{
-						header : '제품코드',
-						name : 'productCode',
-						align: 'center'
-					}, 
-					{
-						header : '수량',
-						name : 'reqCnt',
-						align: 'center'
-					}
-				]
-			});
-			
-			// 생산요청조회(ajax)
-			async function getProdReq(){
-				await fetch("/ajax/prodReq")
-				.then(res => res.json())
-				.then(res => {
-					console.log(res);
-
-					plreq.resetData(res.prodReq); //ServiceImpl에서 넘겨 준 변수명
-					plreqD.resetData(res.prodReqDe);
-				})
-			};
-			
-			
-			//생산계획 등록
-			
-			
-			  
-		</script>
+		<script src="/js/production/prodPlan.js"></script>
 
 		
 		
