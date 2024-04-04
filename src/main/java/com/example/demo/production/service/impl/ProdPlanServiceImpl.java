@@ -49,5 +49,25 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	}
 
 
+	@Override
+	public int insertProdPlan(List<ProdPlanVO> vo) {
+		prodPlanMapper.insertProdPlan(vo.get(0));
+		String plcode = vo.get(0).getProdPlanCode();
+		
+		int result = 0;
+		
+		for(int i = 0; i < vo.size(); i++) {
+			vo.get(i).setProdPlanCode(plcode);
+			//result = prodPlanMapper.insertProdPlanDetail();
+			
+		}
+		
+		return result;
+	}
+
+
+
+
+
 
 }

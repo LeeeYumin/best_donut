@@ -17,7 +17,7 @@ public class QualityServiceTest {
 	
 	@Test
 	public void 자재조회() {
-		 List<Map<String, Object>> matList = qualityMapper.getMatInfo();
+		 List<Map<String, Object>> matList = qualityMapper.getMatInfo(null, null);
 		 for(Map<String, Object> list : matList) {
 			 System.out.println(list);
 		 }

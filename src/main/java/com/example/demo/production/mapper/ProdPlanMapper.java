@@ -13,12 +13,16 @@ import com.example.demo.production.ProdPlanVO;
 @Mapper
 public interface ProdPlanMapper {
 
-	//생산요청
+	//1.생산요청
 	public List<ProdPlanBVO> getProdReq();
 	public List<ProdPlanBVO> getProdReqDetail(String prodReqCode);
 	
-	//생산계획
+	//2.생산계획
+	//1)조회
 	public List<ProdPlanVO> getProdPlan();
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
+	//2)등록
+	public int insertProdPlan(ProdPlanVO vo);
+	public int insertProdPlanDetail(ProdPlanDeVO dvo);
 
 }
