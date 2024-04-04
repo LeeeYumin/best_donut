@@ -5,21 +5,26 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.materials.MaterialVO;
+import com.example.demo.materials.service.MaterialsService;
 import com.example.demo.orders.OrdersVO;
 import com.example.demo.orders.service.OrdersService;
+import com.example.demo.product.service.ProductService;
 
 @Controller
 public class OrdersController {
 
 	@Autowired OrdersService ordersService;
+	@Autowired ProductService productService;
 	
-	// 1. 페이지 이동 메서드
+	// 1. 페이지 이동
 	
 	// 테스트 페이지
 	@GetMapping("ordersTest")
@@ -41,7 +46,8 @@ public class OrdersController {
 	
 	// 주문등록 페이지
 	@GetMapping("insertOrders")
-	public String insertOrders() {
+	public String insertOrders(Model model) {
+		model.addAttribute("productList", productService.getProduct());
 		return "orders/insertOrders";
 	}
 	
