@@ -68,14 +68,14 @@
 
     <!-- 공용 메서드 js파일 import -->
     <script src="/js/common/common.js"></script>
-    
+
     <!-- csrf token 토큰값 세팅 -->
     <meta name="_csrf" th:content="${_csrf.token}"/>
 	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-	
+
 	<!-- csrf headers js파일 import -->
     <script src="/js/common/csrfHeaders.js"></script>
-	
+
   </head>
 
   <body>
@@ -107,7 +107,7 @@
                 <div data-i18n="Analytics">메인</div>
               </a>
             </li>
-            
+
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
@@ -177,7 +177,7 @@
                 </li>
               </ul>
             </li>
-            
+
             <!-- 생산전체 -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -201,7 +201,7 @@
 	                    	<div data-i18n="Under Maintenance">관리</div>
 	                  	</a>
                		</li>
-               	  </ul> 
+               	  </ul>
                 </li>
                 <!-- 2.생산지시  -->
                 <li class="menu-item">
@@ -219,7 +219,7 @@
 	                    	<div data-i18n="Under Maintenance">관리</div>
 	                  	</a>
                		</li>
-               	  </ul> 
+               	  </ul>
                 </li>
                 <!-- 3.공정관리 -->
                 <li class="menu-item">
@@ -233,11 +233,11 @@
                     <div data-i18n="Under Maintenance">공정실적조회</div>
                   </a>
                 </li>
-                
+
               </ul>
             </li>
             <!-- 생산계획 끝 -->
-   
+
             <!-- 자재 관리 -->
             <li class="menu-item">
               <a href="javascript:void(0)" class="menu-link menu-toggle">
@@ -298,8 +298,11 @@
                 </li>
                 <li class="menu-item">
                  <a href="extended-ui-text-divider.html" class="menu-link">
-                   <div data-i18n="insertProdQ">완제품 품질 등록 + 불량등록</div>
+                   <div data-i18n="insertProdQ">완제품 품질 등록</div>
                  </a>
+                 <a href="extended-ui-text-divider.html" class="menu-link">
+                  <div data-i18n="insertProdUnf">완제품 불량 등록</div>
+                </a>
                </li>
                <li class="menu-item">
                  <a href="extended-ui-text-divider.html" class="menu-link">
@@ -449,7 +452,7 @@
             <!-- Content -->
  			<div class="container-xxl flex-grow-1 container-p-y">
               	<div class="row" layout:fragment="content">
-              	
+
             	</div>
             </div>
             <!-- / Content -->
@@ -520,6 +523,6 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-	
+
   </body>
 </html>
