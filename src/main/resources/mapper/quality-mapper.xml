@@ -37,7 +37,7 @@
 		ORDER BY 1
 </select>
 
-<!-- 자재품질관리 / 자재코드 자재명(MAT 테이블, mat_datail)-->
+<!-- 자재품질관리 / 자재코드 자재명(MAT, mat_datail 테이블)-->
 <select id="adminMatQuality" resultType="Map">
 	SELECT d.mat_lot_code
           ,d.warehousing_cnt
