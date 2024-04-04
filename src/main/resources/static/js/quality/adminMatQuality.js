@@ -1,4 +1,4 @@
-getMatInfo('','');
+getMatAdmin('','');
 
 	const grid = new tui.Grid({
 		el : document.getElementById('grid'),
@@ -59,7 +59,7 @@ getMatInfo('','');
     })
 
 
-	async function getMatInfo(matCode, inoutDate){
+	async function getMatAdmin(matCode, inoutDate){
 		await fetch(`ajax/adminMat?matCode=${matCode}&inoutDate=${inoutDate}`)
 		.then(res => res.json())
 		.then(res => {
@@ -71,5 +71,5 @@ getMatInfo('','');
 	function findMat() {
 		let matCode = document.querySelector('#matCode').value;
   	let inoutDate = document.querySelector('#inDate').value; //#id
-  	getMatInfo(matCode, inoutDate);
+  	getMatAdmin(matCode, inoutDate);
 	}

@@ -19,18 +19,17 @@ public class QualityServiceImpl implements QualityService {
 	
 	@Override
 	public List<QualityVO> insertMatQuality() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate) {
-		return qualityMapper.getMatInfo(matLotCode, inoutDate);
+		return qualityMapper.getMatInfo(matLotCode, inoutDate); //자재품질등록
 	}
 
 	@Override
 	public List<Map<String, Object>> adminMatQuality(String matCode, String inoutDate) {
-		return qualityMapper.adminMatQuality(matCode, inoutDate);
+		return qualityMapper.adminMatQuality(matCode, inoutDate); //자재품질관리
 	}
 
 
