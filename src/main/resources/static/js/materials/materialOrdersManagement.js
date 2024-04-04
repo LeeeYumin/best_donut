@@ -189,15 +189,64 @@ const grid2 = new tui.Grid({
 	]
 });
 
-grid1.on('click', (ev) => {
-	let matOrdersCode = grid1.getValue(ev.rowKey, 'matOrdersCode')
-	console.log(matOrdersCode);
-	getMaterialOrderDetailsList(matOrdersCode);
-})
+// 발주서 선택
+grid1.on('checkAll', (ev) => {
+	let matOrderCodes = '';
+	for (i = 0; i < grid1.getCheckedRows().length; i++) {
+		//matOrderCodes.push(grid1.getCheckedRows()[i].matOrdersCode); // json 스트링으로 넘길 때
+
+		// String Array로 넘길 때
+		if (i > 0) {
+			matOrderCodes += "&"
+		}
+		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
+	}
+	getMaterialOrderDetailsList(matOrderCodes)
+	console.log(matOrderCodes);
+});
+grid1.on('uncheckAll', (ev) => {
+
+	let matOrderCodes = '';
+	for (i = 0; i < grid1.getCheckedRows().length; i++) {
+		if (i > 0) {
+			matOrderCodes += "&"
+		}
+		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
+	}
+	grid2.resetData([]);
+	//getMaterialOrderDetailsList(matOrderCodes)
+	console.log(matOrderCodes);
+});
+grid1.on('check', (ev) => {
+	let matOrderCodes = '';
+	for (i = 0; i < grid1.getCheckedRows().length; i++) {
+		if (i > 0) {
+			matOrderCodes += "&"
+		}
+		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
+	}
+	getMaterialOrderDetailsList(matOrderCodes)
+	console.log(matOrderCodes);
+});
+grid1.on('uncheck', (ev) => {
+	if (grid1.getCheckedRows().length == 0) {
+		grid2.resetData([]);
+		return;
+	}
+	let matOrderCodes = '';
+	for (i = 0; i < grid1.getCheckedRows().length; i++) {
+		if (i > 0) {
+			matOrderCodes += "&"
+		}
+		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
+	}
+	getMaterialOrderDetailsList(matOrderCodes)
+	console.log(matOrderCodes);
+});
 
 // 발주서 단건 조회(ajax)
-async function getMaterialOrderDetailsList(matOrdersCode) {
-	await fetch("/ajax/matorderdetail?matOrdersCode=" + matOrdersCode)
+function getMaterialOrderDetailsList(matOrderCodes) {
+	fetch("/ajax/matorderdetail?" + matOrderCodes)
 		.then(res => res.json())
 		.then(res => {
 			// ajax로 불러온 데이터 그리드에 넣음

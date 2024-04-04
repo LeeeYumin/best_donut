@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
- <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.materials.mapper.MaterialsMapper">
-	<select id="getMaterials" resultType="MaterialVO" parameterType="String">   
+   <select id="getMaterials" resultType="MaterialVO" parameterType="String">   
 		SELECT mat_code, 
                mat_name,
                stock_cnt,
                safe_stock_cnt
           FROM mat
          WHERE 1=1
-         <!-- 검색 조건 -->
-         <if test="matName != null and matName != ''">
+                     <!-- 검색 조건 -->
+      <if test="matName != null and matName != ''">
 			AND mat_name LIKE '%'||#{matName}||'%'         
-         </if>
+      </if>
       ORDER BY mat_code
-	</select>
-	
-	<select id="getMaterialDetails" resultType="MaterialReadVO" parameterType="String">
+   </select>
+
+   <select id="getMaterialDetails" resultType="MaterialReadVO" parameterType="String">
 		SELECT d.mat_lot_code,
                d.warehousing_cnt,
                d.check_done_cnt,
@@ -33,10 +33,10 @@
   	      FROM mat_detail d 
   	      		JOIN mat m	ON d.mat_code = m.mat_code
 	     WHERE d.mat_code = #{matCode} 
-	</select>
-	
-	<!-- 자재 발주 관리 -->
-	<select id="getMaterialOrders" resultType="MaterialOrderlVO">
+   </select>
+
+   <!-- 자재 발주 관리 -->
+   <select id="getMaterialOrders" resultType="MaterialOrderlVO">
 		SELECT o.orders_date,
                o.mat_orders_code,
                u.users_name,
@@ -45,9 +45,9 @@
    		  FROM mat_orders o
      	  JOIN users u ON o.users_code= u.users_code
      	  ORDER BY o.orders_date DESC
-	</select>
-	
-	<select id="getMaterialOrderDetail" resultType="MaterialOrderDetailVO" parameterType="String">
+   </select>
+
+   <select id="getMaterialOrderDetail" resultType="MaterialOrderDetailVO" parameterType="String">
 		WITH s AS (SELECT m.mat_code,
                             m.mat_name,
                             o.orders_date + m.lead_time due_date
@@ -71,6 +71,15 @@
 			  	   JOIN mat_detail md ON md.mat_code = d.mat_code
 			  	   JOIN company c ON c.company_code = d.company_code
 			  	   
-			  	  WHERE d.mat_orders_code = #{matOrdersCode}
-	</select>
+               <include refid="condition"></include>
+   </select>
+
+   <sql id="condition">
+      <if test="matOrderCodes != null and matOrderCodes.length > 0">
+                  	WHERE d.mat_orders_code IN
+         <foreach collection="matOrderCodes" item="matOrdersCode" open="(" close=")" separator=",">
+                        #{matOrdersCode}
+         </foreach>
+      </if>
+   </sql>
 </mapper>

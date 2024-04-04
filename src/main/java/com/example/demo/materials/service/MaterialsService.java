@@ -16,6 +16,6 @@ public interface MaterialsService {
 	// 자재 발주 관리
 	public List<MaterialOrderlVO> getMaterialOrders();
 	
-	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String matOrdersCode);
+	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes);
 
 }

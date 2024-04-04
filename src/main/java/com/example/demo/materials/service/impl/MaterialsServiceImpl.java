@@ -36,8 +36,8 @@ public class MaterialsServiceImpl implements MaterialsService {
 	}
 
 	@Override
-	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String matOrdersCode) {
-		return materialsMapper.getMaterialOrderDetail(matOrdersCode);
+	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes) {
+		return materialsMapper.getMaterialOrderDetail(matOrderCodes);
 	}
 
 }
