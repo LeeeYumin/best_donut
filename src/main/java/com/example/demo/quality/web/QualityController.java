@@ -22,18 +22,25 @@ public class QualityController {
 		return "quality/insertMatQuality"; // 파일위치(qualityMain 에서 이름변경)
 	}
 	
-	@GetMapping("ajax/matInfo") //정보를 가져오는 ajax
+	@GetMapping("ajax/matInfo") //정보를 가져오는 ajax. ajax 는 @ResponseBody 같이!
 	@ResponseBody
 	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate){
 		return qualityService.getMatInfo(matLotCode, inoutDate);
 	}
 	
 	
-	
 	//자재 품질 관리
 	@GetMapping("adminMatQuality")
 	public String adminMatQuality () {
+		
 		return "quality/adminMatQuality";
+	}
+	
+	//자재 품질 관리 - 정보 가져오기
+	@GetMapping("ajax/adminMat")
+	@ResponseBody
+	public List<Map<String, Object>> adminMatQuality(String matCode, String inoutDate){
+		return qualityService.adminMatQuality(matCode, inoutDate);
 	}
 	
 	//완제품 품질 등록
