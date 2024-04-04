@@ -28,5 +28,10 @@ public class QualityServiceImpl implements QualityService {
 		return qualityMapper.getMatInfo(matLotCode, inoutDate);
 	}
 
+	@Override
+	public List<Map<String, Object>> adminMatQuality(String matCode, String inoutDate) {
+		return qualityMapper.adminMatQuality(matCode, inoutDate);
+	}
+
 
 }

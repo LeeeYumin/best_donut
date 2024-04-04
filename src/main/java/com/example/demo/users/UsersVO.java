@@ -1,5 +1,7 @@
 package com.example.demo.users;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -9,15 +11,16 @@ public class UsersVO {
 	private String usersName;
 	private String position;
 	private String localTel;
-	private String businessPerm;
-	private String prodPerm;
-	private String matPerm;
-	private String qltyPerm;
-	private String eqmMngPerm;
-	private String master;
 	private String usersStatus;
 	
+	private String perm1;
+	private String perm2;
+	private String perm3;
+	private String perm4;
+	private String perm5;
+	
 	private String keyword;
+	private List<String> permList;
 	private String status;
 
 }

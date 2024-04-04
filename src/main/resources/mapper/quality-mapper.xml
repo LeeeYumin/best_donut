@@ -17,7 +17,7 @@
 				)
 </insert>
 
-<!--  자재품질등록 / 자재LOT번호, 입고날짜 검색 -->
+<!--  자재품질등록 / if : 자재LOT번호, 입고날짜 검색 -->
 <select id="getMatInfo" resultType="Map">
 	SELECT s.MAT_LOT_CODE
 		   , h.INOUT_DATE
@@ -37,17 +37,46 @@
 		ORDER BY 1
 </select>
 
-<!-- 자재품질관리 / 자재코드 자재명(MAT 테이블), 검사명 -->
-<insert id="adminMatQuality" parameterType="Map">
-	INSERT INTO MAT_CODE
-				, MAT_NAME
-				, CHECK_CODE
-		VALUES (
-				#{matCode}
-				,#{matName}
-				,#{checkCode}
-				)
-</insert>
+<!-- 자재품질관리 / 자재코드 자재명(MAT 테이블, mat_datail) -->
+<select id="adminMatQuality" resultType="Map">
+	SELECT d.mat_lot_code
+          ,d.warehousing_cnt
+          ,d.check_done_cnt
+          ,d.qlty_check_status
+          ,d.mat_code
+          ,m.mat_name
+     FROM mat m JOIN mat_detail d
+          ON m.mat_code = d.mat_code
+</select>
+
+<!--  자재품질관리 / if : 자재코드, 입고날짜 검색 -->
+<select id="getMatAdmin" resultType="Map">
+
+SELECT d.MAT_LOT_CODE
+        ,m.MAT_CODE
+        ,d.WAREHOUSING_CNT
+        ,d.CHECK_DONE_CNT
+        ,d.QLTY_CHECK_STATUS
+        ,m.MAT_NAME
+       ,h.INOUT_DATE
+       ,h.inout_sep
+	  FROM MAT_DETAIL d JOIN MAT m
+		ON m.MAT_CODE = d.MAT_CODE
+        LEFT OUTER JOIN MAT_INOUT_HISTORY h ON d.MAT_LOT_CODE = h.MAT_LOT_CODE
+        
+		<where>
+			d.WAREHOUSING_CNT >=1
+			<if test="matCode != null and matCode != ''">
+				AND m.MAT_CODE LIKE '%'||#{matCode}||'%'
+			</if>
+		 	<if test="inoutDate != null and inoutDate != ''">
+		 		AND trunc(h.INOUT_DATE) = to_Date(#{inoutDate},'yyyy-MM-dd')
+			</if>
+            
+		</where>
+		ORDER BY 1;
+</select>
+
 
 
 </mapper>
