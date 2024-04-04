@@ -14,12 +14,14 @@
 	</select>
 
 <!-- 생산요청상세 -->	
-	<select id="getProdReqDetail" resultType="ProdPlanDeVO">
+	<select id="getProdReqDetail" resultType="ProdPlanBDeVO">
 		SELECT prod_req_code
-		     , prod_req_detail_code
-		     , product_code
-		     , req_cnt
-		FROM prod_req_detail
+		     , prd.prod_req_detail_code
+		     , prd.product_code
+         , p.product_name
+		     , prd.req_cnt
+		FROM prod_req_detail prd JOIN product p
+                              ON prd.product_code = p.product_code
 		WHERE prod_req_code = #{prodReqCode}
 	</select>
 	
@@ -29,7 +31,7 @@
 		SELECT prod_plan_code
      		 , prod_req_code
      		 , plan_date
-     		 , all_plan_status
+     		 , prod_plan_status
      		 , users_code
 		FROM prod_plan
 	</select>
@@ -44,7 +46,6 @@
 		     , d.plan_cnt
 		     , d.not_instruct_cnt
 		     , d.instruct_done_cnt
-		     , d.plan_detail_status
 		FROM prod_plan p JOIN prod_plan_detail d
 		                    ON p.prod_plan_code = d.prod_plan_code
 		WHERE p.prod_plan_code = #{prodPlanCode}
@@ -76,7 +77,7 @@
 			( prod_plan_code
      		 , prod_req_code
      		 , plan_date
-     		 , all_plan_status
+     		 , prod_plan_status
      		 , users_code 
      		 )
 		VALUES 
@@ -84,7 +85,7 @@
 			, #{prodPlanCode}
 			, #{prodReqCode}
 			, #{planDate}
-			, #{allPlanStatus}
+			, #{prodPlanStatus}
 			, #{usersCode}
 			)
 	</insert>
@@ -98,8 +99,7 @@
      		 , REQ_CNT
      		 , PLAN_CNT
      		 , NOT_INSTRUCT_CNT
-     		 , INSTRUCT_DONE_CNT
-     		 , PLAN_DETAIL_STATUS 
+     		 , INSTRUCT_DONE_CNT 
      		 )
 		VALUES 
 			( #{prodPlanDetailCode}
@@ -111,7 +111,6 @@
 			, #{planCnt}
 			, #{notInstructCnt}
 			, #{instructDoneCnt}
-			, #{planDetailStatus}
 			)
 	</insert>
 	

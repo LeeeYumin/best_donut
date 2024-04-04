@@ -17,6 +17,5 @@ public class ProdPlanDeVO {
 	private int planCnt;
 	private int notInstructCnt;
 	private int instructDoneCnt;
-	private String planDetailStatus;
 	
 }
