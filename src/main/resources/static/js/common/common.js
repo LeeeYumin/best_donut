@@ -4,7 +4,7 @@ function dateFormat(date) {
 	let year = dateForm.getFullYear();
 	let month = ('0' + (dateForm.getMonth() + 1)).slice(-2);
 	let day = ('0' + dateForm.getDate()).slice(-2);
-	let dateStr = `${year}/${month}/${day}`;
+	let dateStr = `${year}-${month}-${day}`;
 	return dateStr;
 }
 

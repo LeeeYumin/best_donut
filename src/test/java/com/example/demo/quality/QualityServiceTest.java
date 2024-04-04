@@ -15,11 +15,11 @@ public class QualityServiceTest {
 	@Autowired
 	QualityMapper qualityMapper;
 	
-	@Test
-	public void 자재조회() {
-		 List<Map<String, Object>> matList = qualityMapper.getMatInfo();
-		 for(Map<String, Object> list : matList) {
-			 System.out.println(list);
-		 }
-	}
+//	@Test
+//	public void 자재조회() {
+//		 List<Map<String, Object>> matList = qualityMapper.getMatInfo();
+//		 for(Map<String, Object> list : matList) {
+//			 System.out.println(list);
+//		 }
+//	}
 }

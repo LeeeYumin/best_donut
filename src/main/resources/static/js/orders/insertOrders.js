@@ -1,4 +1,6 @@
 // 주문등록
+
+// 1. FormData 방식
 async function saveInsert() {
 	let formData = new FormData(document.frm);
 
@@ -18,28 +20,28 @@ async function saveInsert() {
   
 }
 
-// async function saveInsert() {
+// 2.JsonString 방식
+async function saveInsert1() {
 
-//  const ordersCode = frm.ordersCode.value;
-// 	const ordersDate = frm.ordersDate.value;
-// 	const dueDate = frm.dueDate.value;
-// 	const totalOrdersPrice = frm.totalOrdersPrice.value;
-// 	const companyCode = frm.companyCode.value;
+  const ordersCode = frm.ordersCode.value;
+	const ordersDate = frm.ordersDate.value;
+	const dueDate = frm.dueDate.value;
+	const totalOrdersPrice = frm.totalOrdersPrice.value;
+	const companyCode = frm.companyCode.value;
 
-// 	let param = {ordersCode, ordersDate, dueDate, totalOrdersPrice, companyCode}
-//   console.log(param);
+	let param = {ordersCode, ordersDate, dueDate, totalOrdersPrice, companyCode}
+  console.log(param);
 	
-// 	// 1. fetch 방식
-//   await fetch('ajax/insertOrders',{
-// 		method : 'post',
-//     headers: jsonHeaders,
-// 		body : JSON.stringify(param)
-// 	})
-// 	.then(res => res.json())
-// 	.then(res => {
-//     console.log(res);
-//   })
-// }
+  await fetch('ajax/insertOrders',{
+		method : 'post',
+    headers: jsonHeaders,
+		body : JSON.stringify(param)
+	})
+	.then(res => res.json())
+	.then(res => {
+    console.log(res);
+  })
+}
 
 // grid 
 const grid = new tui.Grid({
