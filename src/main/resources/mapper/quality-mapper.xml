@@ -3,12 +3,21 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.quality.mapper.QualityMapper">
 
-<!-- 자재품질등록 / 자재LOT코드(자재 상세s), 입고날짜/입고수량,발주코드(자재 입출 내역h)  -->
+
+<!-- 자재품질등록 /자재LOT코드(자재 상세s), 입고날짜/입고수량,발주코드(자재 입출 내역h) + 저장 버튼 기능  -->
 <insert id="insertMatQuality" parameterType="QualityVO">
 	INSERT INTO WAREHOUSING_VEHICLES_CHECK
-				, FOREIGN_EXIST
-				, PACK_STATUS
-				, LAST_RESULT
+				(
+				mat_qlty_check_code
+				, mat_lot_code
+				, check_recv_date
+				, warehousing_vehicles_check
+				, foreign_exist
+				, pack_status
+				, last_result
+				, good_cnt
+				, users_code
+				)
 		VALUES (
 				#{warehousingVehiclesCheck}
 				,#{foreignExist}
@@ -22,10 +31,14 @@
 	SELECT s.MAT_LOT_CODE
 		   , h.INOUT_DATE
 		   , h.INOUT_CNT
-	  FROM MAT_DETAIL S JOIN MAT_INOUT_HISTORY H
-		ON S.MAT_LOT_CODE = H.MAT_LOT_CODE
+		   , 'IV1' WAREHOUSING_VEHICLES_CHECK 
+		   , 'PFN' FOREIGN_EXIST
+		   , 'PSY' PACK_STATUS
+		   , 'MCY' LAST_RESULT
+	  FROM MAT_DETAIL s JOIN MAT_INOUT_HISTORY h
+		ON s.MAT_LOT_CODE = h.MAT_LOT_CODE
 		<where>
-			s.qlty_check_status = '미검사'
+			s.qlty_check_status = 'MI1'
 			<if test="matLotCode != null and matLotCode != ''">
 				AND s.MAT_LOT_CODE LIKE '%'||#{matLotCode}||'%'
 			</if>
@@ -37,30 +50,9 @@
 		ORDER BY 1
 </select>
 
-<!-- 자재품질관리 / 자재코드 자재명(MAT, mat_datail 테이블)-->
-<select id="adminMatQuality" resultType="Map">
-	SELECT d.mat_lot_code
-          ,d.warehousing_cnt
-          ,d.check_done_cnt
-          ,d.qlty_check_status
-          ,d.mat_code
-          ,m.mat_name
-     FROM mat m JOIN mat_detail d
-          ON m.mat_code = d.mat_code
-          	<where>
-			d.WAREHOUSING_CNT >= 1
-			<if test="matCode != null and matCode != ''">
-				AND m.MAT_CODE LIKE '%'||#{matCode}||'%'
-			</if>
-		 	<if test="inoutDate != null and inoutDate != ''">
-		 		AND trunc(h.INOUT_DATE) = to_Date(#{inoutDate},'yyyy-MM-dd')
-			</if>           
-		</where>
-		ORDER BY 1
-</select>
 
 <!--  자재품질관리 / if : 자재코드, 입고날짜 검색 -->
-<select id="getMatAdmin" resultType="Map">
+<select id="adminMatQuality" resultType="Map">
 SELECT d.MAT_LOT_CODE
         ,m.MAT_CODE
         ,d.WAREHOUSING_CNT
