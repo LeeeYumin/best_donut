@@ -36,7 +36,7 @@
     </td>
     <td>
         <a href="">
-            <img src="">
+            <img src="https://github.com/LeeeYumin/best_donut/assets/152114081/5085c2ec-55e8-485b-b669-03f08a579597.png" width="100" height="100">
         </a>
     </td>
     <td>
