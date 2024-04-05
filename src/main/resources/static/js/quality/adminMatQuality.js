@@ -20,7 +20,11 @@ getMatAdmin('','');
 				header : '자재명',
 				name : 'MAT_NAME',
 				align : "center",
-
+			},
+			{
+				header : '적합여부',
+				name : 'LAST_RESULT',
+				align : "center",
 			},
 			{
 				header : '검사 종결여부',
