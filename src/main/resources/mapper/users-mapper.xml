@@ -3,6 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.users.mapper.UsersMapper">
 
+	<!-- 전체조회 -->
 	<select id="getUsers" resultType="UsersVO">
 		SELECT u.USERS_CODE
 	          , u.USERS_NAME
@@ -42,5 +43,37 @@
 			</if>
 		</where>
 	</sql>
+	
+	
+	<!-- 등록 -->
+	<insert id="insertUsers" parameterType="UsersVO">
+		INSERT ALL INTO USERS(
+							USERS_CODE
+							, USERS_NAME
+							, POSITION
+							, LOCAL_TEL
+							, USERS_STATUS)
+					VALUES(
+						SEQ_FUNC('USERS')
+						, #{usersName}
+						, #{position}
+						, #{localTel}
+						, #{usersStatus})
+					<selectKey keyProperty="uCode" resultType="String" order="BEFORE">
+						SELECT seq_func('users') FROM dual
+					</selectKey>
+					INTO USERS_PERM(
+								USERS_PERM_CODE
+								, USERS_CODE
+								, PERM_CODE)
+					VALUES(
+						SEQ_FUNC('USERS_PERM')
+						, #{uCode}
+						, 
+						<foreach collection="permList" item="permCode" separator=",">
+							#{permCode}
+						</foreach>)
+		SELECT * FROM DUAL
+	</insert>
 
 </mapper>

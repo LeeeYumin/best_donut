@@ -26,5 +26,9 @@ public class EqmVO {
 	private Date lastCheckDate;
 	private String eqmStatus;
 	private String oprStatus;
+	
+	private String keyword;
+	private String status;
+	private String work;
 
 }

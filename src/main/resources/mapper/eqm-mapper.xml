@@ -19,7 +19,24 @@
 				, EQM_STATUS
 				, OPR_STATUS
 		FROM EQM
+		<include refid="condition"></include>
 		ORDER BY 1
 	</select>
+	
+	<sql id="condition">
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(EQM_CODE LIKE '%' || UPPER(#{keyword}) || '%'			
+				OR EQM_NAME LIKE '%' ||  UPPER(#{keyword}) || '%'
+				OR MODEL_NAME LIKE '%' ||  UPPER(#{keyword}) || '%')
+			</if>
+			<if test="status != null and status != ''">
+				AND EQM_STATUS = #{status}
+			</if>
+			<if test="work != null and work != ''">
+				AND OPR_STATUS = #{work}
+			</if>
+		</where>
+	</sql>
 
 </mapper>

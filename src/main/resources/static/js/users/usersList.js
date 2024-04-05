@@ -65,8 +65,7 @@ const grid = new tui.Grid({
       name: 'usersCode',
       sortingType: 'asc',
       sortable: true,
-      align: 'center',
-      filter: 'text'
+      align: 'center'
     },
     {
       header: '사용자명',
@@ -156,14 +155,14 @@ async function getUsersList(){
     list.push(permList[i].value);
   }
 
-  const obj = {keyword : keyword, status : status, permList : list};
+  const obj = {keyword : keyword, permList : list, status : status};
   const data = {
     method : 'POST',
       headers: jsonHeaders,
     body : JSON.stringify(obj)
   };
   
-  await fetch('/ajax/users', data)
+  await fetch('/ajax/userslist', data)
   .then(res => res.json())
   .then(res => {
     console.log(res)
@@ -199,18 +198,21 @@ async function getUsersList(){
 			
 			// }
 
-      
-// 검색버튼
-document.getElementById('searchBtn').addEventListener('click', getUsersList);
 
 // 초기화버튼
 document.getElementById('resetBtn').addEventListener('click', () => {
 	document.getElementById('keyword').value = '';
-  // document.querySelectorAll("[name=perm]") = null;
-  document.querySelector("[name=status]:checked").value = '';
-
+  document.getElementById('perm0').checked = false;
+  const perm = document.getElementsByName('perm');
+  for(i = 0; i < perm.length; i++) {
+    perm[i].checked = false;
+  }
+  document.getElementById('status0').checked = true;
 	getUsersList();
 });
+
+// 검색버튼
+document.getElementById('searchBtn').addEventListener('click', getUsersList);
 
 // 체크박스
 document.getElementById('perm').addEventListener('click', checkAll);
