@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+  <meta charset="UTF-8">
+  <title>ordersInsert.html</title>
+  <!-- Toast UI CDN -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+  <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+</head>
+<body>
+  
+  <!-- thymeleaf -->
+  <div layout:fragment="content">
+
+    <h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">영업관리 / </span> 주문 등록
+		</h3>
+
+		<!-- 입력 폼 -->
+		<div class="insertDiv">
+			<form name="insertForm" method="post">
+				<div class="card mb-4">
+					<h5 class="card-header">주문정보 입력</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+            <!-- 입력정보 -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문코드</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" id="ordersCode" name="ordersCode">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문일자</label>
+							<div class="col-sm-6">
+								<input type="date" class="form-control" name="ordersDate">
+              </div>
+						</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="dueDate">
+							</div>
+						</div>
+            <div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">총주문금액</label>
+							<div class="col-sm-6 input-group">
+								<input type="number" class="form-control" name="totalOrdersPrice">
+							</div>
+						</div>
+            <div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처코드</label>
+							<div class="col-sm-6 input-group">
+								<input type="text" class="form-control" name="companyCode">
+							</div>
+						</div>
+            <!-- 버튼 -->
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="saveInsert()">등록</button>
+							<button type="button" class="btn btn-primary" id="resetBtn" onclick="resetInsert()">초기화</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- grid -->
+		<div class="ordDetGrid">
+			<div class="card">
+				<!-- 주문 목록 -->
+				<h5 class="card-header">주문상세정보 입력</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="ordDetGrid"></div>
+				</div>
+			</div>
+		</div>
+
+    <!-- js -->
+    <script src="/js/orders/ordersInsert.js"></script>
+  </div>
+</body>
+</html>

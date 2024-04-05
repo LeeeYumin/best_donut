@@ -30,13 +30,13 @@ public class OrdersServiceTest {
 //	@Test
 	public void 주문상세조회() {
 		String ordersCode = "ORD00001";
-		List<Map<String, Object>> ordersDetail = ordersMapper.getOrdersDetail(ordersCode);
-		for (Map<String, Object> list : ordersDetail) {
+		List<OrdersDetailVO> ordersDetail = ordersMapper.getOrdersDetail(ordersCode);
+		for (OrdersDetailVO list : ordersDetail) {
 			System.out.println(list);
 		}
 	}
 	
-	@Test
+//	@Test
 	public void 제품조회() {
 		List<ProductVO> productList = productMapper.getProduct();
 		for (ProductVO list : productList) {
