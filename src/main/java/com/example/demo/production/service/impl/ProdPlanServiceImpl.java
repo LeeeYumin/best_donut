@@ -49,17 +49,19 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	}
 
 
+	//등록
 	@Override
-	public int insertProdPlan(List<ProdPlanVO> vo) {
-		prodPlanMapper.insertProdPlan(vo.get(0));
-		String plcode = vo.get(0).getProdPlanCode();
+	public int insertProdPlan(ProdPlanVO vo) {
+		
+		prodPlanMapper.insertProdPlan(vo);
 		
 		int result = 0;
 		
-		for(int i = 0; i < vo.size(); i++) {
-			vo.get(i).setProdPlanCode(plcode);
-			//result = prodPlanMapper.insertProdPlanDetail();
+		for(int i = 0; i < vo.getDvo().size(); i++) {
+			ProdPlanDeVO devo = vo.getDvo().get(i);
 			
+			devo.setProdPlanCode(vo.getProdPlanCode()); //생산계획코드
+			result = prodPlanMapper.insertProdPlanDetail(devo);
 		}
 		
 		return result;

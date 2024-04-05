@@ -1,6 +1,7 @@
 package com.example.demo.production;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -17,4 +18,6 @@ public class ProdPlanVO {
 	private String prodPlanStatus;
 	private String usersCode;
 	
+	//생산계획상세
+	List<ProdPlanDeVO> dvo;
 }

@@ -17,12 +17,14 @@ public interface ProdPlanMapper {
 	public List<ProdPlanBVO> getProdReq();
 	public List<ProdPlanBVO> getProdReqDetail(String prodReqCode);
 	
+	
 	//2.생산계획
 	//1)조회
 	public List<ProdPlanVO> getProdPlan();
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
+	
 	//2)등록
-	public int insertProdPlan(ProdPlanVO vo);
-	public int insertProdPlanDetail(ProdPlanDeVO dvo);
+	public int insertProdPlan(ProdPlanVO vo); //1건에
+	public int insertProdPlanDetail(ProdPlanDeVO dvo); //여러 건
 
 }

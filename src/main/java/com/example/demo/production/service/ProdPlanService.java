@@ -19,9 +19,7 @@ public interface ProdPlanService {
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
 	
 	//2)등록
-	public int insertProdPlan(List<ProdPlanVO> vo);
-//	public int insertProdPlanDetail(ProdPlanDeVO dvo);
-//	public int insertProdPlanDetail(List<ProdPlanDeVO> dvo); //상세 여러 건
+	public int insertProdPlan(ProdPlanVO vo);
 	
 	
 	

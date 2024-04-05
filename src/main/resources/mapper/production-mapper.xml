@@ -34,6 +34,7 @@
      		 , prod_plan_status
      		 , users_code
 		FROM prod_plan
+		ORDER BY 1
 	</select>
 
 	<select id="getProdPlanAll" resultType="ProdPlanAllVO" parameterType="String">
@@ -49,30 +50,16 @@
 		FROM prod_plan p JOIN prod_plan_detail d
 		                    ON p.prod_plan_code = d.prod_plan_code
 		WHERE p.prod_plan_code = #{prodPlanCode}
+		ORDER BY 1
 	</select>
 
-	
-<!-- 	<insert id="insertProdPlan" parameterType="ProdPlanVO">
-		 <selectKey keyProperty="pplnCd" resultType="String" order="BEFORE">
-			SELECT prod_plan FROM dual
-		 </selectKey>
-		INSERT INTO prod_plan
-			( prod_plan_code
-     		 , prod_req_code
-     		 , plan_date
-     		 , all_plan_status
-     		 , users_code 
-     		 )
-		VALUES 
-			( #{donut.nextval('PPL')}
-			, #{prodPlanCode}
-			, #{prodReqCode}
-			, #{planDate}
-			, #{allPlanStatus}
-			, #{usersCode}
-			)
-	</insert> -->
+	<!-- 생산계획등록 1건에 -->
 	<insert id="insertProdPlan" parameterType="ProdPlanVO">
+		<selectKey keyProperty="prodPlanCode"
+				   order="BEFORE"
+				   resultType="String">
+		 SELECT seq_func('prod_plan') FROM dual
+		</selectKey>
 		INSERT INTO prod_plan
 			( prod_plan_code
      		 , prod_req_code
@@ -82,14 +69,19 @@
      		 )
 		VALUES 
 			( #{prodPlanCode}
-			, #{prodPlanCode}
 			, #{prodReqCode}
 			, #{planDate}
-			, #{prodPlanStatus}
+			, 'LS1'
 			, #{usersCode}
 			)
 	</insert>
-		<insert id="insertProdPlanDetail" parameterType="ProdPlanDeVO">
+	<!-- 생산상세계획등록 여러 건 -->
+	<insert id="insertProdPlanDetail" parameterType="ProdPlanDeVO">
+		<selectKey keyProperty="prodPlanDetailCode"
+				   order="BEFORE"
+				   resultType="String">
+		 SELECT seq_func('prod_plan_detail') FROM dual
+		</selectKey>
 		INSERT INTO prod_plan_detail
 			( PROD_PLAN_DETAIL_CODE
      		 , PROD_PLAN_CODE
@@ -108,11 +100,12 @@
 			, #{productCode}
 			, #{fixCnt}
 			, #{reqCnt}
-			, #{planCnt}
-			, #{notInstructCnt}
-			, #{instructDoneCnt}
+			, #{fixCnt} + #{reqCnt}
+			, #{fixCnt} + #{reqCnt}
+			, 0
 			)
 	</insert>
+
 	
   	
 

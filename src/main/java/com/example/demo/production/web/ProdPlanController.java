@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.production.ProdPlanAllVO;
@@ -52,6 +54,16 @@ public class ProdPlanController {
 		return prodPlanService.getProdPlanAll(prodPlanCode);
 	}
 	
+	
+	//생산계획&상세 등록
+	//JSON
+	@PostMapping("/ajax/insertProdPlan")
+	@ResponseBody
+	public ProdPlanVO save(@RequestBody ProdPlanVO vo) { 
+		System.out.println(vo);
+		prodPlanService.insertProdPlan(vo);
+		return vo;
+	}
 	
 	
 	
