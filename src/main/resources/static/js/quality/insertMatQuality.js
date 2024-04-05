@@ -7,7 +7,7 @@ class CustomNumberEditor {
 
 		el.type = 'number';
 		el.min = 0;
-		el.max = grid.getColumnValues('INOUT_CNT');
+		el.max = grid.getColumnValues('inoutCnt');
 		el.step = 1;
     el.width = 5;
 		el.maxLength = maxLength;
@@ -36,12 +36,12 @@ const grid = new tui.Grid({
   columns : [
     {
       header : '자재LOT코드',
-      name : 'MAT_LOT_CODE',
+      name : 'matLotCode',
       align : "center",
     },
     {
       header : '입고날짜',
-      name : 'INOUT_DATE',
+      name : 'inputDate',
       align : "center",
       formatter: function(date) {
         let dateForm = new Date(date.value);
@@ -54,7 +54,7 @@ const grid = new tui.Grid({
     },
     {
       header : '입고수량',
-      name : 'INOUT_CNT',
+      name : 'inoutCnt',
       align : "center",
       formatter: function(price) {
 				return priceFormat(price.value);
@@ -62,7 +62,7 @@ const grid = new tui.Grid({
     },
     {
       header : '입고차량검사',
-      name : 'WAREHOUSING_VEHICLES_CHECK',
+      name : 'warehousingVehiclesCheck',
       align : "center",
       formatter : 'listItemText',
       editingEvent : 'click',
@@ -79,7 +79,7 @@ const grid = new tui.Grid({
     },
     {
       header : '이물질',
-      name : 'FOREIGN_EXIST',
+      name : 'foreignExist',
       align : "center",
       formatter : 'listItemText',
       // defaultValue : 'PFN',
@@ -95,7 +95,7 @@ const grid = new tui.Grid({
     },
     {
       header : '포장상태',
-      name : 'PACK_STATUS',
+      name : 'packStatus',
       align : "center",
       formatter : 'listItemText',
       // defaultValue : 'PSY',
@@ -111,7 +111,7 @@ const grid = new tui.Grid({
     },
     {
       header : '부적합기준(total)',
-      name : 'LAST_RESULT',
+      name : 'lastResult',
       align : "center",
       formatter : 'listItemText',
       // defaultValue : 'MCY',
@@ -127,14 +127,14 @@ const grid = new tui.Grid({
     },
     {
       header : '부적합일지',
-      name : 'BAD_SEP',
+      name : 'badSep',
       align : "center",
       // nativeEvent : 'Event',
       hidden : true
     },
     {
       header : '적합수량',
-      name : 'GOOD_CNT',
+      name : 'goodCnt',
       align : "center",
       editor: {
 				type: CustomNumberEditor,
@@ -146,14 +146,11 @@ const grid = new tui.Grid({
 				return priceFormat(price.value);
 			},
     }
-
   ]
-
 });
 
 async function getMatInfo(matLotCode, inoutDate){
   await fetch("ajax/matInfo?matLotCode="+matLotCode+"&inoutDate="+inoutDate)
-  //`ajax/matInfo?matLotCode=${matLotCode}&inoutDate=${inoutDate}`
   .then(res => res.json())
   .then(res => {
     console.log(res);
@@ -172,28 +169,37 @@ grid.on('afterChange', event => {
   console.log(event.changes[0]);
   let ev = event.changes[0];
   if (ev.value == 'IV2' || ev.value == 'PFY' || ev.value == 'PSN'){
-    grid.setValue(ev.rowKey,'LAST_RESULT','MCN');
+    grid.setValue(ev.rowKey,'lastResult','MCN');
   }
 
-  let vehicle = grid.getRow(ev.rowKey).WAREHOUSING_VEHICLES_CHECK;
-  let foreign = grid.getRow(ev.rowKey).FOREIGN_EXIST;
-  let pack = grid.getRow(ev.rowKey).PACK_STATUS;
+  let vehicle = grid.getRow(ev.rowKey).warehousingVehiclesCheck;
+  let foreign = grid.getRow(ev.rowKey).foreignExist;
+  let pack = grid.getRow(ev.rowKey).packStatus;
 
   if (vehicle == 'IV1' && foreign == 'PFN' && pack == 'PSY'){
-    grid.setValue(ev.rowKey,'LAST_RESULT','MCY');
+    grid.setValue(ev.rowKey,'lastResult','MCY');
   }
 
   console.log(event.changes[0].columnName);
-  if(event.changes[0].columnName == 'GOOD_CNT'){
-    if(event.changes[0].value > grid.getValue(ev.rowKey,'INOUT_CNT')){
+  if(event.changes[0].columnName == 'goodCnt'){
+    if(event.changes[0].value > grid.getValue(ev.rowKey,'inoutCnt')){
       alert("입고수량을 초과하였습니다");
-      grid.setValue(ev.rowKey,'GOOD_CNT',null);
+      grid.setValue(ev.rowKey,'goodCnt',null);
     }
   }
 })
 
 //체크하고 저장
-// grid.on(
+async function insertMat() {
+  const checkedRows = grid.getCheckedRows()
 
-// )
-// let rows = gridView.getCheckedRows(true);
+    await fetch("ajax/insertMatQ",{
+      method : 'post',
+      headers : jsonHeaders,
+      body : JSON.stringify(checkedRows),
+    })
+    .then (res => res.json())
+    .then (res => {
+      console.log(res);
+    })
+}
