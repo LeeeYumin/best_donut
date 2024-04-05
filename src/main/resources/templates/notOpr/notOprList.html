@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>notOprList.html</title>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<h2>비가동 목록</h2>
+		
+		<div>
+			<div>
+				<label>비가동검색</label>
+				<input type="text" id="keyword" placeholder="비가동코드 / 설비코드 / 설비명 / 담당자명 입력" class="searchBox">
+			</div><hr>
+			<div>
+				<label>비가동일자</label>
+				<input type="date" id="noneDate" class="searchBox">
+			</div><hr>
+			<div>
+				<label>비가동구분</label>
+				<input type="radio" name="status" id="status0" value="" checked>
+				<label for="status0">전체</label>
+				<input type="radio" name="status" id="status1" value="NO1">
+				<label for="status1">설비고장</label>
+				<input type="radio" name="status" id="status2" value="NO2">
+				<label for="status2">설비점검</label>
+				<input type="radio" name="status" id="status3" value="NO3">
+				<label for="status3">설비수리</label>
+			</div><hr>
+			<div>
+				<button type="button" id="searchBtn">검색</button>	
+				<button type="reset" id="resetBtn">초기화</button>
+			</div>
+		</div>
+
+		<div id="notOprList"></div>
+		<script src="/js/notOpr/notOprList.js"></script>
+		
+	</div>
+</body>
+</html>

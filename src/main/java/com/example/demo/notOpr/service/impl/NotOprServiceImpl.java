@@ -15,8 +15,8 @@ public class NotOprServiceImpl implements NotOprService{
 	@Autowired NotOprMapper notOprmapper;
 	
 	@Override
-	public List<NotOprVO> getNotOpr() {
-		return notOprmapper.getNotOpr();
+	public List<NotOprVO> getNotOpr(NotOprVO vo) {
+		return notOprmapper.getNotOpr(vo);
 	}
 
 }

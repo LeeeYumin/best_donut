@@ -6,6 +6,6 @@ import com.example.demo.notOpr.NotOprVO;
 
 public interface NotOprService {
 
-	public List<NotOprVO> getNotOpr();
+	public List<NotOprVO> getNotOpr(NotOprVO vo);
 	
 }

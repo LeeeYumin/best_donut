@@ -16,7 +16,27 @@
 		FROM NOT_OPR n
 		JOIN EQM e ON n.EQM_CODE = e.EQM_CODE
 		JOIN USERS u ON n.USERS_CODE = u.USERS_CODE
+		<include refid="condition"></include>
 		ORDER BY 1
-	</select>	
+	</select>
+	
+	<sql id="condition">
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(n.NOT_OPR_CODE LIKE '%' || UPPER(#{keyword}) || '%'			
+				OR n.EQM_CODE LIKE '%' ||  UPPER(#{keyword}) || '%'
+				OR e.EQM_NAME LIKE '%' ||  UPPER(#{keyword}) || '%'
+				OR u.USERS_NAME LIKE '%' ||  UPPER(#{keyword}) || '%')
+			</if>
+			<if test="noneDate != null">
+				<![CDATA[ AND (TRUNC(#{noneDate}) >= n.BEGIN_DATE
+				AND TRUNC(#{noneDate}) <= n.END_DATE 
+				OR n.END_DATE is null)]]>
+			</if>
+			<if test="status != null and status != ''">
+				AND n.NOT_OPR_SEP = #{status}
+			</if>
+		</where>
+	</sql>
 
 </mapper>

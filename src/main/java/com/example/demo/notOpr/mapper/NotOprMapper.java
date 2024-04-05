@@ -9,6 +9,6 @@ import com.example.demo.notOpr.NotOprVO;
 @Mapper
 public interface NotOprMapper {
 
-	public List<NotOprVO> getNotOpr();
+	public List<NotOprVO> getNotOpr(NotOprVO vo);
 	
 }
