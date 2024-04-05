@@ -9,6 +9,6 @@ import com.example.demo.eqm.EqmVO;
 @Mapper
 public interface EqmMapper {
 
-	public List<EqmVO> getEqm();
+	public List<EqmVO> getEqm(EqmVO vo);
 	
 }

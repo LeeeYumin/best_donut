@@ -10,5 +10,6 @@ import com.example.demo.users.UsersVO;
 public interface UsersMapper {
 	
 	public List<UsersVO> getUsers(UsersVO vo);
+	public int insertUsers(UsersVO vo);
 	
 }

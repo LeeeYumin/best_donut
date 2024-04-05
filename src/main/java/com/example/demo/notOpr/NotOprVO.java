@@ -22,4 +22,9 @@ public class NotOprVO {
 	private String eqmName;
 	private String usersName;
 	
+	private String keyword;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date noneDate;
+	private String status;
+	
 }

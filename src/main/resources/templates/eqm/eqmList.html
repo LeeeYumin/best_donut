@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>eqmList.html</title>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<h2>설비 목록</h2>
+		
+		<div>
+			<div>
+				<label>설비검색</label>
+				<input type="text" id="keyword" placeholder="설비코드 / 설비명 / 모델명 입력" class="searchBox">
+			</div><hr>
+			<div>
+				<label>설비상태</label>
+				<input type="radio" name="status" id="status0" value="" checked>
+				<label for="status0">전체</label>
+				<input type="radio" name="status" id="status1" value="ES1">
+				<label for="status1">정상</label>
+				<input type="radio" name="status" id="status2" value="ES2">
+				<label for="status2">고장</label>
+				<input type="radio" name="status" id="status3" value="ES3">
+				<label for="status3">점검중</label>
+				<input type="radio" name="status" id="status4" value="ES4">
+				<label for="status4">수리중</label>
+				<input type="radio" name="status" id="status5" value="ES5">
+				<label for="status5">폐기</label>
+			</div><hr>
+			<div>
+				<label>가동현황</label>
+				<input type="radio" name="work" id="work0" value="" checked>
+				<label for="work0">전체</label>
+				<input type="radio" name="work" id="work1" value="FO1">
+				<label for="work1">대기</label>
+				<input type="radio" name="work" id="work2" value="FO2">
+				<label for="work2">가동중</label>
+				<input type="radio" name="work" id="work3" value="FO3">
+				<label for="work3">전원꺼짐</label>
+			</div><hr>
+			<div>
+				<button type="button" id="searchBtn">검색</button>	
+				<button type="reset" id="resetBtn">초기화</button>
+			</div>
+		</div>
+
+		<div id="eqmList"></div>
+		<script src="/js/eqm/eqmList.js"></script>
+		
+	</div>
+</body>
+</html>

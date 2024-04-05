@@ -18,6 +18,11 @@ public class UsersServiceImpl implements UsersService{
 	public List<UsersVO> getUsers(UsersVO vo) {
 		return usersMapper.getUsers(vo);
 	}
+
+	@Override
+	public int insertUsers(UsersVO vo) {
+		return usersMapper.insertUsers(vo);
+	}
 	
 	
 	
