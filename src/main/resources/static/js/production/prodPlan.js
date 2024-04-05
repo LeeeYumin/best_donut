@@ -39,7 +39,7 @@ getProdReq();
       //화면로딩부터 행 추가되도록
 			plInsert.appendRow({prodPlanDate: new Date()});
 			
-			//생산계획 상세
+			/* < 생산계획 상세 > */
 			const plDeInsert = new tui.Grid({
 				el : document.getElementById('plDeInsert'),
 				scrollX : false,
@@ -65,15 +65,18 @@ getProdReq();
 						header : '고정수량',
 						name : 'fixCnt',
 						align: 'center',
+						defaultValue: 1400,
             formatter: function(price) {
               return priceFormat(price.value);
             },
+
 						editor: 'text'
 					},
 					{
 						header : '요청수량',
 						name : 'reqCnt',
 						align: 'center',
+						defaultValue: 0,
             formatter: function(price) {
               return priceFormat(price.value);
             }
@@ -98,6 +101,7 @@ getProdReq();
 						header : '지시수량',
 						name : 'instructDoneCnt',
 						align: 'center',
+						defaultValue: 0,
             formatter: function(price) {
               return priceFormat(price.value);
             }
@@ -110,10 +114,7 @@ getProdReq();
 			let addRowBtn = document.getElementById('addRowBtn');
 			addRowBtn.addEventListener('click', function() {
 	    		/* plInsert.appendRow({prodPlanDate: new Date()}); */
-				plDeInsert.appendRow({
-          fixCnt: 1400,
-          reqCnt: 0,
-        });
+				plDeInsert.appendRow({});
 	    		
 			});
       //행 삭제
@@ -122,6 +123,22 @@ getProdReq();
 				plDeInsert.removeRow({});
 			});
 
+			//고정수량 + 요청수량 = 계획수량
+			//                   = 미지시수량
+			plDeInsert.on('afterChange', e => {
+				//console.log(e.changes);
+
+				let changeAll = plDeInsert.getRow(e.changes);
+				console.log(changeAll);
+
+				let fixCnt = changeAll.fixCnt;
+				let reqCnt = changeAll.reqCnt;
+
+				let planCnt = fixCnt + reqCnt;
+
+				plDeInsert.setValue(changeAll, "planCnt", planCnt);
+
+			})
 			//생산요청상세 => 생산계획상세 폼에 입력
 
 			//생산요청코드 => 생산계획입력 폼에
@@ -207,7 +224,7 @@ getProdReq();
 			};
 			
 			
-			
+			//============================================================
 			//생산요청 => 생산계획
 			plreq.on("click", (e) => {
 				console.log(e);
@@ -219,8 +236,9 @@ getProdReq();
       let addInputBtn = document.getElementById('addInputBtn');
       addInputBtn.addEventListener('click', function() {
         let checked = plreqD.getCheckedRows();
+				console.log(checked);
         plDeInsert.appendRows(checked);
-
+				
       })
 
 

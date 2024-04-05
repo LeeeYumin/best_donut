@@ -9,24 +9,35 @@ const grid1 = new tui.Grid({
 			header: '자재코드',
 			name: 'matCode',
 			align: 'center',
-			sortable: true
+			sortable: true,
+			validation: {
+				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
+			  }
 		},
 		{
 			header: '자재명',
 			name: 'matName',
-			align: 'center'
+			align: 'center',
+			validation: {
+				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
+			  }
 		},
 		{
 			header: '재고량',
 			name: 'stockCnt',
 			align: 'center',
 			sortable: true,
-			validation: {}
+			validation: {
+				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
+			  }
 		},
 		{
 			header: '안전재고량',
 			name: 'safeStockCnt',
-			align: 'center'
+			align: 'center',
+			validation: {
+				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
+			  }
 		}
 	]
 });
