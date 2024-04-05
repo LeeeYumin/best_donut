@@ -64,9 +64,9 @@ const grid1 = new tui.Grid({
 // 2. gridData 생성
 
 // 주문 조회(ajax)
-async function getOrdersList(ordersCode){
+function getOrdersList(ordersCode){
 	console.log('ordersCode : ' + ordersCode);
-	await fetch(`ajax/ordersList?ordersCode=${ordersCode}`)
+	fetch(`ajax/ordersList?ordersCode=${ordersCode}`)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
@@ -106,28 +106,34 @@ const grid2 = new tui.Grid({
 	rowHeaders: ['checkbox'],
 	columns : [ 
 		{
+			header : '주문코드',
+			name : 'ordersCode',
+			align : 'center',
+			hidden : true,
+		}, 
+		{
 			header : '주문상세코드',
-			name : 'ORDERS_DETAIL_CODE',
+			name : 'ordersDetailCode',
 			align : 'center',
 		}, 
 		{
 			header : '완제품코드',
-			name : 'PRODUCT_CODE',
+			name : 'productCode',
 			align : 'center',
 		}, 
 		{
 			header : '완제품명',
-			name : 'PRODUCT_NAME',
+			name : 'productName',
 			align : 'center',
 		}, 
 		{
 			header : '주문수량',
-			name : 'ORDERS_CNT',
+			name : 'ordersCnt',
 			align : 'center',
 		}, 
 		{
 			header : '공급가액',
-			name : 'SUPPLY_PRICE',
+			name : 'supplyPrice',
 			align : 'center',
 			formatter: function(price) {
 				return priceFormat(price.value);
@@ -135,7 +141,7 @@ const grid2 = new tui.Grid({
 		}, 
 		{
 			header : '부가세',
-			name : "TAX",
+			name : "tax",
 			align : 'center',
 			formatter: function(price) {
 				return priceFormat(price.value);
@@ -143,24 +149,26 @@ const grid2 = new tui.Grid({
 		}, 
 		{
 			header : '총공급대가',
-			name : "TOTAL_SUPPLY_PRICE",
+			name : "totalSupplyPrice",
 			align : 'center',
 			formatter: function(price) {
 				return priceFormat(price.value);
 			}
 		},
-	]
+	],
 })
 
 // 2. gridData 생성
 
 // 주문 상세 조회(ajax)
-async function getOrdersDetail(ordersCode){
+function getOrdersDetail(ordersCode){
 	console.log('ordersCode : ' + ordersCode);
-	await fetch(`ajax/ordersDetail?ordersCode=${ordersCode}`)
+	fetch(`ajax/ordersDetail?ordersCode=${ordersCode}`)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
+
+		console.log('res : ', res);
 		grid2.resetData(res);
 	})
 };
