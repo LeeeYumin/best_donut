@@ -1,5 +1,27 @@
 getMaterialOrdersList();
 
+// 발주 상태
+class OrderStatusConverter {
+	constructor(props) {
+		const el = document.createElement('div');
+
+		this.el = el;
+		this.render(props);
+	}
+	render(props) {
+		if (props.formattedValue == 'OSY') {
+			this.el.innerText = '입고';
+		} else if (props.formattedValue == 'OSN') {
+			this.el.innerText = '미입고';
+		} else {
+			this.el.innerText = '발주 취소';
+		}
+	}
+	getElement() {
+		return this.el;
+	}
+}
+
 const grid1 = new tui.Grid({
 	el: document.getElementById('materialOrderList'),
 	scrollX: false,
@@ -35,15 +57,32 @@ const grid1 = new tui.Grid({
 		{
 			header: '발주진행상태',
 			name: 'totalOrdersStatus',
-			align: 'center'
+			align: 'center',
+			renderer: { type: OrderStatusConverter }
 		}
 	]
 });
 
 // 발주 조회(ajax)
-async function getMaterialOrdersList() {
-	const matName = document.getElementById('matName').value;
-	await fetch("/ajax/materialorders?matName=" + matName)
+function getMaterialOrdersList() {
+	const sDate = document.getElementById('sDate').value;
+	const eDate = document.getElementById('eDate').value;
+	const ordersStatus = document.querySelector("[name=ordersStatus]:checked").value;
+
+	console.log(sDate);
+	console.log(eDate);
+	console.log(jsonHeaders);
+
+	const searchreq = {sDate: sDate, eDate: eDate, ordersStatus: ordersStatus};
+	const data = {
+		method: 'POST',
+		headers: jsonHeaders,
+		body : JSON.stringify(searchreq)
+	};
+
+	console.log(data);
+
+	fetch("/ajax/materialorders", data)
 		.then(res => res.json())
 		.then(res => {
 			// ajax로 불러온 데이터 그리드에 넣음
@@ -54,15 +93,13 @@ async function getMaterialOrdersList() {
 
 // 검색 관련 함수  
 document.getElementById('searchBtn').addEventListener('click', getMaterialOrdersList);
-document.getElementById('matName').addEventListener('keyup', (e) => {
-	if (e.keyCode == 13) {
-		getMaterialsList();
-	}
-})
 document.getElementById('resetBtn').addEventListener('click', () => {
-	document.getElementById('matName').value = '';
+	document.getElementById('sDate').value = '';
+	document.getElementById('eDate').value = '';
+	$('input:radio[name=ordersStatus]:input[value=""]').prop("checked", true);
+
 	getMaterialOrdersList();
-	getMaterialOrderDetailsList();
+	grid2.resetData([]);
 });
 
 const grid2 = new tui.Grid({
@@ -70,7 +107,7 @@ const grid2 = new tui.Grid({
 	scrollX: false,
 	scrollY: false,
 	header: {
-		height: 160,
+		height: 150,
 		complexColumns: [
 			{
 				header: '수주업체',
@@ -121,8 +158,7 @@ const grid2 = new tui.Grid({
 			align: 'center',
 			formatter: function (price) {
 				return priceFormat(price.value);
-			},
-			rowSpan: true
+			}
 		},
 		{
 			header: '금액',
@@ -135,14 +171,12 @@ const grid2 = new tui.Grid({
 		{
 			header: '납기일자',
 			name: 'dueDate',
-			align: 'center',
-			rowSpan: true
+			align: 'center'
 		},
 		{
 			header: '발주담당자',
 			name: 'usersName',
-			align: 'center',
-			rowSpan: true
+			align: 'center'
 		}
 	],
 	summary: {
@@ -191,57 +225,26 @@ const grid2 = new tui.Grid({
 
 // 발주서 선택
 grid1.on('checkAll', (ev) => {
-	let matOrderCodes = '';
-	for (i = 0; i < grid1.getCheckedRows().length; i++) {
-		//matOrderCodes.push(grid1.getCheckedRows()[i].matOrdersCode); // json 스트링으로 넘길 때
-
-		// String Array로 넘길 때
-		if (i > 0) {
-			matOrderCodes += "&"
-		}
-		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
-	}
+	let matOrderCodes = createparam();
 	getMaterialOrderDetailsList(matOrderCodes)
-	console.log(matOrderCodes);
 });
 grid1.on('uncheckAll', (ev) => {
-
-	let matOrderCodes = '';
-	for (i = 0; i < grid1.getCheckedRows().length; i++) {
-		if (i > 0) {
-			matOrderCodes += "&"
-		}
-		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
-	}
+	let matOrderCodes = createparam();
 	grid2.resetData([]);
-	//getMaterialOrderDetailsList(matOrderCodes)
-	console.log(matOrderCodes);
+
 });
 grid1.on('check', (ev) => {
-	let matOrderCodes = '';
-	for (i = 0; i < grid1.getCheckedRows().length; i++) {
-		if (i > 0) {
-			matOrderCodes += "&"
-		}
-		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
-	}
+	let matOrderCodes = createparam();
 	getMaterialOrderDetailsList(matOrderCodes)
-	console.log(matOrderCodes);
 });
 grid1.on('uncheck', (ev) => {
 	if (grid1.getCheckedRows().length == 0) {
 		grid2.resetData([]);
 		return;
 	}
-	let matOrderCodes = '';
-	for (i = 0; i < grid1.getCheckedRows().length; i++) {
-		if (i > 0) {
-			matOrderCodes += "&"
-		}
-		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
-	}
+
+	let matOrderCodes = createparam();
 	getMaterialOrderDetailsList(matOrderCodes)
-	console.log(matOrderCodes);
 });
 
 // 발주서 단건 조회(ajax)
@@ -254,3 +257,18 @@ function getMaterialOrderDetailsList(matOrderCodes) {
 			console.log(res);
 		})
 };
+
+// Param 만들기
+function createparam(){
+	let matOrderCodes = '';
+	for (i = 0; i < grid1.getCheckedRows().length; i++) {
+		//matOrderCodes.push(grid1.getCheckedRows()[i].matOrdersCode); // json 스트링으로 넘길 때
+		// String Array로 넘길 때
+		if (i > 0) {
+			matOrderCodes += "&"
+		}
+		matOrderCodes += "matOrderCodes=" + grid1.getCheckedRows()[i].matOrdersCode
+	}
+
+	return matOrderCodes;
+}
