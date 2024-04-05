@@ -1,7 +1,7 @@
 getProdReq();
 		
 			/* < 생산계획 > */
-			
+
 			//생산계획 등록
 			const plInsert = new tui.Grid({
 				el : document.getElementById('plInsert'),
@@ -23,7 +23,7 @@ getProdReq();
 					},
 					{
 						header : '생산계획일자',
-						name : 'prodPlanDate',
+						name : 'planDate',
 						align: 'center',
 						editor: 'text',
 						formatter: dateFormat //공통함수
@@ -32,12 +32,12 @@ getProdReq();
 						header : '담당자',
 						name : 'usersCode',
 						align: 'center',
-						//editor: 'text'
+						editor: 'text'
 					}
 				]
 			});
       //화면로딩부터 행 추가되도록
-			plInsert.appendRow({prodPlanDate: new Date()});
+			plInsert.appendRow({planDate: new Date()});
 			
 			/* < 생산계획 상세 > */
 			const plDeInsert = new tui.Grid({
@@ -65,11 +65,10 @@ getProdReq();
 						header : '고정수량',
 						name : 'fixCnt',
 						align: 'center',
-						defaultValue: 1400,
+						//defaultValue: 1400,
             formatter: function(price) {
               return priceFormat(price.value);
             },
-
 						editor: 'text'
 					},
 					{
@@ -81,73 +80,39 @@ getProdReq();
               return priceFormat(price.value);
             }
 					},
-					{
-						header : '계획수량',
-						name : 'planCnt',
-						align: 'center',
-            formatter: function(price) {
-              return priceFormat(price.value);
-            }
-					},
-					{
-						header : '미지시수량',
-						name : 'notInstructCnt',
-						align: 'center',
-            formatter: function(price) {
-              return priceFormat(price.value);
-            }
-					},
-          {
-						header : '지시수량',
-						name : 'instructDoneCnt',
-						align: 'center',
-						defaultValue: 0,
-            formatter: function(price) {
-              return priceFormat(price.value);
-            }
-					}
-				]
+					
+				],
+				
+				
 			});
 			
 			
 			//생산계획 상세 등록 행추가
 			let addRowBtn = document.getElementById('addRowBtn');
 			addRowBtn.addEventListener('click', function() {
-	    		/* plInsert.appendRow({prodPlanDate: new Date()}); */
-				plDeInsert.appendRow({});
+	    		/* plInsert.appendRow({planDate: new Date()}); */
+				plDeInsert.appendRow({
+					fixCnt: 1400, 
+					reqCnt: 0,
+					//생산요청 추가하고 행추가하면 XXXX
+					//planCnt: plDeInsert.getData()[0].fixCnt + plDeInsert.getData()[0].reqCnt,
+					//notInstructCnt: plDeInsert.getData()[0].planCnt,
+					//instructDoneCnt: 0
+				});
 	    		
 			});
       //행 삭제
 			let delRowBtn = document.getElementById('delRowBtn');
 			delRowBtn.addEventListener('click', function() {
-				plDeInsert.removeRow({});
+				let rowKey = plDeInsert.getFocusedCell().rowKey;
+				if (rowKey != null) {
+					plDeInsert.removeRow(rowKey);
+					//plDeInsert.refreshLayout();
+				}else {
+					alert('삭제할 행을 선택하세요')
+				}
 			});
 
-			//고정수량 + 요청수량 = 계획수량
-			//                   = 미지시수량
-			plDeInsert.on('afterChange', e => {
-				//console.log(e.changes);
-
-				let changeAll = plDeInsert.getRow(e.changes);
-				console.log(changeAll);
-
-				let fixCnt = changeAll.fixCnt;
-				let reqCnt = changeAll.reqCnt;
-
-				let planCnt = fixCnt + reqCnt;
-
-				plDeInsert.setValue(changeAll, "planCnt", planCnt);
-
-			})
-			//생산요청상세 => 생산계획상세 폼에 입력
-
-			//생산요청코드 => 생산계획입력 폼에
-		/* 	let addInputBtn = document.getElmentById('addInputBtn');
-			addInputBtn.addEventListener('click', function() {
-				plreqD.getCheckedRows();
-			}) */
-			
-			
 			//=========================================================================
 			
 			/* < 생산요청 > */
@@ -227,19 +192,84 @@ getProdReq();
 			//============================================================
 			//생산요청 => 생산계획
 			plreq.on("click", (e) => {
-				console.log(e);
+				//console.log(e);
 				let prcode = plreq.getValue(e.rowKey, "prodReqCode");
 				plInsert.setValue(0, "prodReqCode", prcode) //setValue(0, "prodReqCode", prcode, false) false가 기본값
-			})
+			});
 
       //생산요청 상세 => 생산계획 상세 (check된 값)
-      let addInputBtn = document.getElementById('addInputBtn');
+			let addInputBtn = document.getElementById('addInputBtn');
       addInputBtn.addEventListener('click', function() {
         let checked = plreqD.getCheckedRows();
-				console.log(checked);
+				//반복문
+
+				for(let i=0; i < checked.length; i++) {
+					checked[i].fixCnt = 1400;
+					//checked[i].planCnt = checked[i].fixCnt + checked[i].reqCnt
+					//checked[i].notInstructCnt = checked[i].planCnt
+					//checked[i].instructDoneCnt = 0;
+				}
         plDeInsert.appendRows(checked);
-				
       })
+
+
+      // let addInputBtn = document.getElementById('addInputBtn');
+      // addInputBtn.addEventListener('click', function() {
+      //   let checked = plreqD.getCheckedRows();
+			// 	//console.log(checked);
+				
+			// 	for(i=0; i < plDeInsert.getData().length; i++) {
+			// 		//**한 개만 클릭하고 넣을 때도 되도록 나중에 수정하기
+			// 		if(plDeInsert.getData()[i].prodReqDetailCode == checked[i].prodReqDetailCode) {
+			// 			alert('이미 입력된 요청입니다.');
+			// 			return;
+			// 		}
+			// 	}
+      //   plDeInsert.appendRows(checked);
+      // });
+
+
+			
+
+			//생산계획+상세계획 등록
+			async function insertPlan() {
+
+				plInsert.blur(); //값 등록 후 enter 안 쳐도 값 들어가도록
+				plDeInsert.blur();
+
+				const pl = plInsert.getModifiedRows().createdRows
+				const plDeAll = plDeInsert.getModifiedRows().createdRows
+				let param = {...pl[0], dvo: plDeAll} //생산계획1건(배열로 들어와서 펼침연산자로 풀어서), planvo에 담은 list<detailvo>의 필드명(여러건) 
+
+				await fetch('ajax/insertProdPlan', {
+					method: 'post',
+					headers: jsonHeaders,
+					body : JSON.stringify(param)
+				})
+				.then(res => res.json())
+				.then(res => {
+					console.log(res);
+					alert('생산계획이 등록되었습니다.');
+					saveRes(res);
+				})
+			}
+
+			//등록응답 (그리드에 입력된 모든 정보 비우기)
+			function saveRes(res) {
+				//plInsert.setValue(0, prodReqCode, '');
+				plDeInsert.resetData([]);
+			}
+
+
+			//Modal
+			plDeInsert.on("click", (e) => {
+				console.log(e);
+				if(e.columnName == 'productCode') {
+					document.getElementById('productModal')
+				}
+
+			});
+
 
 
 

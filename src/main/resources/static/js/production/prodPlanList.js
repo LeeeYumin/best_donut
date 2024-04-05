@@ -1,5 +1,36 @@
 getProdPlanList()
 
+		//생산계획 진행상태
+		class PlanStatus {
+			constructor(props) {
+				const el = document.createElement('div');
+
+				this.el = el;
+      	this.render(props);
+			}
+			render(props) {
+				this.el.innerText = props.formattedValue == 'LS1' ? '미지시' : '지시등록';
+			}
+			getElement() {
+				return this.el;
+			}
+		}
+		//생산요청 없음
+		class ProdReqCode {
+			constructor(props) {
+				const el = document.createElement('div');
+
+				this.el = el;
+      	this.render(props);
+			}
+			render(props) {
+				this.el.innerText = props.formattedValue == '' ? '-' : props.formattedValue;
+			}
+			getElement() {
+				return this.el;
+			}
+		}
+
 		const plList = new tui.Grid({
 			el : document.getElementById('plList'),
 			scrollX : false,
@@ -20,12 +51,14 @@ getProdPlanList()
 				{
 					header : '생산요청코드',
 					name : 'prodReqCode',
-					align: 'center'
+					align: 'center',
+					renderer: {type: ProdReqCode}
 				},
 				{
-					header : '상태',
+					header : '진행상태',
 					name : 'prodPlanStatus',
-					align: 'center'
+					align: 'center',
+					renderer: {type: PlanStatus}
 				}, 
 				{
 					header : '담당자',
@@ -59,9 +92,10 @@ getProdPlanList()
 					align: 'center'
 				}, 
 			    {
-					header : '생산요청코드',
-					name : 'prodReqCode',
+					header : '생산요청상세코드',
+					name : 'prodReqDetailCode',
 					align: 'center',
+					renderer: {type: ProdReqCode}
 					
 				},
 				{
@@ -112,3 +146,7 @@ getProdPlanList()
 				plAll.resetData(res);
 			})
 		};
+
+
+
+		
