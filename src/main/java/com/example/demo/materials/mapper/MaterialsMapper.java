@@ -16,8 +16,10 @@ public interface MaterialsMapper {
 
 	public List<MaterialReadVO> getMaterialDetails(String matCode);
 	
+	public int updateMatStatus(String[] matLotCodes);
+	
 	// 자재 발주 관리
-	public List<MaterialOrderlVO> getMaterialOrders();
+	public List<MaterialOrderlVO> getMaterialOrders(MaterialOrderlVO vo);
 	
 	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes);
 }
