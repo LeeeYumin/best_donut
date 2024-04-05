@@ -12,7 +12,7 @@ const grid1 = new tui.Grid({
 			sortable: true,
 			validation: {
 				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
-			  }
+			}
 		},
 		{
 			header: '자재명',
@@ -20,7 +20,7 @@ const grid1 = new tui.Grid({
 			align: 'center',
 			validation: {
 				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
-			  }
+			}
 		},
 		{
 			header: '재고량',
@@ -29,7 +29,7 @@ const grid1 = new tui.Grid({
 			sortable: true,
 			validation: {
 				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
-			  }
+			}
 		},
 		{
 			header: '안전재고량',
@@ -37,7 +37,7 @@ const grid1 = new tui.Grid({
 			align: 'center',
 			validation: {
 				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
-			  }
+			}
 		}
 	]
 });
@@ -66,6 +66,28 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 	getMaterialsList();
 	getMaterialDetailsList();
 });
+
+// 자재 상태
+class MatStatusConverter {
+	constructor(props) {
+		const el = document.createElement('div');
+
+		this.el = el;
+		this.render(props);
+	}
+	render(props) {
+		if (props.formattedValue == 'MSC') {
+			this.el.innerText = '소진';
+		} else if (props.formattedValue == 'MSN') {
+			this.el.innerText = '폐기';
+		} else {
+			this.el.innerText = '정상';
+		}
+	}
+	getElement() {
+		return this.el;
+	}
+}
 
 const grid2 = new tui.Grid({
 	el: document.getElementById('materialDetails'),
@@ -98,12 +120,14 @@ const grid2 = new tui.Grid({
 		{
 			header: '불출수량',
 			name: 'outCnt',
-			align: 'center'
+			align: 'center',
+			defaultValue: 0
 		},
 		{
 			header: '현재고량',
 			name: 'remainCnt',
-			align: 'center'
+			align: 'center',
+			defaultValue: 0
 		},
 		{
 			header: '유통기한',
@@ -113,14 +137,15 @@ const grid2 = new tui.Grid({
 		{
 			header: '자재상태',
 			name: 'matStatus',
-			align: 'center'
+			align: 'center',
+			renderer: { type: MatStatusConverter }
 		}
 	]
 });
 
 // 상세 로트 조회(ajax)
-async function getMaterialDetailsList(matCode) {
-	await fetch("/ajax/materiallots?matCode=" + matCode)
+function getMaterialDetailsList(matCode) {
+	fetch("/ajax/materiallots?matCode=" + matCode)
 		.then(res => res.json())
 		.then(res => {
 			// ajax로 불러온 데이터 그리드에 넣음
@@ -134,3 +159,50 @@ grid1.on('click', (ev) => {
 	console.log(matCode);
 	getMaterialDetailsList(matCode);
 })
+
+// 자재 상태 체크
+function checkMatStatus(){
+	for (i = 0; i < grid2.getCheckedRows().length; i++) {
+		if (grid2.getCheckedRows()[i].matStatus	== 'MSN') {
+			alert('이미 폐기된 자재가 선택되었습니다.')
+			grid2.uncheck([i])
+		}
+	}
+}
+grid2.on('check', (ev) => {
+	checkMatStatus()
+});
+grid2.on('checkAll', (ev) => {
+	checkMatStatus()
+});
+
+// 폐기 버튼 기능
+document.getElementById('disposeBtn').addEventListener('click', () => {
+	if (grid2.getCheckedRowKeys() == '') {
+		alert('선택한 자재가 없습니다.');
+	} else {
+		if (confirm('정말로 폐기하시겠습니까?')) {
+			let matLotCodes = '';
+			for (i = 0; i < grid2.getCheckedRows().length; i++) {
+				if (i > 0) {
+					matLotCodes += "&";
+				}
+				matLotCodes += "matLotCodes=" + grid2.getCheckedRows()[i].matLotCode;
+			}
+			console.log(matLotCodes);
+			disposeMat(matLotCodes);
+		}
+	}
+})
+
+// 자재 상태 업데이트 후 그리드 다시 그려주기
+function disposeMat(matLotCodes) {
+	let matCode = grid1.getValue(grid1.getFocusedCell().rowKey, 'matCode');
+	fetch("/ajax/disposeMat?" + matLotCodes)
+		.then(res => res.json())
+		.then(res => {
+			// ajax로 불러온 데이터 그리드에 넣음
+			getMaterialDetailsList(matCode);
+			console.log(res);
+		})
+};

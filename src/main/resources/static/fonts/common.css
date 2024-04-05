@@ -13,11 +13,6 @@
     font-style: normal;
 }
 
-h2, h3 {
-	font-family: 'SEBANG_Gothic_Bold';
-	text-align: center;
-}
-
-h5, a, table, label, button, span, input {
+h1, h2, h3, h4, h5, a, table, label, button, span, input {
 	font-family: 'LINESeedKR-Bd';
 }

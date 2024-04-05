@@ -15,4 +15,10 @@ public class MaterialOrderlVO {
 	private Date ordersDate;
 	private Integer matTotalOrdersPrice;
 	private String totalOrdersStatus;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date sDate;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date eDate;
+	private String ordersStatus;
 }

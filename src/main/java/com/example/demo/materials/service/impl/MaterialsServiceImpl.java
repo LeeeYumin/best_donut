@@ -29,10 +29,15 @@ public class MaterialsServiceImpl implements MaterialsService {
 		return materialsMapper.getMaterialDetails(matCode);
 	}
 
+	@Override
+	public int updateMatStatus(String[] matLotCodes) {
+		return materialsMapper.updateMatStatus(matLotCodes);
+	}
+
 	// 자재 발주 관리
 	@Override
-	public List<MaterialOrderlVO> getMaterialOrders() {
-		return materialsMapper.getMaterialOrders();
+	public List<MaterialOrderlVO> getMaterialOrders(MaterialOrderlVO vo) {
+		return materialsMapper.getMaterialOrders(vo);
 	}
 
 	@Override

@@ -9,60 +9,61 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<h3>자재 발주 관리</h3>
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">자재관리 / </span> 자재 발주 관리
+		</h3>
+		
 		<!-- 검색 폼 -->
-		<div class="searchForm">
-			<h5>검색조건</h5>
-			<form>
-				<div class="row mb-3">
-					<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">발주일자</label>
-					<div class="col-sm-6 input-group">
-						<input type="date" class="form-control" name="sDate">
-						<span class="input-group-text">~</span>
-						<input type="date" class="form-control" name="eDate">
-					</div>
-				</div>
-				<div class="row mb-3">
-					<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재명</label>
-					<div class="col-sm-6">
-						<input class="form-control" type="text" id="matName" name="matName">
-					</div>
-				</div>
-				<div class="row mb-3">
-					<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
-					<div class="col-sm-6">
-						<input class="form-control" type="text" name="companyName">
-					</div>
-				</div>
-				<div class="row mb-3">
-					<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">발주상태</label>
-					<div class="col-sm-6">
-						<div class="form-check-inline">
-							<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus1" value="" checked> 
-							<label class="form-check-label" for="ordersStatus1">전체</label>
-						</div>
-						<div class="form-check-inline">
-							<input class="form-check-input" type="radio" name="ordersStatus"
-								id="ordersStatus2" value="미입고"> <label
-								class="form-check-label" for="ordersStatus2">미입고</label>
-						</div>
-						<div class="form-check-inline">
-							<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus3" value="입고"> 
-							<label class="form-check-label" for="ordersStatus2">입고</label>
+		<div>
+			<div class="card mb-3">
+				<h5 class="card-header">검색조건</h5>
+				<div class="card-body">
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">발주일자</label>
+						<div class="col-sm-6 input-group">
+							<input type="date" class="form-control" name="sDate" id="sDate">
+							<span class="input-group-text">~</span> 
+							<input type="date" class="form-control" name="eDate" id="eDate">
 						</div>
 					</div>
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">발주상태</label>
+						<div class="col-sm-6">
+							<div class="form-check-inline">
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus1" value="" checked> 
+								<label class="form-check-label" for="ordersStatus1">전체</label>
+							</div>
+							<div class="form-check-inline">
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus2" value="OSN"> 
+								<label class="form-check-label" for="ordersStatus2">미입고</label>
+							</div>
+							<div class="form-check-inline">
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus3" value="OSY"> 
+								<label class="form-check-label" for="ordersStatus3">입고</label>
+							</div>
+						</div>
+					</div>
+					<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+						<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
+						<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
+					</div>
 				</div>
-				<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-					<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
-					<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
-				</div>
-			</form>
+			</div>
 		</div>
 
-		<!-- 자재 발주 목록 -->
-		<div id="materialOrderList"></div>
-		<!-- 자재 발주 상세 목록 -->
-		<div id="materialOrderDetail"></div>
+		<div>
+			<div class="card">
+				<!-- 자재 발주 목록 -->
+				<h5 class="card-header">자재 발주 목록</h5>
+				<div class="card-body" id="materialOrderList"></div>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end mx-4">
+					<button type="button" class="btn btn-primary" id="cancelBtn">발주취소</button>
+				</div>
+				<!-- 자재 발주 상세 목록 -->
+				<h5 class="card-header">자재 발주서</h5>
+				<div class="card-body" id="materialOrderDetail"></div>
+			</div>
+		</div>
 
 		<!-- materialOrdersManagement.js -->
 		<script src="/js/materials/materialOrdersManagement.js"></script>

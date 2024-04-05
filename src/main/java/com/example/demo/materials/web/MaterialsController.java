@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,7 +40,14 @@ public class MaterialsController {
 	public List<MaterialReadVO> getMaterialLots(String matCode) {
 		return materialsService.getMaterialDetails(matCode);
 	}
-
+	
+	// 자재 상태(정상 -> 폐기) 변경
+	@GetMapping("/ajax/disposeMat")
+	@ResponseBody
+	public int updateMatStatus(String[] matLotCodes) {
+		return materialsService.updateMatStatus(matLotCodes);
+	}
+	
 	// 자재 발주 등록 페이지 이동
 	@RequestMapping("/materials/orders")
 	public String orders() {
@@ -55,8 +63,8 @@ public class MaterialsController {
 	// 자재 발주 목록 조회(ajax)
 	@RequestMapping("/ajax/materialorders")
 	@ResponseBody
-	public List<MaterialOrderlVO> getMaterialOrders(){
-		return materialsService.getMaterialOrders();
+	public List<MaterialOrderlVO> getMaterialOrders(@RequestBody MaterialOrderlVO vo){
+		return materialsService.getMaterialOrders(vo);
 	}
 	
 	// 발주서 미리보기(ajax)
