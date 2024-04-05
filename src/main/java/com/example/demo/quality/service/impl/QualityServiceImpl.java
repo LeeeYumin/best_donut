@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.QualityVO;
 import com.example.demo.quality.mapper.QualityMapper;
 import com.example.demo.quality.service.QualityService;
@@ -18,8 +19,11 @@ public class QualityServiceImpl implements QualityService {
 	QualityMapper qualityMapper;
 	
 	@Override
-	public List<QualityVO> insertMatQuality() {
-		return null;
+	public boolean insertMatQuality(List<MatQltyCheckVO> list) {
+		for(MatQltyCheckVO vo : list) {
+			qualityMapper.insertMatQuality(vo);
+		}
+		return true;
 	}
 
 	@Override

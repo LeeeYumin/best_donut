@@ -5,8 +5,8 @@
 
 
 <!-- 자재품질등록 /자재LOT코드(자재 상세s), 입고날짜/입고수량,발주코드(자재 입출 내역h) + 저장 버튼 기능  -->
-<insert id="insertMatQuality" parameterType="QualityVO">
-	INSERT INTO WAREHOUSING_VEHICLES_CHECK
+<insert id="insertMatQuality" parameterType="MatQltyCheckVO">
+	INSERT INTO MAT_QLTY_CHECK
 				(
 				mat_qlty_check_code
 				, mat_lot_code
@@ -19,22 +19,27 @@
 				, users_code
 				)
 		VALUES (
-				#{warehousingVehiclesCheck}
-				,#{foreignExist}
-				,#{packStatus}
-				,#{lastResult}
+				seq_func('MAT_QLTY_CHECK')
+				, #{matLotCode}
+				, trunc(sysdate)
+				, #{warehousingVehiclesCheck}
+				, #{foreignExist}
+				, #{packStatus}
+				, #{lastResult}
+				, #{goodCnt}
+				, 'USE00005'
 				)
 </insert>
 
 <!--  자재품질등록 / if : 자재LOT번호, 입고날짜 검색 -->
 <select id="getMatInfo" resultType="Map">
-	SELECT s.MAT_LOT_CODE
-		   , h.INOUT_DATE
-		   , h.INOUT_CNT
-		   , 'IV1' WAREHOUSING_VEHICLES_CHECK 
-		   , 'PFN' FOREIGN_EXIST
-		   , 'PSY' PACK_STATUS
-		   , 'MCY' LAST_RESULT
+	SELECT s.MAT_LOT_CODE "matLotCode"
+       , h.INOUT_DATE "inputDate"
+       , h.INOUT_CNT "inoutCnt"
+       , 'IV1' "warehousingVehiclesCheck"
+       , 'PFN' "foreignExist"
+       , 'PSY' "packStatus"
+       , 'MCY' "lastResult"
 	  FROM MAT_DETAIL s JOIN MAT_INOUT_HISTORY h
 		ON s.MAT_LOT_CODE = h.MAT_LOT_CODE
 		<where>

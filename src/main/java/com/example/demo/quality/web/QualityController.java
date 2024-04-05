@@ -6,8 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.service.QualityService;
 
 @Controller
@@ -16,7 +19,7 @@ public class QualityController {
 	@Autowired
 	QualityService qualityService;
 	
-	//자재 품질 등록
+	//자재 품질 등록 페이지 이동
 	@GetMapping("insertMatQuality") // url
 	public String insertMatQuality () { // 함수이름
 		return "quality/insertMatQuality"; // 파일위치(qualityMain 에서 이름변경)
@@ -29,7 +32,15 @@ public class QualityController {
 	}
 	
 	
-	//자재 품질 관리
+	//자재 품질 등록 버튼
+	@PostMapping("ajax/insertMatQ")
+	@ResponseBody
+	public boolean insertMatQuality(@RequestBody List<MatQltyCheckVO> vo) {
+		return qualityService.insertMatQuality(vo);
+		
+	}
+	
+	//자재 품질 관리 페이지 이동
 	@GetMapping("adminMatQuality")
 	public String adminMatQuality () {
 		
