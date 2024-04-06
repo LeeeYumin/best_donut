@@ -26,5 +26,7 @@ public interface ProdPlanMapper {
 	//2)등록
 	public int insertProdPlan(ProdPlanVO vo); //1건에
 	public int insertProdPlanDetail(ProdPlanDeVO dvo); //여러 건
+	//+ 생산요청상태 수정
+	public int updateProdReqStatus(ProdPlanVO vo);
 
 }

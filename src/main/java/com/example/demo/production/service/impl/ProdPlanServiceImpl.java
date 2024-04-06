@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.ProdPlanBVO;
@@ -51,12 +52,15 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 
 	//등록
 	@Override
+	@Transactional
 	public int insertProdPlan(ProdPlanVO vo) {
-		
+		//생산계획
 		prodPlanMapper.insertProdPlan(vo);
+		//생산요청상태 update
+		prodPlanMapper.updateProdReqStatus(vo);
 		
+		//생산계획상세
 		int result = 0;
-		
 		for(int i = 0; i < vo.getDvo().size(); i++) {
 			ProdPlanDeVO devo = vo.getDvo().get(i);
 			
@@ -66,6 +70,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 		
 		return result;
 	}
+
 
 
 

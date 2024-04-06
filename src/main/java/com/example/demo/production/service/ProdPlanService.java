@@ -20,7 +20,8 @@ public interface ProdPlanService {
 	
 	//2)등록
 	public int insertProdPlan(ProdPlanVO vo);
-	
+	//+상태수정
+	//public int updateProdReqStatus(String prodPlanCode);
 	
 	
 }

@@ -257,7 +257,10 @@ getProdReq();
 			//등록응답 (그리드에 입력된 모든 정보 비우기)
 			function saveRes(res) {
 				//plInsert.setValue(0, prodReqCode, '');
+				//getProdReq();
 				plDeInsert.resetData([]);
+				plreq.resetData([]);
+				plreqD.resetData([]);
 			}
 
 
@@ -265,7 +268,8 @@ getProdReq();
 			plDeInsert.on("click", (e) => {
 				console.log(e);
 				if(e.columnName == 'productCode') {
-					document.getElementById('productModal')
+					//let md = document.getElementById('productModal').setAttribute("data-bs-ToggleEvent", "modal")
+					//console.log(md);
 				}
 
 			});

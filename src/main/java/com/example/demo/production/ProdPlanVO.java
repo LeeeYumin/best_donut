@@ -20,4 +20,7 @@ public class ProdPlanVO {
 	
 	//생산계획상세
 	List<ProdPlanDeVO> dvo;
+	
+	//생산요청상태
+	private String prodReqStatus;
 }

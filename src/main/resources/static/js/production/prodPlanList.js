@@ -15,7 +15,7 @@ getProdPlanList()
 				return this.el;
 			}
 		}
-		//생산요청 없음
+		//생산요청코드 없으면 '-'로 표시
 		class ProdReqCode {
 			constructor(props) {
 				const el = document.createElement('div');
@@ -31,6 +31,7 @@ getProdPlanList()
 			}
 		}
 
+		/* < 생산계획 목록 > */
 		const plList = new tui.Grid({
 			el : document.getElementById('plList'),
 			scrollX : false,
@@ -68,8 +69,7 @@ getProdPlanList()
 			]
 		});
 		
-		// 생산계획 총 목록 조회(ajax)
-
+		// 생산계획 목록 조회(ajax)
 		async function getProdPlanList(){
 			await fetch("/ajax/prodPlanList")
 			.then(res => res.json())
@@ -80,7 +80,7 @@ getProdPlanList()
 			})
 		};
 		
-		//
+		/* < 생산계획 상세 목록 > */
 		const plAll = new tui.Grid({
 			el : document.getElementById('plAll'),
 			scrollX : false,
@@ -131,6 +131,8 @@ getProdPlanList()
 				
 			]
 		});
+
+		//생산계획 클릭 시 아래 생산계획상세내용 출력
 		plList.on("click", (e) => {
 			let plCode = plList.getValue(e.rowKey, "prodPlanCode")
 			getProdPlanAll(plCode);        

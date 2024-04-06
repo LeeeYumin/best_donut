@@ -11,15 +11,18 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style>
-.btn-addrow,
+
 .btn-addinput,
 .btn-insert {
 	width: 60px;
 	margin-left: auto; /* display:flex 적용되어 있어 float: right X */
+	margin-top: 10px;
 }
+.btn-addrow,
 .btn-delrow {
 	width: 60px;
 	float: right;
+	/* margin-left: auto; */
 }
 
 </style>
@@ -30,22 +33,29 @@
 	<div layout:fragment="content">
 	
 		<h2>생산계획 등록</h2>
+		<div class="card mb-3" style="padding-bottom: 20px">
 		<div style="padding-top: 30px;"></div>
 		
 		<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertPlan()">등록</button>
 		
 		<div id="plInsert" style="padding-bottom: 30px;"></div>
 
-		<button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
-		<button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">행삭제</button>		
+		<span>
+		 <button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">행삭제</button>		
+		 <button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
+		</span>
 		<div id="plDeInsert"></div>
 
+		</div>
+
 		<div style="padding-top: 50px;"></div>
-		<h4>주간 생산요청</h4>
-		<button type="button" class="btn btn-primary btn-sm btn-addinput" id="addInputBtn">입력</button>
-		<div id="plreq"></div>
-		<div id="plreqD" style="padding-top: 20px; padding-bottom: 10px"></div>
 		
+		<div class="card mb-3" style="padding-top: 20px;">
+		 <h4>주간 생산요청 목록</h4>
+		 <button type="button" class="btn btn-primary btn-sm btn-addinput" id="addInputBtn">입력</button>
+		 <div id="plreq"></div>
+		 <div id="plreqD" style="padding-top: 20px; padding-bottom: 10px"></div>
+		</div>
 		
 		<!-- 모달 -->
     <div class="col-lg-4 col-md-6" id="productModal">
