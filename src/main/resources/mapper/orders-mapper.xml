@@ -53,7 +53,7 @@
 			)
 		VALUES 
 			(
-				#{ordersCode}
+				seq_func('orders')
 				, #{ordersDate}
 				, #{dueDate}
 				, #{totalOrdersPrice}

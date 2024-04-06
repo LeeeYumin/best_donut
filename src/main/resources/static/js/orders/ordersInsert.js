@@ -4,11 +4,9 @@ class CustomNumberEditor {
 		const { maxLength } = props.columnInfo.editor.options;
 
 		el.type = 'number';
-		el.min = 100;
+		el.min = 0;
 		el.max = 1000;
 		el.step = 100;
-		el.maxLength = maxLength;
-		el.value = String(props.value);
 		this.el = el;
 	}
 
@@ -25,7 +23,7 @@ class CustomNumberEditor {
 	}
 }
 
-function getProductList() {
+(function getProductList() {
 	fetch("ajax/productList")
 	.then(res => res.json())
 	.then(res => {
@@ -45,14 +43,22 @@ function getProductList() {
 			}
 		grid.resetData(ordDetAry);
 	})
-}
+})();
 
 
 // 주문등록
 
 // 1. FormData 방식
 async function saveInsert() {
-	let formData = new FormData(document.frm);
+
+	
+	// form 내용 검증
+	if(!formValidation()){
+		return;
+	}
+	console.log('saveInsert()');
+	
+	let formData = new FormData(document.insertForm);
 
   for (let data of formData) {
       console.log(data[0]+ ', ' + data[1]); 
@@ -93,6 +99,25 @@ async function saveInsert1() {
   })
 }
 
+function formValidation() {
+	if(insertForm.ordersDate.value == '' || insertForm.ordersDate.value == null) {
+		alert('주문일자를 입력해주세요.');
+		return false;
+	}
+
+	if(insertForm.dueDate.value == '' || insertForm.dueDate.value == null) {
+		alert('납기일자를 입력해주세요.');
+		return false;
+	}
+
+	if(insertForm.companyCode.value == '' || insertForm.companyCode.value == null) {
+		alert('거래처코드를 입력해주세요.');
+		return false;
+	}
+
+	return true;
+}
+
 // grid 
 const grid = new tui.Grid({
 	el : document.getElementById('ordDetGrid'),
@@ -121,7 +146,6 @@ const grid = new tui.Grid({
 			editor: {
 				type: CustomNumberEditor,
 				options: {
-					maxLength: 10
 				}
 			},
 			formatter: function(price) {
@@ -161,8 +185,36 @@ const grid = new tui.Grid({
 			}
 		}, 
 	],
+	summary: {
+		align : 'center',
+		height: 40,
+		position: 'bottom', // or 'top'
+		columnContent: {
+			productCode: {
+				template: function() {
+					return '합계';
+				}, 
+			},
+			supplyPrice: {
+				template: function(value) {
+					return priceFormat(value.sum);
+				}, 
+			},
+			tax: {
+				template: function(value) {
+					return priceFormat(value.sum);
+				}
+			},
+			totalSupplyPrice: {
+				template: function(value) {
+					document.querySelector('#totalOrdersPrice').value = value.sum;
+					return priceFormat(value.sum);
+				}
+			}
+		},
+	}
 })
-getProductList();
+// getProductList();
 
 // 수량 변경시 금액 자동 계산
 grid.on('afterChange', event => {
