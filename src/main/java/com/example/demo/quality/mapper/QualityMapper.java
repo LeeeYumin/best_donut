@@ -15,5 +15,6 @@ public interface QualityMapper {
 	public int insertMatQuality(MatQltyCheckVO vo);
 	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate); //LOT,등록날짜 검색
 	public List<Map<String, Object>> adminMatQuality(String matCode, String inoutDate); //자재코드, 입고날짜 select 
+	public int addMatQual(MatQltyCheckVO vo); 
 
 }

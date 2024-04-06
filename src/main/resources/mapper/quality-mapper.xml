@@ -4,7 +4,7 @@
 <mapper namespace="com.example.demo.quality.mapper.QualityMapper">
 
 
-<!-- 자재품질등록 /자재LOT코드(자재 상세s), 입고날짜/입고수량,발주코드(자재 입출 내역h) + 저장 버튼 기능  -->
+<!-- 자재품질등록 /자재LOT코드(자재 상세s), 입고날짜/입고수량,발주코드(자재 입출 내역h) + 저장 버튼 기능 -->
 <insert id="insertMatQuality" parameterType="MatQltyCheckVO">
 	INSERT INTO MAT_QLTY_CHECK
 				(
@@ -31,9 +31,17 @@
 				)
 </insert>
 
+<!-- 자재품질등록 / 등록 버튼 클릭시 목록에서 사라짐 + 재고수량 업데이트 -->
+<update id="addMatQual" parameterType="MatQltyCheckVO">
+	 UPDATE mat
+		SET STOCK_CNT = STOCK_CNT + #{goodCnt}
+		WHERE mat_code = #{matCode}
+</update>
+
 <!--  자재품질등록 / if : 자재LOT번호, 입고날짜 검색 -->
 <select id="getMatInfo" resultType="Map">
 	SELECT s.MAT_LOT_CODE "matLotCode"
+		, s.MAT_CODE "matCode"
        , h.INOUT_DATE "inputDate"
        , h.INOUT_CNT "inoutCnt"
        , 'IV1' "warehousingVehiclesCheck"

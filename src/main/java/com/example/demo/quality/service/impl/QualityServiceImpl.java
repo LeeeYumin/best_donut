@@ -21,7 +21,9 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public boolean insertMatQuality(List<MatQltyCheckVO> list) {
 		for(MatQltyCheckVO vo : list) {
-			qualityMapper.insertMatQuality(vo);
+			qualityMapper.insertMatQuality(vo);			
+			//등록 클릭하면 재고 수량에 update
+			qualityMapper.addMatQual(vo);
 		}
 		return true;
 	}
