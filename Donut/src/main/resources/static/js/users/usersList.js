@@ -9,7 +9,14 @@ class ColumnConverter1 {
       this.render(props);
   }
   render(props) {
-      this.el.innerText = props.formattedValue == 1 ? 'O' : 'X';
+      // this.el.innerText = props.formattedValue == 1 ? 'O' : '-';
+      this.el.setAttribute('style','font-size : 15px');
+
+      if(props.formattedValue == '1') {
+        this.el.setAttribute('class', 'bi bi-check-square-fill');
+      } else {
+        this.el.setAttribute('class', 'bi bi-dash');
+      }
   }
   getElement() {
       return this.el;
@@ -26,19 +33,25 @@ class ColumnConverter2 {
   }
   render(props) {
       this.el.innerText = props.formattedValue == 'USY' ? '활성' : '비활성';
+      this.el.setAttribute('style','font-size : 12px');
+
+      if(props.formattedValue == 'USY') {
+        this.el.setAttribute('class', 'badge bg-label-primary');
+      } else {
+        this.el.setAttribute('class', 'badge bg-label-secondary');
+      }
   }
   getElement() {
       return this.el;
   }
 }
 
-/*문자 변환 함수*/
 // function converter(value){
 //     let result;
-//     if(value=="USY"){
-//         result = "활성";
-//     }else if(value=="USN"){
-//         result="비활성";
+//     if(value == "USY") {
+//         result = 'class', 'badge bg-label-secondary';
+//     } else if(value == "USN"){
+//         result = 'class', 'badge bg-label-primary';
 //     }
 
 //     return result;
