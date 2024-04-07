@@ -14,5 +14,6 @@ public interface OrdersMapper {
 	public List<Map<String, Object>> getOrders(String ordersCode);			// 주문조회
 	public List<OrdersDetailVO> getOrdersDetail(String ordersCode);	// 주문상세조회
 	public int insertOrders(OrdersVO vo);
+	public int insertOrdDet(OrdersDetailVO vo);
 	
 }
