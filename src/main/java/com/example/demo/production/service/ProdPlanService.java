@@ -15,12 +15,13 @@ public interface ProdPlanService {
 	
 	//2.생산계획
 	//1)조회
-	public List<ProdPlanVO> getProdPlan();
+	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo);
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
 	
 	//2)등록
 	public int insertProdPlan(ProdPlanVO vo);
-	
+	//+상태수정
+	//public int updateProdReqStatus(String prodPlanCode);
 	
 	
 }

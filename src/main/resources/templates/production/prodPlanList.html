@@ -10,26 +10,73 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
+<style>
+	.paddingsize {
+		padding-bottom: 20px;
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	/* .form-control {
+		border-radius: 5px;
+	} */
+
+</style>
+
 </head>
 
 <body>
 <!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
-		<h2>생산계획 관리</h2>
-		<div style="padding-top: 30px;"></div>
-		
-		<h4>생산계획 총목록</h4>
-		<div id="plList"></div>
-		<div style="padding-top: 20px; padding-bottom: 20px;"></div>
-		
-		<h4>생산계획 상세목록</h4>
-		<div id="plAll"></div>
-		
+
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">생산관리 / </span> 생산계획 관리
+		</h3>
+		<!-- <h2>생산계획 관리</h2> -->
+		<!-- 검색 폼 -->
+		<div class="search">
+			<form name="searchForm" method="post">
+				<div class="card mb-4">
+					<h5 class="card-header">검색조건</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+						<div class="row mb-3">
+							<div class="row mb-3">
+								<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">계획일자</label>
+								<div class="col-sm-6 input-group">
+									<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
+									<span style="margin: 0 10px; padding-top: 10px;">-</span>
+									<input type="date" class="form-control" name="searchEndDate" id="searchEndDate">
+								</div>
+							</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">계획코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" name="prodPlanCode" id="prodPlanCode">
+							</div>
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
+							<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="card mb-3 paddingsize">
+			<div style="padding-top: 30px;"></div>
+			
+			<h4>생산계획 총목록</h4>
+			<div id="plList"></div>
+			<div style="padding-top: 20px; padding-bottom: 20px;"></div>
+			
+			<h4>생산계획 상세목록</h4>
+			<div id="plAll"></div>
+		</div>
+
+		<!-- script 태그 => 타임리프 div 안에서 작성 -->
 		<script src="/js/production/prodPlanList.js"></script>
-	
-		
-	
-	
+
 	</div>
 
 </body>

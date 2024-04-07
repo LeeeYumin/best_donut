@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.production.mapper.ProdPlanMapper">
 
-<!-- 생산요청 -->
+<!--생산요청 조회-->
 	<select id="getProdReq" resultType="ProdPlanBVO">
 		SELECT req_date 
 		     , prod_req_code
@@ -11,9 +11,10 @@
 		     , users_code
 		FROM prod_req
 		WHERE req_date BETWEEN SYSDATE - 8 AND SYSDATE
+		AND prod_req_status = 'RS1'
 	</select>
 
-<!-- 생산요청상세 -->	
+<!--생산요청상세 조회-->	
 	<select id="getProdReqDetail" resultType="ProdPlanBDeVO">
 		SELECT prod_req_code
 		     , prd.prod_req_detail_code
@@ -26,7 +27,7 @@
 	</select>
 	
 	
-<!-- 생산계획 -->
+<!-- 생산계획 조회-->
 	<select id="getProdPlan" resultType="ProdPlanVO">
 		SELECT prod_plan_code
      		 , prod_req_code
@@ -34,9 +35,27 @@
      		 , prod_plan_status
      		 , users_code
 		FROM prod_plan
-		ORDER BY 1
+		<include refid="condition"></include>
+		ORDER BY plan_date DESC
 	</select>
 
+<!-- 동적쿼리(검색) -->
+	<sql id="condition">
+	<where>
+			<if test="searchStartDate != null">
+				TRUNC(plan_date) <![CDATA[ >= ]]> TRUNC(#{searchStartDate}) 
+			</if>
+			<if test="searchEndDate != null">
+				AND TRUNC(plan_date) <![CDATA[ <= ]]> TRUNC(#{searchEndDate}) 
+			</if>
+			<if test="prodPlanCode != null and prodPlanCode != ''">
+				AND prod_plan_code LIKE '%' || UPPER(#{prodPlanCode}) || '%'
+			</if>
+    </where>
+	</sql>
+
+
+<!-- 생산계획상세 조회 -->
 	<select id="getProdPlanAll" resultType="ProdPlanAllVO" parameterType="String">
 		SELECT d.prod_plan_detail_code
 		     , p.prod_plan_code
@@ -53,7 +72,7 @@
 		ORDER BY 1
 	</select>
 
-	<!-- 생산계획등록 1건에 -->
+<!-- 생산계획 등록(1건) -->
 	<insert id="insertProdPlan" parameterType="ProdPlanVO">
 		<selectKey keyProperty="prodPlanCode"
 				   order="BEFORE"
@@ -75,13 +94,8 @@
 			, #{usersCode}
 			)
 	</insert>
-	<!-- 생산상세계획등록 여러 건 -->
+	<!--생산계획상세 등록(여러 건)  -->
 	<insert id="insertProdPlanDetail" parameterType="ProdPlanDeVO">
-		<selectKey keyProperty="prodPlanDetailCode"
-				   order="BEFORE"
-				   resultType="String">
-		 SELECT seq_func('prod_plan_detail') FROM dual
-		</selectKey>
 		INSERT INTO prod_plan_detail
 			( PROD_PLAN_DETAIL_CODE
      		 , PROD_PLAN_CODE
@@ -94,7 +108,7 @@
      		 , INSTRUCT_DONE_CNT 
      		 )
 		VALUES 
-			( #{prodPlanDetailCode}
+			( seq_func('prod_plan_detail')
 			, #{prodPlanCode}
 			, #{prodReqDetailCode}
 			, #{productCode}
@@ -105,6 +119,12 @@
 			, 0
 			)
 	</insert>
+	<!-- 생산계획등록 시 => 생산요청상태 수정 -->
+	<update id="updateProdReqStatus" parameterType="ProdPlanVO">
+		UPDATE prod_req
+		SET prod_req_status = 'RS2'
+		WHERE prod_req_code = #{prodReqCode}
+	</update>
 
 	
   	

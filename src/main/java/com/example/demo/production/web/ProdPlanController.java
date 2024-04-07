@@ -42,10 +42,10 @@ public class ProdPlanController {
 	}
 	
 	//생산계획
-	@GetMapping("/ajax/prodPlanList")
+	@PostMapping("/ajax/prodPlanList")
 	@ResponseBody
-	public List<ProdPlanVO> getProdPlanList(){
-		return prodPlanService.getProdPlan();
+	public List<ProdPlanVO> getProdPlanList(@RequestBody ProdPlanVO vo){
+		return prodPlanService.getProdPlan(vo);
 	}
 	//상세 데이터
 	@GetMapping("/ajax/prodPlanAll")	// fetch 함수에 들어가는 uri

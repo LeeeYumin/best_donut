@@ -89,18 +89,18 @@ getProdReq();
 			
 			//생산계획 상세 등록 행추가
 			let addRowBtn = document.getElementById('addRowBtn');
-			addRowBtn.addEventListener('click', function() {
-	    		/* plInsert.appendRow({planDate: new Date()}); */
-				plDeInsert.appendRow({
-					fixCnt: 1400, 
-					reqCnt: 0,
-					//생산요청 추가하고 행추가하면 XXXX
-					//planCnt: plDeInsert.getData()[0].fixCnt + plDeInsert.getData()[0].reqCnt,
-					//notInstructCnt: plDeInsert.getData()[0].planCnt,
-					//instructDoneCnt: 0
-				});
-	    		
+         addRowBtn.addEventListener('click', function() {
+             /* plInsert.appendRow({planDate: new Date()}); */
+            plDeInsert.appendRow({
+               fixCnt: 1400, 
+               reqCnt: 0,
+               //생산요청 추가하고 행추가하면 XXXX
+               //planCnt: plDeInsert.getData()[0].fixCnt + plDeInsert.getData()[0].reqCnt,
+               //notInstructCnt: plDeInsert.getData()[0].planCnt,
+               //instructDoneCnt: 0
+						})
 			});
+			
       //행 삭제
 			let delRowBtn = document.getElementById('delRowBtn');
 			delRowBtn.addEventListener('click', function() {
@@ -108,8 +108,14 @@ getProdReq();
 				if (rowKey != null) {
 					plDeInsert.removeRow(rowKey);
 					//plDeInsert.refreshLayout();
-				}else {
-					alert('삭제할 행을 선택하세요')
+					return;
+				}
+				//*수정하기
+				if(rowKey == null || rowKey == '') {
+					let lastRow = plDeInsert.getData().length-1;
+					console.log(lastRow);
+					console.log(rowKey);
+					plDeInsert.removeRow(lastRow);
 				}
 			});
 
@@ -181,7 +187,7 @@ getProdReq();
 				await fetch("/ajax/prodReq")
 				.then(res => res.json())
 				.then(res => {
-					console.log(res);
+					//console.log(res);
 
 					plreq.resetData(res.prodReq); //ServiceImpl에서 넘겨 준 변수명
 					plreqD.resetData(res.prodReqDe);
@@ -198,38 +204,28 @@ getProdReq();
 			});
 
       //생산요청 상세 => 생산계획 상세 (check된 값)
-			let addInputBtn = document.getElementById('addInputBtn');
-      addInputBtn.addEventListener('click', function() {
-        let checked = plreqD.getCheckedRows();
-				//반복문
-
+			plreqD.on('checkAll', function() {
+				let checked = plreqD.getCheckedRows();
 				for(let i=0; i < checked.length; i++) {
 					checked[i].fixCnt = 1400;
-					//checked[i].planCnt = checked[i].fixCnt + checked[i].reqCnt
-					//checked[i].notInstructCnt = checked[i].planCnt
-					//checked[i].instructDoneCnt = 0;
 				}
         plDeInsert.appendRows(checked);
-      })
-
-
-      // let addInputBtn = document.getElementById('addInputBtn');
-      // addInputBtn.addEventListener('click', function() {
-      //   let checked = plreqD.getCheckedRows();
-			// 	//console.log(checked);
-				
-			// 	for(i=0; i < plDeInsert.getData().length; i++) {
-			// 		//**한 개만 클릭하고 넣을 때도 되도록 나중에 수정하기
-			// 		if(plDeInsert.getData()[i].prodReqDetailCode == checked[i].prodReqDetailCode) {
-			// 			alert('이미 입력된 요청입니다.');
-			// 			return;
-			// 		}
-			// 	}
-      //   plDeInsert.appendRows(checked);
-      // });
-
-
-			
+			});
+			plreqD.on('check', function() {
+				let checked = plreqD.getCheckedRows();
+				for(let i=0; i < checked.length; i++) {
+					checked[i].fixCnt = 1400;
+				}
+        plDeInsert.appendRows(checked);
+			});
+			plreqD.on('uncheckAll', function() {
+				let checked = plreqD.getCheckedRows();
+				plDeInsert.resetData(checked);
+			});
+			plreqD.on('uncheck', function() {
+				let checked = plreqD.getCheckedRows();
+				plDeInsert.resetData(checked);
+			});
 
 			//생산계획+상세계획 등록
 			async function insertPlan() {
@@ -248,7 +244,7 @@ getProdReq();
 				})
 				.then(res => res.json())
 				.then(res => {
-					console.log(res);
+					//console.log(res);
 					alert('생산계획이 등록되었습니다.');
 					saveRes(res);
 				})
@@ -257,18 +253,40 @@ getProdReq();
 			//등록응답 (그리드에 입력된 모든 정보 비우기)
 			function saveRes(res) {
 				//plInsert.setValue(0, prodReqCode, '');
+				//getProdReq();
 				plDeInsert.resetData([]);
+				plreq.resetData([]);
+				plreqD.resetData([]);
 			}
 
 
-			//Modal
+			//제품코드 입력 Modal
+			let myModal = null;
+
 			plDeInsert.on("click", (e) => {
 				console.log(e);
 				if(e.columnName == 'productCode') {
-					document.getElementById('productModal')
+					myModal = new bootstrap.Modal('#modalCenter', {
+						keyboard: false
+					});
+					const modalToggle = document.getElementById('modalCenter'); 
+					myModal.show(modalToggle);
 				}
-
 			});
+			//닫기
+			function closemodal() {
+				const modalToggle = document.getElementById('modalCenter'); 
+				myModal.hide(modalToggle);
+			}
+			//등록
+			saveProduct.addEventListener('click', function() {
+				let pro = plDeInsert.getFocusedCell().rowKey;
+				if (pro != null) {
+					closemodal();
+					plDeInsert.setValue(pro, "productCode", document.querySelector('input[name="productCode"]:checked').value);
+				}
+			});
+			
 
 
 
