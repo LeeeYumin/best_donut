@@ -41,6 +41,11 @@
 	
 	<!-- 주문 등록 -->
 	<insert id="insertOrders" parameterType="OrdersVO">
+		<selectKey keyProperty="ordersCode"
+				   order="BEFORE"
+				   resultType="String">
+		 SELECT seq_func('orders') FROM dual
+		</selectKey>		
 		INSERT INTO orders
 			(
 				orders_code
@@ -53,13 +58,37 @@
 			)
 		VALUES 
 			(
-				seq_func('orders')
+				 #{ordersCode}
 				, #{ordersDate}
 				, #{dueDate}
 				, #{totalOrdersPrice}
 				, #{ordersStatus}
 				, #{usersCode}
 				, #{companyCode}
-			)			
+			)
+	</insert>
+	
+	<!-- 주문상세 등록 -->
+	<insert id="insertOrdDet" parameterType="OrdersDetailVO">	
+		INSERT INTO orders_detail
+			(
+				orders_detail_code
+				, orders_cnt
+				, supply_price
+				, tax
+				, total_supply_price
+				, orders_code
+				, product_code
+			)
+		VALUES
+			(
+				seq_func('orders_detail_code')
+				, #{ordersCnt}
+				, #{supplyPrice}
+				, #{tax}
+				, #{totalSupplyPrice}
+				, #{oCode}
+				, #{productCode}
+			)
 	</insert>
 </mapper>

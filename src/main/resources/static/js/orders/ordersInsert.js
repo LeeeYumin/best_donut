@@ -51,22 +51,21 @@ class CustomNumberEditor {
 // 1. FormData 방식
 async function saveInsert() {
 
-	
-	// form 내용 검증
-	if(!formValidation()){
+	// 입력값 검사
+	if(!inputValidation()){
 		return;
 	}
 	console.log('saveInsert()');
 	
 	let formData = new FormData(document.insertForm);
 
-  for (let data of formData) {
-      console.log(data[0]+ ', ' + data[1]); 
-  }
+	for (let data of formData) {
+		console.log(data[0]+ ', ' + data[1]); 
+	}
 
 	await fetch('ajax/insertOrders',{
 		method : 'post',
-    headers: formDataHeaders,
+    	headers: formDataHeaders,
 		body : formData
 	})
 	.then(res => res.json())
@@ -90,7 +89,7 @@ async function saveInsert1() {
 	
   await fetch('ajax/insertOrders',{
 		method : 'post',
-    headers: jsonHeaders,
+   		 headers: jsonHeaders,
 		body : JSON.stringify(param)
 	})
 	.then(res => res.json())
@@ -99,23 +98,51 @@ async function saveInsert1() {
   })
 }
 
-function formValidation() {
-	if(insertForm.ordersDate.value == '' || insertForm.ordersDate.value == null) {
-		alert('주문일자를 입력해주세요.');
+// 입력값 검사
+function inputValidation() {
+
+	// 1. 날짜 검사
+	const oDate = new Date(insertForm.ordersDate.value);	// 주문일자
+	const dDate = new Date(insertForm.dueDate.value);		// 납기일자
+	const dateDiff = dDate.getDate()-oDate.getDate()		// 리드타임(2주)
+
+	// 주문일자 검사
+	if(oDate == '' || oDate == null) {
+		Swal.fire('주문일자를 입력해주세요.');
 		return false;
 	}
 
-	if(insertForm.dueDate.value == '' || insertForm.dueDate.value == null) {
-		alert('납기일자를 입력해주세요.');
+	// 납기일자 검사
+	if(dDate == '' || dDate == null) {
+		Swal.fire('납기일자를 입력해주세요.');
 		return false;
 	}
 
+	// 리드타임 검사(2주)
+	if(dateDiff < 14) {
+		Swal.fire('납기일자는 주문일자로부터\n최소 2주 후 입니다.');
+		return false;
+	}
+
+	// 2. 거래처코드 검사
 	if(insertForm.companyCode.value == '' || insertForm.companyCode.value == null) {
-		alert('거래처코드를 입력해주세요.');
+		Swal.fire('거래처 코드를 입력해주세요.');
+		return false;
+	}
+
+	// 3. 주문금액 검사
+	if(insertForm.totalOrdersPrice.value == 0) {
+		Swal.fire('주문상세 정보를 입력해주세요.');
 		return false;
 	}
 
 	return true;
+}
+
+function resetInsert(){
+	insertForm.ordersDate.value = '';
+	insertForm.dueDate.value = '';
+	insertForm.companyCode.value = '';
 }
 
 // grid 
@@ -123,7 +150,7 @@ const grid = new tui.Grid({
 	el : document.getElementById('ordDetGrid'),
 	scrollX : false,
 	scrollY : true,
-	rowHeaders: ['checkbox'],
+	// rowHeaders: ['checkbox'],
 	header:[
 		align = 'center',
 	],
@@ -195,6 +222,11 @@ const grid = new tui.Grid({
 					return '합계';
 				}, 
 			},
+			ordersCnt: {
+				template: function(value) {
+					return priceFormat(value.sum);
+				}, 
+			},
 			supplyPrice: {
 				template: function(value) {
 					return priceFormat(value.sum);
@@ -232,3 +264,21 @@ grid.on('afterChange', event => {
 	
 })
 
+
+function resetOrdDet(){
+	grid.setColumnValues('ordersCnt',0);
+	grid.setColumnValues('supplyPrice',0);
+	grid.setColumnValues('tax',0);
+	grid.setColumnValues('totalSupplyPrice',0)
+}
+
+function ordDetTest() {
+	let list = [];
+	let orderCnt = grid.getColumnValues('ordersCnt');
+	for(let i = 0; i < grid.getRowCount(); i++){
+		if(orderCnt[i] != 0) {
+			list.push(grid.getRow(i))
+		}
+	}
+	console.log(list)
+}
