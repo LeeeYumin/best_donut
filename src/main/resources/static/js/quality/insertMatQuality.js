@@ -145,6 +145,13 @@ const grid = new tui.Grid({
       formatter: function(price) {
 				return priceFormat(price.value);
 			},
+    },
+    {
+      header : '자재코드',
+      name : 'matCode',
+      align : "center",
+      // nativeEvent : 'Event',
+      //hidden : true
     }
   ]
 });
@@ -166,7 +173,7 @@ function findMat() {
 
 //부적합기준(total) 변경 + 적합수량보다 많이 입력할 경우 알림
 grid.on('afterChange', event => {
-  console.log(event.changes[0]);
+  console.log(event.changes[0]); //0번째 배열에 정보가 들어있음
   let ev = event.changes[0];
   if (ev.value == 'IV2' || ev.value == 'PFY' || ev.value == 'PSN'){
     grid.setValue(ev.rowKey,'lastResult','MCN');
@@ -189,7 +196,7 @@ grid.on('afterChange', event => {
   }
 })
 
-//체크하고 저장
+//체크하고 등록하면 목록에서 사라지고 재고에 수량 업데이트
 async function insertMat() {
   const checkedRows = grid.getCheckedRows()
 
@@ -203,3 +210,4 @@ async function insertMat() {
       console.log(res);
     })
 }
+

@@ -19,4 +19,8 @@ public class MatQltyCheckVO {
 	private String lastResult;
 	private Integer goodCnt;
 	private String usersCode;
+	
+	//등록 버튼 클릭하면 수량 update
+	private Integer inoutCnt;
+	private String matCode;
 }
