@@ -20,7 +20,7 @@ public interface ProdPlanMapper {
 	
 	//2.생산계획
 	//1)조회
-	public List<ProdPlanVO> getProdPlan();
+	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo);
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
 	
 	//2)등록

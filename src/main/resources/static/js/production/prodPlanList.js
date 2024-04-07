@@ -69,16 +69,40 @@ getProdPlanList()
 			]
 		});
 		
-		// 생산계획 목록 조회(ajax)
+		// 생산계획 목록 조회(ajax) -검색포함
 		async function getProdPlanList(){
-			await fetch("/ajax/prodPlanList")
+
+			const startDate = document.getElementById('searchStartDate').value;
+			const endDate = document.getElementById('searchEndDate').value;
+			const planCode = document.getElementById('prodPlanCode').value;
+
+			const obj = {startDate, endDate, planCode};
+			console.log(obj);
+			
+			const data = {
+				method: 'POST',
+				headers: jsonHeaders,
+				body : JSON.stringify(obj)
+			};
+
+			await fetch("/ajax/prodPlanList", data)
 			.then(res => res.json())
 			.then(res => {
 				console.log(res);
-
 				plList.resetData(res);
 			})
 		};
+
+		//검색버튼
+		document.getElementById('searchBtn').addEventListener('click', getProdPlanList());
+		
+		//초기화버튼
+		document.getElementById('resetBtn').addEventListener('click', function() {
+			document.getElementById('searchStartDate').value = '';
+			document.getElementById('searchEndDate').value = '';
+			plList.resetData([]);
+			getProdPlanList();
+		});
 		
 		/* < 생산계획 상세 목록 > */
 		const plAll = new tui.Grid({
@@ -149,6 +173,7 @@ getProdPlanList()
 			})
 		};
 
+		
 
 
 		

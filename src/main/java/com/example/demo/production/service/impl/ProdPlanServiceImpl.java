@@ -41,8 +41,8 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 
 	//생산계획
 	@Override
-	public List<ProdPlanVO> getProdPlan() {
-		return prodPlanMapper.getProdPlan();
+	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo) {
+		return prodPlanMapper.getProdPlan(vo);
 	}
 	@Override
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode) {
