@@ -64,6 +64,22 @@
 
 #### 기술 스택
 
+
+>front
+
+-
+
+>back
+
+-
+
+>IDE & Tools
+
+-
+
 #### 프로젝트 규칙
 
+> merge & branch
+
+-
 
