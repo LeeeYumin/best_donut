@@ -22,4 +22,8 @@ public interface MaterialsMapper {
 	public List<MaterialOrderlVO> getMaterialOrders(MaterialOrderlVO vo);
 	
 	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes);
+	
+	public int updateMatOrderStatus();
+
+	public int updateMatOrderCancel(String[] matOrderCodes);
 }

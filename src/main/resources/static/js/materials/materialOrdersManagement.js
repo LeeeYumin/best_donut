@@ -9,10 +9,12 @@ class OrderStatusConverter {
 		this.render(props);
 	}
 	render(props) {
-		if (props.formattedValue == 'OSY') {
-			this.el.innerText = '입고';
+		if (props.formattedValue == 'OSP') {
+			this.el.innerText = '발주 진행 중';
 		} else if (props.formattedValue == 'OSN') {
 			this.el.innerText = '미입고';
+		} else if (props.formattedValue == 'OSY') {
+			this.el.innerText = '입고';
 		} else {
 			this.el.innerText = '발주 취소';
 		}
@@ -69,26 +71,27 @@ function getMaterialOrdersList() {
 	const eDate = document.getElementById('eDate').value;
 	const ordersStatus = document.querySelector("[name=ordersStatus]:checked").value;
 
-	console.log(sDate);
-	console.log(eDate);
-	console.log(jsonHeaders);
+	if (sDate != '' && eDate != '' && sDate > eDate) {
+		Swal.fire({
+			title: "시작일이 종료일보다 늦습니다.",
+			icon: "warning"
+		});
+	} else {
+		const searchreq = { sDate: sDate, eDate: eDate, ordersStatus: ordersStatus };
+		const data = {
+			method: 'POST',
+			headers: jsonHeaders,
+			body: JSON.stringify(searchreq)
+		};
 
-	const searchreq = {sDate: sDate, eDate: eDate, ordersStatus: ordersStatus};
-	const data = {
-		method: 'POST',
-		headers: jsonHeaders,
-		body : JSON.stringify(searchreq)
-	};
-
-	console.log(data);
-
-	fetch("/ajax/materialorders", data)
-		.then(res => res.json())
-		.then(res => {
-			// ajax로 불러온 데이터 그리드에 넣음
-			grid1.resetData(res);
-			console.log(res);
-		})
+		fetch("/ajax/materialorders", data)
+			.then(res => res.json())
+			.then(res => {
+				// ajax로 불러온 데이터 그리드에 넣음
+				grid1.resetData(res);
+				console.log(res);
+			})
+	}
 };
 
 // 검색 관련 함수  
@@ -229,7 +232,6 @@ grid1.on('checkAll', (ev) => {
 	getMaterialOrderDetailsList(matOrderCodes)
 });
 grid1.on('uncheckAll', (ev) => {
-	let matOrderCodes = createparam();
 	grid2.resetData([]);
 
 });
@@ -259,7 +261,7 @@ function getMaterialOrderDetailsList(matOrderCodes) {
 };
 
 // Param 만들기
-function createparam(){
+function createparam() {
 	let matOrderCodes = '';
 	for (i = 0; i < grid1.getCheckedRows().length; i++) {
 		//matOrderCodes.push(grid1.getCheckedRows()[i].matOrdersCode); // json 스트링으로 넘길 때
@@ -271,4 +273,48 @@ function createparam(){
 	}
 
 	return matOrderCodes;
+}
+
+// 발주 취소
+document.getElementById('cancelBtn').addEventListener('click', cancelOrder);
+
+// 발주 취소 기능
+function cancelOrder() {
+	if (grid1.getCheckedRows() == '') {
+		// alert('선택한 주문건이 없습니다.');
+		Swal.fire({
+			title: "선택된 주문건이 없습니다.",
+			icon: "warning"
+		});
+	} else if (checkOrderStatus()) {
+		let matOrderCodes = createparam();
+		console.log(matOrderCodes);
+		fetch("/ajax/matordercancel?" + matOrderCodes)
+			.then(res => res.json())
+			.then(res => {
+				// 발주 취소 후 발주 목록 업데이트
+				getMaterialOrdersList();
+				console.log(res);
+			})
+	} else {
+		// alert('취소할 수 없는 상태의 주문이 선택되었습니다.');
+		Swal.fire({
+			title: "취소 실패",
+			text: "취소할 수 없는 상태의 주문이 선택되었습니다.",
+			icon: "warning"
+		});
+	}
+}
+
+function checkOrderStatus() {
+	let able = true;
+	let checkdata = grid1.getCheckedRows();
+
+	for (let i = 0; i < checkdata.length; i++) {
+		if (checkdata[i].totalOrdersStatus != 'OSP') {
+			grid1.uncheck(checkdata[i].rowKey);
+			able = false;
+		}
+	}
+	return able;
 }

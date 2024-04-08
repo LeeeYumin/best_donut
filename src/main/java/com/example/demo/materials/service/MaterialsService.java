@@ -20,4 +20,7 @@ public interface MaterialsService {
 	
 	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes);
 
+	public int updateMatOrderStatus();
+	
+	public int updateMatOrderCancel(String[] matOrderCodes);
 }

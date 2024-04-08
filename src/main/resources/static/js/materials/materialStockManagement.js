@@ -161,11 +161,15 @@ grid1.on('click', (ev) => {
 })
 
 // 자재 상태 체크
-function checkMatStatus(){
+function checkMatStatus() {
 	for (i = 0; i < grid2.getCheckedRows().length; i++) {
-		if (grid2.getCheckedRows()[i].matStatus	== 'MSN') {
-			alert('이미 폐기된 자재가 선택되었습니다.')
-			grid2.uncheck([i])
+		if (grid2.getCheckedRows()[i].matStatus == 'MSN') {
+			// alert('이미 폐기된 자재가 선택되었습니다.')
+			Swal.fire({
+				title: "이미 폐기된 자재가 선택되었습니다.",
+				icon: "warning"
+			});
+			grid2.uncheck(i)
 		}
 	}
 }
@@ -179,19 +183,49 @@ grid2.on('checkAll', (ev) => {
 // 폐기 버튼 기능
 document.getElementById('disposeBtn').addEventListener('click', () => {
 	if (grid2.getCheckedRowKeys() == '') {
-		alert('선택한 자재가 없습니다.');
+		// alert('선택한 자재가 없습니다.');
+		Swal.fire({
+			title: "선택된 자재가 없습니다.",
+			icon: "warning"
+		});
 	} else {
-		if (confirm('정말로 폐기하시겠습니까?')) {
-			let matLotCodes = '';
-			for (i = 0; i < grid2.getCheckedRows().length; i++) {
-				if (i > 0) {
-					matLotCodes += "&";
+		Swal.fire({
+			title: "정말로 폐기하시겠습니까?",
+			text: "폐기한 자재는 더이상 사용하실 수 없습니다.",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "네, 폐기하겠습니다.",
+			reverseButtons: true
+		}).then((result) => {
+			if (result.isConfirmed) {
+				let matLotCodes = '';
+				for (i = 0; i < grid2.getCheckedRows().length; i++) {
+					if (i > 0) {
+						matLotCodes += "&";
+					}
+					matLotCodes += "matLotCodes=" + grid2.getCheckedRows()[i].matLotCode;
 				}
-				matLotCodes += "matLotCodes=" + grid2.getCheckedRows()[i].matLotCode;
+				console.log(matLotCodes);
+				disposeMat(matLotCodes);
+
+				Swal.fire({
+					title: "폐기 완료",
+					text: "선택한 자재가 폐기되었습니다.",
+					icon: "success"
+				});
 			}
-			console.log(matLotCodes);
-			disposeMat(matLotCodes);
-		}
+		});
+		// if (confirm('정말로 폐기하시겠습니까?')) {
+		// 	let matLotCodes = '';
+		// 	for (i = 0; i < grid2.getCheckedRows().length; i++) {
+		// 		if (i > 0) {
+		// 			matLotCodes += "&";
+		// 		}
+		// 		matLotCodes += "matLotCodes=" + grid2.getCheckedRows()[i].matLotCode;
+		// 	}
+		// 	console.log(matLotCodes);
+		// 	disposeMat(matLotCodes);
+		// }
 	}
 })
 
