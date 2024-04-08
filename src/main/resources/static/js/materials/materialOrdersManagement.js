@@ -301,7 +301,7 @@ function cancelOrder() {
 		Swal.fire({
 			title: "취소 실패",
 			text: "취소할 수 없는 상태의 주문이 선택되었습니다.",
-			icon: "warning"
+			icon: "error"
 		});
 	}
 }
