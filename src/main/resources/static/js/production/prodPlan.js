@@ -258,6 +258,9 @@ getProdReq();
 			function saveRes(res) {
 				//plInsert.setValue(0, prodReqCode, '');
 				//getProdReq();
+				console.log(res);
+
+				plInsert.setValue(0,"prodReqCode",'');
 				plDeInsert.resetData([]);
 				plreq.resetData([]);
 				plreqD.resetData([]);
