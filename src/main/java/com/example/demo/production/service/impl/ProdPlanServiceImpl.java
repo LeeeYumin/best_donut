@@ -22,7 +22,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	@Autowired ProdPlanMapper prodPlanMapper;
 
 	
-	//생산요청
+	/* < 생산요청 > */
 	@Override
 	public Map<String,Object> getProdReq() {
 		Map<String,Object> map = new HashMap<>();
@@ -39,7 +39,8 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	}
 
 
-	//생산계획
+	/* < 생산계획 > */
+	//1)조회
 	@Override
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo) {
 		return prodPlanMapper.getProdPlan(vo);
@@ -49,17 +50,16 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 		return prodPlanMapper.getProdPlanAll(prodPlanCode);
 	}
 
-
-	//등록
+	//2)등록
 	@Override
 	@Transactional
 	public int insertProdPlan(ProdPlanVO vo) {
 		//생산계획
 		prodPlanMapper.insertProdPlan(vo);
-		//생산요청상태 update
+		//생산요청 상태 update
 		prodPlanMapper.updateProdReqStatus(vo);
 		
-		//생산계획상세
+		//생산계획 상세
 		int result = 0;
 		for(int i = 0; i < vo.getDvo().size(); i++) {
 			ProdPlanDeVO devo = vo.getDvo().get(i);
@@ -67,9 +67,45 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 			devo.setProdPlanCode(vo.getProdPlanCode()); //생산계획코드
 			result = prodPlanMapper.insertProdPlanDetail(devo);
 		}
+		return result;
+	}
+
+	//3)수정
+	@Override
+	public int updateProdPlanDetail(List<ProdPlanDeVO> dvo) {
+		int result = 0;
+		
+		for(int i=0; i < dvo.size(); i++) {
+			result = prodPlanMapper.updateProdPlanDetail(dvo.get(i));
+		}
 		
 		return result;
 	}
+
+	//4)삭제
+	@Override
+	@Transactional
+	
+	public int deleteProdPlan(ProdPlanVO vo) {
+
+		//생산계획 상세
+		int result = 0;
+		for(int i = 0; i < vo.getDvo().size(); i++) {
+			ProdPlanDeVO dvo = vo.getDvo().get(i);
+			
+			dvo.setProdPlanCode(vo.getProdPlanCode()); //생산계획코드
+			result = prodPlanMapper.deleteProdPlanDetail(dvo);
+		}
+		
+		//생산계획 (상세 삭제 후)
+		prodPlanMapper.deleteProdPlan(vo);
+		//생산요청 상태 수정
+		prodPlanMapper.cancelProdReqStatus(vo);
+		
+		return result;
+	}
+
+
 
 
 

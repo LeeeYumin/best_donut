@@ -13,12 +13,12 @@ import com.example.demo.production.ProdPlanVO;
 @Mapper
 public interface ProdPlanMapper {
 
-	//1.생산요청
+	/* 1.생산요청 */
 	public List<ProdPlanBVO> getProdReq();
 	public List<ProdPlanBVO> getProdReqDetail(String prodReqCode);
 	
 	
-	//2.생산계획
+	/* 2.생산계획 */
 	//1)조회
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo);
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
@@ -28,5 +28,16 @@ public interface ProdPlanMapper {
 	public int insertProdPlanDetail(ProdPlanDeVO dvo); //여러 건
 	//+ 생산요청상태 수정
 	public int updateProdReqStatus(ProdPlanVO vo);
+
+	//3)수정
+	public int updateProdPlanDetail(ProdPlanDeVO dvo);
+
+	//4)삭제
+	public int deleteProdPlan(ProdPlanVO vo); //1건에
+	public int deleteProdPlanDetail(ProdPlanDeVO dvo); //여러 건
+	//+ 생산요청상태 수정
+	public int cancelProdReqStatus(ProdPlanVO vo);
+
+	
 
 }

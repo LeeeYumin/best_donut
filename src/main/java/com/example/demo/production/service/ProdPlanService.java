@@ -20,8 +20,10 @@ public interface ProdPlanService {
 	
 	//2)등록
 	public int insertProdPlan(ProdPlanVO vo);
-	//+상태수정
-	//public int updateProdReqStatus(String prodPlanCode);
 	
+	//3)수정
+	public int updateProdPlanDetail(List<ProdPlanDeVO> dvo); //updatedRows 배열
 	
+	//4)삭제
+	public int deleteProdPlan(ProdPlanVO vo);
 }
