@@ -8,4 +8,6 @@ public class MaterialVO {
 	private String matName;
 	private Integer stockCnt;
 	private Integer safeStockCnt;
+	
+	private Integer unitPrice;
 }

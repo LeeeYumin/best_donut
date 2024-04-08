@@ -89,6 +89,7 @@ function getMaterialOrdersList() {
 			.then(res => {
 				// ajax로 불러온 데이터 그리드에 넣음
 				grid1.resetData(res);
+				grid2.resetData([]);
 				console.log(res);
 			})
 	}
@@ -183,15 +184,21 @@ const grid2 = new tui.Grid({
 		}
 	],
 	summary: {
+		align: 'center',
 		height: 40,
 		position: 'bottom', // or 'top'
 		columnContent: {
+			ordersDate: {
+				template: function () {
+					return '합계';
+				},
+			},
 			matOrdersPrice: {
-				template: function (valueMap) {
-					return `합계: ${priceFormat(valueMap.sum)}원`;
-				}
-			}
-		}
+				template: function (value) {
+					return priceFormat(value.sum) + '원';
+				},
+			},
+		},
 	},
 	contextMenu: ({ rowKey, columnName }) => [
 		[
@@ -301,7 +308,7 @@ function cancelOrder() {
 		Swal.fire({
 			title: "취소 실패",
 			text: "취소할 수 없는 상태의 주문이 선택되었습니다.",
-			icon: "warning"
+			icon: "error"
 		});
 	}
 }
