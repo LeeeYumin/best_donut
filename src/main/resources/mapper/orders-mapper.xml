@@ -43,10 +43,8 @@
 	
 	<!-- 주문 등록 -->
 	<insert id="insertOrders" parameterType="OrdersVO">
-		<selectKey keyProperty="ordersCode"
-				   order="BEFORE"
-				   resultType="String">
-		 SELECT seq_func('orders') FROM dual
+		<selectKey keyProperty="ordersCode" order="BEFORE" resultType="String">
+		 	SELECT seq_func('orders') FROM dual
 		</selectKey>		
 		INSERT INTO orders
 			(
@@ -132,19 +130,26 @@
 		          , c.company_name
 		          , u.users_name
 		          , CASE WHEN t.cnt = 1 THEN t.p_name ELSE t.p_name || ' 외 ' || CAST(t.cnt - 1 AS VARCHAR(20)) || '건' END
+		ORDER BY 1
 		 
 	</select>
 	
-	<!-- 주간 총 주문량 조회 -->
-	<select id="weekOrdCnt" parameterType="String">
-		SELECT p.product_code
-			   p.product_name
-		       , SUM(d.orders_cnt) sum
-		  FROM orders_detail d JOIN product p
-		                       ON   d.product_code = p.product_code
-		                       JOIN orders o
-		                       ON   o.orders_code = d.orders_code
-		 GROUP BY p.product_code
-		 		  , p.product_name;
-	</select>
+	<!-- 생산요청 등록 -->
+	<!--<insert id="insertProdReq" parameterType="ProdReqVO">
+		<selectKey keyProperty="prodReqCode" order="BEFORE" resultType="String">
+			SELECT seq_func('prod_req') FROM dual
+		</selectKey>
+	  	INSERT INTO prod_req
+			(
+				prodReqCode
+				, totalReqCnt
+				, reqDate
+				, usersCode
+				, prodReqStatus
+			)
+		VALUES
+			(
+
+			)
+	</insert>-->
 </mapper>
