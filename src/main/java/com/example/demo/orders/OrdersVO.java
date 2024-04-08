@@ -1,6 +1,7 @@
 package com.example.demo.orders;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,5 +27,7 @@ public class OrdersVO {
 	private String ordersStatus;
 	private String usersCode;
 	private String companyCode;
+	
+	private List<OrdersDetailVO> ordDetList;
 	
 }
