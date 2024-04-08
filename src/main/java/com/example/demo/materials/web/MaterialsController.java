@@ -3,6 +3,7 @@ package com.example.demo.materials.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +55,10 @@ public class MaterialsController {
 		return "materials/materialOrders"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
 	
+	// 생산계획서 확인 후 BOM 계산.
+	
+	//
+	
 	// 자재 발주 목록 페이지 이동
 	@RequestMapping("/materials/ordersList")
 	public String ordersList() {
@@ -72,6 +77,13 @@ public class MaterialsController {
 	@ResponseBody
 	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes) {
 		return materialsService.getMaterialOrderDetail(matOrderCodes);
+	}
+	
+	// 발주 취소
+	@GetMapping("/ajax/matordercancel")
+	@ResponseBody
+	public int updateMatOrderCancel(String[] matOrderCodes) {
+		return materialsService.updateMatOrderCancel(matOrderCodes);	
 	}
 	
 	// 자재 입고 등록 페이지 이동

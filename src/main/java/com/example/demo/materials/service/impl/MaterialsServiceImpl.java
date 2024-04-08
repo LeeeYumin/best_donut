@@ -45,4 +45,14 @@ public class MaterialsServiceImpl implements MaterialsService {
 		return materialsMapper.getMaterialOrderDetail(matOrderCodes);
 	}
 
+	@Override
+	public int updateMatOrderStatus() {
+		return materialsMapper.updateMatOrderStatus();
+	}
+
+	@Override
+	public int updateMatOrderCancel(String[] matOrderCodes) {
+		return materialsMapper.updateMatOrderCancel(matOrderCodes);
+	}
+
 }

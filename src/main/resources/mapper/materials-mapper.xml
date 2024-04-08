@@ -39,12 +39,12 @@
    		UPDATE mat_detail
 		   SET mat_status = 'MSN'
 		   
-		 <if test="matLotCodes != null and matLotCodes.length > 0">
-                  WHERE mat_lot_code IN
-         		<foreach collection="matLotCodes" item="matLotCode" open="(" close=")" separator=",">
-                        #{matLotCode}
-         		</foreach>
-      		</if>
+		<if test="matLotCodes != null and matLotCodes.length > 0">
+         WHERE mat_lot_code IN
+        	<foreach collection="matLotCodes" item="matLotCode" open="(" close=")" separator=",">
+         		#{matLotCode}
+        	</foreach>
+      	</if>
    	</update>
 
    	<!-- 자재 발주 관리 -->
@@ -101,5 +101,23 @@
 				</foreach>
 				</if>
    	</select>
-   
+   	
+   	<update id="updateMatOrderStatus" parameterType="String">
+   		UPDATE mat_orders
+		   SET total_orders_status = 'OSN'
+		 WHERE (sysdate - orders_date) * 24 >= 1
+		   AND total_orders_status = 'OSP'
+   	</update>
+   	
+   	<update id="updateMatOrderCancel" parameterType="String">
+   		UPDATE mat_orders
+		   SET total_orders_status = 'OSC'
+		
+		<if test="matOrderCodes != null and matOrderCodes.length > 0">
+         WHERE mat_orders_code IN
+        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=")" separator=",">
+         		#{matOrderCode}
+        	</foreach>
+      	</if>
+   	</update>
 </mapper>
