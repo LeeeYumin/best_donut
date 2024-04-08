@@ -51,8 +51,12 @@ public class MaterialsServiceImpl implements MaterialsService {
 	}
 
 	@Override
+	public int updateMatOrdersDetailStatus() {
+		return materialsMapper.updateMatOrdersDetailStatus();
+	}
+
+	@Override
 	public int updateMatOrderCancel(String[] matOrderCodes) {
 		return materialsMapper.updateMatOrderCancel(matOrderCodes);
 	}
-
 }

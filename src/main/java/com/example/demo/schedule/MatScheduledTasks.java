@@ -16,5 +16,6 @@ public class MatScheduledTasks {
 	@Scheduled(cron = "0 0 9-18/1 ? * MON-FRI")
 	public void updateOrderStatus() {
 		materialsService.updateMatOrderStatus();
+		materialsService.updateMatOrdersDetailStatus();
 	}
 }

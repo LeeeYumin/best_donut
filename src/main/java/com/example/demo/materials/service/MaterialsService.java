@@ -22,5 +22,7 @@ public interface MaterialsService {
 
 	public int updateMatOrderStatus();
 	
+	public int updateMatOrdersDetailStatus();
+	
 	public int updateMatOrderCancel(String[] matOrderCodes);
 }
