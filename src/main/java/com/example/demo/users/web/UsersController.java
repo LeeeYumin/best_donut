@@ -31,16 +31,16 @@ public class UsersController {
 	}
 	
 	// 등록
-//	@GetMapping("insertUsers")
-//	public String insertUsers(Model model) {
-//		model.addAttribute("us")
-//		return "users/insertUsers";
-//	}
-//	
-//	@PostMapping("/ajax/userslist")
-//	@ResponseBody
-//	public List<UsersVO> getUsers(@RequestBody UsersVO vo) {
-//		return usersService.getUsers(vo);
-//	}
+	@GetMapping("insertusers")
+	public String insertUsers(Model model, UsersVO vo) {
+		model.addAttribute("usersList", usersService.getUsers(vo));
+		return "users/insertUsers";
+	}
+	
+	@PostMapping("/ajax/insertusers")
+	@ResponseBody
+	public int insertUsers(UsersVO vo) {
+		return usersService.insertUsers(vo);
+	}
 	
 }

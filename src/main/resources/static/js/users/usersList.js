@@ -9,7 +9,14 @@ class ColumnConverter1 {
       this.render(props);
   }
   render(props) {
-      this.el.innerText = props.formattedValue == 1 ? 'O' : 'X';
+      // this.el.innerText = props.formattedValue == 1 ? 'O' : '-';
+      this.el.setAttribute('style','font-size : 15px');
+
+      if(props.formattedValue == '1') {
+        this.el.setAttribute('class', 'bi-check-circle-fill');
+      } else {
+        this.el.setAttribute('class', 'bi bi-dash');
+      }
   }
   getElement() {
       return this.el;
@@ -26,19 +33,25 @@ class ColumnConverter2 {
   }
   render(props) {
       this.el.innerText = props.formattedValue == 'USY' ? '활성' : '비활성';
+      this.el.setAttribute('style','font-size : 12px');
+
+      if(props.formattedValue == 'USY') {
+        this.el.setAttribute('class', 'badge bg-label-primary');
+      } else {
+        this.el.setAttribute('class', 'badge bg-label-secondary');
+      }
   }
   getElement() {
       return this.el;
   }
 }
 
-/*문자 변환 함수*/
 // function converter(value){
 //     let result;
-//     if(value=="USY"){
-//         result = "활성";
-//     }else if(value=="USN"){
-//         result="비활성";
+//     if(value == "USY") {
+//         result = 'class', 'badge bg-label-secondary';
+//     } else if(value == "USN"){
+//         result = 'class', 'badge bg-label-primary';
 //     }
 
 //     return result;
@@ -75,31 +88,31 @@ const grid = new tui.Grid({
       align: 'center'
     },
     {
-      header: '영업',
+      header: '영업관리',
       name: 'perm1',
       align: 'center',
       renderer: {type: ColumnConverter1}
     },
     {
-      header: '생산',
+      header: '생산관리',
       name: 'perm2',
       align: 'center',
       renderer: {type: ColumnConverter1}
     },
     {
-      header: '자재',
+      header: '자재관리',
       name: 'perm3',
       align: 'center',
       renderer: {type: ColumnConverter1}
     },
     {
-      header: '품질',
+      header: '품질관리',
       name: 'perm4',
       align: 'center',
       renderer: {type: ColumnConverter1}
     },
     {
-      header: '설비',
+      header: '설비관리',
       name: 'perm5',
       align: 'center',
       renderer: {type: ColumnConverter1}
@@ -145,7 +158,7 @@ const grid = new tui.Grid({
 			}; */
 			
 getUsersList();
-async function getUsersList(){
+async function getUsersList() {
   const keyword = document.getElementById('keyword').value;
   const permList = document.querySelectorAll("[name=perm]:checked");
   const status = document.querySelector("[name=status]:checked").value;
@@ -211,8 +224,10 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 	getUsersList();
 });
 
+
 // 검색버튼
 document.getElementById('searchBtn').addEventListener('click', getUsersList);
+
 
 // 체크박스
 document.getElementById('perm').addEventListener('click', checkAll);
