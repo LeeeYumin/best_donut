@@ -17,5 +17,4 @@ public class OrdersDetailVO {
 	private Integer totalSupplyPrice;
 	
 	private String productName;
-	private OrdersVO ordersVO;
 }

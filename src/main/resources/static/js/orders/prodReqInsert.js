@@ -139,6 +139,9 @@ const prodGrid = new tui.Grid({
       formatter: function(cnt) {
 				return priceFormat(cnt.value);
 			},
+      editor: {
+        type: 'text',
+      }
 		}, 
 	],
 })
@@ -171,6 +174,9 @@ const reqGrid = new tui.Grid({
       formatter: function(cnt) {
 				return priceFormat(cnt.value);
 			},
+      editor: {
+        type: 'text',
+      }
 		},
 	],
   summary: {
@@ -243,7 +249,6 @@ function getReqList() {
   reqGrid.resetData(prodReqlist);
   insertProdReq()
 }
-
 
 // 3. 등록 기능
 function insertProdReq() {
