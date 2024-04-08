@@ -151,7 +151,14 @@ const grid = new tui.Grid({
       name : 'matCode',
       align : "center",
       // nativeEvent : 'Event',
-      //hidden : true
+      hidden : true
+    },
+    {
+      header : '자재입출코드',
+      name : 'matInoutCode',
+      align : "center",
+      // nativeEvent : 'Event',
+      hidden : true
     }
   ]
 });

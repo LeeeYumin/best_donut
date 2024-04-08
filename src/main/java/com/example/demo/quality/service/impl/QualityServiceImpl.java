@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.quality.MatQltyCheckVO;
+import com.example.demo.quality.ProQltyVO;
 import com.example.demo.quality.QualityVO;
 import com.example.demo.quality.mapper.QualityMapper;
 import com.example.demo.quality.service.QualityService;
@@ -24,6 +25,7 @@ public class QualityServiceImpl implements QualityService {
 			qualityMapper.insertMatQuality(vo);			
 			//등록 클릭하면 재고 수량에 update
 			qualityMapper.addMatQual(vo);
+			qualityMapper.addMatQual2(vo);
 		}
 		return true;
 	}
@@ -36,6 +38,11 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public List<Map<String, Object>> adminMatQuality(String matCode, String inoutDate) {
 		return qualityMapper.adminMatQuality(matCode, inoutDate); //자재품질관리
+	}
+
+	@Override
+	public int insertProQuality(ProQltyVO pvo) {
+		return qualityMapper.insertProQuality(pvo); //
 	}
 
 
