@@ -3,7 +3,6 @@ package com.example.demo.materials.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,24 +40,23 @@ public class MaterialsController {
 	public List<MaterialReadVO> getMaterialLots(String matCode) {
 		return materialsService.getMaterialDetails(matCode);
 	}
-	
+
 	// 자재 상태(정상 -> 폐기) 변경
 	@GetMapping("/ajax/disposeMat")
 	@ResponseBody
 	public int updateMatStatus(String[] matLotCodes) {
 		return materialsService.updateMatStatus(matLotCodes);
 	}
-	
+
 	// 자재 발주 등록 페이지 이동
 	@RequestMapping("/materials/orders")
 	public String orders() {
 		return "materials/materialOrders"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
 	
-	// 생산계획서 확인 후 BOM 계산.
+	// 자재 발주 등록
 	
-	//
-	
+
 	// 자재 발주 목록 페이지 이동
 	@RequestMapping("/materials/ordersList")
 	public String ordersList() {
@@ -68,24 +66,24 @@ public class MaterialsController {
 	// 자재 발주 목록 조회(ajax)
 	@RequestMapping("/ajax/materialorders")
 	@ResponseBody
-	public List<MaterialOrderlVO> getMaterialOrders(@RequestBody MaterialOrderlVO vo){
+	public List<MaterialOrderlVO> getMaterialOrders(@RequestBody MaterialOrderlVO vo) {
 		return materialsService.getMaterialOrders(vo);
 	}
-	
+
 	// 발주서 미리보기(ajax)
 	@GetMapping("/ajax/matorderdetail")
 	@ResponseBody
 	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes) {
 		return materialsService.getMaterialOrderDetail(matOrderCodes);
 	}
-	
+
 	// 발주 취소
 	@GetMapping("/ajax/matordercancel")
 	@ResponseBody
 	public int updateMatOrderCancel(String[] matOrderCodes) {
-		return materialsService.updateMatOrderCancel(matOrderCodes);	
+		return materialsService.updateMatOrderCancel(matOrderCodes);
 	}
-	
+
 	// 자재 입고 등록 페이지 이동
 	@RequestMapping("/materials/warehousing")
 	public String warehousing() {

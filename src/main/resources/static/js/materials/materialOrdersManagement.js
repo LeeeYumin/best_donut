@@ -89,6 +89,7 @@ function getMaterialOrdersList() {
 			.then(res => {
 				// ajax로 불러온 데이터 그리드에 넣음
 				grid1.resetData(res);
+				grid2.resetData([]);
 				console.log(res);
 			})
 	}
@@ -183,15 +184,21 @@ const grid2 = new tui.Grid({
 		}
 	],
 	summary: {
+		align: 'center',
 		height: 40,
 		position: 'bottom', // or 'top'
 		columnContent: {
+			ordersDate: {
+				template: function () {
+					return '합계';
+				},
+			},
 			matOrdersPrice: {
-				template: function (valueMap) {
-					return `합계: ${priceFormat(valueMap.sum)}원`;
-				}
-			}
-		}
+				template: function (value) {
+					return priceFormat(value.sum) + '원';
+				},
+			},
+		},
 	},
 	contextMenu: ({ rowKey, columnName }) => [
 		[
