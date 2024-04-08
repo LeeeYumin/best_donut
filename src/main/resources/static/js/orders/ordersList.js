@@ -14,12 +14,12 @@ const grid1 = new tui.Grid({
 	columns : [ 
 		{
 			header : '주문코드',
-			name : 'ORDERS_CODE',
+			name : 'ordersCode',
 			align : 'center',
 		}, 
 		{
 			header : '주문일자',
-			name : 'ORDERS_DATE',
+			name : 'ordersDate',
 			align : 'center',
 
 			formatter: function(date) {
@@ -28,15 +28,20 @@ const grid1 = new tui.Grid({
 		}, 
 		{
 			header : '납기일자',
-			name : 'DUE_DATE',
+			name : 'dueDate',
 			align : 'center',
 			formatter: function(date) {
 				return dateFormat(date);
 			}
 		}, 
 		{
+      header : '주문제품',
+      name : 'cntStr',
+      align : 'center',
+    }, 
+		{
 			header : '총주문금액',
-			name : "TOTAL_ORDERS_PRICE",
+			name : "totalOrdersPrice",
 			align : 'center',
 			formatter: function(price) {
 				return priceFormat(price.value);
@@ -44,17 +49,17 @@ const grid1 = new tui.Grid({
 		}, 
 		{
 			header : '주문상태',
-			name : 'ORDERS_STATUS',
+			name : 'ordersStatus',
 			align : 'center',
 		}, 
 		{
 			header : '담당자명',
-			name : 'USERS_NAME',
+			name : 'usersName',
 			align : 'center',
 		}, 
 		{
 			header : '거래처명',
-			name : 'COMPANY_NAME',
+			name : 'companyName',
 			align : 'center',
 		},
 	]
@@ -91,7 +96,7 @@ function searchReset() {
 
 // 주문상세 목록 띄우기
 grid1.on('click', (event) => {
-	let ordersCode = grid1.getValue(event.rowKey, 'ORDERS_CODE')
+	let ordersCode = grid1.getValue(event.rowKey, 'ordersCode')
 	getOrdersDetail(ordersCode);
 })
 
@@ -162,13 +167,10 @@ const grid2 = new tui.Grid({
 
 // 주문 상세 조회(ajax)
 function getOrdersDetail(ordersCode){
-	console.log('ordersCode : ' + ordersCode);
 	fetch(`ajax/ordersDetail?ordersCode=${ordersCode}`)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
-
-		console.log('res : ', res);
 		grid2.resetData(res);
 	})
 };

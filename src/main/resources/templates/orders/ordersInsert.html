@@ -31,34 +31,43 @@
 								<input type="text" class="form-control" id="ordersCode" name="ordersCode">
 							</div>
 						</div> -->
+
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문일자</label>
 							<div class="col-sm-6">
 								<input type="date" class="form-control" name="ordersDate">
               </div>
 						</div>
+
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
 							<div class="col-sm-6 input-group">
 								<input type="date" class="form-control" name="dueDate">
 							</div>
 						</div>
+
             <div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">총주문금액</label>
 							<div class="col-sm-6 input-group">
 								<input type="number" class="form-control" name="totalOrdersPrice" id="totalOrdersPrice" readonly>
 							</div>
 						</div>
-            <div class="row mb-3">
+
+           	<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처코드</label>
 							<div class="col-sm-6 input-group">
 								<input type="text" class="form-control" name="companyCode">
 							</div>
 						</div>
-            <!-- 버튼 -->
+						
+						<div id="defaultFormControlHelp" class="form-text">
+							  
+						</div>
+            
+						<!-- 버튼 -->
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="saveInsert()">등록</button>
-							<button type="button" class="btn btn-primary" id="resetBtn" onclick="resetInsert()">초기화</button>
+							<button type="button" class="btn btn-primary" id="resetOrdBtn" onclick="resetInsert()">초기화</button>
 						</div>
 					</div>
 				</div>
@@ -69,9 +78,13 @@
 		<div class="ordDetGrid">
 			<div class="card">
 				<!-- 주문 목록 -->
-				<h5 class="card-header">주문상세정보 입력</h5>
+				<h5 class="card-header col-sm-6">주문상세정보 입력</h5>
 				<div class="card-body demo-vertical-spacing demo-only-element">
 					<div id="ordDetGrid"></div>
+				</div>
+				<div class="card-header">
+					<button type="button" class="btn btn-primary" id="resetOrdDetBtn" onclick="ordDetTest()">테스트</button>
+					<button type="button" class="btn btn-primary" id="resetOrdDetBtn" onclick="resetOrdDet()">초기화</button>
 				</div>
 			</div>
 		</div>

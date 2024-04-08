@@ -15,7 +15,7 @@ getProdPlanList()
 				return this.el;
 			}
 		}
-		//생산요청 없음
+		//생산요청코드 없으면 '-'로 표시
 		class ProdReqCode {
 			constructor(props) {
 				const el = document.createElement('div');
@@ -31,6 +31,7 @@ getProdPlanList()
 			}
 		}
 
+		/* < 생산계획 목록 > */
 		const plList = new tui.Grid({
 			el : document.getElementById('plList'),
 			scrollX : false,
@@ -68,19 +69,42 @@ getProdPlanList()
 			]
 		});
 		
-		// 생산계획 총 목록 조회(ajax)
-
+		// 생산계획 목록 조회(ajax) -검색포함
 		async function getProdPlanList(){
-			await fetch("/ajax/prodPlanList")
+
+			const startDate = document.getElementById('searchStartDate').value;
+			const endDate = document.getElementById('searchEndDate').value;
+			const planCode = document.getElementById('prodPlanCode').value;
+
+			const obj = {startDate, endDate, planCode};
+			console.log(obj);
+			
+			const data = {
+				method: 'POST',
+				headers: jsonHeaders,
+				body : JSON.stringify(obj)
+			};
+
+			await fetch("/ajax/prodPlanList", data)
 			.then(res => res.json())
 			.then(res => {
 				console.log(res);
-
 				plList.resetData(res);
 			})
 		};
+
+		//검색버튼
+		document.getElementById('searchBtn').addEventListener('click', getProdPlanList());
 		
-		//
+		//초기화버튼
+		document.getElementById('resetBtn').addEventListener('click', function() {
+			document.getElementById('searchStartDate').value = '';
+			document.getElementById('searchEndDate').value = '';
+			plList.resetData([]);
+			getProdPlanList();
+		});
+		
+		/* < 생산계획 상세 목록 > */
 		const plAll = new tui.Grid({
 			el : document.getElementById('plAll'),
 			scrollX : false,
@@ -131,6 +155,8 @@ getProdPlanList()
 				
 			]
 		});
+
+		//생산계획 클릭 시 아래 생산계획상세내용 출력
 		plList.on("click", (e) => {
 			let plCode = plList.getValue(e.rowKey, "prodPlanCode")
 			getProdPlanAll(plCode);        
@@ -147,6 +173,7 @@ getProdPlanList()
 			})
 		};
 
+		
 
 
 		

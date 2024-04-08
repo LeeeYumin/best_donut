@@ -11,15 +11,24 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style>
-.btn-addrow,
+
 .btn-addinput,
 .btn-insert {
 	width: 60px;
 	margin-left: auto; /* display:flex 적용되어 있어 float: right X */
+	/* margin-top: 10px; */
 }
+.btn-addrow,
 .btn-delrow {
 	width: 60px;
 	float: right;
+	/* margin-left: auto; */
+}
+h4 {
+	margin-bottom: 0;
+}
+.pt30 {
+	padding-top: 30px;
 }
 
 </style>
@@ -29,31 +38,46 @@
 	<!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
 	
-		<h2>생산계획 등록</h2>
-		<div style="padding-top: 30px;"></div>
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">생산관리 / </span> 생산계획 등록
+		</h3>
+
+		<!-- <h2>생산계획 등록</h2> -->
+		<div class="card mb-3" style="padding-bottom: 20px">
+		<div class="pt30"></div>
 		
+		<h4>생산계획</h4>
 		<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertPlan()">등록</button>
-		
 		<div id="plInsert" style="padding-bottom: 30px;"></div>
 
-		<button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
-		<button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">행삭제</button>		
+		<h4>생산계획 상세</h4>
+		<span>
+		 <button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">행삭제</button>		
+		 <button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
+		</span>
 		<div id="plDeInsert"></div>
 
-		<div style="padding-top: 50px;"></div>
-		<h4>주간 생산요청</h4>
-		<button type="button" class="btn btn-primary btn-sm btn-addinput" id="addInputBtn">입력</button>
-		<div id="plreq"></div>
-		<div id="plreqD" style="padding-top: 20px; padding-bottom: 10px"></div>
+		</div>
+
+		<div style="padding-top: 80px;"></div>
 		
+		<div class="card mb-3">
+		 <div class="pt30"></div>
+		 <h4>주간 생산요청 목록</h4>
+		 <h5 class="pt30">생산요청</h5>
+		 <div id="plreq"></div>
+		 <h5 class="pt30">생산요청상세</h5>
+		 <div id="plreqD"></div>
+
+		</div>
 		
+
+		 
 		<!-- 모달 -->
-    <div class="col-lg-4 col-md-6" id="productModal">
+    <div class="col-lg-4 col-md-6">
       <div class="mt-3">
         <!-- 모달 버튼 -->
-        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">
-
-        </button> -->
+       
 
         <!-- 제품선택 모달 -->
         <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
@@ -68,20 +92,45 @@
               <div class="modal-body">
 	              <div class="row">
 	                <div class="col mb-3">
-	                  <!-- <label class="form-label">제품명</label><br> -->
-	                  <input type="radio" name="productCode" value="PRO00001"/> 글레이즈드 도넛<br>
-										<input type="radio" name="productCode" value="PRO00002"/> 초코 도넛<br>
-										<input type="radio" name="productCode" value="PRO00003"/> 딸기 도넛<br>
-										<input type="radio" name="productCode" value="PRO00004"/> 녹차 도넛<br>
+	                  
+										<table class="table">
+											<tr>
+												<th>제품코드</th>
+												<th>제품명</th>
+											</tr>
+											<tr>
+												<td><input type="radio" name="productCode" value="PRO00001"/>  PRO00001</td>
+												<td>글레이즈드 도넛</td>
+											</tr>
+											<tr>
+												<td><input type="radio" name="productCode" value="PRO00002"/>  PRO00002</td>
+												<td>초코 도넛</td>
+											</tr>
+											<tr>
+												<td><input type="radio" name="productCode" value="PRO00003"/>  PRO00003</td>
+												<td>딸기 도넛</td>
+											</tr>
+											<tr>
+												<td><input type="radio" name="productCode" value="PRO00004"/>  PRO00004</td>
+												<td>녹차 도넛</td>
+											</tr>
+											
+
+										</table>
+
+	                  <!-- <input type="radio" name="productCode" value="PRO00001"/> 글레이즈드 도넛 ( PRO00001 ) <br>
+										<input type="radio" name="productCode" value="PRO00002"/> 초코 도넛 ( PRO00002 )<br>
+										<input type="radio" name="productCode" value="PRO00003"/> 딸기 도넛 ( PRO00003 )<br>
+										<input type="radio" name="productCode" value="PRO00004"/> 녹차 도넛 ( PRO00004 )<br> -->
 									</div>
 	              </div>
               </div>
               <!-- 모달 푸터 -->
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                  Close
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="closemodal()">
+                  닫기
                 </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id="saveProduct">등록</button>
               </div>
             </div>
           </div>
@@ -89,18 +138,8 @@
       </div>
     </div>
 
-
-
-
-
-
-
-
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->
 		<script src="/js/production/prodPlan.js"></script>
-
-		
-		
 	</div>
 
 </body>
