@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.quality.MatQltyCheckVO;
-import com.example.demo.quality.ProQltyVO;
+import com.example.demo.quality.ProDetailVO;
 import com.example.demo.quality.QualityVO;
 
 @Mapper
@@ -18,7 +18,8 @@ public interface QualityMapper {
 	public List<Map<String, Object>> adminMatQuality(String matCode, String inoutDate); //자재코드, 입고날짜 select 
 	public int addMatQual(MatQltyCheckVO vo); 
 	public int addMatQual2(MatQltyCheckVO vo); 
-	public int insertProQuality(ProQltyVO pvo);
+	public List<ProDetailVO> selectProQuality(); //완제품품질등록(조회)
+	
 	
 
 }
