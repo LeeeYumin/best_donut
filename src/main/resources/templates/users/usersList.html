@@ -7,10 +7,13 @@
 <title>usersList.html</title>
 <link rel="stylesheet" href="/fonts/common.css" />
 <link rel="stylesheet" href="/css/common.css" />
+
 </head>
 <body>
 	<div layout:fragment="content">
-		<h2>사용자 목록</h2>
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">공통관리 / </span> 사용자 관리
+		</h3>
 		
 <!-- 		<table border="1">
 			<tr>
@@ -25,41 +28,43 @@
 		<button onclick="getList()">검색</button> -->
 		
 		
-		<div>
+		<div class="card card-body mb-4">
+			<h5>검색조건</h5>
 			<div>
 				<label>사용자검색</label>
-				<input type="text" id="keyword" placeholder="사용자코드 / 사용자명 입력" class="searchBox">
+				<input type="search" id="keyword" placeholder="사용자코드 / 사용자명 입력" class="searchBox">
 			</div><hr>
 			<div>
 				<label>사용자권한</label>
-				<input type="checkbox" id="perm0" value="master" name="master">
+				<input type="checkbox" id="perm0" value="master" name="master" class="form-check-input">
 				<label for="perm0">전체</label>
 				<div id="perm" style="display:inline-block;">
-					<input type="checkbox" id="perm1" value="PER00001" name="perm">
+					<input type="checkbox" id="perm1" value="PER00001" name="perm" class="form-check-input">
 					<label for="perm1">영업관리</label>
-					<input type="checkbox" id="perm2" value="PER00002" name="perm">
+					<input type="checkbox" id="perm2" value="PER00002" name="perm" class="form-check-input">
 					<label for="perm2">생산관리</label>
-					<input type="checkbox" id="perm3" value="PER00003" name="perm">
+					<input type="checkbox" id="perm3" value="PER00003" name="perm" class="form-check-input">
 					<label for="perm3">자재관리</label>
-					<input type="checkbox" id="perm4" value="PER00004" name="perm">
+					<input type="checkbox" id="perm4" value="PER00004" name="perm" class="form-check-input">
 					<label for="perm4">품질관리</label>
-					<input type="checkbox" id="perm5" value="PER00005" name="perm">
+					<input type="checkbox" id="perm5" value="PER00005" name="perm" class="form-check-input">
 					<label for="perm5">설비관리</label>
 				</div>
 			</div><hr>
 			<div>
 				<label>사용자상태</label>
-				<input type="radio" name="status" id="status0" value="" checked>
+				<input type="radio" name="status" id="status0" value="" checked class="form-check-input">
 				<label for="status0">전체</label>
-				<input type="radio" name="status" id="status1" value="USY">
+				<input type="radio" name="status" id="status1" value="USY" class="form-check-input">
 				<label for="status1">활성</label>
-				<input type="radio" name="status" id="status2" value="USN">
+				<input type="radio" name="status" id="status2" value="USN" class="form-check-input">
 				<label for="status2">비활성</label>
 			</div><hr>
-			<div>
-				<button type="button" id="searchBtn">검색</button>	
-				<button type="reset" id="resetBtn">초기화</button>
-			</div>
+		</div>
+		
+		<div class="mb-4">
+			<button type="button" id="searchBtn">검색</button>	
+			<button type="reset" id="resetBtn">초기화</button>
 		</div>
 		
 		<div id="usersList"></div>

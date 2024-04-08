@@ -105,7 +105,7 @@ public class OrdersController {
 	// 주문등록
 	@PostMapping("ajax/insertOrders")
 	@ResponseBody
-	public boolean insertOrders(OrdersVO vo) {
+	public boolean insertOrders(@RequestBody OrdersVO vo) {
 		return ordersService.insertOrders(vo);
 	}
 }

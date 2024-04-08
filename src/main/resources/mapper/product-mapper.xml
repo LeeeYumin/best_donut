@@ -5,13 +5,20 @@
 	
 	<!-- 제품조회 -->
 	<select id="getProduct" resultType="ProductVO">
-		SELECT product_code
-			   , product_name
-			   , unit_price
-			   , stock_cnt
-			   , safe_stock_cnt
-		  FROM product
-	  ORDER BY 1
+		SELECT p.product_code
+		       , p.product_name
+		       , p.unit_price
+		       , p.stock_cnt
+		       , p.safe_stock_cnt
+		       , NVL(SUM(d.orders_cnt), 0) total_orders_cnt
+		  FROM product p LEFT OUTER JOIN orders_detail d
+		                 ON p.product_code = d.product_code
+		 GROUP BY p.product_code
+		          , p.product_name
+		          , p.unit_price
+		          , p.stock_cnt
+		          , p.safe_stock_cnt
+		 ORDER BY 1
 	</select>
 
 </mapper>

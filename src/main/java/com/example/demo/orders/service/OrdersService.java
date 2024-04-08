@@ -10,5 +10,6 @@ public interface OrdersService {
 	
 	public List<Map<String, Object>> getOrders(String ordersCode);
 	public List<OrdersDetailVO> getOrdersDetail(String ordersCode);
+	
 	public boolean insertOrders(OrdersVO vo);
 }

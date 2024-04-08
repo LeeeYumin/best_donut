@@ -19,7 +19,6 @@ public class ProdPlanAllVO {
 	
 	//생산계획상세
 	private String prodPlanDetailCode;
-	//private String prodPlanCode;
 	private String prodReqDetailCode;
 	private String productCode;
 	private int fixCnt;
@@ -27,5 +26,7 @@ public class ProdPlanAllVO {
 	private int planCnt;
 	private int notInstructCnt;
 	private int instructDoneCnt;
+
+	private String productName;
 	
 }

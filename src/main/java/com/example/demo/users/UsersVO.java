@@ -2,6 +2,8 @@ package com.example.demo.users;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -22,5 +24,13 @@ public class UsersVO {
 	private String keyword;
 	private List<String> permList;
 	private String status;
-
+	
+	private String uCode;
+	
+	@JsonIgnore
+	private String perm;
+	public String[] getPerm() {
+		return this.perm.split(",");
+	}
+	
 }

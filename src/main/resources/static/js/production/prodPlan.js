@@ -245,8 +245,12 @@ getProdReq();
 				.then(res => res.json())
 				.then(res => {
 					//console.log(res);
-					alert('생산계획이 등록되었습니다.');
-					saveRes(res);
+					if(res.prodPlanCode != null) { //vo로 넘겨받음
+						alert('생산계획이 등록되었습니다.');
+						saveRes(res);
+					} else {
+						alert('등록 중 오류 발생');
+					}
 				})
 			}
 

@@ -61,6 +61,7 @@
 		     , p.prod_plan_code
 		     , d.prod_req_detail_code
 		     , d.product_code
+             , pn.product_name
 		     , d.fix_cnt
 		     , d.req_cnt
 		     , d.plan_cnt
@@ -68,6 +69,8 @@
 		     , d.instruct_done_cnt
 		FROM prod_plan p JOIN prod_plan_detail d
 		                    ON p.prod_plan_code = d.prod_plan_code
+                      JOIN product pn
+                        ON d.product_code = pn.product_code
 		WHERE p.prod_plan_code = #{prodPlanCode}
 		ORDER BY 1
 	</select>
@@ -119,16 +122,36 @@
 			, 0
 			)
 	</insert>
-	<!-- 생산계획등록 시 => 생산요청상태 수정 -->
+	<!-- 생산계획 등록 시 => 생산요청상태 수정 -->
 	<update id="updateProdReqStatus" parameterType="ProdPlanVO">
 		UPDATE prod_req
 		SET prod_req_status = 'RS2'
 		WHERE prod_req_code = #{prodReqCode}
 	</update>
 
-	
-  	
+<!-- 생산계획 상세 (수량) 수정 -->
+	<update id="updateProdPlanDetail" parameterType="ProdPlanDeVO">
+		UPDATE prod_plan_detail
+		SET fix_cnt = #{fixCnt}
+		  , plan_cnt = #{planCnt}
+		  , not_instruct_cnt = #{notInstructCnt}
+		WHERE prod_plan_detail_code = #{prodPlanDetailCode}
+	</update>
 
-
+<!-- 생산계획 삭제 -->  	
+	<delete id="deleteProdPlan" parameterType="ProdPlanVO">
+		DELETE FROM prod_plan
+		WHERE prod_plan_code = #{prodPlanCode}
+	</delete>
+	<delete id="deleteProdPlanDetail" parameterType="ProdPlanDeVO">
+		DELETE FROM prod_plan_detail
+		WHERE prod_plan_detail_code = #{prodPlanDetailCode}
+	</delete>
+	<!-- 생산계획 삭제 시 => 생산요청상태 수정 -->
+	<update id="cancelProdReqStatus" parameterType="ProdPlanVO">
+		UPDATE prod_req
+		SET prod_req_status = 'RS1'
+		WHERE prod_req_code = #{prodReqCode}
+	</update>
 	
 </mapper>

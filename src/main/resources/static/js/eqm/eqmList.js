@@ -10,6 +10,7 @@ class ColumnConverter1 {
   }
   render(props) {
       this.el.innerText = converter1(props.formattedValue);
+      this.el.setAttribute('class', 'bi bi-heart-fill');
   }
   getElement() {
       return this.el;

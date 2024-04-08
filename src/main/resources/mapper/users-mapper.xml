@@ -47,6 +47,9 @@
 	
 	<!-- 등록 -->
 	<insert id="insertUsers" parameterType="UsersVO">
+					<selectKey keyProperty="uCode" resultType="String" order="BEFORE">
+						SELECT seq_func('users') FROM dual
+					</selectKey>
 		INSERT ALL INTO USERS(
 							USERS_CODE
 							, USERS_NAME
@@ -54,14 +57,12 @@
 							, LOCAL_TEL
 							, USERS_STATUS)
 					VALUES(
-						SEQ_FUNC('USERS')
+						#{uCode}
 						, #{usersName}
 						, #{position}
 						, #{localTel}
 						, #{usersStatus})
-					<selectKey keyProperty="uCode" resultType="String" order="BEFORE">
-						SELECT seq_func('users') FROM dual
-					</selectKey>
+						<foreach collection="perm" item="permCode">
 					INTO USERS_PERM(
 								USERS_PERM_CODE
 								, USERS_CODE
@@ -69,10 +70,8 @@
 					VALUES(
 						SEQ_FUNC('USERS_PERM')
 						, #{uCode}
-						, 
-						<foreach collection="permList" item="permCode" separator=",">
-							#{permCode}
-						</foreach>)
+						, #{permCode})
+						</foreach>
 		SELECT * FROM DUAL
 	</insert>
 

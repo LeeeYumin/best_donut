@@ -5,7 +5,7 @@
 	layout:decorate="~{layout/index}">
 <head>
 <meta charset="UTF-8">
-<title>prodPlan.html</title>
+<title>prodPlanList</title>
 <!-- Toast UI CDN -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
@@ -19,6 +19,16 @@
 	/* .form-control {
 		border-radius: 5px;
 	} */
+	.btn-update {
+		width: 60px;
+		margin-left: auto; /* display:flex 적용되어 있어 float: right X */
+		/* float: right; */
+	}
+	.btn-delete {
+		width: 60px;
+		margin-left: auto;
+		/* float: right; */
+	}
 
 </style>
 
@@ -67,10 +77,12 @@
 			<div style="padding-top: 30px;"></div>
 			
 			<h4>생산계획 총목록</h4>
+			<button type="button" class="btn btn-secondary btn-sm btn-delete" id="deleteBtn" onclick="deletePlan()">삭제</button>
 			<div id="plList"></div>
 			<div style="padding-top: 20px; padding-bottom: 20px;"></div>
 			
 			<h4>생산계획 상세목록</h4>
+			<button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updatePlanDetail()">수정</button>
 			<div id="plAll"></div>
 		</div>
 
