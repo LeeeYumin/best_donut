@@ -28,7 +28,18 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	public boolean insertOrders(OrdersVO vo) {
-		return ordersMapper.insertOrders(vo) == 1 ? true : false;
+		ordersMapper.insertOrders(vo);
+		System.out.println(vo.getOrdDetList());
+		
+		int result = 0;
+		for(int i = 0; i < vo.getOrdDetList().size(); i++) {
+			OrdersDetailVO dvo = vo.getOrdDetList().get(i);
+			
+			dvo.setOrdersCode(vo.getOrdersCode());
+			result = ordersMapper.insertOrdDet(dvo);
+		}
+		
+		return result == 1 ? true : false;
 	}
 	
 }

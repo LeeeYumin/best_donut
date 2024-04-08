@@ -1,3 +1,6 @@
+// 1. 화면 세팅
+
+// grid custom editor
 class CustomNumberEditor {
 	constructor(props) {
 		const el = document.createElement('input');
@@ -23,6 +26,7 @@ class CustomNumberEditor {
 	}
 }
 
+// 제품목록 출력
 (function getProductList() {
 	fetch("ajax/productList")
 	.then(res => res.json())
@@ -46,47 +50,65 @@ class CustomNumberEditor {
 })();
 
 
-// 주문등록
+// 2. 주문등록
 
-// 1. FormData 방식
+// < FormData 방식 >
+// async function FormDataInsert() {
+
+// 	// 입력값 검사
+// 	if(!inputValidation()){
+// 		return;
+// 	}
+	
+// 	let formData = new FormData(document.insertForm);
+
+// 	for (let data of formData) {
+// 		console.log(data[0]+ ', ' + data[1]); 
+// 	}
+
+// 	await fetch('ajax/insertOrders',{
+// 		method : 'post',
+//     	headers: formDataHeaders,
+// 		body : formData
+// 	})
+// 	.then(res => res.json())
+// 	.then(res => {
+//     console.log(res);
+//   })
+// }
+
+// < JsonString 방식 >
 async function saveInsert() {
 
-	// 입력값 검사
+	// (1) parameter 준비
+	// 주문정보 : input 데이터 변수에 저장
+	const ordersDate = insertForm.ordersDate.value;
+	const dueDate = insertForm.dueDate.value;
+	const totalOrdersPrice = insertForm.totalOrdersPrice.value;
+	const companyCode = insertForm.companyCode.value;
+
+	// 주문상세정보 : 주문량 0 아닌 제품 주문만 list에 저장
+	let ordDetlist = [];
+	let ordersCnt = grid.getColumnValues('ordersCnt');
+	for(let i = 0; i < grid.getRowCount(); i++){
+		if(ordersCnt[i] != 0) {
+			ordDetlist.push(grid.getRow(i));
+		}
+	}
+
+	// (2) 입력값 유효성 검사
 	if(!inputValidation()){
 		return;
 	}
-	console.log('saveInsert()');
+
+	// parameter
+	let param = {ordersDate, dueDate, totalOrdersPrice, companyCode, ordDetList:ordDetlist}
+	console.log(param);
+
 	
-	let formData = new FormData(document.insertForm);
+	// (3) 등록 fetch
+	let result = '';
 
-	for (let data of formData) {
-		console.log(data[0]+ ', ' + data[1]); 
-	}
-
-	await fetch('ajax/insertOrders',{
-		method : 'post',
-    	headers: formDataHeaders,
-		body : formData
-	})
-	.then(res => res.json())
-	.then(res => {
-    console.log(res);
-  })
-  
-}
-
-// 2.JsonString 방식
-async function saveInsert1() {
-
-  const ordersCode = frm.ordersCode.value;
-	const ordersDate = frm.ordersDate.value;
-	const dueDate = frm.dueDate.value;
-	const totalOrdersPrice = frm.totalOrdersPrice.value;
-	const companyCode = frm.companyCode.value;
-
-	let param = {ordersCode, ordersDate, dueDate, totalOrdersPrice, companyCode}
-  console.log(param);
-	
   await fetch('ajax/insertOrders',{
 		method : 'post',
    		 headers: jsonHeaders,
@@ -94,48 +116,73 @@ async function saveInsert1() {
 	})
 	.then(res => res.json())
 	.then(res => {
-    console.log(res);
+    result = res;
   })
+
+
+	// (4) 등록 후속처리
+	if(result){
+		Swal.fire({
+			position: "top-end",
+			icon: "success",
+			title: "주문등록 완료!",
+			text: "주문등록이 정상적으로 처리되었습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+	}
+	else {
+		Swal.fire({
+			position: "top-end",
+			icon: "error",
+			title: "주문등록 실패",
+			text: "주문등록이 정상적으로 처리되지 않았습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+	}
 }
 
-// 입력값 검사
+// 입력값 유효성 검사
 function inputValidation() {
+	const valid = document.querySelector('#defaultFormControlHelp');
 
 	// 1. 날짜 검사
 	const oDate = new Date(insertForm.ordersDate.value);	// 주문일자
-	const dDate = new Date(insertForm.dueDate.value);		// 납기일자
-	const dateDiff = dDate.getDate()-oDate.getDate()		// 리드타임(2주)
+	const dDate = new Date(insertForm.dueDate.value);			// 납기일자
+	const dateDiff = dDate.getDate()-oDate.getDate()			// 리드타임(2주)
 
 	// 주문일자 검사
-	if(oDate == '' || oDate == null) {
-		Swal.fire('주문일자를 입력해주세요.');
+	if(insertForm.ordersDate.value == '' || insertForm.ordersDate.value == null) {
+		valid.innerHTML = '주문일자를 입력해주세요.';
 		return false;
 	}
 
 	// 납기일자 검사
-	if(dDate == '' || dDate == null) {
-		Swal.fire('납기일자를 입력해주세요.');
+	if(insertForm.dueDate.value == '' || insertForm.dueDate.value == null) {
+		valid.innerHTML = '납기일자를 입력해주세요.';
 		return false;
 	}
 
 	// 리드타임 검사(2주)
 	if(dateDiff < 14) {
-		Swal.fire('납기일자는 주문일자로부터\n최소 2주 후 입니다.');
+		valid.innerHTML = '납기일자는 주문일자로부터\n최소 2주 후 입니다.';
 		return false;
 	}
 
 	// 2. 거래처코드 검사
 	if(insertForm.companyCode.value == '' || insertForm.companyCode.value == null) {
-		Swal.fire('거래처 코드를 입력해주세요.');
+		valid.innerHTML = '거래처 코드를 입력해주세요.';
 		return false;
 	}
 
 	// 3. 주문금액 검사
 	if(insertForm.totalOrdersPrice.value == 0) {
-		Swal.fire('주문상세 정보를 입력해주세요.');
+		valid.innerHTML = '주문상세 정보를 입력해주세요.';
 		return false;
 	}
 
+	valid.innerHTML = '';
 	return true;
 }
 
@@ -145,7 +192,7 @@ function resetInsert(){
 	insertForm.companyCode.value = '';
 }
 
-// grid 
+// grid 생성
 const grid = new tui.Grid({
 	el : document.getElementById('ordDetGrid'),
 	scrollX : false,
@@ -246,7 +293,6 @@ const grid = new tui.Grid({
 		},
 	}
 })
-// getProductList();
 
 // 수량 변경시 금액 자동 계산
 grid.on('afterChange', event => {
@@ -261,24 +307,11 @@ grid.on('afterChange', event => {
 	grid.setValue(eventRow.rowKey, 'supplyPrice', supplyPrice, false);
 	grid.setValue(eventRow.rowKey, 'tax', tax, false);
 	grid.setValue(eventRow.rowKey, 'totalSupplyPrice', totalSupplyPrice, false);
-	
 })
-
 
 function resetOrdDet(){
 	grid.setColumnValues('ordersCnt',0);
 	grid.setColumnValues('supplyPrice',0);
 	grid.setColumnValues('tax',0);
 	grid.setColumnValues('totalSupplyPrice',0)
-}
-
-function ordDetTest() {
-	let list = [];
-	let orderCnt = grid.getColumnValues('ordersCnt');
-	for(let i = 0; i < grid.getRowCount(); i++){
-		if(orderCnt[i] != 0) {
-			list.push(grid.getRow(i))
-		}
-	}
-	console.log(list)
 }
