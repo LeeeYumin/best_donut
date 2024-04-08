@@ -1,5 +1,4 @@
 
-
 class CustomNumberEditor {
 	constructor(props) {
 		const el = document.createElement('input');
@@ -50,22 +49,29 @@ const grid = new tui.Grid({
     },
     {
       header : '생산완료일자',
-      name : 'endTime',
+      name : 'allEndTime',
       align : "center",
     },
     {
-      header : '공정상태',
-      name : 'procStatus',
+      header : '입고수량',
+      name : 'warehousingCnt',
       align : "center",
-      editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '공정완료', value: 'PIN' },
-                  { text: '완제품등록대기중', value: 'PIY' }
-                ]
-              }
-            }
+    },
+    {
+      header : '완제품 품질 등록',
+      name : '',
+      align : "center",
     }
   ]
 });
+
+async function getProDetail(){
+  await fetch("ajax/selectProQuality")
+  .then(res => res.json())
+  .then(res => {
+    console.log(res);
+    grid.resetData(res);
+  })
+};
+
+getProDetail();

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.quality.MatQltyCheckVO;
+import com.example.demo.quality.ProDetailVO;
 import com.example.demo.quality.ProQltyVO;
 import com.example.demo.quality.QualityVO;
 import com.example.demo.quality.mapper.QualityMapper;
@@ -41,8 +42,8 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	@Override
-	public int insertProQuality(ProQltyVO pvo) {
-		return qualityMapper.insertProQuality(pvo); //
+	public List<ProDetailVO> selectProQuality(){
+		return qualityMapper.selectProQuality(); //완제품품질등록
 	}
 
 

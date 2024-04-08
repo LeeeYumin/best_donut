@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.quality.MatQltyCheckVO;
+import com.example.demo.quality.ProDetailVO;
+import com.example.demo.quality.ProQltyVO;
 import com.example.demo.quality.service.QualityService;
 
 @Controller
@@ -61,6 +63,11 @@ public class QualityController {
 	}
 	
 	//완제품 품질 등록 처리
+	@GetMapping("ajax/selectProQuality")
+	@ResponseBody
+	public List<ProDetailVO> selectProQuality() {
+		return qualityService.selectProQuality();
+	}
 	
 	//완제품 품질 관리
 	

@@ -98,16 +98,21 @@
 
 <!-- 완제품품질등록 / if : 진행단계, 종료일자 검색 -->
 <select id="selectProQuality" resultType="ProDetailVO">
-	SELECT d.PRODUCT_CODE
+SELECT d.PRODUCT_CODE
 			, p.PRODUCT_NAME
 			, d.PRODUCT_LOT_CODE
-			, c.END_TIME
-			, c.PROC_STATUS	
+			, c.ALL_END_TIME
+            , d.warehousing_cnt
 	  FROM  PRODUCT p JOIN PRODUCT_DETAIL d
-	  		ON p.PRODUCT_CODE = d.PRODUCT_CODE
-	  		OUTER JOIN PROC_RESULT c ON 
+	  		          ON p.PRODUCT_CODE = d.PRODUCT_CODE
+	  		          LEFT OUTER JOIN PROC_RESULT c 
+                      ON c.PROC_RESULT_CODE = d.PROC_RESULT_CODE	
 </select>
 
+
+<insert id="">
+
+</insert>
 
 
 
