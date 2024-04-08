@@ -23,6 +23,7 @@ function checkMaster(){
   })
 }
 
+
 // 등록버튼
 document.getElementById('saveBtn').addEventListener('click', saveUsers);
 
@@ -34,16 +35,16 @@ async function saveUsers() {
   let formData = new FormData(document.insertForm);
   
   const permList = document.querySelectorAll("[name=perm]:checked");
-  const list = [];
-  for(i = 0; i < permList.length; i++) {
-    list.push(permList[i].value);
-  }
+  // const list = [];
+  // for(i = 0; i < permList.length; i++) {
+  //   list.push(permList[i].value);
+  // }
 
-  formData.append("perm", list.join(","))
+  // formData.append("perm", list.join(","))
   for (let data of formData) {
-    console.log(data[0]+ ', ' + data[1]); 
+    console.log(data[0]+ ', ' + data[1]);
   }
-  console.log(list.join(","));
+  // console.log(list.join(","));
 
 	await fetch('/ajax/insertusers',{
 		method : 'POST',
@@ -55,13 +56,20 @@ async function saveUsers() {
     console.log(res);
     result = res;
   })
+  .then(res => {
+    window.setTimeout(function() {
+      location.href = '/userslist';
+    }, 1000);
+  })
   
+
+  // SweetAlert
 	if(result){
 		Swal.fire({
 			position: "center",
 			icon: "success",
-			title: "사용자 등록완료!",
-			text: "주문등록이 정상적으로 처리되었습니다.",
+			title: "사용자 등록 완료!",
+			// text: "사용자 등록이 정상적으로 처리되었습니다.",
 			showConfirmButton: false,
 			timer: 2000
 		});
@@ -70,8 +78,8 @@ async function saveUsers() {
 		Swal.fire({
 			position: "center",
 			icon: "error",
-			title: "주문등록 실패",
-			text: "주문등록이 정상적으로 처리되지 않았습니다.",
+			title: "사용자 등록 실패",
+			// text: "사용자 등록이 정상적으로 처리되지 않았습니다.",
 			showConfirmButton: false,
 			timer: 2000
 		});
@@ -79,6 +87,7 @@ async function saveUsers() {
 };
 
 
+// 유효성검사
 function formValidation() {
   const notice1 = document.getElementById('notice1');
   const notice2 = document.getElementById('notice2');
@@ -101,7 +110,7 @@ function formValidation() {
     return false;
   }
 
-  if(insertForm.status.value == null || insertForm.status.value == '') {
+  if(insertForm.usersStatus.value == null || insertForm.usersStatus.value == '') {
     notice4.innerText = '사용자상태를 선택하세요.';
     return false;
   }

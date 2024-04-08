@@ -148,8 +148,3 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 
 // 검색버튼
 document.getElementById('searchBtn').addEventListener('click', getEqmList);
-document.getElementById('keyword').addEventListener('keyup', (e) => {
-  if(e.keyCode == 13) {
-    getEqmList();
-  }
-})

@@ -9,19 +9,20 @@ class ColumnConverter1 {
       this.render(props);
   }
   render(props) {
-      // this.el.innerText = props.formattedValue == 1 ? 'O' : '-';
+      this.el.innerText = props.formattedValue == 1 ? 'O' : '-';
       this.el.setAttribute('style','font-size : 15px');
 
-      if(props.formattedValue == '1') {
-        this.el.setAttribute('class', 'bi-check-circle-fill');
-      } else {
-        this.el.setAttribute('class', 'bi bi-dash');
-      }
+      // if(props.formattedValue == '1') {
+      //   this.el.setAttribute('class', 'bi bi-check-circle');
+      // } else {
+      //   this.el.setAttribute('class', 'bi bi-dash');
+      // }
   }
   getElement() {
       return this.el;
   }
 }
+
 
 // 사용자상태
 class ColumnConverter2 {
@@ -46,17 +47,8 @@ class ColumnConverter2 {
   }
 }
 
-// function converter(value){
-//     let result;
-//     if(value == "USY") {
-//         result = 'class', 'badge bg-label-secondary';
-//     } else if(value == "USN"){
-//         result = 'class', 'badge bg-label-primary';
-//     }
 
-//     return result;
-// }
-
+// 토스트ui 그리드
 const grid = new tui.Grid({
   el: document.getElementById('usersList'),
   scrollX: false,
@@ -142,10 +134,7 @@ const grid = new tui.Grid({
 					  operator: 'OR',
 					}; */
 		    
-			
-			
-			
-			
+				
  /*  			async function getUsersList(){
 				const keyword = document.getElementById('keyword').value;
 				const status = document.getElementsByName('status')[0].value;
@@ -156,19 +145,25 @@ const grid = new tui.Grid({
 					grid.resetData(res)
 				})
 			}; */
-			
+
+
+
+
+
+
+// 목록조회
 getUsersList();
 async function getUsersList() {
   const keyword = document.getElementById('keyword').value;
   const permList = document.querySelectorAll("[name=perm]:checked");
-  const status = document.querySelector("[name=status]:checked").value;
+  const usersStatus = document.querySelector("[name=usersStatus]:checked").value;
   
   const list = [];
   for(i = 0; i < permList.length; i++) {
     list.push(permList[i].value);
   }
 
-  const obj = {keyword : keyword, permList : list, status : status};
+  const obj = {keyword : keyword, permList : list, usersStatus : usersStatus};
   const data = {
     method : 'POST',
       headers: jsonHeaders,
@@ -227,6 +222,11 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 
 // 검색버튼
 document.getElementById('searchBtn').addEventListener('click', getUsersList);
+document.getElementById('keyword').addEventListener('keyup', (e) => {
+  if(e.keyCode == 13) {
+    getUsersList();
+  }
+})
 
 
 // 체크박스
