@@ -38,7 +38,7 @@
 						#{perm}
 					</foreach>
 			</if>
-			<if test="status != null and status != ''">
+			<if test="usersStatus != null and usersStatus != ''">
 				AND USERS_STATUS = #{status}
 			</if>
 		</where>
@@ -47,9 +47,9 @@
 	
 	<!-- 등록 -->
 	<insert id="insertUsers" parameterType="UsersVO">
-					<selectKey keyProperty="uCode" resultType="String" order="BEFORE">
-						SELECT seq_func('users') FROM dual
-					</selectKey>
+		<selectKey keyProperty="uCode" resultType="String" order="BEFORE">
+			SELECT seq_func('users') FROM dual
+		</selectKey>
 		INSERT ALL INTO USERS(
 							USERS_CODE
 							, USERS_NAME
@@ -62,7 +62,7 @@
 						, #{position}
 						, #{localTel}
 						, #{usersStatus})
-						<foreach collection="perm" item="permCode">
+					<foreach collection="perm" item="permCode">
 					INTO USERS_PERM(
 								USERS_PERM_CODE
 								, USERS_CODE
@@ -71,7 +71,7 @@
 						SEQ_FUNC('USERS_PERM')
 						, #{uCode}
 						, #{permCode})
-						</foreach>
+					</foreach>
 		SELECT * FROM DUAL
 	</insert>
 

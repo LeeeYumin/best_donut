@@ -161,14 +161,14 @@ getUsersList();
 async function getUsersList() {
   const keyword = document.getElementById('keyword').value;
   const permList = document.querySelectorAll("[name=perm]:checked");
-  const status = document.querySelector("[name=status]:checked").value;
+  const usersStatus = document.querySelector("[name=usersStatus]:checked").value;
   
   const list = [];
   for(i = 0; i < permList.length; i++) {
     list.push(permList[i].value);
   }
 
-  const obj = {keyword : keyword, permList : list, status : status};
+  const obj = {keyword : keyword, permList : list, usersStatus : usersStatus};
   const data = {
     method : 'POST',
       headers: jsonHeaders,
