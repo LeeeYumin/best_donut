@@ -51,6 +51,18 @@ const grid1 = new tui.Grid({
 			header : '주문상태',
 			name : 'ordersStatus',
 			align : 'center',
+			formatter : 'listItemText',
+			editor: {
+        type: 'text',
+        options: {
+          listItems: [
+            { text: '미확인', value: 'OP1' },
+            { text: '확인', value: 'OP2' },
+            { text: '생산요청', value: 'OP3' },
+            { text: '납품완료', value: 'OP4' },
+          ],
+        }
+      }
 		}, 
 		{
 			header : '담당자명',

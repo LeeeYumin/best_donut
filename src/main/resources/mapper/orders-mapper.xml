@@ -43,6 +43,10 @@
 	
 	<!-- 주문 등록 -->
 	<insert id="insertOrders" parameterType="OrdersVO">
+		<!--
+		selectKey : insert하고 난 후 자동 생성된 key값 받아서
+					다른 insert문에 바로 사용
+		 -->
 		<selectKey keyProperty="ordersCode" order="BEFORE" resultType="String">
 		 	SELECT seq_func('orders') FROM dual
 		</selectKey>		
@@ -92,6 +96,7 @@
 			)
 	</insert>
 	
+	
 	<!-- 2. 생산요청 -->
 	
 	<!-- 주문조회 -->
@@ -135,13 +140,13 @@
 	</select>
 	
 	<!-- 생산요청 등록 -->
-	<!--<insert id="insertProdReq" parameterType="ProdReqVO">
+	<insert id="insertProdReq" parameterType="ProdReqVO">
 		<selectKey keyProperty="prodReqCode" order="BEFORE" resultType="String">
 			SELECT seq_func('prod_req') FROM dual
 		</selectKey>
 	  	INSERT INTO prod_req
 			(
-				prodReqCode
+				prod_eqCode
 				, totalReqCnt
 				, reqDate
 				, usersCode
@@ -149,7 +154,11 @@
 			)
 		VALUES
 			(
-
+				#{prodReqCode}
+				, totalReqCnt
+				, reqDate
+				, usersCode
+				, prodReqStatus
 			)
-	</insert>-->
+	</insert>
 </mapper>

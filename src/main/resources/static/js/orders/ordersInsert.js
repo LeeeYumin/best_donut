@@ -123,7 +123,7 @@ async function saveInsert() {
 	// (4) 등록 후속처리
 	if(result){
 		Swal.fire({
-			position: "top-end",
+			position: "center",
 			icon: "success",
 			title: "주문등록 완료!",
 			text: "주문등록이 정상적으로 처리되었습니다.",
@@ -133,7 +133,7 @@ async function saveInsert() {
 	}
 	else {
 		Swal.fire({
-			position: "top-end",
+			position: "center",
 			icon: "error",
 			title: "주문등록 실패",
 			text: "주문등록이 정상적으로 처리되지 않았습니다.",
@@ -166,7 +166,7 @@ function inputValidation() {
 
 	// 리드타임 검사(2주)
 	if(dateDiff < 14) {
-		valid.innerHTML = '납기일자는 주문일자로부터\n최소 2주 후 입니다.';
+		valid.innerHTML = '납기일자는 주문일자로부터 최소 2주 후 입니다.';
 		return false;
 	}
 
