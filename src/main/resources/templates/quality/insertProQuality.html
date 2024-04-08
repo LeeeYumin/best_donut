@@ -13,11 +13,40 @@
 <body>
 <div layout:fragment="content">
 	<h3>완제품 품질 등록</h3>
+	<div class="btnClass">
+		<label for="stat">진행단계</label>
+		<select name="status">
+			<option value="">진행 선택</option>
+			<option value="complt">공정완료</option>
+			<option value="ing">진행중</option>
+	</select><br>
+		<label for="date">종료일자
+				<input type="date"
+							 id="inDate"
+							 max="2100-12-31"
+							 min="1970-01-01"
+							 >
+			</label><br>
+			<button id="findBtn" type="button">검색</button>
+			<button id="saveBtn" type="button">등록</button>
+		</div>
+		<div id="grid"></div>
+
+		<script src="/js/quality/insertProQuality.js"></script>
 	</div>
 
 </body>
 </html>
 
 <style>
-
+.saveBtn {
+ 		display : flex;
+		justify-content : flex-end;
+ 		margin-bottom : 20px;
+ 	}
+.btnClass {
+	/* text-align : right; */
+	margin-right : 10px;
+	padding : 10px;
+}
 </style>

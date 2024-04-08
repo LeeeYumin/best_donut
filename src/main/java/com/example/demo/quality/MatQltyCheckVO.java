@@ -23,4 +23,5 @@ public class MatQltyCheckVO {
 	//등록 버튼 클릭하면 수량 update
 	private Integer inoutCnt;
 	private String matCode;
+	private String matInoutCode;
 }

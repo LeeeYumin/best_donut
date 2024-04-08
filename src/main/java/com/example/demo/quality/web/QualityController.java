@@ -54,8 +54,13 @@ public class QualityController {
 		return qualityService.adminMatQuality(matCode, inoutDate);
 	}
 	
-	//완제품 품질 등록
+	//완제품 품질 등록 페이지로 이동
+	@GetMapping("insertProQuality")
+	public String insertProQuality () {
+		return "quality/insertProQuality";
+	}
 	
+	//완제품 품질 등록 처리
 	
 	//완제품 품질 관리
 	
