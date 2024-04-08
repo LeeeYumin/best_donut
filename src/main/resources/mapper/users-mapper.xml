@@ -39,7 +39,7 @@
 					</foreach>
 			</if>
 			<if test="usersStatus != null and usersStatus != ''">
-				AND USERS_STATUS = #{status}
+				AND USERS_STATUS = #{usersStatus}
 			</if>
 		</where>
 	</sql>

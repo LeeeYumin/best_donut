@@ -23,6 +23,7 @@ function checkMaster(){
   })
 }
 
+
 // 등록버튼
 document.getElementById('saveBtn').addEventListener('click', saveUsers);
 
@@ -54,10 +55,15 @@ async function saveUsers() {
 	.then(res => {
     console.log(res);
     result = res;
-    location.href = '/userslist';
+  })
+  .then(res => {
+    window.setTimeout(function() {
+      location.href = '/userslist';
+    }, 1000);
   })
   
 
+  // SweetAlert
 	if(result){
 		Swal.fire({
 			position: "center",
@@ -67,7 +73,6 @@ async function saveUsers() {
 			showConfirmButton: false,
 			timer: 2000
 		});
-    // window.open("usersList.html");
 	}
 	else {
 		Swal.fire({
@@ -82,6 +87,7 @@ async function saveUsers() {
 };
 
 
+// 유효성검사
 function formValidation() {
   const notice1 = document.getElementById('notice1');
   const notice2 = document.getElementById('notice2');
