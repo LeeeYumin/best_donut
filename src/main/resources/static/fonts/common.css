@@ -52,7 +52,7 @@ h1, h2, h3, h4, h5 {
 	font-family: 'Pretendard-ExtraBold';
 }
 
-a, label, button, span, input {
+a, label, button, span, input, select {
 	font-family: 'Pretendard-SemiBold';
 }
 

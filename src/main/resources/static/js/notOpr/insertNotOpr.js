@@ -26,7 +26,7 @@ async function saveNotOpr() {
   
 
   // SweetAlert
-	if(result){
+	if(result > 0){
 		Swal.fire({
 			position: "center",
 			icon: "success",

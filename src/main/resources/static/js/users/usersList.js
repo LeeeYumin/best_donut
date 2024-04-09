@@ -9,22 +9,13 @@ class ColumnConverter1 {
       this.render(props);
   }
   render(props) {
-      // this.el.innerText = props.formattedValue == 1 ? '◎' : '-';
-      // this.el.setAttribute('style','font-size : 15px');
-
-      if(props.formattedValue == '1') {
-        this.el.setAttribute('class', 'bi bi-record-circle-fill');
-      } else {
-        this.el.setAttribute('class', 'bi bi-dash');
-      }
+      this.el.innerText = props.formattedValue == 1 ? '영업' : '-';
   }
   getElement() {
       return this.el;
   }
 }
 
-
-// 사용자상태
 class ColumnConverter2 {
   constructor(props) {
       const el = document.createElement('div');
@@ -33,14 +24,76 @@ class ColumnConverter2 {
       this.render(props);
   }
   render(props) {
-      this.el.innerText = props.formattedValue == 'USY' ? '활성' : '비활성';
-      this.el.setAttribute('style','font-size : 12px');
+      this.el.innerText = props.formattedValue == 1 ? '생산' : '-';
+  }
+  getElement() {
+      return this.el;
+  }
+}
 
-      if(props.formattedValue == 'USY') {
-        this.el.setAttribute('class', 'badge bg-label-primary');
-      } else {
-        this.el.setAttribute('class', 'badge bg-label-dark');
-      }
+class ColumnConverter3 {
+  constructor(props) {
+      const el = document.createElement('div');
+
+      this.el = el;
+      this.render(props);
+  }
+  render(props) {
+      this.el.innerText = props.formattedValue == 1 ? '자재' : '-';
+  }
+  getElement() {
+      return this.el;
+  }
+}
+
+class ColumnConverter4 {
+  constructor(props) {
+      const el = document.createElement('div');
+
+      this.el = el;
+      this.render(props);
+  }
+  render(props) {
+      this.el.innerText = props.formattedValue == 1 ? '품질' : '-';
+  }
+  getElement() {
+      return this.el;
+  }
+}
+
+class ColumnConverter5 {
+  constructor(props) {
+      const el = document.createElement('div');
+
+      this.el = el;
+      this.render(props);
+  }
+  render(props) {
+      this.el.innerText = props.formattedValue == 1 ? '설비' : '-';
+  }
+  getElement() {
+      return this.el;
+  }
+}
+
+
+// 사용자상태
+class ColumnConverter6 {
+  constructor(props) {
+      const el = document.createElement('div');
+
+      this.el = el;
+      this.render(props);
+  }
+  render(props) {
+      this.el.innerText = props.formattedValue == 'USY' ? '활성' : '비활성';
+      // this.el.setAttribute('style','font-size : 12px');
+
+      // if(props.formattedValue == 'USY') {
+      //   this.el.setAttribute('class', 'badge bg-label-primary');
+      // } else {
+      //   this.el.setAttribute('class', 'badge bg-label-dark');
+      // }
   }
   getElement() {
       return this.el;
@@ -70,50 +123,74 @@ const grid = new tui.Grid({
       name: 'usersCode',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['usersStatus'] == 'USY'
+      }
     },
     {
       header: '사용자명',
       name: 'usersName',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['usersStatus'] == 'USY'
+      }
     },
     {
       header: '영업관리',
       name: 'perm1',
       align: 'center',
-      renderer: {type: ColumnConverter1}
+      renderer: {type: ColumnConverter1},
+      validation: {
+        validatorFn: (value, row, columnName) => row['usersStatus'] == 'USY'
+      }
     },
     {
       header: '생산관리',
       name: 'perm2',
       align: 'center',
-      renderer: {type: ColumnConverter1}
+      renderer: {type: ColumnConverter2},
+      validation: {
+        validatorFn: (value, row, columnName) => row['usersStatus'] == 'USY'
+      }
     },
     {
       header: '자재관리',
       name: 'perm3',
       align: 'center',
-      renderer: {type: ColumnConverter1}
+      renderer: {type: ColumnConverter3},
+      validation: {
+        validatorFn: (value, row, columnName) => row['usersStatus'] == 'USY'
+      }
     },
     {
       header: '품질관리',
       name: 'perm4',
       align: 'center',
-      renderer: {type: ColumnConverter1}
+      renderer: {type: ColumnConverter4},
+      validation: {
+        validatorFn: (value, row, columnName) => row['usersStatus'] == 'USY'
+      }
     },
     {
       header: '설비관리',
       name: 'perm5',
       align: 'center',
-      renderer: {type: ColumnConverter1}
+      renderer: {type: ColumnConverter5},
+      validation: {
+        validatorFn: (value, row, columnName) => row['usersStatus'] == 'USY'
+      }
     },		    	    			        
     {
       header: '사용자상태',
       name: 'usersStatus',
       align: 'center',
-      renderer: {type: ColumnConverter2}
+      renderer: {type: ColumnConverter6},
+      validation: {
+        validatorFn: (value, row, columnName) => row['usersStatus'] == 'USY'
+      }
     }
   ]
 });
@@ -256,3 +333,11 @@ function checkMaster(){
     checkbox.checked = master.checked;
   })
 }
+
+tui.Grid.applyTheme('custom', {
+  row: {
+    hover: {
+      background: '#d4e9f2'
+    }
+  }
+});
