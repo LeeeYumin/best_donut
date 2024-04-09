@@ -38,7 +38,7 @@ const prodPlanList = new tui.Grid({
     el: document.getElementById('prodPlanList'),
     scrollX: false,
     scrollY: true,
-    bodyHeight: 120,
+    bodyHeight: 160,
     columns: [
         {
             header: '생산계획코드',
@@ -50,12 +50,6 @@ const prodPlanList = new tui.Grid({
             name: 'planDate',
             align: 'center',
 
-        },
-        {
-            header: '생산요청코드',
-            name: 'prodReqCode',
-            align: 'center',
-            renderer: { type: ProdReqCode }
         },
         {
             header: '진행상태',
@@ -94,12 +88,59 @@ function getProdPlanList() {
         })
 };
 
+// 생산 계획 상세
+const prodPlanDetail = new tui.Grid({
+    el: document.getElementById('prodPlanDetail'),
+    scrollX: false,
+    scrollY: false,
+    bodyHeight: 160,
+    columns: [
+        {
+            header: '생산계획상세코드',
+            name: 'prodPlanDetailCode',
+            align: 'center'
+        },
+        {
+            header: '제품코드',
+            name: 'productCode',
+            align: 'center'
+        },
+        {
+            header: '제품명',
+            name: 'productName',
+            align: 'center'
+        },
+        {
+            header: '계획수량',
+            name: 'planCnt',
+            align: 'center',
+        }
+    ]
+});
+
+//생산계획 클릭 시 아래 생산계획상세내용 출력
+prodPlanList.on('click', e => {
+    let plCode = prodPlanList.getValue(e.rowKey, "prodPlanCode");
+    //계획상세목록
+    getProdPlanAll(plCode)
+})
+
+async function getProdPlanAll(plCode) {
+    await fetch(`/ajax/prodPlanAll?prodPlanCode=${plCode}`)
+        .then(res => res.json())
+        .then(res => {
+            //console.log(res);
+
+            prodPlanDetail.resetData(res);
+        })
+};
+
 // BOM 테이블
 const BOMList = new tui.Grid({
     el: document.getElementById('BOMList'),
     scrollX: false,
     scrollY: true,
-    bodyHeight: 120,
+    bodyHeight: 160,
     columns: [
         {
             header: 'BOM 코드',
@@ -138,6 +179,9 @@ const BOMList = new tui.Grid({
             header: '단가',
             name: 'unitPrice',
             align: 'center',
+            formatter: function (price) {
+                return priceFormat(price.value);
+            }
         }
     ]
 });
@@ -157,7 +201,7 @@ const matStockList = new tui.Grid({
     el: document.getElementById('matStockList'),
     scrollX: false,
     scrollY: true,
-    bodyHeight: 120,
+    bodyHeight: 160,
     rowHeaders: ['checkbox'],
     columns: [
         {
@@ -228,27 +272,28 @@ function getMaterialsList() {
         })
 };
 
+// 재고 소요량 계산
+
+
 matStockList.on('checkAll', function () {
     let checked = matStockList.getCheckedRows();
     matOrderList.resetData(checked);
 });
 matStockList.on('check', function (ev) {
-    console.log(ev);
     let checked = matStockList.getRow(ev.rowKey);
     matOrderList.appendRow(checked);
 });
 matStockList.on('uncheckAll', function () {
-    let checked = matStockList.getCheckedRows();
-    matOrderList.resetData(checked);
+    matOrderList.resetData([]);
 });
 matStockList.on('uncheck', function (ev) {
     let uncheckMatCode = matStockList.getValue(ev.rowKey, 'matCode')
-    console.log(uncheckMatCode)
     let data = matOrderList.getData()
     for (let i = 0; i < data.length; i++) {
-        // if (data[i].matCode == uncheckMatCode) {
-        //     matOrderList.removeRow(i)
-        // }
+        if (data[i].matCode == uncheckMatCode) {
+            data.splice(i, 1)
+            matOrderList.resetData(data)
+        }
     }
 });
 
@@ -257,7 +302,7 @@ const matOrderList = new tui.Grid({
     el: document.getElementById('matOrderList'),
     scrollX: false,
     scrollY: true,
-    bodyHeight: 120,
+    bodyHeight: 160,
     rowHeaders: ['checkbox'],
     columns: [
         {
@@ -288,6 +333,9 @@ const matOrderList = new tui.Grid({
             header: '가격',
             name: 'matOrdersPrice',
             align: 'center',
+            formatter: function (price) {
+                return priceFormat(price.value) + '원';
+            }
         }
     ]
 });
@@ -296,7 +344,12 @@ matOrderList.on('afterChange', ev => {
     let changeRow = ev.changes[0]
     if (changeRow.columnName == "ordersCnt") {
         let unitPrice = matOrderList.getValue(changeRow.rowKey, 'unitPrice')
-        console.log('after change:', unitPrice);
         matOrderList.setValue(changeRow.rowKey, 'matOrdersPrice', changeRow.value * unitPrice)
     }
 })
+
+// 자재 발주 등록
+function insertMatOrders() {
+    matOrderList.blur();
+
+}
