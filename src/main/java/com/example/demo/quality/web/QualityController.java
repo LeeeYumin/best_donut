@@ -69,6 +69,18 @@ public class QualityController {
 		return qualityService.selectProQuality();
 	}
 	
+	@GetMapping("ajax/insertProQual")
+	@ResponseBody
+	public List<ProQltyVO> insertProQual(){
+		return qualityService.insertProQual();
+	}
+	
+	@GetMapping("ajax/selectProQual")
+	@ResponseBody
+	public List<Map<String, Object>> selectProQual(){
+		return qualityService.selectProQual();
+	}
+	
 	//완제품 품질 관리
 	
 	

@@ -23,11 +23,23 @@
 							 >
 			</label><br>
 			<button id="findBtn" type="button">검색</button>
-			<button id="saveBtn" type="button">등록</button>
 		</div>
-		<div id="grid"></div>
+		<div class="grid1">
+			<div id="grid1">
+			</div>
+		</div>
+		<h4>완제품 품질 입력</h4>
+		<tr>
+			<td>이 자리에 양식넣을거임</td>
+		</tr>
+		<div class="grid2">
+			<div id="grid2">
+			</div>
+		</div>
 
 		<script src="/js/quality/insertProQuality.js"></script>
+
+		<button id="saveBtn" type="button" onclick="insertProDtl()">등록</button>
 	</div>
 
 </body>
@@ -36,12 +48,15 @@
 <style>
 .saveBtn {
  		display : flex;
+		padding : 1px 6px;
 		justify-content : flex-end;
- 		margin-bottom : 20px;
  	}
 .btnClass {
 	/* text-align : right; */
 	margin-right : 10px;
 	padding : 10px;
+}
+h4 {
+	margin-top: 20px !important ;
 }
 </style>
