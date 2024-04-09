@@ -38,7 +38,7 @@ const prodPlanList = new tui.Grid({
     el: document.getElementById('prodPlanList'),
     scrollX: false,
     scrollY: true,
-    bodyHeight: 160,
+    bodyHeight: 200,
     columns: [
         {
             header: '생산계획코드',
@@ -114,8 +114,27 @@ const prodPlanDetail = new tui.Grid({
             header: '계획수량',
             name: 'planCnt',
             align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            }
         }
-    ]
+    ],
+    summary: {
+        height: 40,
+        position: 'bottom', // or 'top'
+        columnContent: {
+            productName: {
+                template: function () {
+                    return '합계';
+                },
+            },
+            planCnt: {
+                template: function (value) {
+                    return priceFormat(value.sum) + ' 개';
+                },
+            },
+        },
+    },
 });
 
 //생산계획 클릭 시 아래 생산계획상세내용 출력
@@ -129,10 +148,10 @@ async function getProdPlanAll(plCode) {
     await fetch(`/ajax/prodPlanAll?prodPlanCode=${plCode}`)
         .then(res => res.json())
         .then(res => {
-            //console.log(res);
-
             prodPlanDetail.resetData(res);
         })
+
+    requireMatCal();
 };
 
 // BOM 테이블
@@ -208,7 +227,6 @@ const matStockList = new tui.Grid({
             header: '자재코드',
             name: 'matCode',
             align: 'center',
-            sortable: true,
             // validation: {
             // 	validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
             // }
@@ -225,6 +243,9 @@ const matStockList = new tui.Grid({
             header: '현재고량',
             name: 'stockCnt',
             align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            }
             // validation: {
             //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
             // }
@@ -233,6 +254,9 @@ const matStockList = new tui.Grid({
             header: '소요량',
             name: 'requireMat',
             align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            }
             // validation: {
             //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
             // }
@@ -241,6 +265,9 @@ const matStockList = new tui.Grid({
             header: '현재고-소요량',
             name: 'differenceStockReq',
             align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            }
             // validation: {
             // 	validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
             // }
@@ -249,6 +276,9 @@ const matStockList = new tui.Grid({
             header: '안전재고량',
             name: 'safeStockCnt',
             align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            }
             // validation: {
             // 	validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
             // }
@@ -264,16 +294,37 @@ function getMaterialsList() {
         .then(res => {
             // ajax로 불러온 데이터 그리드에 넣음
             matStockList.resetData(res);
-            for (let i = 0; i < res.length; i++) {
-                matStockList.setValue(i, 'requireMat', 0)
-                matStockList.setValue(i, 'differenceStockReq', matStockList.getColumnValues('stockCnt')[i] - matStockList.getColumnValues('requireMat')[i])
-            }
             console.log(res);
         })
 };
 
-// 재고 소요량 계산
+// 소요량 계산 함수
+function requireMatCal() {
+    let requireMatData = matStockList.getData();
+    let needCntData = BOMList.getData();
+    let planCntData = prodPlanDetail.getData();
 
+    let planAllCnt = prodPlanDetail.getSummaryValues('planCnt').sum;
+    let matCode = matStockList.getColumnValues('matCode');
+    let needCnt = 0;
+
+    for (let i = 0; i < requireMatData.length; i++) {
+        for (let j = 0; j < needCntData.length; j++) {
+            if (needCntData[j].matCode == requireMatData[i].matCode) {
+                needCnt = needCntData[j].needCnt;
+            }
+        }
+
+        if (matCode[i] == 'MAT00002') {
+            matStockList.setValue(i, 'requireMat', Math.ceil(planAllCnt * needCnt / 60 / 30))
+        } else if (matCode[i] == 'MAT00009') {
+            matStockList.setValue(i, 'requireMat', planAllCnt)
+        }
+        
+        matStockList.setValue(i, 'differenceStockReq', matStockList.getColumnValues('stockCnt')[i] - matStockList.getColumnValues('requireMat')[i])
+    }
+
+}
 
 matStockList.on('checkAll', function () {
     let checked = matStockList.getCheckedRows();
@@ -334,10 +385,26 @@ const matOrderList = new tui.Grid({
             name: 'matOrdersPrice',
             align: 'center',
             formatter: function (price) {
-                return priceFormat(price.value) + '원';
+                return priceFormat(price.value) + ' 원';
             }
         }
-    ]
+    ],
+    summary: {
+        height: 40,
+        position: 'bottom', // or 'top'
+        columnContent: {
+            ordersCnt: {
+                template: function () {
+                    return '합계';
+                },
+            },
+            matOrdersPrice: {
+                template: function (value) {
+                    return priceFormat(value.sum) + ' 원';
+                },
+            },
+        },
+    },
 });
 
 matOrderList.on('afterChange', ev => {
@@ -348,8 +415,16 @@ matOrderList.on('afterChange', ev => {
     }
 })
 
+document.getElementById('orderBtn').addEventListener('click', insertMatOrders)
+
 // 자재 발주 등록
 function insertMatOrders() {
     matOrderList.blur();
+
+    let prodPlanCode = prodPlanList.getValue(prodPlanList.getFocusedCell().rowKey, 'prodPlanCode');
+    let matTotalOrdersPrice = matOrderList.getSummaryValues('matOrdersPrice').sum;
+
+    console.log(prodPlanCode);
+    console.log(matTotalOrdersPrice);
 
 }
