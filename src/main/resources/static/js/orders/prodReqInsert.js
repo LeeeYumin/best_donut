@@ -22,7 +22,7 @@ const ordGrid = new tui.Grid({
       name : 'ordersDate',
       align : 'center',
       formatter: function(date) {
-				return dateFormat(date);
+				return dateFormat(date.value);
 			}
     }, 
     {
@@ -30,7 +30,7 @@ const ordGrid = new tui.Grid({
       name : 'dueDate',
       align : 'center',
       formatter: function(date) {
-				return dateFormat(date);
+				return dateFormat(date.value);
 			}
     }, 
     {
@@ -129,12 +129,12 @@ const prodGrid = new tui.Grid({
 				return priceFormat(cnt.value);
 			},
       validation : {
-        validatorFn : (value, row, columnName) => Number(row['afterOutCnt']) > 1000
+        validatorFn : (value, row, columnName) => Number(row['afterOutCnt']) >= 1000
       }
 		}, 
     {
 			header : '생산요청량',
-			name : 'prodReqCnt',
+			name : 'reqCnt',
 			align : 'center',
       formatter: function(cnt) {
 				return priceFormat(cnt.value);
@@ -169,7 +169,7 @@ const reqGrid = new tui.Grid({
     }, 
     {
 			header : '생산요청량',
-			name : 'prodReqCnt',
+			name : 'reqCnt',
 			align : 'center',
       formatter: function(cnt) {
 				return priceFormat(cnt.value);
@@ -189,7 +189,7 @@ const reqGrid = new tui.Grid({
 					return '합계';
 				}, 
 			},
-			prodReqCnt: {
+			reqCnt: {
 				template: function(value) {
 					return priceFormat(value.sum);
 				}, 
@@ -202,15 +202,21 @@ const reqGrid = new tui.Grid({
 // 2. 그리드 데이터 생성
 
 // (1) 주문 조회
-function getOrdersList(ordersCode){
-	fetch(`ajax/ordersList?ordersCode=${ordersCode}`)
+function getOrdersList(param){
+	const data = {
+		method: 'POST',
+		headers: jsonHeaders,
+		body : JSON.stringify(param)
+	};
+
+	fetch('ajax/ordersList', data)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
 		ordGrid.resetData(res);
 	})
 }
-getOrdersList('');
+getOrdersList({});
 
 // (2) 제품목록 조회
 function getProductList(){
@@ -223,10 +229,10 @@ function getProductList(){
       product.afterOutCnt = product.stockCnt + product.defaultProd - product.totalOrdersCnt;
       // 생산요청수량 = 납품후재고량 - 안전재고량
       if((product.afterOutCnt - product.safeStockCnt) >= 0){
-        product.prodReqCnt = 0;
+        product.reqCnt = 0;
       }
       else {
-        product.prodReqCnt = product.safeStockCnt - product.afterOutCnt;
+        product.reqCnt = product.safeStockCnt - product.afterOutCnt;
       }
 
     }
@@ -240,23 +246,91 @@ getProductList();
 // (3) 생산요청 목록
 function getReqList() {
   let prodReqlist = [];
-	let prodReqCnt = prodGrid.getColumnValues('prodReqCnt');
+	let reqCnt = prodGrid.getColumnValues('reqCnt');
 	for(let i = 0; i < prodGrid.getRowCount(); i++){
-		if(prodReqCnt[i] != 0) {
+		if(reqCnt[i] != 0) {
 			prodReqlist.push(prodGrid.getRow(i));
 		}
 	}
   reqGrid.resetData(prodReqlist);
-  insertProdReq()
+
+	// (4) 등록폼 데이터
+	const prodReqSum = reqGrid.getSummaryValues('reqCnt').sum;
+	document.querySelector('#totalReqCnt').value = prodReqSum;
+	document.querySelector('#reqDate').value = new Date().toISOString().substring(0, 10);
 }
 
-// 3. 등록 기능
-function insertProdReq() {
 
-  // prodReqCode;		// 생산요청코드
-	// totalReqCnt;	// 총요청수량
-	// reqDate;			// 요청일자
-	// usersCode;		// 담당자코드
-	// prodReqStatus;
-  console.log(reqGrid.getData());
+// 3. 등록 기능
+async function prodReqFunc() {
+
+	// (1) 파라미터 준비
+	const totalReqCnt = document.querySelector('#totalReqCnt').value
+	const reqDate = document.querySelector('#reqDate').value
+	const prodReqDetList = reqGrid.getData();
+	const param = {totalReqCnt, reqDate, prodReqDetList}
+
+	let result = false;
+
+	// (2) fetch
+	await fetch('ajax/insertProdReq',{
+		method : 'post',
+   		 headers: jsonHeaders,
+		body : JSON.stringify(param)
+	})
+	.then(res => res.json())
+	.then(res => {
+    result = res;
+  })
+
+	if(result){
+		Swal.fire({
+			position: "center",
+			icon: "success",
+			title: "생산요청등록 완료!",
+			text: "생산요청등록이 정상적으로 처리되었습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+	}
+	else {
+		Swal.fire({
+			position: "center",
+			icon: "error",
+			title: "생산요청등록 실패",
+			text: "생산요청등록이 정상적으로 처리되지 않았습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+	}
+}
+
+// 거래처 목록 가져오기
+function getCompany() {
+
+  fetch('ajax/getCompany')
+  .then(res => res.json())
+  .then(res => {
+
+		for(company of res){
+			console.log(company.companyCode);
+			document.querySelector('#companyCode')
+			.insertAdjacentHTML('beforeend', '<option value="' + company.companyCode + '">' + company.companyName + '</option>');
+		}
+	})
+}
+getCompany();
+
+function searchReset() {
+
+	const startOfWeek = dateFormat(weekFormat(searchForm.ordersDate.value));
+	const endOfWeek = dateFormat(weekFormat(searchForm.ordersDate.value)) + 7;
+
+	console.log(`startOfWeek : ${startOfWeek}, endOfWeek : ${endOfWeek}`);
+
+}
+
+function getWeekDate(){
+	const week = searchForm.ordersDate.value;
+	console.log('week : ', weekFormat(week));
 }

@@ -20,9 +20,9 @@ public class OrdersServiceTest {
 	
 //	@Test
 	public void 주문조회() {
-		String ordersCode = "";
-		List<Map<String,Object>> ordersList = ordersMapper.getOrders(ordersCode);
-		for (Map<String, Object> list : ordersList) {
+		OrdersVO vo = new OrdersVO();
+		List<OrdersVO> ordersList = ordersMapper.getOrders(vo);
+		for (OrdersVO list : ordersList) {
 			System.out.println(list);
 		}
 	}

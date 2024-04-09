@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.materials.MaterialVO;
-import com.example.demo.materials.service.MaterialsService;
 import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.orders.OrdersVO;
+import com.example.demo.orders.ProdReqVO;
 import com.example.demo.orders.service.OrdersService;
 import com.example.demo.product.service.ProductService;
 
@@ -85,11 +84,18 @@ public class OrdersController {
 	
 	// 2. 조회
 	
-	// 주문조회
-	@GetMapping("ajax/ordersList")	// fetch 함수에 들어가는 uri
+	// 거래처조회
+	@GetMapping("ajax/getCompany")
 	@ResponseBody
-	public List<Map<String, Object>> getOrders(String ordersCode){
-		return ordersService.getOrders(ordersCode);
+	public List<Map<String, Object>> getCompany() {
+		return ordersService.getCompany();
+	}
+	
+	// 주문조회
+	@PostMapping("ajax/ordersList")	// fetch 함수에 들어가는 uri
+	@ResponseBody
+	public List<OrdersVO> getOrders(@RequestBody OrdersVO vo){
+		return ordersService.getOrders(vo);
 	}
 	
 	// 주문상세조회
@@ -107,5 +113,12 @@ public class OrdersController {
 	@ResponseBody
 	public boolean insertOrders(@RequestBody OrdersVO vo) {
 		return ordersService.insertOrders(vo);
+	}
+	
+	// 생산요청등록
+	@PostMapping("ajax/insertProdReq")
+	@ResponseBody
+	public boolean insertProdReq(@RequestBody ProdReqVO vo) {
+		return ordersService.insertProdReq(vo);
 	}
 }

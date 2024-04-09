@@ -8,7 +8,7 @@
 	<!-- Toast UI CDN -->
 	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-	</head>
+</head>
 <body>
 	<!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
@@ -32,15 +32,28 @@
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
 							<div class="col-sm-6">
-								<input class="form-control" type="text" name="company">
+								<input class="form-control" type="text" name="companyName">
 							</div>
 						</div>
+
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문일자</label>
 							<div class="col-sm-6 input-group">
-								<input type="date" class="form-control" name="ordersDate">
+								<input type="date" class="form-control" name="ordersStartDate" id="ordersStartDate">
+								<span class="input-group-text">~</span> 
+								<input type="date" class="form-control" name="ordersEndDate" id="ordersEndDate">
 							</div>
 						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="dueStartDate" id="dueStartDate">
+								<span class="input-group-text">~</span> 
+								<input type="date" class="form-control" name="dueEndDate" id="dueEndDate">
+							</div>
+						</div>
+
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchOrders()">검색</button>
 							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
