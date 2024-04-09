@@ -227,21 +227,17 @@ grid2.on('afterChange', event => {
 })
 
 // grid2 완제품 품질입력
-// grid2.on('click', (event) => {
-// 	let insertPro = grid2.getValue(event.rowKey, 'insertPro')
-//   console.log(insertPro);
-// 	insertProDtl(insertPro);
-// })
+function insertProDtl(insertPro){
+	fetch(`ajax/selectProQuality?selectProQuality=${insertPro}`)
+	.then(res => res.json())
+	.then(res => {
+		// ajax로 불러온 데이터 그리드에 넣음
+    console.log("insertProDtl: ", res);
+		grid2.resetData(res);
+	})
+};
 
-// function insertProDtl(insertPro){
-// 	fetch(`ajax/selectProQuality?selectProQuality=${insertPro}`)
-// 	.then(res => res.json())
-// 	.then(res => {
-// 		// ajax로 불러온 데이터 그리드에 넣음
-//     console.log("insertProDtl: ", res);
-// 		grid2.resetData(res);
-// 	})
-// };
+insertProDtl();
 
 function selectProQual(){
 	fetch(`ajax/selectProQual`)
