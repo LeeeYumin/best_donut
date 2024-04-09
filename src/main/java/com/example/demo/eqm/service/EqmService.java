@@ -7,5 +7,6 @@ import com.example.demo.eqm.EqmVO;
 public interface EqmService {
 	
 	public List<EqmVO> getEqm(EqmVO vo);
+	public int insertEqm(EqmVO vo);
 	
 }

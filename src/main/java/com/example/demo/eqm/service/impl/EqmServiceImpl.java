@@ -18,6 +18,11 @@ public class EqmServiceImpl implements EqmService{
 	public List<EqmVO> getEqm(EqmVO vo) {
 		return eqmMapper.getEqm(vo);
 	}
+
+	@Override
+	public int insertEqm(EqmVO vo) {
+		return eqmMapper.insertEqm(vo);
+	}
 	
 	
 }
