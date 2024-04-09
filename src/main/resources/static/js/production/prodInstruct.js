@@ -250,19 +250,26 @@ getWeeklyPlan();
       //생산요청 상세 => 생산계획 상세 (check된 값)
 			wplanD.on('checkAll', function() {
 				let checked = wplanD.getCheckedRows();
-        piDeInsert.appendRows(checked);
+        piDeInsert.resetData(checked);
 			});
-			wplanD.on('check', function() {
-				let checked = wplanD.getCheckedRows();
-        piDeInsert.appendRows(checked);
+			wplanD.on('check', function(e) {
+				let checked = wplanD.getRow(e.rowKey);
+        piDeInsert.appendRow(checked);
 			});
 			wplanD.on('uncheckAll', function() {
 				let checked = wplanD.getCheckedRows();
 				piDeInsert.resetData(checked);
 			});
-			wplanD.on('uncheck', function() {
-				let checked = wplanD.getCheckedRows();
-				piDeInsert.resetData(checked);
+			wplanD.on('uncheck', function(e) {
+				let delCode = wplanD.getValue(e.rowKey, 'prodPlanDetailCode');
+				let delRow = piDeInsert.getData()
+
+				for(let i = 0; i < piDeInsert.getData().length; i++) {
+					if(delRow[i].prodPlanDetailCode == delCode) {
+						delRow.splice(i, 1);
+						piDeInsert.resetData(delRow);
+					}
+				}
 			});
 
 			//생산지시 그리드의 지시수량 입력 시 => 위 생산계획 그리드 지시수량 & 미지시수량 값 변경
@@ -293,7 +300,6 @@ getWeeklyPlan();
 							wplanD.setValue(num, 'instructDoneCnt', instructCnt);
 							wplanD.setValue(num, 'notInstructCnt', notIns);
 						}
-
 					}
 				}
 			});
