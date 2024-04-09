@@ -11,7 +11,6 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style>
-
 .btn-addinput,
 .btn-insert {
 	width: 60px;
@@ -42,42 +41,42 @@ h4 {
 			<span class="text-muted fw-light">생산관리 / </span> 생산계획 등록
 		</h3>
 
-		<!-- <h2>생산계획 등록</h2> -->
 		<div class="card mb-3" style="padding-bottom: 20px">
-		<div class="pt30"></div>
+			<div class="pt30"></div>
+			<h4>주간 생산요청</h4>
+			<h5 class="pt30">생산요청</h5>
+				<div id="plreq"></div>
+			<h5 class="pt30">생산요청상세</h5>
+				<div id="plreqD"></div>
+		 </div>
 		
-		<h4>생산계획</h4>
-		<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertPlan()">등록</button>
-		<div id="plInsert" style="padding-bottom: 30px;"></div>
 
-		<h4>생산계획 상세</h4>
-		<span>
-		 <button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">행삭제</button>		
-		 <button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
-		</span>
-		<div id="plDeInsert"></div>
-
-		</div>
-
-		<div style="padding-top: 80px;"></div>
+		<div style="padding-top: 50px;"></div>
 		
-		<div class="card mb-3">
-		 <div class="pt30"></div>
-		 <h4>주간 생산요청 목록</h4>
-		 <h5 class="pt30">생산요청</h5>
-		 <div id="plreq"></div>
-		 <h5 class="pt30">생산요청상세</h5>
-		 <div id="plreqD"></div>
-
-		</div>
-		
+		<div class="card mb-3" style="padding-bottom: 20px">
+			<div class="pt30"></div>
+			
+			<h4>생산계획</h4>
+			<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertPlan()">등록</button>
+			<div id="plInsert" style="padding-bottom: 30px;"></div>
+	
+			<h5>상세</h5>
+			<span>
+			 <button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">행삭제</button>		
+			 <button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
+			</span>
+			<div id="plDeInsert"></div>
+	
+			</div>
 
 		 
 		<!-- 모달 -->
     <div class="col-lg-4 col-md-6">
       <div class="mt-3">
         <!-- 모달 버튼 -->
-       
+				<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">
+					test
+				</button> -->
 
         <!-- 제품선택 모달 -->
         <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">

@@ -9,11 +9,11 @@ import com.example.demo.production.ProdPlanVO;
 
 public interface ProdPlanService {
 
-	//1.생산요청&상세
+	/* 1.생산요청&상세 */
 	public Map<String,Object> getProdReq();
 	
 	
-	//2.생산계획
+	/* 2.생산계획 */
 	//1)조회
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo);
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
@@ -26,4 +26,11 @@ public interface ProdPlanService {
 	
 	//4)삭제
 	public int deleteProdPlan(ProdPlanVO vo);
+	
+	
+	/* 3.생산지시 */
+	//+지시 전 주간생산계획
+	public Map<String,Object> getWeeklyPlan();
+	
+	
 }

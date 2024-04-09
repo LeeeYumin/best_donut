@@ -1,5 +1,78 @@
 getProdReq();
 		
+		/* < 생산요청 > */
+		const plreq = new tui.Grid({
+			el : document.getElementById('plreq'),
+			scrollX : false,
+			scrollY : false,
+			bodyHeight: 40,
+			minBodyHeight: 40,
+			columns : [
+				{
+					header : '생산요청일자',
+					name : 'reqDate',
+					align: 'center',
+					formatter: dateFormat
+				},
+				{
+					header : '생산요청코드',
+					name : 'prodReqCode',
+					align: 'center'
+				}, 
+				{
+					header : '총 요청수량',
+					name : 'totalReqCnt',
+					align: 'center'
+				}, 
+				{
+					header : '담당자',
+					name : 'usersCode',
+					align: 'center'
+				}
+			]
+		});
+		/* < 생산요청 상세 > */
+		const plreqD = new tui.Grid({
+			el : document.getElementById('plreqD'),
+			scrollX : false,
+			scrollY : false,
+			rowHeaders: ['checkbox'],
+			columns : [
+				{
+					header : '생산요청상세코드',
+					name : 'prodReqDetailCode',
+					align: 'center'
+				},
+				{
+					header : '제품코드',
+					name : 'productCode',
+					align: 'center'
+				}, 
+				{
+					header : '제품명',
+					name : 'productName',
+					align: 'center'
+				}, 
+				{
+					header : '수량',
+					name : 'reqCnt',
+					align: 'center'
+				}
+			]
+		});
+
+		// 생산요청조회(ajax)
+		async function getProdReq(){
+			await fetch("/ajax/prodReq")
+			.then(res => res.json())
+			.then(res => {
+				//console.log(res);
+
+				plreq.resetData(res.prodReq); //ServiceImpl에서 넘겨 준 변수명
+				plreqD.resetData(res.prodReqDe);
+			})
+		};
+//==========================================================		
 			/* < 생산계획 > */
 
 			//생산계획 등록
@@ -79,13 +152,9 @@ getProdReq();
             formatter: function(price) {
               return priceFormat(price.value);
             }
-					},
-					
-				],
-				
-				
+					},					
+				],	
 			});
-			
 			
 			//생산계획 상세 등록 행추가
 			let addRowBtn = document.getElementById('addRowBtn');
@@ -119,83 +188,7 @@ getProdReq();
 				}
 			});
 
-			//=========================================================================
-			
-			/* < 생산요청 > */
-			const plreq = new tui.Grid({
-				el : document.getElementById('plreq'),
-				scrollX : false,
-				scrollY : false,
-				bodyHeight: 40,
-				minBodyHeight: 40,
-				columns : [
-					{
-						header : '생산요청일자',
-						name : 'reqDate',
-						align: 'center',
-						formatter: dateFormat
-					},
-					{
-						header : '생산요청코드',
-						name : 'prodReqCode',
-						align: 'center'
-					}, 
-					{
-						header : '총 요청수량',
-						name : 'totalReqCnt',
-						align: 'center'
-					}, 
-					{
-						header : '담당자',
-						name : 'usersCode',
-						align: 'center'
-					}
-				]
-			});
-      /* < 생산요청 상세 > */
-			const plreqD = new tui.Grid({
-				el : document.getElementById('plreqD'),
-				scrollX : false,
-				scrollY : false,
-				rowHeaders: ['checkbox'],
-				columns : [
-					{
-						header : '생산요청상세코드',
-						name : 'prodReqDetailCode',
-						align: 'center'
-					},
-					{
-						header : '제품코드',
-						name : 'productCode',
-						align: 'center'
-					}, 
-          {
-						header : '제품명',
-						name : 'productName',
-						align: 'center'
-					}, 
-					{
-						header : '수량',
-						name : 'reqCnt',
-						align: 'center'
-					}
-				]
-			});
-			
-			// 생산요청조회(ajax)
-			async function getProdReq(){
-				await fetch("/ajax/prodReq")
-				.then(res => res.json())
-				.then(res => {
-					//console.log(res);
-
-					plreq.resetData(res.prodReq); //ServiceImpl에서 넘겨 준 변수명
-					plreqD.resetData(res.prodReqDe);
-				})
-			};
-			
-			
-			//============================================================
+//============================================================
 			//생산요청 => 생산계획
 			plreq.on("click", (e) => {
 				//console.log(e);

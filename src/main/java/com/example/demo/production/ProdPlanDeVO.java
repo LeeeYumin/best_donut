@@ -1,6 +1,5 @@
 package com.example.demo.production;
 
-import java.util.Date;
 
 import lombok.Data;
 
@@ -17,5 +16,7 @@ public class ProdPlanDeVO {
 	private int planCnt;
 	private int notInstructCnt;
 	private int instructDoneCnt;
+	
+	private String productName;
 	
 }

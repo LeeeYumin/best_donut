@@ -19,10 +19,10 @@
 		SELECT prod_req_code
 		     , prd.prod_req_detail_code
 		     , prd.product_code
-         , p.product_name
+         	 , p.product_name
 		     , prd.req_cnt
 		FROM prod_req_detail prd JOIN product p
-                              ON prd.product_code = p.product_code
+                              	  ON prd.product_code = p.product_code
 		WHERE prod_req_code = #{prodReqCode}
 	</select>
 	
@@ -68,12 +68,13 @@
 		     , d.not_instruct_cnt
 		     , d.instruct_done_cnt
 		FROM prod_plan p JOIN prod_plan_detail d
-		                    ON p.prod_plan_code = d.prod_plan_code
-                      JOIN product pn
-                        ON d.product_code = pn.product_code
+		                  ON p.prod_plan_code = d.prod_plan_code
+                      	 JOIN product pn
+                          ON d.product_code = pn.product_code
 		WHERE p.prod_plan_code = #{prodPlanCode}
 		ORDER BY 1
 	</select>
+	
 
 <!-- 생산계획 등록(1건) -->
 	<insert id="insertProdPlan" parameterType="ProdPlanVO">
@@ -155,7 +156,33 @@
 	</update>
 	
 
-<!-- 생산지시 -->
+<!-- 생산지시 전 주간 생산계획 -->
+	<select id="getWeeklyPlan" resultType="ProdPlanVO">
+		SELECT prod_plan_code
+		     , prod_req_code
+		     , plan_date
+		     , prod_plan_status
+		     , users_code
+		FROM prod_plan
+		WHERE plan_date BETWEEN TRUNC(SYSDATE) - 3 AND TRUNC(plan_date) + 9
+		AND ROWNUM = 1
+		ORDER BY prod_plan_code
+	</select>
+	<select id="getWeeklyPlanDetail" resultType="ProdPlanDeVO">
+		SELECT prod_plan_detail_code
+	     	 , prod_plan_code
+	     	 , prod_req_detail_code
+	     	 , prd.product_code
+		     , p.product_name
+		     , fix_cnt
+		     , req_cnt
+		     , plan_cnt
+		     , not_instruct_cnt
+		     , instruct_done_cnt
+		FROM prod_plan_detail prd JOIN product p
+		                           ON prd.product_code = p.product_code
+		WHERE prod_plan_code = #{prodPlanCode}
+	</select>
 
 
 
