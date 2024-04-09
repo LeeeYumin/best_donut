@@ -7,14 +7,22 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.orders.OrdersVO;
+import com.example.demo.orders.ProdReqDetailVO;
+import com.example.demo.orders.ProdReqVO;
 
 @Mapper
 public interface OrdersMapper {
 
-	public List<Map<String, Object>> getOrders(String ordersCode);	// 주문조회
+	// 1. 주문조회
+	public List<OrdersVO> getOrders(OrdersVO vo);					// 주문조회
 	public List<OrdersDetailVO> getOrdersDetail(String ordersCode);	// 주문상세조회
+	public List<Map<String, Object>> getCompany();					// 거래처 조회
 	
-	public int insertOrders(OrdersVO vo);
-	public int insertOrdDet(OrdersDetailVO dvo);
+	// 2. 주문등록
+	public int insertOrders(OrdersVO vo);				// 주문등록
+	public int insertOrdDet(OrdersDetailVO vo);			// 주문상세등록
 		
+	// 3. 생산요청등록
+	public int insertProdReq(ProdReqVO vo);				// 생산요청등록
+	public int insertProdReqDet(ProdReqDetailVO vo);	// 생산요청상세등록
 }

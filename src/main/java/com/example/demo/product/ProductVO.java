@@ -16,5 +16,5 @@ public class ProductVO {
 	// 납품후재고량
 	private Integer afterOutCnt;			
 	// 생산요청수량
-	private Integer prodReqCnt;				
+	private Integer reqCnt;				
 }

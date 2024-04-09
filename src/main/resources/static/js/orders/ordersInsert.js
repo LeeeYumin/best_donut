@@ -111,7 +111,7 @@ async function saveInsert() {
 
   await fetch('ajax/insertOrders',{
 		method : 'post',
-   		 headers: jsonHeaders,
+   	headers: jsonHeaders,
 		body : JSON.stringify(param)
 	})
 	.then(res => res.json())

@@ -1,4 +1,4 @@
-getOrdersList('');
+getOrdersList({});
 
 // grid1.  주문 조회
 
@@ -23,7 +23,7 @@ const grid1 = new tui.Grid({
 			align : 'center',
 
 			formatter: function(date) {
-				return dateFormat(date);
+				return dateFormat(date.value);
 			},
 		}, 
 		{
@@ -31,7 +31,7 @@ const grid1 = new tui.Grid({
 			name : 'dueDate',
 			align : 'center',
 			formatter: function(date) {
-				return dateFormat(date);
+				return dateFormat(date.value);
 			}
 		}, 
 		{
@@ -81,9 +81,14 @@ const grid1 = new tui.Grid({
 // 2. gridData 생성
 
 // 주문 조회(ajax)
-function getOrdersList(ordersCode){
-	console.log('ordersCode : ' + ordersCode);
-	fetch(`ajax/ordersList?ordersCode=${ordersCode}`)
+function getOrdersList(param){
+	const data = {
+		method: 'POST',
+		headers: jsonHeaders,
+		body : JSON.stringify(param)
+	};
+
+	fetch('ajax/ordersList', data)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
@@ -95,15 +100,22 @@ function getOrdersList(ordersCode){
 // 3. 이벤트
 
 // 주문 검색버튼 클릭 이벤트
-function searchOrders(){
-	let ordersCode = document.querySelector('#ordersCode').value;
-	getOrdersList(ordersCode);
+async function searchOrders(){
+	let ordersCode = searchForm.ordersCode.value;
+	let companyName = searchForm.companyName.value;
+	let ordersStartDate = searchForm.ordersStartDate.value;
+	let ordersEndDate = searchForm.ordersEndDate.value;
+	let dueStartDate = searchForm.dueStartDate.value;
+	let dueEndDate = searchForm.dueEndDate.value;
+
+	let param = {ordersCode, companyName, ordersStartDate, ordersEndDate, dueStartDate, dueEndDate};
+	getOrdersList(param);
 }
 
 // 검색 초기화
 function searchReset() {
-	document.querySelector('#ordersCode').value = '';
-	getOrdersList('');
+	searchForm.reset();
+	getOrdersList({});
 }
 
 // 주문상세 목록 띄우기
