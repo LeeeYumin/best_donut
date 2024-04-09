@@ -27,22 +27,31 @@
 					<div class="card-body demo-vertical-spacing demo-only-element">
 
 						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">오늘날짜</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="today" readonly>
+							</div>
+						</div>
+						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
 							<div class="col-sm-6 input-group">
-								<input type="week" class="form-control" name="ordersDate" onclick="getWeekDate()">
+								<input type="week" class="form-control" name="dueWeek" onchange="getWeekDate()">
 							</div>
 						</div>
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;"></label>
 							<div class="col-sm-6 input-group">
-								<input type="date" class="form-control" name="ordersStartDate" id="ordersStartDate" readonly>
+								<input type="date" class="form-control" name="dueStartDate" id="dueStartDate" readonly>
 								<span class="input-group-text">~</span> 
-								<input type="date" class="form-control" name="ordersEndDate" id="ordersEndDate" readonly>
+								<input type="date" class="form-control" name="dueEndDate" id="dueEndDate" readonly>
 							</div>
 						</div>
+
+						<div id="defaultFormControlHelp" class="form-text"></div>
+
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchOrders()">검색</button>
-							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
+							<button type="button" class="btn btn-primary me-md-2" id="resetBtn" onclick="searchReset()">초기화</button>
 						</div>
 					</div>
 				</div>

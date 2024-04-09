@@ -16,12 +16,15 @@ const grid1 = new tui.Grid({
 			header : '주문코드',
 			name : 'ordersCode',
 			align : 'center',
+			sortingType: 'desc',
+			sortable: true,			
 		}, 
 		{
 			header : '주문일자',
 			name : 'ordersDate',
 			align : 'center',
-
+			sortingType: 'desc',
+			sortable: true,			
 			formatter: function(date) {
 				return dateFormat(date.value);
 			},
@@ -30,6 +33,8 @@ const grid1 = new tui.Grid({
 			header : '납기일자',
 			name : 'dueDate',
 			align : 'center',
+			sortingType: 'desc',
+			sortable: true,			
 			formatter: function(date) {
 				return dateFormat(date.value);
 			}
@@ -51,6 +56,8 @@ const grid1 = new tui.Grid({
 			header : '주문상태',
 			name : 'ordersStatus',
 			align : 'center',
+			sortingType: 'desc',
+			sortable: true,	
 			formatter : 'listItemText',
 			editor: {
         type: 'text',
@@ -99,16 +106,32 @@ function getOrdersList(param){
 
 // 3. 이벤트
 
+// 거래처 목록 가져오기
+function getCompany() {
+  fetch('ajax/getCompany')
+  .then(res => res.json())
+  .then(res => {
+
+		for(company of res){
+			let optionHtml = '<option value="' + company.companyCode + '">' + company.companyName + '</option>'
+			let companyName = document.querySelector("#companyName")
+			companyName.insertAdjacentHTML('beforeend', optionHtml);
+		}
+	})
+}
+getCompany();
+
 // 주문 검색버튼 클릭 이벤트
 async function searchOrders(){
 	let ordersCode = searchForm.ordersCode.value;
-	let companyName = searchForm.companyName.value;
+	let companyCode = searchForm.companyName.value;
 	let ordersStartDate = searchForm.ordersStartDate.value;
 	let ordersEndDate = searchForm.ordersEndDate.value;
 	let dueStartDate = searchForm.dueStartDate.value;
 	let dueEndDate = searchForm.dueEndDate.value;
+	console.log('companyCode : ', companyCode);
 
-	let param = {ordersCode, companyName, ordersStartDate, ordersEndDate, dueStartDate, dueEndDate};
+	let param = {ordersCode, companyCode, ordersStartDate, ordersEndDate, dueStartDate, dueEndDate};
 	getOrdersList(param);
 }
 

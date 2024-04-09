@@ -13,6 +13,6 @@
     font-style: normal;
 }
 
-h1, h2, h3, h4, h5, a, table, label, button, span, input {
+p, h1, h2, h3, h4, h5, a, table, label, button, span, input, select {
 	font-family: 'LINESeedKR-Bd';
 }
