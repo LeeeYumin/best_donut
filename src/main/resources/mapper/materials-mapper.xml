@@ -2,20 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.materials.mapper.MaterialsMapper">
-   	<select id="getMaterials" resultType="MaterialReadVO" parameterType="String">   
-		SELECT DISTINCT m.mat_code, 
-               			m.mat_name,
-              			m.stock_cnt,
-               			m.safe_stock_cnt,
-               			d.unit_price
-          		   FROM mat m 
-          		   JOIN mat_detail d ON m.mat_code = d.mat_code
-        		  WHERE 1=1
-                     <!-- 검색 조건 -->
+   	<select id="getMaterials" resultType="MaterialVO" parameterType="String">   
+		SELECT mat_code, 
+               mat_name,
+               stock_cnt,
+               safe_stock_cnt,
+               main_company_code,
+               unit_price
+          FROM mat
+         WHERE 1=1
+         
+      <!-- 검색 조건 -->
       <if test="matName != null and matName != ''">
-					AND m.mat_name LIKE '%'||#{matName}||'%'         
+		   AND mat_name LIKE '%'||#{matName}||'%'         
       </if>
-      		   ORDER BY m.stock_cnt - m.safe_stock_cnt
+      ORDER BY stock_cnt - safe_stock_cnt
    	</select>
 
    	<select id="getMaterialDetails" resultType="MaterialReadVO" parameterType="String">

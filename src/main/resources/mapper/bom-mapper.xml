@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.bom.mapper.BomMapper">
+   	<select id="getMatOrdersBom" resultType="BomVO">
+   		WITH m AS (
+        	SELECT DISTINCT ma.mat_code, ma.mat_name, md.unit_price
+                       FROM mat ma 
+            LEFT OUTER JOIN mat_detail md ON ma.mat_code = md.mat_code
+		)
+
+		SELECT b.bom_code,
+               b.product_code,
+               d.mat_code,
+           	   m.mat_name,
+               d.need_cnt,
+               d.unit,
+               m.unit_price
+    	  FROM bom b
+       	  JOIN bom_detail d ON b.bom_code = d.bom_code
+      	  JOIN m ON m.mat_code = d.mat_code
+   	</select>
+</mapper>
