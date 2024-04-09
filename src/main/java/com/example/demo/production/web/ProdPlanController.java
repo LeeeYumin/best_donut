@@ -22,11 +22,28 @@ public class ProdPlanController {
 	
 	@Autowired ProdPlanService prodPlanService;
 
-	/* 생산계획페이지이동 */
+	/* 페이지 이동 */
+	
+	//생산계획 등록
 	@GetMapping("prodPlan") // 페이지 uri
 	public String prodPlan() {
 		return "production/prodPlan"; // html 파일 위치
 	}
+	
+	//생산계획 관리
+	@GetMapping("prodPlanList")
+	public String prodPlanList() {
+		return "production/prodPlanList";
+	}
+	
+	//생산지시 등록
+	@GetMapping("prodInstruct")
+	public String prodInstruct() {
+		return "production/prodInstruct";
+	}
+	
+	
+//============================================================================	
 	
 	/* < 생산요청&상세 > 데이터 */
 	@GetMapping("/ajax/prodReq")	// fetch 함수에 들어가는 uri
@@ -35,12 +52,7 @@ public class ProdPlanController {
 		return prodPlanService.getProdReq();
 	}
 	
-	
 	/* < 생산계획 > */
-	@GetMapping("prodPlanList") // 페이지 uri
-	public String prodPlanList() {
-		return "production/prodPlanList"; // html 파일 위치
-	}
 	
 	//1)조회
 	@PostMapping("/ajax/prodPlanList")
@@ -54,7 +66,6 @@ public class ProdPlanController {
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode){
 		return prodPlanService.getProdPlanAll(prodPlanCode);
 	}
-	
 	
 	//2)등록
 	//JSON
@@ -83,6 +94,17 @@ public class ProdPlanController {
 		prodPlanService.deleteProdPlan(vo);
 		return Collections.singletonMap("result", 1);
 	}
+	
+	
+	/* < 생산지시 > */
+	
+	//+지시 전 주간계획&상세 데이터
+	@GetMapping("/ajax/weeklyPlan")	// fetch 함수에 들어가는 uri
+	@ResponseBody
+	public Map<String, Object> getWeeklyPlan(){
+		return prodPlanService.getWeeklyPlan();
+	}
+	
 	
 	
 	

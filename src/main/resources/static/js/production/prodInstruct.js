@@ -1,126 +1,221 @@
-getProdPlanList()
+getWeeklyPlan();
 
-		//생산계획 진행상태
-		class PlanStatus {
-			constructor(props) {
-				const el = document.createElement('div');
+	//생산요청코드 없으면 '-'로 표시
+	class ProdReqCode {
+		constructor(props) {
+			const el = document.createElement('div');
 
-				this.el = el;
-      	this.render(props);
-			}
-			render(props) {
-				this.el.innerText = props.formattedValue == 'LS1' ? '미지시' : '지시등록';
-			}
-			getElement() {
-				return this.el;
-			}
+			this.el = el;
+			this.render(props);
 		}
-		//생산요청코드 없으면 '-'로 표시
-		class ProdReqCode {
-			constructor(props) {
-				const el = document.createElement('div');
-
-				this.el = el;
-      	this.render(props);
-			}
-			render(props) {
-				this.el.innerText = props.formattedValue == '' ? '-' : props.formattedValue;
-			}
-			getElement() {
-				return this.el;
-			}
+		render(props) {
+			this.el.innerText = props.formattedValue == '' ? '-' : props.formattedValue;
 		}
+		getElement() {
+			return this.el;
+		}
+	}
+	//생산계획 진행상태
+	class PlanStatus {
+		constructor(props) {
+			const el = document.createElement('div');
 
-		/* < 생산계획 목록 > */
-		const plList = new tui.Grid({
-			el : document.getElementById('plList'),
+			this.el = el;
+			this.render(props);
+		}
+		render(props) {
+			this.el.innerText = props.formattedValue == 'LS1' ? '미지시' : '지시등록';
+		}
+		getElement() {
+			return this.el;
+		}
+	}
+
+	/* < 생산계획 > */
+	const wplan = new tui.Grid({
+		el : document.getElementById('wplan'),
+		scrollX : false,
+		scrollY : false,
+		bodyHeight: 40,
+		minBodyHeight: 40,
+		columns : [
+			{
+				header : '생산계획코드',
+				name : 'prodPlanCode',
+				align: 'center'
+			}, 
+			{
+				header : '생산계획일자',
+				name : 'planDate',
+				align: 'center',
+				
+			},
+			{
+				header : '생산요청코드',
+				name : 'prodReqCode',
+				align: 'center',
+				renderer: {type: ProdReqCode}
+			},
+			{
+				header : '진행상태',
+				name : 'prodPlanStatus',
+				align: 'center',
+				renderer: {type: PlanStatus}
+			}, 
+			{
+				header : '담당자',
+				name : 'usersCode',
+				align: 'center'
+			}
+		]
+	});
+	/* < 생산계획 상세 > */
+	const wplanD = new tui.Grid({
+		el : document.getElementById('wplanD'),
+		scrollX : false,
+		scrollY : false,
+		rowHeaders: ['checkbox'],
+		columns : [
+			{
+				header : '생산계획상세코드',
+				name : 'prodPlanDetailCode',
+				align: 'center'
+			}, 
+				{
+				header : '생산요청상세코드',
+				name : 'prodReqDetailCode',
+				align: 'center',
+				renderer: {type: ProdReqCode}
+				
+			},
+			{
+				header : '제품코드',
+				name : 'productCode',
+				align: 'center'
+			},
+			{
+				header : '제품명',
+				name : 'productName',
+				align: 'center'
+			},
+			{
+				header : '고정수량',
+				name : 'fixCnt',
+				align: 'center',
+				formatter: function(price) {
+					return priceFormat(price.value);
+				},
+			}, 
+			{
+				header : '요청수량',
+				name : 'reqCnt',
+				align: 'center',
+				formatter: function(price) {
+					return priceFormat(price.value);
+				},
+			},
+			{
+				header : '계획수량',
+				name : 'planCnt',
+				align: 'center',
+				//editor: 'text',
+				_attributes: {
+					className: {
+						column: 'plan-cnt-color'
+					}
+				},
+				formatter: function(price) {
+					return priceFormat(price.value);
+				}
+			},
+			{
+				header : '미지시수량',
+				name : 'notInstructCnt',
+				align: 'center',
+				formatter: function(price) {
+					return priceFormat(price.value);
+				},
+			},
+			{
+				header : '지시수량',
+				name : 'instructDoneCnt',
+				align: 'center',
+				formatter: function(price) {
+					return priceFormat(price.value);
+				},
+			},
+		]
+	});
+
+	// 주간생산계획조회(ajax)
+	async function getWeeklyPlan(){
+		await fetch("/ajax/weeklyPlan")
+		.then(res => res.json())
+		.then(res => {
+			//console.log(res);
+
+			wplan.resetData(res.weeklyPlan); //ServiceImpl에서 넘겨 준 변수명
+			wplanD.resetData(res.weeklyPlanDe);
+		})
+	};
+
+	//================================================================
+	
+	/* < 생산지시 > */
+
+	//등록
+		const piInsert = new tui.Grid({
+			el : document.getElementById('piInsert'),
 			scrollX : false,
 			scrollY : false,
-			
+			bodyHeight: 40,
+			minBodyHeight: 40,
 			columns : [
+				{
+					header : '생산지시코드',
+					name : 'prodInstructCode',
+					align: 'center',
+				},
 				{
 					header : '생산계획코드',
 					name : 'prodPlanCode',
-					align: 'center'
-				}, 
-				{
-					header : '생산계획일자',
-					name : 'planDate',
 					align: 'center',
-					
+					//editor: 'text'
 				},
 				{
-					header : '생산요청코드',
-					name : 'prodReqCode',
+					header : '생산지시일자',
+					name : 'instructDate',
 					align: 'center',
-					renderer: {type: ProdReqCode}
+					editor: 'text',
+					formatter: dateFormat //공통함수
 				},
-				{
-					header : '진행상태',
-					name : 'prodPlanStatus',
-					align: 'center',
-					renderer: {type: PlanStatus}
-				}, 
 				{
 					header : '담당자',
 					name : 'usersCode',
-					align: 'center'
+					align: 'center',
+					editor: 'text'
 				}
 			]
 		});
+
+		//화면로딩부터 행 추가되도록
+		piInsert.appendRow({instructDate: new Date()});
 		
-		// 생산계획 목록 조회(ajax) -검색포함
-		async function getProdPlanList(){
-
-			const searchStartDate = document.getElementById('searchStartDate').value;
-			const searchEndDate = document.getElementById('searchEndDate').value;
-			const prodPlanCode = document.getElementById('prodPlanCode').value;
-
-			const obj = {searchStartDate, searchEndDate, prodPlanCode};
-			console.log(obj);
-			
-			const data = {
-				method: 'POST',
-				headers: jsonHeaders,
-				body : JSON.stringify(obj)
-			};
-
-			await fetch("/ajax/prodPlanList", data)
-			.then(res => res.json())
-			.then(res => {
-				console.log(res);
-				plList.resetData(res);
-			})
-		};
-
-		//검색버튼
-		document.getElementById('searchBtn').addEventListener('click', getProdPlanList);
-		
-		//초기화버튼
-		document.getElementById('resetBtn').addEventListener('click', function() {
-			document.getElementById('searchStartDate').value = '';
-			document.getElementById('searchEndDate').value = '';
-			plList.resetData([]);
-			getProdPlanList();
-		});
-		
-		/* < 생산계획 상세 목록 > */
-		const plAll = new tui.Grid({
-			el : document.getElementById('plAll'),
+		/* < 생산계획 상세 > */
+		const piDeInsert = new tui.Grid({
+			el : document.getElementById('piDeInsert'),
 			scrollX : false,
 			scrollY : false,
 			columns : [
+				{
+					header : '생산지시상세코드',
+					name : 'prodInstructDetailCode',
+					align: 'center'
+				},
 				{
 					header : '생산계획상세코드',
 					name : 'prodPlanDetailCode',
 					align: 'center'
-				}, 
-			    {
-					header : '생산요청상세코드',
-					name : 'prodReqDetailCode',
-					align: 'center',
-					renderer: {type: ProdReqCode}
-					
 				},
 				{
 					header : '제품코드',
@@ -133,163 +228,75 @@ getProdPlanList()
 					align: 'center'
 				},
 				{
-					header : '고정수량',
-					name : 'fixCnt',
-					align: 'center',
-					editor: 'text',
-					formatter: function(price) {
-						return priceFormat(price.value);
-					},
-				}, 
-				{
-					header : '요청수량',
-					name : 'reqCnt',
-					align: 'center',
-					formatter: function(price) {
-						return priceFormat(price.value);
-					},
-				},
-				{
-					header : '계획수량',
-					name : 'planCnt',
-					align: 'center',
-					formatter: function(price) {
-						return priceFormat(price.value);
-					}
-				},
-				{
-					header : '미지시수량',
-					name : 'notInstructCnt',
-					align: 'center',
-					formatter: function(price) {
-						return priceFormat(price.value);
-					},
-				},
-				{
 					header : '지시수량',
-					name : 'instructDoneCnt',
+					name : 'instructCnt',
 					align: 'center',
 					formatter: function(price) {
 						return priceFormat(price.value);
 					},
-				},
+					editor: 'text'
+				},				
+			],	
+		});
+		
+		//===========================================================================
+			//생산계획 => 생산지시
+			wplan.on("click", (e) => {
+				//console.log(e);
+				let wplcode = wplan.getValue(e.rowKey, "prodPlanCode");
+				piInsert.setValue(0, "prodPlanCode", wplcode) //setValue(0, "prodReqCode", prcode, false) false가 기본값
+			});
+
+      //생산요청 상세 => 생산계획 상세 (check된 값)
+			wplanD.on('checkAll', function() {
+				let checked = wplanD.getCheckedRows();
+        piDeInsert.appendRows(checked);
+			});
+			wplanD.on('check', function() {
+				let checked = wplanD.getCheckedRows();
+        piDeInsert.appendRows(checked);
+			});
+			wplanD.on('uncheckAll', function() {
+				let checked = wplanD.getCheckedRows();
+				piDeInsert.resetData(checked);
+			});
+			wplanD.on('uncheck', function() {
+				let checked = wplanD.getCheckedRows();
+				piDeInsert.resetData(checked);
+			});
+
+			//생산지시 그리드의 지시수량 입력 시 => 위 생산계획 그리드 지시수량 & 미지시수량 값 변경
+			piDeInsert.on('afterChange', e => {
+				let row = piDeInsert.getRow(e.changes[0].rowKey);
 				
-			]
-		});
+				let plDeCode = row.prodPlanDetailCode;
+				let instructCnt = parseInt(row.instructCnt);
+				
+				for(let i = 0; i < wplanD.getData().length; i++) {
+					if(wplanD.getData()[i].prodPlanDetailCode == plDeCode) {
+						let num = i;
+						let notIns = wplanD.getData()[i].notInstructCnt - instructCnt
+						
+						
+						//입력 지시수량이 계획수량보다 클 경우 => 알림 후 계획수량으로 입력
+						let plCnt = wplanD.getData()[i].planCnt;
 
-		//생산계획 클릭 시 아래 생산계획상세내용 출력
-		plList.on('click', e => {
-			let status = plList.getValue(e.rowKey, "prodPlanStatus");
-			let plCode = plList.getValue(e.rowKey, "prodPlanCode");
+						if(row.instructCnt > plCnt) {
+							document.getElementById('alertMsg').innerHTML = '<span style="color:red">※</span> 지시수량이 계획수량을 초과하여 계획수량이 입력됩니다.';
+							piDeInsert.setValue(row.rowKey, 'instructCnt', plCnt);
+							
+							setTimeout(() => {
+								document.getElementById('alertMsg').innerText = '';
+							}, 4000);
 
-			//계획상세목록
-			getProdPlanAll(plCode);
+						} else {
+							wplanD.setValue(num, 'instructDoneCnt', instructCnt);
+							wplanD.setValue(num, 'notInstructCnt', notIns);
+						}
 
-			//계획상태가 미지시이면 수정가능하게
-			if(status == 'LS1') {
-				plAll.enableColumn('fixCnt');
-
-			}else { //아니면 수정불가
-				plAll.disableColumn('fixCnt');
-			}		
-		})
-		
- 		async function getProdPlanAll(plCode){
-			await fetch(`/ajax/prodPlanAll?prodPlanCode=${plCode}`)
-			.then(res => res.json())
-			.then(res => {
-				//console.log(res);
-	
-				plAll.resetData(res);
-			})
-		};
-
-		//수정 시 변경 값 계산
-		plAll.on('afterChange', e => {
-			let row = plAll.getRow(e.changes[0].rowKey);
-			let fixCnt = parseInt(row.fixCnt);
-			let reqCnt = parseInt(row.reqCnt);
-
-			let planCnt = parseInt(fixCnt + reqCnt);
-			//console.log(planCnt)
-			let notInstructCnt = planCnt;
-
-			plAll.setValue(row.rowKey, 'planCnt', planCnt);
-			plAll.setValue(row.rowKey, 'notInstructCnt', notInstructCnt);
-		})
-
-		//생산계획 상세 수정하기
-		async function updatePlanDetail() {
-			plAll.blur();
-			const plDe = plAll.getModifiedRows().updatedRows
-			console.log(plDe);
-			
-
-			await fetch('ajax/updateProdPlanDetail', {
-				method: 'post',
-				headers: jsonHeaders,
-				body : JSON.stringify(plDe)
-			})
-			.then(res => res.json())
-			.then(res => {
-				console.log(res);
-				if(res == 1) {
-					alert('수정되었습니다.');
-				}else if(res) {
-					alert('수정 중 오류 발생');
-				}
-			})
-		}
-
-		//생산계획 상태 미지시일 경우에만 삭제하기
-		plList.on('click', e => {
-			const status = plList.getValue(e.rowKey,"prodPlanStatus");
-			console.log(status);
-
-			if(status == 'LS1') {
-
-			}
-		});
-
-
-		async function deletePlan() {
-			
-			let row = plList.getFocusedCell().rowKey;
-			let plan = plList.getData()[row];
-
-			//계획상세
-			plan.dvo =  plAll.getData();
-
-			if(plan.prodPlanStatus == 'LS1') {
-				await fetch('ajax/deleteProdPlan', {
-					method: 'post',
-					headers: jsonHeaders,
-					body : JSON.stringify(plan)
-				})
-				.then(res => res.json())
-				.then(res => {
-					console.log(res);
-					if(res.result == 1) { //controller에서 "result"로 값 넘김
-						alert('삭제되었습니다.');
-					}else {
-						alert('삭제 중 오류 발생');
 					}
-				})
-			} else {
-				alert('지시등록된 건으로 삭제 불가');
-			}
-		}
-		//삭제응답 (그리드에 입력된 모든 정보 비우기)
-		// function saveRes(res) {
-		// 	plDeInsert.resetData([]);
-		// 	plreq.resetData([]);
-		// 	plreqD.resetData([]);
-		// }
+				}
+			});
 
 
-		
 
-		
-
-
-		

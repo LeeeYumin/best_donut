@@ -39,5 +39,11 @@ public interface ProdPlanMapper {
 	public int cancelProdReqStatus(ProdPlanVO vo);
 
 	
+	/* 3.생산지시 */
+	//+지시 전 주간생산계획
+	public List<ProdPlanVO> getWeeklyPlan();
+	public List<ProdPlanDeVO> getWeeklyPlanDetail(String prodPlanCode);
+	
+	
 
 }

@@ -46,10 +46,10 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 		return prodPlanMapper.getProdPlan(vo);
 	}
 	@Override
-	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode) {
+	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode) { //상세
 		return prodPlanMapper.getProdPlanAll(prodPlanCode);
 	}
-
+	
 	//2)등록
 	@Override
 	@Transactional
@@ -104,6 +104,26 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 		
 		return result;
 	}
+
+	
+	/* < 생산지시 > */
+	
+	//+지시 전 주간생산계획
+	@Override
+	public Map<String,Object> getWeeklyPlan() {
+		Map<String,Object> map = new HashMap<>();
+		List<ProdPlanVO> list = prodPlanMapper.getWeeklyPlan();
+		
+		//계획
+		map.put("weeklyPlan", list);
+		
+		//계획상세
+		if(list != null && list.size() > 0) {
+			map.put("weeklyPlanDe", prodPlanMapper.getWeeklyPlanDetail(list.get(0).getProdPlanCode()));
+		}
+		return map;
+	}
+
 
 
 
