@@ -123,7 +123,7 @@ SELECT d.PRODUCT_CODE
 	WHERE qlty_check_status = 'PQ1'
 </select>
 
-<!-- 완제품품질등록 grid2 -->
+<!-- 완제품품질등록 grid2 / +등록버튼 클릭하면 적합수량에 포함-->
 <insert id="insertProQual" parameterType="ProQltyVO">
 	INSERT INTO PRODUCT_QLTY_CHECK
 				(
@@ -149,6 +149,13 @@ SELECT d.PRODUCT_CODE
 				, #{goodCnt}
 				)
 </insert>
+
+<update id="addProQual" parameterType="ProDetailVO">
+	UPDATE product_detail
+	   SET WAREHOUSING_CNT = WAREHOUSING_CNT + #{goodCnt}
+	 WHERE PRODUCT_LOT_CODE = #{productLotCode}
+
+</update>
 
 
 
