@@ -172,6 +172,7 @@ async function getMatInfo(matLotCode, inoutDate){
   })
 };
 
+//검색
 function findMat() {
   let matLotCode = document.querySelector('#matLOT').value;
   let inoutDate = document.querySelector('#inDate').value; //#id

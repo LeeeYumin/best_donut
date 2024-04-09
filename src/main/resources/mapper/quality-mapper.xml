@@ -103,15 +103,51 @@ SELECT d.PRODUCT_CODE
 			, d.PRODUCT_LOT_CODE
 			, c.ALL_END_TIME
             , d.warehousing_cnt
+            , d.qlty_check_status
 	  FROM  PRODUCT p JOIN PRODUCT_DETAIL d
 	  		          ON p.PRODUCT_CODE = d.PRODUCT_CODE
 	  		          LEFT OUTER JOIN PROC_RESULT c 
                       ON c.PROC_RESULT_CODE = d.PROC_RESULT_CODE	
 </select>
 
+<!-- 완제품품질등록 grid2 -->
+<select id="selectProQual" resultType="Map">
+	SELECT product_lot_code "productLotCode"
+	        , 'PFN' "foreignExist"
+	        , 'PSY' "packStatus"
+	        , 'ACY' "addStand"
+	        , 'PWY' "productWeight"
+	        , 'PRY' "lastResult"
+	        , warehousing_cnt "goodCnt"
+	FROM product_detail
+	WHERE qlty_check_status = 'PQ1'
+</select>
 
-<insert id="">
-
+<!-- 완제품품질등록 grid2 -->
+<insert id="insertProQual" parameterType="ProQltyVO">
+	INSERT INTO PRODUCT_QLTY_CHECK
+				(
+				product_qlty_check_code
+				, product_lot_code
+				, check_recv_date
+				, foreign_exist
+				, pack_status
+				, add_stand
+				, product_weight
+				, last_result
+				, good_cnt
+				)
+		VALUES (
+				seq_func('PRODUCT_QLTY_CHECK')
+				, #{productLotCode}
+				, trunc(sysdate)
+				, #{foreignExist}
+				, #{packStatus}
+				, #{addStand}
+				, #{productWeight}
+				, #{lastResult}
+				, #{goodCnt}
+				)
 </insert>
 
 

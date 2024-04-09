@@ -43,7 +43,17 @@ public class QualityServiceImpl implements QualityService {
 
 	@Override
 	public List<ProDetailVO> selectProQuality(){
-		return qualityMapper.selectProQuality(); //완제품품질등록
+		return qualityMapper.selectProQuality(); //grid1 완제품품질등록 
+	}
+
+	@Override
+	public List<ProQltyVO> insertProQual() {
+		return qualityMapper.insertProQual(); //grid2 완제품품질입력
+	}
+
+	@Override
+	public List<Map<String, Object>> selectProQual() {
+		return qualityMapper.selectProQual();
 	}
 
 
