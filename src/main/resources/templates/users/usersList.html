@@ -27,47 +27,56 @@
 <!-- 		<input type="text" name="search">
 		<button onclick="getList()">검색</button> -->
 		
-		
-		<div class="card card-body mb-4">
-			<h5>검색조건</h5>
-			<div>
-				<label>사용자검색</label>
-				<input type="search" id="keyword" placeholder="사용자코드 / 사용자명 입력" class="searchBox">
-			</div><hr>
-			<div>
-				<label>사용자권한</label>
-				<input type="checkbox" id="perm0" value="master" name="master" class="form-check-input">
-				<label for="perm0">전체</label>
-				<div id="perm" style="display:inline-block;">
-					<input type="checkbox" id="perm1" value="PER00001" name="perm" class="form-check-input">
-					<label for="perm1">영업관리</label>
-					<input type="checkbox" id="perm2" value="PER00002" name="perm" class="form-check-input">
-					<label for="perm2">생산관리</label>
-					<input type="checkbox" id="perm3" value="PER00003" name="perm" class="form-check-input">
-					<label for="perm3">자재관리</label>
-					<input type="checkbox" id="perm4" value="PER00004" name="perm" class="form-check-input">
-					<label for="perm4">품질관리</label>
-					<input type="checkbox" id="perm5" value="PER00005" name="perm" class="form-check-input">
-					<label for="perm5">설비관리</label>
+		<div>
+			<div class="card card-body mb-4">
+				<h5>검색조건</h5>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">사용자검색</label>
+					<div class="col-sm-6">
+						<input type="search" id="keyword" placeholder="사용자코드 / 사용자명 입력" class="form-control">
+					</div>
 				</div>
-			</div><hr>
-			<div>
-				<label>사용자상태</label>
-				<input type="radio" name="usersStatus" id="status0" value="" checked class="form-check-input">
-				<label for="status0">전체</label>
-				<input type="radio" name="usersStatus" id="status1" value="USY" class="form-check-input">
-				<label for="status1">활성</label>
-				<input type="radio" name="usersStatus" id="status2" value="USN" class="form-check-input">
-				<label for="status2">비활성</label>
-			</div><hr>
+				<div class="mb-3">
+					<label class="col-sm-1">사용자권한</label>
+					<input type="checkbox" id="perm0" value="master" name="master" class="form-check-input">
+					<label for="perm0" class="form-check-inline">전체</label>
+					<div id="perm" style="display:inline-block;">
+						<input type="checkbox" id="perm1" value="PER00001" name="perm" class="form-check-input">
+						<label for="perm1" class="form-check-inline">영업관리</label>
+						<input type="checkbox" id="perm2" value="PER00002" name="perm" class="form-check-input">
+						<label for="perm2" class="form-check-inline">생산관리</label>
+						<input type="checkbox" id="perm3" value="PER00003" name="perm" class="form-check-input">
+						<label for="perm3" class="form-check-inline">자재관리</label>
+						<input type="checkbox" id="perm4" value="PER00004" name="perm" class="form-check-input">
+						<label for="perm4" class="form-check-inline">품질관리</label>
+						<input type="checkbox" id="perm5" value="PER00005" name="perm" class="form-check-input">
+						<label for="perm5" class="form-check-inline">설비관리</label>
+					</div>
+				</div>
+				<div>
+					<label class="col-sm-1">사용자상태</label>
+					<input type="radio" name="usersStatus" id="status0" value="" checked class="form-check-input">
+					<label for="status0" class="form-check-inline">전체</label>
+					<input type="radio" name="usersStatus" id="status1" value="USY" class="form-check-input">
+					<label for="status1" class="form-check-inline">활성</label>
+					<input type="radio" name="usersStatus" id="status2" value="USN" class="form-check-input">
+					<label for="status2" class="form-check-inline">비활성</label>
+				</div>
+			</div>
 		</div>
 		
-		<div class="mb-4">
-			<button type="button" id="searchBtn">검색</button>	
-			<button type="reset" id="resetBtn">초기화</button>
+		<div class="mb-5 d-md-flex justify-content-md-center">
+			<button type="button" id="searchBtn" class="btn btn-primary me-sm-2 me-1">검색</button>	
+			<button type="reset" id="resetBtn" class="btn btn-secondary">초기화</button>
 		</div>
 		
-		<div id="usersList"></div>
+		<div>
+			<div class="card card-body">
+				<h5>사용자 목록</h5>
+				<div id="usersList"></div>
+			</div>
+		</div>
+		
 		<script src="/js/users/usersList.js"></script>
 		
 	</div>

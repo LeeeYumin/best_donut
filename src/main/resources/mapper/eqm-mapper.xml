@@ -3,6 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.eqm.mapper.EqmMapper">
 
+	<!-- 전체조회 -->
 	<select id="getEqm" resultType="EqmVO">
 		SELECT EQM_CODE
 				, EQM_NAME
@@ -38,5 +39,40 @@
 			</if>
 		</where>
 	</sql>
+	
+	
+	<!-- 등록 -->
+	<insert id="insertEqm" parameterType="EqmVO">
+		INSERT INTO EQM(
+					EQM_CODE
+					, EQM_NAME
+					, MODEL_NAME
+					, MAKER
+					, PURPOSE
+					, INSTALL_PLACE
+					, BUY_COMPANY
+					, BUY_PRICE
+					, BUY_DATE
+					, DUMP_DATE
+					, CHECK_CYCLE
+					, LAST_CHECK_DATE
+					, EQM_STATUS
+					, OPR_STATUS)
+		VALUES(
+			#{eqmCode}
+			, #{eqmName}
+			, #{modelName}
+			, #{maker}
+			, #{purpose}
+			, #{installPlace}
+			, #{buyCompany}
+			, #{buyPrice}
+			, #{buyDate}
+			, #{dumpDate}
+			, #{checkCycle}
+			, #{lastCheckDate}
+			, #{eqmStatus}
+			, #{oprStatus})
+	</insert>
 
 </mapper>

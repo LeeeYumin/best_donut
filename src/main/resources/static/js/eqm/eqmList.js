@@ -128,7 +128,7 @@ async function getEqmList(){
     body : JSON.stringify(obj)
   };
   
-  await fetch('/ajax/eqm', data)
+  await fetch('/ajax/eqmlist', data)
   .then(res => res.json())
   .then(res => {
     console.log(res)

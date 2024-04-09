@@ -9,14 +9,14 @@ class ColumnConverter1 {
       this.render(props);
   }
   render(props) {
-      this.el.innerText = props.formattedValue == 1 ? 'O' : '-';
-      this.el.setAttribute('style','font-size : 15px');
+      // this.el.innerText = props.formattedValue == 1 ? '◎' : '-';
+      // this.el.setAttribute('style','font-size : 15px');
 
-      // if(props.formattedValue == '1') {
-      //   this.el.setAttribute('class', 'bi bi-check-circle');
-      // } else {
-      //   this.el.setAttribute('class', 'bi bi-dash');
-      // }
+      if(props.formattedValue == '1') {
+        this.el.setAttribute('class', 'bi bi-record-circle-fill');
+      } else {
+        this.el.setAttribute('class', 'bi bi-dash');
+      }
   }
   getElement() {
       return this.el;
@@ -39,7 +39,7 @@ class ColumnConverter2 {
       if(props.formattedValue == 'USY') {
         this.el.setAttribute('class', 'badge bg-label-primary');
       } else {
-        this.el.setAttribute('class', 'badge bg-label-secondary');
+        this.el.setAttribute('class', 'badge bg-label-dark');
       }
   }
   getElement() {
@@ -117,6 +117,7 @@ const grid = new tui.Grid({
     }
   ]
 });
+
 		 	
 
 		    
@@ -166,7 +167,7 @@ async function getUsersList() {
   const obj = {keyword : keyword, permList : list, usersStatus : usersStatus};
   const data = {
     method : 'POST',
-      headers: jsonHeaders,
+    headers: jsonHeaders,
     body : JSON.stringify(obj)
   };
   
@@ -207,6 +208,17 @@ async function getUsersList() {
 			// }
 
 
+
+
+// 검색버튼
+document.getElementById('searchBtn').addEventListener('click', getUsersList);
+document.getElementById('keyword').addEventListener('keyup', (e) => {
+  if(e.keyCode == 13) {
+    getUsersList();
+  }
+})
+
+
 // 초기화버튼
 document.getElementById('resetBtn').addEventListener('click', () => {
 	document.getElementById('keyword').value = '';
@@ -218,15 +230,6 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('status0').checked = true;
 	getUsersList();
 });
-
-
-// 검색버튼
-document.getElementById('searchBtn').addEventListener('click', getUsersList);
-document.getElementById('keyword').addEventListener('keyup', (e) => {
-  if(e.keyCode == 13) {
-    getUsersList();
-  }
-})
 
 
 // 체크박스

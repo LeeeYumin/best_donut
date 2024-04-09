@@ -103,21 +103,13 @@ async function getNotOprList(){
     body : JSON.stringify(obj)
   };
   
-  await fetch('/ajax/notOpr', data)
+  await fetch('/ajax/notoprlist', data)
   .then(res => res.json())
   .then(res => {
     console.log(res)
     grid.resetData(res)
   })
 };
-
-
-// 초기화버튼
-document.getElementById('resetBtn').addEventListener('click', () => {
-	document.getElementById('keyword').value = '';
-  document.getElementById('status0').checked = true;
-	getNotOprList();
-});
 
 
 // 검색버튼
@@ -127,3 +119,11 @@ document.getElementById('keyword').addEventListener('keyup', (e) => {
     getNotOprList();
   }
 })
+
+
+// 초기화버튼
+document.getElementById('resetBtn').addEventListener('click', () => {
+	document.getElementById('keyword').value = '';
+  document.getElementById('status0').checked = true;
+	getNotOprList();
+});
