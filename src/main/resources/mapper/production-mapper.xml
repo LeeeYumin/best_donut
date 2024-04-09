@@ -154,4 +154,10 @@
 		WHERE prod_req_code = #{prodReqCode}
 	</update>
 	
+
+<!-- 생산지시 -->
+
+
+
+
 </mapper>
