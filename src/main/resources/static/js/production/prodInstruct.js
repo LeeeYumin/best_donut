@@ -187,7 +187,7 @@ getWeeklyPlan();
 					name : 'instructDate',
 					align: 'center',
 					editor: 'text',
-					formatter: dateFormat //공통함수
+					//formatter: dateFormat //공통함수
 				},
 				{
 					header : '담당자',
@@ -199,7 +199,7 @@ getWeeklyPlan();
 		});
 
 		//화면로딩부터 행 추가되도록
-		piInsert.appendRow({instructDate: new Date()});
+		piInsert.appendRow({instructDate: dateFormat(new Date())});
 		
 		/* < 생산계획 상세 > */
 		const piDeInsert = new tui.Grid({
@@ -250,19 +250,26 @@ getWeeklyPlan();
       //생산요청 상세 => 생산계획 상세 (check된 값)
 			wplanD.on('checkAll', function() {
 				let checked = wplanD.getCheckedRows();
-        piDeInsert.appendRows(checked);
+        piDeInsert.resetData(checked);
 			});
-			wplanD.on('check', function() {
-				let checked = wplanD.getCheckedRows();
-        piDeInsert.appendRows(checked);
+			wplanD.on('check', function(e) {
+				let checked = wplanD.getRow(e.rowKey);
+        piDeInsert.appendRow(checked);
 			});
 			wplanD.on('uncheckAll', function() {
 				let checked = wplanD.getCheckedRows();
 				piDeInsert.resetData(checked);
 			});
-			wplanD.on('uncheck', function() {
-				let checked = wplanD.getCheckedRows();
-				piDeInsert.resetData(checked);
+			wplanD.on('uncheck', function(e) {
+				let delCode = wplanD.getValue(e.rowKey, 'prodPlanDetailCode');
+				let delRow = piDeInsert.getData()
+
+				for(let i = 0; i < piDeInsert.getData().length; i++) {
+					if(delRow[i].prodPlanDetailCode == delCode) {
+						delRow.splice(i, 1);
+						piDeInsert.resetData(delRow);
+					}
+				}
 			});
 
 			//생산지시 그리드의 지시수량 입력 시 => 위 생산계획 그리드 지시수량 & 미지시수량 값 변경
@@ -275,25 +282,32 @@ getWeeklyPlan();
 				for(let i = 0; i < wplanD.getData().length; i++) {
 					if(wplanD.getData()[i].prodPlanDetailCode == plDeCode) {
 						let num = i;
-						let notIns = wplanD.getData()[i].notInstructCnt - instructCnt
+						let notIns = wplanD.getData()[i].planCnt - instructCnt
 						
 						
 						//입력 지시수량이 계획수량보다 클 경우 => 알림 후 계획수량으로 입력
-						let plCnt = wplanD.getData()[i].planCnt;
-
-						if(row.instructCnt > plCnt) {
+						if(row.instructCnt > wplanD.getData()[i].planCnt) {
 							document.getElementById('alertMsg').innerHTML = '<span style="color:red">※</span> 지시수량이 계획수량을 초과하여 계획수량이 입력됩니다.';
+							
+							let plCnt = parseInt(wplanD.getData()[i].planCnt);
 							piDeInsert.setValue(row.rowKey, 'instructCnt', plCnt);
+							wplanD.setValue(num, 'instructDoneCnt', plCnt);
+
+							let insD =  parseInt(wplanD.getData()[i].instructDoneCnt);
+							let done = parseInt(plCnt - insD);
+
+							wplanD.setValue(num, 'notInstructCnt', done);
 							
 							setTimeout(() => {
 								document.getElementById('alertMsg').innerText = '';
 							}, 4000);
 
+							return;
+
 						} else {
 							wplanD.setValue(num, 'instructDoneCnt', instructCnt);
 							wplanD.setValue(num, 'notInstructCnt', notIns);
 						}
-
 					}
 				}
 			});

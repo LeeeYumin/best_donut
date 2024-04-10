@@ -29,6 +29,11 @@ h4 {
 .pt30 {
 	padding-top: 30px;
 }
+.warn-alert {
+	font-weight: bold;
+	font-size: larger;
+	padding-bottom: 10px;
+}
 
 </style>
 </head>
@@ -58,6 +63,10 @@ h4 {
 			
 			<h4>생산계획</h4>
 			<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertPlan()">등록</button>
+			<div id="alertMsg" class="warn-alert">
+				<!-- 알림문구 -->
+			</div>
+
 			<div id="plInsert" style="padding-bottom: 30px;"></div>
 	
 			<h5>상세</h5>
