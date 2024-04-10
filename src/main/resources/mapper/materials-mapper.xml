@@ -8,7 +8,8 @@
                stock_cnt,
                safe_stock_cnt,
                main_company_code,
-               unit_price
+               unit_price,
+               unit
           FROM mat
          WHERE 1=1
          
@@ -38,6 +39,7 @@
 	     WHERE d.mat_code = #{matCode} 
    	</select>
    
+   <!-- 폐기 처리 -> 재고도 업데이트 해줘야 함(나중에 꼭 하기 ★) -->
    	<update id="updateMatStatus" parameterType="String">
    		UPDATE mat_detail
 		   SET mat_status = 'MSN'
@@ -73,6 +75,7 @@
      	  ORDER BY o.orders_date DESC
    	</select>		
 		
+	<!-- 발주 상세 목록 -->
    	<select id="getMaterialOrderDetail" resultType="MaterialOrderDetailVO" parameterType="String">
 		WITH s AS (SELECT m.mat_code,
                           m.mat_name,
@@ -105,6 +108,7 @@
 				</if>
    	</select>
    	
+   	<!-- 발주 취소 못하는 상태로 스케줄러로 변경 발주테이블 -->
    	<update id="updateMatOrderStatus" parameterType="String">
    		UPDATE mat_orders
 		   SET total_orders_status = 'OSN'
@@ -112,6 +116,7 @@
 		   AND total_orders_status = 'OSP'
    	</update>
    	
+   	<!-- 발주 취소 못하는 상태로 스케줄러로 변경 발주상세테이블 -->
    	<update id="updateMatOrdersDetailStatus" parameterType="String">
    		UPDATE mat_orders
 		   SET total_orders_status = 'OSN'
@@ -119,6 +124,7 @@
 		   AND total_orders_status = 'OSP'
    	</update>
    	
+   	<!-- 발주 취소 상태 변경 -->
    	<update id="updateMatOrderCancel" parameterType="String">
    		UPDATE mat_orders
 		   SET total_orders_status = 'OSC'
@@ -130,4 +136,21 @@
         	</foreach>
       	</if>
    	</update>
+   	
+   	<!-- 입고 목록 테이블 출력 -->
+   	<select id="getWarehousingList" resultType="MaterialWarehousingVO">
+   		SELECT d.mat_orders_code,
+       		   c.company_name,
+       		   m.mat_name,
+       		   d.orders_cnt,
+       		   o.orders_date,
+       		   o.orders_date + m.lead_time as due_date
+  		  FROM mat_orders_detail d
+     		JOIN company c ON d.company_code=c.company_code
+    		JOIN mat m ON d.mat_code=m.mat_code
+    		JOIN mat_orders o ON d.mat_orders_code=o.mat_orders_code
+   		 WHERE d.orders_status='OSN'
+	  ORDER BY d.mat_orders_code
+   	</select>
+   	
 </mapper>

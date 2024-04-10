@@ -6,6 +6,7 @@ import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderlVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
+import com.example.demo.materials.MaterialWarehousingVO;
 
 public interface MaterialsService {
 	// 자재 재고 목록 관리
@@ -25,4 +26,7 @@ public interface MaterialsService {
 	public int updateMatOrdersDetailStatus();
 	
 	public int updateMatOrderCancel(String[] matOrderCodes);
+	
+	// 자재 입고 등록
+	public List<MaterialWarehousingVO> getWarehousingList();
 }

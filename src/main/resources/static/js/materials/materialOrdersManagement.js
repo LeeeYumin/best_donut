@@ -188,7 +188,7 @@ const grid2 = new tui.Grid({
 		height: 40,
 		position: 'bottom', // or 'top'
 		columnContent: {
-			ordersDate: {
+			unitPrice: {
 				template: function () {
 					return '합계';
 				},

@@ -10,4 +10,5 @@ public class MaterialVO {
 	private Integer safeStockCnt;
 	private String mainCompanyCode;
 	private Integer unitPrice;
+	private String unit;
 }
