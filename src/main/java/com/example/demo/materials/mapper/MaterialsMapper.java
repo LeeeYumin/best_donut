@@ -8,6 +8,7 @@ import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderlVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
+import com.example.demo.materials.MaterialWarehousingVO;
 
 @Mapper
 public interface MaterialsMapper {
@@ -28,4 +29,8 @@ public interface MaterialsMapper {
 	public int updateMatOrdersDetailStatus();
 
 	public int updateMatOrderCancel(String[] matOrderCodes);
+	
+	// 자재 입고 등록
+	public List<MaterialWarehousingVO> getWarehousingList();
+	
 }

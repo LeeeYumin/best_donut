@@ -13,6 +13,7 @@ import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderlVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
+import com.example.demo.materials.MaterialWarehousingVO;
 import com.example.demo.materials.service.MaterialsService;
 
 @Controller
@@ -88,6 +89,13 @@ public class MaterialsController {
 	@RequestMapping("/materials/warehousing")
 	public String warehousing() {
 		return "materials/materialWarehousing"; // "/template(기본값-동적 컨텐츠)/index.html"
+	}
+	
+	// 자재 입고 등록 테이블 출력
+	@RequestMapping("/ajax/materialwarehousing")
+	@ResponseBody
+	public List<MaterialWarehousingVO> getWarehousingList() {
+		return materialsService.getWarehousingList();
 	}
 
 	// 자재 불출 등록 페이지 이동

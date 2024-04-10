@@ -9,6 +9,7 @@ import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderlVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
+import com.example.demo.materials.MaterialWarehousingVO;
 import com.example.demo.materials.mapper.MaterialsMapper;
 import com.example.demo.materials.service.MaterialsService;
 
@@ -58,5 +59,10 @@ public class MaterialsServiceImpl implements MaterialsService {
 	@Override
 	public int updateMatOrderCancel(String[] matOrderCodes) {
 		return materialsMapper.updateMatOrderCancel(matOrderCodes);
+	}
+
+	@Override
+	public List<MaterialWarehousingVO> getWarehousingList() {
+		return materialsMapper.getWarehousingList();
 	}
 }

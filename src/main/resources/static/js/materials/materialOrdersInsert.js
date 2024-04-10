@@ -227,6 +227,7 @@ const matStockList = new tui.Grid({
             header: '자재코드',
             name: 'matCode',
             align: 'center',
+            sortable: true,
             // validation: {
             // 	validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
             // }
@@ -242,10 +243,17 @@ const matStockList = new tui.Grid({
         {
             header: '현재고량',
             name: 'stockCnt',
-            align: 'center',
+            align: 'end',
             formatter: function (cnt) {
                 return priceFormat(cnt.value);
             }
+            // validation: {
+            //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
+            // }
+        },
+        {
+            header: '단위',
+            name: 'unit',
             // validation: {
             //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
             // }
@@ -375,10 +383,20 @@ const matOrderList = new tui.Grid({
         {
             header: '수량',
             name: 'ordersCnt',
-            align: 'center',
+            align: 'end',
             editor: {
                 type: 'text'
+            },
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
             }
+        },
+        {
+            header: '단위',
+            name: 'unit',
+            // validation: {
+            //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
+            // }
         },
         {
             header: '가격',
