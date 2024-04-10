@@ -18,5 +18,7 @@ public class ProdPlanDeVO {
 	private int instructDoneCnt;
 	
 	private String productName;
+
+	//private int fixReqCnt: 0;
 	
 }

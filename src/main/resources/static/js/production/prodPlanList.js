@@ -34,8 +34,9 @@ getProdPlanList()
 		/* < 생산계획 목록 > */
 		const plList = new tui.Grid({
 			el : document.getElementById('plList'),
+			bodyHeight: 200,
 			scrollX : false,
-			scrollY : false,
+			scrollY : true,
 			
 			columns : [
 				{
@@ -47,6 +48,7 @@ getProdPlanList()
 					header : '생산계획일자',
 					name : 'planDate',
 					align: 'center',
+					
 					
 				},
 				{

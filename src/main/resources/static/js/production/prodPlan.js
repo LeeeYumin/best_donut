@@ -99,7 +99,7 @@ getProdReq();
 						name : 'planDate',
 						align: 'center',
 						editor: 'text',
-						formatter: dateFormat //공통함수
+						//formatter: dateFormat //공통함수
 					},
 					{
 						header : '담당자',
@@ -110,7 +110,7 @@ getProdReq();
 				]
 			});
       //화면로딩부터 행 추가되도록
-			plInsert.appendRow({planDate: new Date()});
+			plInsert.appendRow({planDate: dateFormat(new Date())});
 			
 			/* < 생산계획 상세 > */
 			const plDeInsert = new tui.Grid({
@@ -138,7 +138,6 @@ getProdReq();
 						header : '고정수량',
 						name : 'fixCnt',
 						align: 'center',
-						//defaultValue: 1400,
             formatter: function(price) {
               return priceFormat(price.value);
             },
@@ -152,22 +151,59 @@ getProdReq();
             formatter: function(price) {
               return priceFormat(price.value);
             }
-					},					
-				],	
+					},
+										
+				],
+				summary: {
+					//align: 'right',
+					height: 40,
+					position: 'bottom',
+					columnContent: {
+						prodPlanDetailCode: {
+							template: function() {
+								return '총 수량합계';
+							}, 
+						},
+						fixCnt: {
+							//align: 'right',
+							template: function(value) {
+								return priceFormat(value.sum);
+							}, 
+						},
+						reqCnt: {
+							//align: 'right',
+							template: function(value) {
+								return priceFormat(value.sum);
+							}, 
+						},
+						//fixCnt + reqCnt 총합계 주간 최대생산량 8,400개 넘지 않도록
+						// fixCnt: {
+						// 	//align: 'right',
+						// 	template: function(value) {
+						// 		return priceFormat(value.sum);
+						// 	}, 
+						// },
+					},
+				}	
 			});
 			
 			//생산계획 상세 등록 행추가
 			let addRowBtn = document.getElementById('addRowBtn');
          addRowBtn.addEventListener('click', function() {
-             /* plInsert.appendRow({planDate: new Date()}); */
-            plDeInsert.appendRow({
-               fixCnt: 1400, 
-               reqCnt: 0,
-               //생산요청 추가하고 행추가하면 XXXX
-               //planCnt: plDeInsert.getData()[0].fixCnt + plDeInsert.getData()[0].reqCnt,
-               //notInstructCnt: plDeInsert.getData()[0].planCnt,
-               //instructDoneCnt: 0
+
+					 
+					 plDeInsert.appendRow({
+						 fixCnt: 1400, 
+						 reqCnt: 0,
+						 //생산요청 추가하고 행추가하면 XXXX
+						 //planCnt: plDeInsert.getData()[0].fixCnt + plDeInsert.getData()[0].reqCnt,
+						 //notInstructCnt: plDeInsert.getData()[0].planCnt,
+						 //instructDoneCnt: 0
+						 //fixReqCnt:
 						})
+						//console.log(sumFixReqCnt())
+						//console.log(plDeInsert.getData()[0].fixCnt);
+						
 			});
 			
       //행 삭제
@@ -220,11 +256,45 @@ getProdReq();
 				plDeInsert.resetData(checked);
 			});
 
+
+			function beforeInsertCheck() {
+				const alert = document.getElementById('alertMsg');
+				
+				//계획상세
+				if(plDeInsert.getData().length == 0) {
+					alert.innerHTML = '<span style="color:red">※</span> 계획상세 내용을 입력하세요.';
+					return false;
+				}
+				//제품코드
+
+				for(let i=0; i < plDeInsert.getData().length; i++) {
+					let pcode = plDeInsert.getData()[i].productCode;
+					if(pcode == null || pcode == '') {
+						alert.innerHTML = '<span style="color:red">※</span> 제품코드를 입력하세요.';
+						return false;
+					}
+				}
+
+				//담당자 ( 코드?있으면 확인 후 수정하기 )
+				if(plInsert.getData()[0].usersCode != 'USE00003') {
+					alert.innerHTML = '<span style="color:red">※</span> 생산관리자만 등록 가능';
+					return false;
+				}
+
+				alert.innerHTML = '';
+				return true;
+
+			}
 			//생산계획+상세계획 등록
 			async function insertPlan() {
 
 				plInsert.blur(); //값 등록 후 enter 안 쳐도 값 들어가도록
 				plDeInsert.blur();
+
+
+				if(!beforeInsertCheck()){
+					return;
+				}
 
 				const pl = plInsert.getModifiedRows().createdRows
 				const plDeAll = plDeInsert.getModifiedRows().createdRows
@@ -286,6 +356,17 @@ getProdReq();
 					plDeInsert.setValue(pro, "productCode", document.querySelector('input[name="productCode"]:checked').value);
 				}
 			});
+
+			//고정+요청 수량 합계
+			// function sumFixReqCnt() {
+			// 	for(let i=0; i < plDeInsert.getData().length; i++) {
+			// 		let fix = plDeInsert.getData()[i].fixCnt;
+			// 		let req = plDeInsert.getData()[i].reqCnt;
+				
+			// 		console.log(fix);
+			// 		return fix + req;
+			// 	}
+			// }
 			
 
 
