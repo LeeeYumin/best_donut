@@ -15,12 +15,15 @@ const ordGrid = new tui.Grid({
       header : '주문코드',
       name : 'ordersCode',
       align : 'center',
-			
+			sortingType: 'desc',
+			sortable: true,			
     }, 
 		{
       header : '주문일자',
       name : 'ordersDate',
       align : 'center',
+			sortingType: 'desc',
+			sortable: true,
       formatter: function(date) {
 				return dateFormat(date.value);
 			}
@@ -29,6 +32,8 @@ const ordGrid = new tui.Grid({
       header : '납기일자',
       name : 'dueDate',
       align : 'center',
+			sortingType: 'desc',
+			sortable: true,			
       formatter: function(date) {
 				return dateFormat(date.value);
 			}
@@ -215,8 +220,9 @@ function getOrdersList(param){
 		// ajax로 불러온 데이터 그리드에 넣음
 		ordGrid.resetData(res);
 	})
+	getProductList();
 }
-getOrdersList({});
+
 
 // (2) 제품목록 조회
 function getProductList(){
@@ -241,7 +247,8 @@ function getProductList(){
     getReqList();
 	})
 }
-getProductList();
+// getProductList();
+
 
 // (3) 생산요청 목록
 function getReqList() {
@@ -305,32 +312,38 @@ async function prodReqFunc() {
 	}
 }
 
-// 거래처 목록 가져오기
-function getCompany() {
+// 4. 검색기능
 
-  fetch('ajax/getCompany')
-  .then(res => res.json())
-  .then(res => {
+// (1) 오늘 날짜 기본값 세팅
+searchForm.today.value = dateFormat(new Date());
 
-		for(company of res){
-			console.log(company.companyCode);
-			document.querySelector('#companyCode')
-			.insertAdjacentHTML('beforeend', '<option value="' + company.companyCode + '">' + company.companyName + '</option>');
-		}
-	})
-}
-getCompany();
-
-function searchReset() {
-
-	const startOfWeek = dateFormat(weekFormat(searchForm.ordersDate.value));
-	const endOfWeek = dateFormat(weekFormat(searchForm.ordersDate.value)) + 7;
-
-	console.log(`startOfWeek : ${startOfWeek}, endOfWeek : ${endOfWeek}`);
-
-}
-
+// (2) 주간 일자 가져오기 
 function getWeekDate(){
-	const week = searchForm.ordersDate.value;
-	console.log('week : ', weekFormat(week));
+	const valid = document.querySelector('#defaultFormControlHelp');
+	valid.innerHTML = ''
+
+	const weekData = weekFormat(searchForm.dueWeek.value);
+	console.log('weekData : ', weekData);
+	const weekStart = dateFormat(weekData.weekStart)
+	const weekEnd = dateFormat(weekData.weekEnd)
+	console.log(weekStart, weekEnd);
+
+	if(weekData.weekStart < new Date()){
+		valid.innerHTML = '납기일자가 다음 주 이후인 주문만 선택가능합니다.'
+		return;
+	}
+
+	searchForm.dueStartDate.value = weekStart;
+	searchForm.dueEndDate.value = weekEnd;
 }
+
+// (3) 검색버튼 클릭 이벤트
+function searchOrders() {
+	const weekData = weekFormat(searchForm.dueWeek.value);
+	const dueStartDate = weekData.weekStart;
+	const dueEndDate = weekData.weekEnd;
+
+	let param = {dueStartDate, dueEndDate};
+	getOrdersList(param);
+}
+
