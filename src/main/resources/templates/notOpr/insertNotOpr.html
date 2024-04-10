@@ -22,19 +22,29 @@
 				</div>
 				<div>
 					<label>담당자코드*</label>
-					<select name="usersCode" class="form-control">
+					<select name="usersCode">
 						<option value="">담당자코드 선택</option>
-						<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersCode} + '&nbsp;&nbsp;&nbsp;&nbsp;' + ${user.usersName}">
+						<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersCode}">
 					</select>
 					<div id="notice1" class="form-text notice"></div>
+					<label>담당자명*</label>
+					<select name="usersName">
+						<option value="">담당자명 선택</option>
+						<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersName}">
+					</select>
 				</div>
 				<div>
 					<label>설비코드*</label>
 					<select name="eqmCode">
 						<option value="">설비코드 선택</option>
-						<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmCode} + '&nbsp&nbsp&nbsp&nbsp' + ${eqm.eqmName}">
+						<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmCode}">
 					</select>
 					<div id="notice2" class="form-text notice"></div>
+					<label>설비명*</label>
+					<select name="eqmName">
+						<option value="">설비명 선택</option>
+						<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmName}">
+					</select>
 				</div>
 				<div>
 					<label>비가동구분*</label>
