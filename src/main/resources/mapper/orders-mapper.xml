@@ -43,11 +43,11 @@
 		                 JOIN t
 		                   ON o.orders_code = t.ocode
 		 WHERE 1=1
-			<if test="ordersCode != null || ordersCode != ''">
+			<if test="ordersCode != null and ordersCode != ''">
 				AND o.orders_code LIKE '%' || #{ordersCode} || '%'
 			</if>
-			<if test="companyName != null || companyName != ''">
-				AND c.company_name LIKE '%' || #{companyName} || '%'
+			<if test="companyCode != null and companyCode != ''">
+				AND o.company_code = #{companyCode}
 			</if>
 			<if test="dueStartDate != null">
 				AND TRUNC(o.due_date) <![CDATA[ >= ]]> TRUNC(#{dueStartDate})

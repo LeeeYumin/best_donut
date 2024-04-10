@@ -23,16 +23,20 @@
 				<div class="card mb-4">
 					<h5 class="card-header">검색조건</h5>
 					<div class="card-body demo-vertical-spacing demo-only-element">
+
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문코드</label>
 							<div class="col-sm-6">
 								<input class="form-control" type="text" id="ordersCode" name="ordersCode">
 							</div>
 						</div>
+
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
 							<div class="col-sm-6">
-								<input class="form-control" type="text" name="companyName">
+								<select class="form-select" id="companyName" aria-label="companyName">
+									<option value="" selected="">거래처명</option>
+								</select>
 							</div>
 						</div>
 

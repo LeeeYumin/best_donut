@@ -1,3 +1,14 @@
+// 금액 포맷 함수('#,###')
+function priceFormat(price) {
+
+	if(price == null){
+		return '';
+	}
+
+	let result = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+	return result;
+}
+
 // 날짜 포맷 함수('yyyy/MM/dd')
 function dateFormat(date) {
 
@@ -13,17 +24,6 @@ function dateFormat(date) {
 	return dateStr;
 }
 
-// 금액 포맷 함수('#,###')
-function priceFormat(price) {
-
-	if(price == null){
-		return '';
-	}
-
-	let result = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-	return result;
-}
-
 // week => yyyy-MM-dd 변환 함수
 function weekFormat(week) {
 
@@ -32,14 +32,17 @@ function weekFormat(week) {
 
 	const simpleDate = new Date(y, 0, 1 + (w - 1) * 7);
 	const dayOfWeek = simpleDate.getDay();
-	const ISOweekStart = simpleDate;
+	const weekStart = simpleDate;
 
 	if (dayOfWeek <= 4) {
-			ISOweekStart.setDate(simpleDate.getDate() - simpleDate.getDay() + 1);
+		weekStart.setDate(simpleDate.getDate() - simpleDate.getDay() + 1);
 	}
 	else {
-			ISOweekStart.setDate(simpleDate.getDate() + 8 - simpleDate.getDay());
+		weekStart.setDate(simpleDate.getDate() + 8 - simpleDate.getDay());
 	}
 
-	return ISOweekStart;
+	const weekEnd = new Date(weekStart);
+	weekEnd.setDate(weekStart.getDate() + 6)
+
+	return {weekStart, weekEnd};
 }
