@@ -9,10 +9,14 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.css">
 <script src="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
 </head>
 <body>
 <div layout:fragment="content">
-	<h3>완제품 품질 등록</h3>
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">품질관리 / </span> 완제품 품질 등록
+		</h3>
 	<div class="btnClass">
 
 		<label for="date">생산완료일자
@@ -38,8 +42,11 @@
 		</div>
 
 		<script src="/js/quality/insertProQuality.js"></script>
-
-		<button id="saveBtn" type="button" onclick="insertProDtl()">등록</button>
+		
+		<div style="text-align: center;">
+		<button id="saveBtn" type="button" onclick="insertProDtl()" style="width: 60px;">등록</button>
+		</div>
+		
 	</div>
 
 </body>
@@ -47,12 +54,8 @@
 
 <style>
 .saveBtn {
- 		display : flex;
-		padding : 1px 6px ;
-		justify-content : flex-end;
- 	}
+	margin : 10px; }
 .btnClass {
-	/* text-align : right; */
 	margin-right : 10px;
 	padding : 10px;
 }
