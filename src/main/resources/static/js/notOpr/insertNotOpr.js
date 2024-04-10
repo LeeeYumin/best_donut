@@ -3,9 +3,9 @@ document.getElementById('saveBtn').addEventListener('click', saveNotOpr);
 
 async function saveNotOpr() {
   // if(!formValidation()) {
-  //   return;
-  // }
-  
+    //   return;
+    // }
+
   let formData = new FormData(document.insertForm);
   
 	await fetch('/ajax/insertnotopr',{
@@ -23,10 +23,11 @@ async function saveNotOpr() {
   //     location.href = '/notoprlist';
   //   }, 1000);
   // })
+
   
 
   // SweetAlert
-	if(result){
+	if(result > 0){
 		Swal.fire({
 			position: "center",
 			icon: "success",
@@ -78,4 +79,36 @@ function formValidation() {
   }
 
   return true;
+}
+
+
+// 담당자 드롭박스 연동
+insertForm.usersCode.addEventListener('change', changeOption1);
+
+function changeOption1() {
+  insertForm.usersName.value = insertForm.usersCode.value;
+  console.log(insertForm.usersName.value);
+}
+
+insertForm.usersName.addEventListener('change', changeOption2);
+
+function changeOption2() {
+  insertForm.usersCode.value = insertForm.usersName.value;
+  console.log(insertForm.usersName.value);
+}
+
+
+// 설비 드롭박스 연동
+insertForm.eqmCode.addEventListener('change', changeOption3);
+
+function changeOption3() {
+  insertForm.eqmName.value = insertForm.eqmCode.value;
+  console.log(insertForm.eqmName.value);
+}
+
+insertForm.eqmName.addEventListener('change', changeOption4);
+
+function changeOption4() {
+  insertForm.eqmCode.value = insertForm.eqmName.value;
+  console.log(insertForm.eqmName.value);
 }

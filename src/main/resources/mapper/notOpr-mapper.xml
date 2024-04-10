@@ -87,6 +87,7 @@
 				, EQM_STATUS
 				, OPR_STATUS
 		FROM EQM
+		WHERE EQM_STATUS = 'ES1'
 		ORDER BY 1
 	</select>
 
