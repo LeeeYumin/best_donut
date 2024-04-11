@@ -16,4 +16,9 @@ public class ProdInsDeVO {
 	
 	private String productCode;
 	private String productName;
+	
+	
+//	public ProdInsDeVO() {
+//		this.instructCnt = 0;
+//	}
 }

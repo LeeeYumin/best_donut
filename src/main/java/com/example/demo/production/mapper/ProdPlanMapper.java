@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.demo.production.ProdInsDeVO;
+import com.example.demo.production.ProdInsVO;
 import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.ProdPlanBVO;
 import com.example.demo.production.ProdPlanDeVO;
@@ -13,12 +15,12 @@ import com.example.demo.production.ProdPlanVO;
 @Mapper
 public interface ProdPlanMapper {
 
-	/* 1.생산요청 */
+/* 1.생산요청 */
 	public List<ProdPlanBVO> getProdReq();
 	public List<ProdPlanBVO> getProdReqDetail(String prodReqCode);
 	
 	
-	/* 2.생산계획 */
+/* 2.생산계획 */
 	//1)조회
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo);
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
@@ -39,11 +41,18 @@ public interface ProdPlanMapper {
 	public int cancelProdReqStatus(ProdPlanVO vo);
 
 	
-	/* 3.생산지시 */
+/* 3.생산지시 */
 	//+지시 전 주간생산계획
 	public List<ProdPlanVO> getWeeklyPlan();
 	public List<ProdPlanDeVO> getWeeklyPlanDetail(String prodPlanCode);
+	//설비상태
+	public List<ProdInsVO> getEqm();
 	
+	//1)등록
+	public int insertProdInstruct(ProdInsVO vo); //1건에
+	public int insertProdInstructDetail(ProdInsDeVO dvo); //여러 건
+	//+미지시&지시수량 수정
+	public int updateAfterInstruct(ProdPlanDeVO dvo); 
 	
 
 }

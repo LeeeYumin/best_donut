@@ -1,4 +1,5 @@
 getWeeklyPlan();
+getEqmCheck();
 
 	//생산요청코드 없으면 '-'로 표시
 	class ProdReqCode {
@@ -144,7 +145,25 @@ getWeeklyPlan();
 					return priceFormat(price.value);
 				},
 			},
-		]
+		],
+		summary: {
+			//align: 'right',
+			height: 40,
+			position: 'bottom',
+			columnContent: {
+				prodPlanDetailCode: {
+					template: function() {
+						return '주간 총 계획수량';
+					}, 
+				},
+				planCnt: {
+					//align: 'right',
+					template: function(value) {
+						return priceFormat(value.sum);
+					}, 
+				}
+			},
+		}
 	});
 
 	// 주간생산계획조회(ajax)
@@ -235,8 +254,26 @@ getWeeklyPlan();
 						return priceFormat(price.value);
 					},
 					editor: 'text'
-				},				
-			],	
+				},			
+			],
+			summary: {
+				//align: 'right',
+				height: 40,
+				position: 'bottom',
+				columnContent: {
+					prodInstructDetailCode: {
+						template: function() {
+							return '지시수량 합계';
+						}, 
+					},
+					instructCnt: {
+						//align: 'right',
+						template: function(value) {
+							return priceFormat(value.sum);
+						}, 
+					}
+				},
+			}		
 		});
 		
 		//===========================================================================
@@ -311,6 +348,205 @@ getWeeklyPlan();
 					}
 				}
 			});
+
+
+			function beforeInsertCheck() {
+				const alert = document.getElementById('alertMsg');
+				
+				//지시상세
+				if(piDeInsert.getData().length == 0) {
+					alert.innerHTML = '<span style="color:red">※</span> 지시상세 내용을 입력하세요.';
+					return false;
+				}
+
+				//지시수량
+				for(let i=0; i < piDeInsert.getData().length; i++) {
+					let inputins = piDeInsert.getData()[i].instructCnt;
+					if(inputins == null || inputins == '') {
+						alert.innerHTML = '<span style="color:red">※</span> 지시수량을 입력하세요.';
+						return false;
+					}
+				}
+
+				//생산계획코드
+				let picode = piInsert.getData()[0].prodPlanCode;
+				if(picode == null || picode == '') {
+					alert.innerHTML = '<span style="color:red">※</span> 생산계획코드를 입력하세요.';
+					return false;
+				}
+
+				//담당자 ( 코드?있으면 확인 후 수정하기 )
+				if(piInsert.getData()[0].usersCode != 'USE00003') {
+					alert.innerHTML = '<span style="color:red">※</span> 생산관리자만 등록 가능';
+					return false;
+				}
+
+				alert.innerHTML = '';
+				return true;
+
+			}
+			//생산지시+상세지시 등록
+			async function insertInstruct() {
+
+				piInsert.blur(); //값 등록 후 enter 안 쳐도 값 들어가도록
+				piDeInsert.blur();
+
+				if(!beforeInsertCheck()){
+					return;
+				}
+
+				const pi = piInsert.getModifiedRows().createdRows
+				const piDeAll = piDeInsert.getData();
+				let param = {...pi[0], pidvo: piDeAll} //생산지시1건(배열로 들어와서 펼침연산자로 풀어서), list<detailvo>의 필드명(여러건) 
+
+				await fetch('ajax/insertProdInstruct', {
+					method: 'post',
+					headers: jsonHeaders,
+					body : JSON.stringify(param)
+				})
+				.then(res => res.json())
+				.then(res => {
+					//console.log(res);
+					if(res.prodInstructCode != null) { //vo로 넘겨받음
+						updateAfterInstruct();
+						alert('생산지시가 등록되었습니다.');
+						saveRes(res);
+					} else {
+						alert('등록 중 오류 발생');
+					}
+				})
+			}
+
+			//등록응답 (그리드에 입력된 모든 정보 비우기)
+			function saveRes(res) {
+				console.log(res);
+
+				piInsert.setValue(0,"prodPlanCode",'');
+				piDeInsert.resetData([]);
+			}
+
+			//생산계획 상세 수정하기
+			async function updateAfterInstruct() {
+				const wplDe = wplanD.getModifiedRows().updatedRows
+				console.log(wplDe);
+				
+				await fetch('ajax/updateAfterInstruct', {
+					method: 'post',
+					headers: jsonHeaders,
+					body : JSON.stringify(wplDe)
+				})
+				.then(res => res.json())
+				.then(res => {
+					console.log(res);
+				})
+			}
+
+//=======================================================
+			// 설비상태
+			class ColumnConverter1 {
+				constructor(props) {
+						const el = document.createElement('div');
+
+						this.el = el;
+						this.render(props);
+				}
+				render(props) {
+						this.el.innerText = converter1(props.formattedValue);
+				}
+				getElement() {
+						return this.el;
+				}
+			}
+
+			function converter1(value){
+				let result;
+				if(value == "ES1") {
+						result = "정상";
+				} else if(value == "ES2") {
+						result = "고장";
+				} else if(value == "ES3") {
+						result = "점검중";
+				} else if(value == "ES4") {
+						result = "수리중";
+				} else if(value == "ES5") {
+						result = "폐기";
+				}
+				return result;
+			}
+
+
+			// 가동현황
+			class ColumnConverter2 {
+				constructor(props) {
+						const el = document.createElement('div');
+
+						this.el = el;
+						this.render(props);
+				}
+				render(props) {
+					this.el.innerText = converter2(props.formattedValue);
+				}
+				getElement() {
+						return this.el;
+				}
+			}
+
+			function converter2(value){
+				let result;
+				if(value == "FO1") {
+						result = "대기";
+				} else if(value == "FO2") {
+						result = "가동중";
+				} else if(value == "FO3") {
+						result = "전원꺼짐";
+				}
+				return result;
+			}
+
+			const eqmCheck = new tui.Grid({
+				el: document.getElementById('eqmCheck'),
+				scrollX: false,
+				scrollY: true,
+				bodyHeight: 200,
+				rowHeaders: ['rowNum'],
+				columns: [
+					{
+						header: '설비코드',
+						name: 'eqmCode',
+						sortingType: 'asc',
+						sortable: true,
+						align: 'center'
+					},
+					{
+						header: '설비명',
+						name: 'eqmName',
+						sortingType: 'asc',
+						align: 'center'
+					},
+					{
+						header: '설비상태',
+						name: 'eqmStatus',
+						align: 'center',
+						renderer: {type: ColumnConverter1}
+					},
+					{
+						header: '가동현황',
+						name: 'oprStatus',
+						align: 'center',
+						renderer: {type: ColumnConverter2}
+					}
+				]
+			});
+
+			// 설비조회(ajax)
+			async function getEqmCheck(){
+				await fetch("/ajax/eqmCheck")
+				.then(res => res.json())
+				.then(res => {
+					console.log(res);
+					eqmCheck.resetData(res);
+				})
+			};
 
 
 
