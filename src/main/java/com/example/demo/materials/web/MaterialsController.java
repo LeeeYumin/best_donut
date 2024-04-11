@@ -16,7 +16,6 @@ import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
 import com.example.demo.materials.service.MaterialsService;
-import com.example.demo.orders.OrdersVO;
 
 @Controller
 public class MaterialsController {
@@ -61,7 +60,6 @@ public class MaterialsController {
 	@PostMapping("/ajax/matOrdersInsert")
 	@ResponseBody
 	public boolean insertOrders(@RequestBody MaterialOrderVO vo) {
-		System.out.println(">>>>>>>>>>>>>>>>>>>"+vo+"");
 		return materialsService.insertMatOrders(vo);
 	}
 
