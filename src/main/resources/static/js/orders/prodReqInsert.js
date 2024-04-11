@@ -205,6 +205,12 @@ const reqGrid = new tui.Grid({
 
 
 // 2. 그리드 데이터 생성
+const weekData = getDateFromWeek(searchForm.dueWeek.value);
+const dueStartDate = weekData.weekStart;
+const dueEndDate = weekData.weekEnd;
+
+let param = {dueStartDate, dueEndDate};
+getOrdersList(param);
 
 // (1) 주문 조회
 function getOrdersList(param){
@@ -223,10 +229,9 @@ function getOrdersList(param){
 	getProductList();
 }
 
-
 // (2) 제품목록 조회
 function getProductList(){
-  fetch('ajax/productList')
+  fetch('ajax/getReqProd')
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
@@ -315,14 +320,22 @@ async function prodReqFunc() {
 // 4. 검색기능
 
 // (1) 오늘 날짜 기본값 세팅
-searchForm.today.value = dateFormat(new Date());
+const today = new Date()
+searchForm.today.value = dateFormat(today);
+const currWeekFormat = getWeekFromDate(today);
+
+const y = currWeekFormat.substring(0, 4);
+const w = parseInt(currWeekFormat.substring(6, 8)) + 2;
+const dueWeekFormat = y + '-W' + w;
+
+searchForm.dueWeek.value = dueWeekFormat;
 
 // (2) 주간 일자 가져오기 
 function getWeekDate(){
 	const valid = document.querySelector('#defaultFormControlHelp');
 	valid.innerHTML = ''
 
-	const weekData = weekFormat(searchForm.dueWeek.value);
+	const weekData = getDateFromWeek(searchForm.dueWeek.value);
 	console.log('weekData : ', weekData);
 	const weekStart = dateFormat(weekData.weekStart)
 	const weekEnd = dateFormat(weekData.weekEnd)
@@ -336,10 +349,11 @@ function getWeekDate(){
 	searchForm.dueStartDate.value = weekStart;
 	searchForm.dueEndDate.value = weekEnd;
 }
+getWeekDate();
 
 // (3) 검색버튼 클릭 이벤트
 function searchOrders() {
-	const weekData = weekFormat(searchForm.dueWeek.value);
+	const weekData = getDateFromWeek(searchForm.dueWeek.value);
 	const dueStartDate = weekData.weekStart;
 	const dueEndDate = weekData.weekEnd;
 
