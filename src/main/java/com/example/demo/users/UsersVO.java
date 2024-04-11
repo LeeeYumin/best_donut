@@ -30,7 +30,8 @@ public class UsersVO {
 	@JsonIgnore
 	private String perm;
 	public String[] getPerm() {
-		return this.perm.split(",");
+//		return this.perm.split(",");
+		return perm != null ? this.perm.split(",") : null;
 	}
 	
 }

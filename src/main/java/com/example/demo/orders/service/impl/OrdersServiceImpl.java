@@ -1,5 +1,6 @@
 package com.example.demo.orders.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class OrdersServiceImpl implements OrdersService{
 		return result >= 1 ? true : false;
 	}
 
-	// 생산요청등록 + 생산요청상세등록
+	// 생산요청등록 + 생산요청상세등록 + 주문상태변경
 	@Override
 	public boolean insertProdReq(ProdReqVO vo) {
 		ordersMapper.insertProdReq(vo);
@@ -65,7 +66,22 @@ public class OrdersServiceImpl implements OrdersService{
 			dvo.setProdReqCode(vo.getProdReqCode());
 			result += ordersMapper.insertProdReqDet(dvo);
 		}
+		
+		ordersMapper.updateOrdStat(vo.getDueStartDate(), vo.getDueEndDate());
+		
 		return result >= 1 ? true : false;
+	}
+
+	// 생산요청 조회
+	@Override
+	public List<ProdReqVO> getProdReq(ProdReqVO vo) {
+		return ordersMapper.getProdReq(vo);
+	}
+
+	// 생산요청 상세조회
+	@Override
+	public List<ProdReqDetailVO> getProdReqDet(String prodReqCode) {
+		return ordersMapper.getProdReqDet(prodReqCode);
 	}
 
 	

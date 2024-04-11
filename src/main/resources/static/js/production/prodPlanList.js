@@ -243,15 +243,15 @@ getProdPlanList()
 			})
 		}
 
-		//생산계획 상태 미지시일 경우에만 삭제하기
-		plList.on('click', e => {
-			const status = plList.getValue(e.rowKey,"prodPlanStatus");
-			console.log(status);
+		// //생산계획 상태 미지시일 경우에만 삭제하기
+		// plList.on('click', e => {
+		// 	const status = plList.getValue(e.rowKey,"prodPlanStatus");
+		// 	console.log(status);
 
-			if(status == 'LS1') {
+		// 	if(status == 'LS1') {
 
-			}
-		});
+		// 	}
+		// });
 
 
 		async function deletePlan() {

@@ -87,6 +87,12 @@
     <!-- sweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/assets/vendor/js/bootstrap.js"></script>
+    <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
   </head>
 
   <body>
@@ -146,7 +152,7 @@
                   </a>
                   <ul class="menu-sub">
                		<li class="menu-item">
-	               		<a href="/insertBOM" class="menu-link">
+	               		<a href="/insertBom" class="menu-link">
 	                    	<div data-i18n="Under Maintenance">BOM관리</div>
 	                  	</a>
                		</li>
@@ -251,15 +257,21 @@
                 </li>
                 <!-- 3.공정관리 -->
                 <li class="menu-item">
-                  <a href="pages-misc-under-maintenance.html" class="menu-link">
-                    <div data-i18n="Under Maintenance">공정관리</div>
+                  <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <div data-i18n="Misc">공정관리</div>
                   </a>
-                </li>
-                <!-- 4.공정실적조회 -->
-                <li class="menu-item">
-                  <a href="pages-misc-under-maintenance.html" class="menu-link">
-                    <div data-i18n="Under Maintenance">공정실적조회</div>
-                  </a>
+                  <ul class="menu-sub">
+               		<li class="menu-item">
+	               		<a href="/process" class="menu-link">
+	                    	<div data-i18n="Under Maintenance">공정진행</div>
+	                  	</a>
+               		</li>
+               		<li class="menu-item">
+	               		<a href="pages-misc-under-maintenance.html" class="menu-link">
+	                    	<div data-i18n="Under Maintenance">공정실적 조회</div>
+	                  	</a>
+               		</li>
+               	  </ul>
                 </li>
 
               </ul>
@@ -542,15 +554,8 @@
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="/assets/vendor/libs/popper/popper.js"></script>
-    <script src="/assets/vendor/js/bootstrap.js"></script>
-    <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
     <script src="/assets/vendor/js/menu.js"></script>
+    
     <!-- endbuild -->
 
     <!-- Vendors JS -->

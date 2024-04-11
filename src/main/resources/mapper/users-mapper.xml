@@ -74,5 +74,28 @@
 					</foreach>
 		SELECT * FROM DUAL
 	</insert>
+	
+	
+	<!-- 단건조회 -->
+	<select id="getUsersInfo" resultType="UsersVO">
+		SELECT u.USERS_CODE
+	          , u.USERS_NAME
+	          , u.POSITION
+	          , u.LOCAL_TEL
+	          , u.USERS_STATUS
+	          , SUM(DECODE(p.PERM_CODE, 'PER00001', 1)) AS PERM1
+	          , SUM(DECODE(p.PERM_CODE, 'PER00002', 1)) AS PERM2
+	          , SUM(DECODE(p.PERM_CODE, 'PER00003', 1)) AS PERM3
+	          , SUM(DECODE(p.PERM_CODE, 'PER00004', 1)) AS PERM4
+	          , SUM(DECODE(p.PERM_CODE, 'PER00005', 1)) AS PERM5
+		FROM USERS u JOIN USERS_PERM p
+		ON u.USERS_CODE = p.USERS_CODE
+		WHERE u.USERS_CODE = #{usersCode}
+		GROUP BY u.USERS_CODE
+		        , u.USERS_NAME
+		        , u.POSITION
+		        , u.LOCAL_TEL
+		        , u.USERS_STATUS
+	</select>
 
 </mapper>

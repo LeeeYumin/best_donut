@@ -10,61 +10,68 @@
 <link rel="stylesheet" href="/css/common.css" />
 <body>
 	<div layout:fragment="content">
-		<h3 class="fw-bold py-1 mb-4">
+		<h3 class="fw-bold py-1 mb-4" th:if = "${usersVO.usersCode} == null">
 			<span class="text-muted fw-light">공통관리 / </span> 사용자 등록
+		</h3>
+		<h3 class="fw-bold py-1 mb-4" th:if = "${usersVO.usersCode} != null">
+			<span class="text-muted fw-light">공통관리 / </span> 사용자 정보
 		</h3>
 		
 		<form name="insertForm" method="post">
 			<div class="card card-body mb-4">
 				<div>
 					<label>사용자코드*</label>
-					<input type="text" name="usersCode" placeholder="자동생성" readonly>
+					<input type="text" name="usersCode" placeholder="자동생성" readonly th:value="${usersVO.usersCode}">
 				</div>
 				<div>
 					<label>사용자명*</label>
-					<input type="search" name="usersName" placeholder="사용자명 입력">
+					<input type="search" name="usersName" placeholder="사용자명 입력" class="req" th:value="${usersVO.usersName}">
 					<div id="notice1" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>소속*</label>
-					<input type="search" name="position" placeholder="소속 입력">
+					<input type="search" name="position" placeholder="소속 입력" class="req" th:value="${usersVO.position}">
 					<div id="notice2" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>내선번호</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<input type="search" name="localTel" placeholder="내선번호 입력" th:value="${usersVO.localTel}">		
 				</div>
+ 				 [[${usersVO}]]
 				<div>
 					<label>사용자권한*</label>
-					<input type="checkbox" id="perm0" value="master" name="master" class="form-check-input">
+					<input type="checkbox" id="perm0" value="master" name="master" class="form-check-input" th:checked='${usersVO.perm1 == "1" && usersVO.perm2 == "1" && usersVO.perm3 == "1" && usersVO.perm4 == "1" && usersVO.perm5 == "1"}'>
 					<label for="perm0">전체</label>
 					<div id="perm" style="display:inline-block;">
-						<input type="checkbox" id="perm1" value="PER00001" name="perm" class="form-check-input">
+						<input type="checkbox" id="perm1" value="PER00001" name="perm" class="form-check-input" th:checked='${usersVO.perm1 == "1"}'>
 						<label for="perm1">영업관리</label>
-						<input type="checkbox" id="perm2" value="PER00002" name="perm" class="form-check-input">
+						<input type="checkbox" id="perm2" value="PER00002" name="perm" class="form-check-input" th:checked='${usersVO.perm2 == "1"}'>
 						<label for="perm2">생산관리</label>
-						<input type="checkbox" id="perm3" value="PER00003" name="perm" class="form-check-input">
+						<input type="checkbox" id="perm3" value="PER00003" name="perm" class="form-check-input" th:checked='${usersVO.perm3 == "1"}'>
 						<label for="perm3">자재관리</label>
-						<input type="checkbox" id="perm4" value="PER00004" name="perm" class="form-check-input">
+						<input type="checkbox" id="perm4" value="PER00004" name="perm" class="form-check-input" th:checked='${usersVO.perm4 == "1"}'>
 						<label for="perm4">품질관리</label>
-						<input type="checkbox" id="perm5" value="PER00005" name="perm" class="form-check-input">
+						<input type="checkbox" id="perm5" value="PER00005" name="perm" class="form-check-input" th:checked='${usersVO.perm5 == "1"}'>
 						<label for="perm5">설비관리</label>
 					</div>
 					<div id="notice3" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>사용자상태*</label>
-					<input type="radio" name="usersStatus" id="status1" value="USY" class="form-check-input">
+					<input type="radio" name="usersStatus" id="status1" value="USY" class="form-check-input" th:checked='${usersVO.usersStatus=="USY"}'>
 					<label for="status1">활성</label>
-					<input type="radio" name="usersStatus" id="status2" value="USN" class="form-check-input">
+					<input type="radio" name="usersStatus" id="status2" value="USN" class="form-check-input" th:checked='${usersVO.usersStatus=="USN"}'>
 					<label for="status2">비활성</label>
 					<div id="notice4" class="form-text notice"></div>
 				</div>
 			</div>
 		</form>
 			
-		<div class="mb-4">
+		<div class="mb-4" th:if = "${usersVO.usersCode} == null">
 			<button type="button" id="saveBtn">등록완료</button>
+		</div>
+		<div class="mb-4" th:if = "${usersVO.usersCode} != null">
+			<button type="button" id="saveBtn">정보수정</button>
 		</div>
 		
 		<script src="/js/users/insertUsers.js"></script>

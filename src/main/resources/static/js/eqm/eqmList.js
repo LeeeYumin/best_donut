@@ -21,11 +21,11 @@ function converter1(value){
   if(value == "ES1") {
       result = "정상";
   } else if(value == "ES2") {
-      result = "고장";
+      result = "설비고장";
   } else if(value == "ES3") {
-      result = "점검중";
+      result = "설비점검";
   } else if(value == "ES4") {
-      result = "수리중";
+      result = "설비수리";
   } else if(value == "ES5") {
       result = "폐기";
   }

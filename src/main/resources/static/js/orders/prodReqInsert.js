@@ -1,3 +1,7 @@
+// 0. 기본값 세팅
+setToday();
+
+
 // 1. 그리드 생성
 
 // (1) 주문목록 그리드
@@ -206,8 +210,17 @@ const reqGrid = new tui.Grid({
 
 // 2. 그리드 데이터 생성
 
+const weekData = getDateFromWeek(searchForm.dueWeek.value);
+const dueStartDate = weekData.weekStart;
+const dueEndDate = weekData.weekEnd;
+
+let param = {dueStartDate, dueEndDate};
+getOrdersList(param);
+
 // (1) 주문 조회
 function getOrdersList(param){
+	getWeekDate();
+	
 	const data = {
 		method: 'POST',
 		headers: jsonHeaders,
@@ -223,10 +236,12 @@ function getOrdersList(param){
 	getProductList();
 }
 
-
 // (2) 제품목록 조회
-function getProductList(){
-  fetch('ajax/productList')
+async function getProductList(){
+	const dueStartDate = dateFormat(searchForm.dueStartDate.value);
+	const dueEndDate = dateFormat(searchForm.dueEndDate.value);
+
+  await fetch(`ajax/getReqProd?dueStartDate=${dueStartDate}&dueEndDate=${dueEndDate}`)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
@@ -240,15 +255,12 @@ function getProductList(){
       else {
         product.reqCnt = product.safeStockCnt - product.afterOutCnt;
       }
-
     }
 		prodGrid.resetData(res);
-    // 생산요청 목록 함수 실행
-    getReqList();
 	})
+	// 생산요청 목록 함수 실행
+	getReqList();
 }
-// getProductList();
-
 
 // (3) 생산요청 목록
 function getReqList() {
@@ -275,7 +287,10 @@ async function prodReqFunc() {
 	const totalReqCnt = document.querySelector('#totalReqCnt').value
 	const reqDate = document.querySelector('#reqDate').value
 	const prodReqDetList = reqGrid.getData();
-	const param = {totalReqCnt, reqDate, prodReqDetList}
+	const dueStartDate = dateFormat(searchForm.dueStartDate.value);
+	const dueEndDate = dateFormat(searchForm.dueEndDate.value);
+
+	const param = {totalReqCnt, reqDate, prodReqDetList, dueStartDate, dueEndDate}
 
 	let result = false;
 
@@ -312,21 +327,30 @@ async function prodReqFunc() {
 	}
 }
 
+
 // 4. 검색기능
 
 // (1) 오늘 날짜 기본값 세팅
-searchForm.today.value = dateFormat(new Date());
+function setToday(){
+	const today = new Date()
+	searchForm.today.value = dateFormat(today);
+	const currWeekFormat = getWeekFromDate(today);
+	
+	const y = currWeekFormat.substring(0, 4);
+	const w = parseInt(currWeekFormat.substring(6, 8)) + 2;
+	const dueWeekFormat = y + '-W' + w;
+	
+	searchForm.dueWeek.value = dueWeekFormat;
+}
 
 // (2) 주간 일자 가져오기 
 function getWeekDate(){
 	const valid = document.querySelector('#defaultFormControlHelp');
 	valid.innerHTML = ''
 
-	const weekData = weekFormat(searchForm.dueWeek.value);
-	console.log('weekData : ', weekData);
+	const weekData = getDateFromWeek(searchForm.dueWeek.value);
 	const weekStart = dateFormat(weekData.weekStart)
 	const weekEnd = dateFormat(weekData.weekEnd)
-	console.log(weekStart, weekEnd);
 
 	if(weekData.weekStart < new Date()){
 		valid.innerHTML = '납기일자가 다음 주 이후인 주문만 선택가능합니다.'
@@ -336,10 +360,11 @@ function getWeekDate(){
 	searchForm.dueStartDate.value = weekStart;
 	searchForm.dueEndDate.value = weekEnd;
 }
+getWeekDate();
 
 // (3) 검색버튼 클릭 이벤트
 function searchOrders() {
-	const weekData = weekFormat(searchForm.dueWeek.value);
+	const weekData = getDateFromWeek(searchForm.dueWeek.value);
 	const dueStartDate = weekData.weekStart;
 	const dueEndDate = weekData.weekEnd;
 

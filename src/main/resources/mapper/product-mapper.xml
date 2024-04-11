@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.product.mapper.ProductMapper">
 	
-	<!-- 제품조회 -->
+	<!-- 제품조회(주문등록 페이지) -->
 	<select id="getProduct" resultType="ProductVO">
 		WITH t AS 
 			(
@@ -21,6 +21,34 @@
 		       , t.total_orders_cnt
 		  FROM t JOIN product p
 		           ON t.product_code = p.product_code       
+		 ORDER BY 1
+	</select>
+	
+	<!-- 제품조회(생산요청 페이지)-->
+	<select id="getReqProd" resultType="ProductVO">
+		WITH t AS 
+		    (
+		    SELECT d.product_code
+		           , SUM(d.orders_cnt) cnt
+		      FROM orders_detail d JOIN orders o
+		                           ON o.orders_code = d.orders_code
+		     WHERE 1=1
+		     <if test="dueStartDate != null">
+		     	AND o.due_date <![CDATA[ >= ]]> #{dueStartDate}
+		     </if>
+		     <if test="dueEndDate != null">
+			 	AND o.due_date <![CDATA[ <= ]]> #{dueEndDate}
+			 </if>
+		     GROUP BY d.product_code
+		    )
+		SELECT p.product_code
+		       , p.product_name
+		       , p.unit_price
+		       , p.stock_cnt
+		       , p.safe_stock_cnt
+		       , NVL(t.cnt, '0') total_orders_cnt
+		  FROM t RIGHT OUTER JOIN product p
+		           ON t.product_code = p.product_code
 		 ORDER BY 1
 	</select>
 

@@ -341,3 +341,10 @@ tui.Grid.applyTheme('custom', {
     }
   }
 });
+
+
+// 단건조회
+grid.on('click', (event) => {
+	let usersCode = grid.getValue(event.rowKey, 'usersCode')
+  location.href = 'usersinfo/' + usersCode
+})

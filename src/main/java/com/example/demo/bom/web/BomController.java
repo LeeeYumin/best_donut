@@ -22,4 +22,37 @@ public class BomController {
 	public List<BomVO> getMatOrdersBom() {
 		return bomService.getMatOrdersBom();
 	}
+	
+	//BOM관리
+	@GetMapping("/insertBom")
+	public String insertBom() {
+		return "bom/insertBom";
+	}
+	
+	//BOM관리 - 품목확인 화면
+	@GetMapping("ajax/insertBom")
+	@ResponseBody
+	public List<BomVO> getProdBom() {
+		return bomService.getProdBom();
+	}
+	
+	//BOM목록
+	@GetMapping("/bomList")
+	public String bomList() {
+		return "bom/bomList";
+	}
+	
+	//BOM관리 - 품목확인 화면(grid 안에 데이터)
+	@GetMapping("ajax/bomList")
+	@ResponseBody
+	public List<BomVO> getListBom() {
+		return bomService.getListBom();
+	}
+	
+	//BOM관리 - 품목 상세 화면(상품종류별)
+	@GetMapping("ajax/bomselList")
+	@ResponseBody
+	public List<BomVO> bomselList() {
+		return bomService.bomselList();
+	}
 }
