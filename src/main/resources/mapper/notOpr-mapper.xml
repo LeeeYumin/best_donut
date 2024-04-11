@@ -68,6 +68,7 @@
 				, LOCAL_TEL
 				, USERS_STATUS
 		FROM USERS
+		WHERE USERS_STATUS = 'USY'
 		ORDER BY 1
 	</select>
 	
