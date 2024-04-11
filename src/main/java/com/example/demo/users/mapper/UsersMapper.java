@@ -11,5 +11,6 @@ public interface UsersMapper {
 	
 	public List<UsersVO> getUsers(UsersVO vo);
 	public int insertUsers(UsersVO vo);
+	public UsersVO getUsersInfo(String usersCode);
 	
 }

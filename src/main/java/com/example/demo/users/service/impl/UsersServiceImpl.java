@@ -23,7 +23,10 @@ public class UsersServiceImpl implements UsersService{
 	public int insertUsers(UsersVO vo) {
 		return usersMapper.insertUsers(vo);
 	}
-	
-	
+
+	@Override
+	public UsersVO getUsersInfo(String usersCode) {
+		return usersMapper.getUsersInfo(usersCode);
+	}
 	
 }

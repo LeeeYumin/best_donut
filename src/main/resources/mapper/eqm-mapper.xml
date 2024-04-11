@@ -59,7 +59,7 @@
 					, EQM_STATUS
 					, OPR_STATUS)
 		VALUES(
-			#{eqmCode}
+			seq_func('eqm')
 			, #{eqmName}
 			, #{modelName}
 			, #{maker}
