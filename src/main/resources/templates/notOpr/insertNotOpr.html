@@ -26,12 +26,12 @@
 						<option value="">담당자코드 선택</option>
 						<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersCode}">
 					</select>
-					<div id="notice1" class="form-text notice"></div>
 					<label>담당자명*</label>
-					<select name="usersName">
+					<select name="usersName" class="req">
 						<option value="">담당자명 선택</option>
 						<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersName}">
 					</select>
+					<div id="notice1" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>설비코드*</label>
@@ -39,12 +39,12 @@
 						<option value="">설비코드 선택</option>
 						<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmCode}">
 					</select>
-					<div id="notice2" class="form-text notice"></div>
 					<label>설비명*</label>
-					<select name="eqmName">
+					<select name="eqmName" class="req">
 						<option value="">설비명 선택</option>
 						<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmName}">
 					</select>
+					<div id="notice2" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>비가동구분*</label>
@@ -54,21 +54,21 @@
 					<label for="status2">설비점검</label>
 					<input type="radio" name="notOprSep" id="status3" value="NO3" class="form-check-input">
 					<label for="status3">설비수리</label>
-					<div id="notice4" class="form-text notice"></div>
+					<div id="notice3" class="form-text notice"></div>
 				</div>
 				<div>
-					<label>시작일자</label>
-					<input type="Date" name="beginDate">	
-					<div id="notice5" class="form-text notice"></div>	
+					<label>시작일자*</label>
+					<input type="Date" name="beginDate" class="req">	
+					<div id="notice4" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>종료일자</label>
 					<input type="Date" name="endDate">		
 				</div>
 				<div>
-					<label>작업내용</label>
-					<textarea name="contentsContents" placeholder="작업내용 입력"></textarea>
-					<div id="notice6" class="form-text notice"></div>
+					<label>작업내용*</label>
+					<textarea name="contentsContents" placeholder="작업내용 입력" class="req"></textarea>
+					<div id="notice5" class="form-text notice"></div>
 				</div>
 			</div>
 		</form>

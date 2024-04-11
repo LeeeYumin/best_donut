@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +21,7 @@ public class UsersController {
 	
 	// 전체조회
 	@GetMapping("userslist")
-	public String usersMain() {
+	public String usersList() {
 		return "users/usersList";
 	}
 	
@@ -30,10 +31,11 @@ public class UsersController {
 		return usersService.getUsers(vo);
 	}
 	
-	// 등록
+	
+	// 등록페이지
 	@GetMapping("insertusers")
-	public String insertUsers(Model model, UsersVO vo) {
-		model.addAttribute("usersList", usersService.getUsers(vo));
+	public String insertUsersForm(UsersVO vo) {
+//		model.addAttribute("usersList", usersService.getUsers(vo));
 		return "users/insertUsers";
 	}
 	
@@ -42,5 +44,14 @@ public class UsersController {
 	public int insertUsers(UsersVO vo) {
 		return usersService.insertUsers(vo);
 	}
+	
+	
+	// 단건조회
+	@GetMapping("usersinfo/{usersCode}")
+	public String usersInfo(@PathVariable String usersCode, Model model) {
+		model.addAttribute("usersVO", usersService.getUsersInfo(usersCode));
+		return "users/insertUsers";
+	}
+
 	
 }

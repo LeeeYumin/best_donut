@@ -18,57 +18,78 @@
 			<div class="card card-body mb-4">
 				<div>
 					<label>설비코드*</label>
-					<input type="text" name="usersCode" placeholder="자동생성" readonly>
+					<input type="text" name="eqmCode" placeholder="자동생성" readonly>
 				</div>
 				<div>
 					<label>설비명*</label>
-					<input type="search" name="usersName" placeholder="사용자명 입력">
+					<input type="search" name="eqmName" placeholder="설비명 입력" class="req">
 					<div id="notice1" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>모델명*</label>
-					<input type="search" name="position" placeholder="소속 입력">
+					<input type="search" name="modelName" placeholder="모델명 입력" class="req">
 					<div id="notice2" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>제조사</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<input type="search" name="maker" placeholder="제조사 입력">		
 				</div>
 				<div>
 					<label>용도</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<input type="search" name="purpose" placeholder="용도 입력">		
 				</div>
 				<div>
-					<label>설치장소</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<label>설치장소*</label>
+					<input type="search" name="installPlace" placeholder="설치장소 입력" class="req">
+					<div id="notice3" class="form-text notice"></div>		
 				</div>
 				<div>
 					<label>구입처</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<input type="search" name="buyCompany" placeholder="구입처 입력">		
 				</div>
 				<div>
-					<label>구입일자</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<label>구입가격</label>
+					<input type="search" name="buyPrice" placeholder="구입가격 입력">		
+				</div>
+				<div>
+					<label>구입일자*</label>
+					<input type="Date" name="buyDate" class="req">
+					<div id="notice4" class="form-text notice"></div>	
 				</div>	
 				<div>
 					<label>폐기일자</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<input type="Date" name="dumpDate">
 				</div>	
 				<div>
 					<label>점검주기</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<input type="search" name="checkCycle" placeholder="점검주기">		
 				</div>
 				<div>
 					<label>최근점검일</label>
-					<input type="search" name="localTel" placeholder="내선번호 입력">		
+					<input type="Date" name="lastCheckDate">
 				</div>
 				<div>
 					<label>설비상태*</label>
-					<input type="radio" name="usersStatus" id="status1" value="USY" class="form-check-input">
-					<label for="status1">활성</label>
-					<input type="radio" name="usersStatus" id="status2" value="USN" class="form-check-input">
-					<label for="status2">비활성</label>
-					<div id="notice4" class="form-text notice"></div>
+					<input type="radio" name="eqmStatus" id="status1" value="ES1" class="form-check-input">
+					<label for="status1">정상</label>
+					<input type="radio" name="eqmStatus" id="status2" value="ES2" class="form-check-input">
+					<label for="status2">설비고장</label>
+					<input type="radio" name="eqmStatus" id="status3" value="ES3" class="form-check-input">
+					<label for="status3">설비점검</label>
+					<input type="radio" name="eqmStatus" id="status4" value="ES4" class="form-check-input">
+					<label for="status4">설비수리</label>
+					<input type="radio" name="eqmStatus" id="status5" value="ES5" class="form-check-input">
+					<label for="status5">폐기</label>															
+					<div id="notice5" class="form-text notice"></div>
+				</div>
+				<div>
+					<label>가동현황*</label>
+					<input type="radio" name="oprStatus" id="status1" value="FO1" class="form-check-input">
+					<label for="status1">대기</label>
+					<input type="radio" name="oprStatus" id="status2" value="FO2" class="form-check-input">
+					<label for="status2">가동중</label>
+					<input type="radio" name="oprStatus" id="status3" value="FO3" class="form-check-input">
+					<label for="status3">전원꺼짐</label>
 				</div>
 			</div>
 		</form>
@@ -77,7 +98,7 @@
 			<button type="button" id="saveBtn">등록완료</button>
 		</div>
 		
-		<script src="/js/users/insertUsers.js"></script>
+		<script src="/js/eqm/insertEqm.js"></script>
 	</div>
 </body>
 </html>

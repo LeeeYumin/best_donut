@@ -94,26 +94,35 @@ function formValidation() {
   const notice3 = document.getElementById('notice3');
   const notice4 = document.getElementById('notice4');
 
+  let result = true;
+
   if(insertForm.usersName.value == null || insertForm.usersName.value == '') {
     notice1.innerText = '사용자명을 입력하세요.';
-    return false;
+    result = false;
   }
 
   if(insertForm.position.value == null || insertForm.position.value == '') {
     notice2.innerText = '소속을 입력하세요.';
-    return false;
+    result = false;
   }
 
-  const permList = document.querySelectorAll("[name=perm]:checked");
-  if(permList == null || permList.length == 0) {
+  const list = document.querySelectorAll("[name=perm]:checked");
+  if(list == null || list.length == 0) {
     notice3.innerText = '사용자권한을 선택하세요.';
-    return false;
+    result = false;
   }
 
   if(insertForm.usersStatus.value == null || insertForm.usersStatus.value == '') {
     notice4.innerText = '사용자상태를 선택하세요.';
-    return false;
+    result = false;
   }
 
-  return true;
+  return result;
 }
+
+$(function() {
+  $('.req').on('change', function(){if(this.value != "") $(this).next().html("")})
+  $('[name="master"]').on('change', function(){if($('[name="master"]:checked').length == 1) $("#notice3").html("")})
+  $('[name="perm"]').on('change', function(){if($('[name="perm"]:checked').length == 1) $("#notice3").html("")})
+  $('[name="usersStatus"]').on('change', function(){if($('[name="usersStatus"]:checked').length == 1) $("#notice4").html("")})
+})
