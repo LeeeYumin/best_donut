@@ -251,4 +251,11 @@ function selectProQual(){
 
 selectProQual();
 
-//버튼누르면 적합수량이 완제품 재고 조회로?
+//버튼누르면 적합수량->적합 수량에 insert & 입고 수량에 update
+function addProQual(){
+  fetch(`ajax/addProQual`)
+  .then(res => res.json())
+	.then(res => {
+    grid2.resetData(res);
+})
+}

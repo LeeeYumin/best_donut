@@ -2,9 +2,9 @@
 document.getElementById('saveBtn').addEventListener('click', saveNotOpr);
 
 async function saveNotOpr() {
-  // if(!formValidation()) {
-    //   return;
-    // }
+  if(!formValidation()) {
+      return;
+    }
 
   let formData = new FormData(document.insertForm);
   
@@ -25,7 +25,6 @@ async function saveNotOpr() {
   // })
 
   
-
   // SweetAlert
 	if(result > 0){
 		Swal.fire({
@@ -56,38 +55,52 @@ function formValidation() {
   const notice2 = document.getElementById('notice2');
   const notice3 = document.getElementById('notice3');
   const notice4 = document.getElementById('notice4');
+  const notice5 = document.getElementById('notice5');
 
-  if(insertForm.usersName.value == null || insertForm.usersName.value == '') {
-    notice1.innerText = '사용자명을 입력하세요.';
-    return false;
+  let result = true;
+
+  if(insertForm.usersCode.value == null || insertForm.usersCode.value == '') {
+    notice1.innerText = '담당자를 선택하세요.';
+    result = false;
   }
 
-  if(insertForm.position.value == null || insertForm.position.value == '') {
-    notice2.innerText = '소속을 입력하세요.';
-    return false;
+  if(insertForm.eqmCode.value == null || insertForm.eqmCode.value == '') {
+    notice2.innerText = '설비를 선택하세요.';
+    result = false;
   }
 
-  const permList = document.querySelectorAll("[name=perm]:checked");
-  if(permList == null || permList.length == 0) {
-    notice3.innerText = '사용자권한을 선택하세요.';
-    return false;
+  const list = document.querySelectorAll("[name=notOprSep]:checked");
+  if(list == null || list.length == 0) {
+    notice3.innerText = '비가동구분을 선택하세요.';
+    result = false;
   }
 
-  if(insertForm.usersStatus.value == null || insertForm.usersStatus.value == '') {
-    notice4.innerText = '사용자상태를 선택하세요.';
-    return false;
+  if(insertForm.beginDate.value == null || insertForm.beginDate.value == '') {
+    notice4.innerText = '시작일자를 선택하세요.';
+    result = false;
   }
 
-  return true;
+  if(insertForm.contentsContents.value == null || insertForm.contentsContents.value == '') {
+    notice5.innerText = '작업내용을 작성하세요.';
+    result = false;
+  }
+
+  return result;
 }
 
+$(function() {
+  $('.req').on('change', function(){if(this.value != "") $(this).next().html("")})
+  $('[name="notOprSep"]').on('change', function(){if($('[name="notOprSep"]:checked').length == 1) $("#notice3").html("")})
+})
 
-// 담당자 드롭박스 연동
+
+// 담당자코드 - 담당자명 연동
 insertForm.usersCode.addEventListener('change', changeOption1);
 
 function changeOption1() {
   insertForm.usersName.value = insertForm.usersCode.value;
   console.log(insertForm.usersName.value);
+  notice1.innerText = '';
 }
 
 insertForm.usersName.addEventListener('change', changeOption2);
@@ -98,12 +111,13 @@ function changeOption2() {
 }
 
 
-// 설비 드롭박스 연동
+// 설비코드 - 설비명 연동
 insertForm.eqmCode.addEventListener('change', changeOption3);
 
 function changeOption3() {
   insertForm.eqmName.value = insertForm.eqmCode.value;
   console.log(insertForm.eqmName.value);
+  notice2.innerText = '';
 }
 
 insertForm.eqmName.addEventListener('change', changeOption4);

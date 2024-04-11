@@ -12,7 +12,7 @@ getProdReq();
 					header : '생산요청일자',
 					name : 'reqDate',
 					align: 'center',
-					formatter: dateFormat
+					//formatter: dateFormat
 				},
 				{
 					header : '생산요청코드',

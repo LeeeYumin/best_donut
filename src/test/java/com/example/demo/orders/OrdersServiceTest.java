@@ -1,13 +1,14 @@
 package com.example.demo.orders;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.materials.service.MaterialsService;
 import com.example.demo.orders.mapper.OrdersMapper;
 import com.example.demo.product.ProductVO;
 import com.example.demo.product.mapper.ProductMapper;
@@ -44,4 +45,21 @@ public class OrdersServiceTest {
 		}
 	}
 	
+//	@Test
+	public void 주문상태변경(){
+			
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date dueStartDate = new Date();
+		Date dueEndDate = new Date();
+		try {
+			dueStartDate = sdf.parse("2024-04-23");
+			dueEndDate = sdf.parse("2024-04-28");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		int result = ordersMapper.updateOrdStat(dueStartDate, dueEndDate);
+		System.out.println("주문상태변경 result : " + result);
+	}
 }

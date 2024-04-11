@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.production.ProdInsVO;
 import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.ProdPlanDeVO;
 import com.example.demo.production.ProdPlanVO;
@@ -42,17 +43,22 @@ public class ProdPlanController {
 		return "production/prodInstruct";
 	}
 	
+	//생산지시 관리
+
+	
+
 	
 //============================================================================	
 	
-	/* < 생산요청&상세 > 데이터 */
+/* < 생산요청&상세 > 데이터 */
 	@GetMapping("/ajax/prodReq")	// fetch 함수에 들어가는 uri
 	@ResponseBody
 	public Map<String, Object> getProdeReq(){
 		return prodPlanService.getProdReq();
 	}
+
 	
-	/* < 생산계획 > */
+/* < 생산계획 > */
 	
 	//1)조회
 	@PostMapping("/ajax/prodPlanList")
@@ -96,13 +102,36 @@ public class ProdPlanController {
 	}
 	
 	
-	/* < 생산지시 > */
+/* < 생산지시 > */
 	
 	//+지시 전 주간계획&상세 데이터
 	@GetMapping("/ajax/weeklyPlan")	// fetch 함수에 들어가는 uri
 	@ResponseBody
 	public Map<String, Object> getWeeklyPlan(){
 		return prodPlanService.getWeeklyPlan();
+	}
+	
+	//+지시 전 설비상태 데이터
+	@GetMapping("/ajax/eqmCheck")	// fetch 함수에 들어가는 uri
+	@ResponseBody
+	public List<ProdInsVO> getEqm(){
+		return prodPlanService.getEqm();
+	}
+	
+	//1)등록
+	@PostMapping("/ajax/insertProdInstruct")
+	@ResponseBody
+	public ProdInsVO saveIns(@RequestBody ProdInsVO vo) { 
+		System.out.println(vo);
+		prodPlanService.insertProdInstruct(vo);
+		return vo;
+	}
+	//+지시 등록하면서 => 계획의 미지시&지시수량 변경
+	@PostMapping("/ajax/updateAfterInstruct")
+	@ResponseBody
+	public int modifyAfterIns(@RequestBody List<ProdPlanDeVO> dvo) { 
+		System.out.println(dvo);
+		return prodPlanService.updateAfterInstruct(dvo);	
 	}
 	
 	

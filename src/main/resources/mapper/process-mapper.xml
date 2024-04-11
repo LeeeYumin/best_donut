@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.production.mapper.ProcessMapper">
+
+<!-- 당일 생산지시 조회 -->
+	<select id="getTodayIns" resultType="ProdInsVO">
+		SELECT instruct_date
+         , prod_instruct_code
+         , prod_instruct_status
+         , prod_plan_code
+         , users_code
+    FROM prod_instruct
+    WHERE instruct_date = TRUNC(SYSDATE)
+	</select>
+	<select id="getTodayInsDetail" resultType="ProdInsDeVO">
+		SELECT prod_instruct_detail_code
+         , pld.product_code
+         , p.product_name
+         , instruct_cnt
+         , not_prod_cnt
+         , prod_cnt
+         , prod_instruct_code
+    FROM prod_instruct_detail pid JOIN prod_plan_detail pld
+                                    ON pid.prod_plan_detail_code = pld.prod_plan_detail_code
+                                  JOIN product p
+                                    ON pld.product_code = p.product_code
+    WHERE prod_instruct_code = #{prodInstructCode}
+	</select>
+</mapper>

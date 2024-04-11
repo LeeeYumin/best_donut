@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.production.ProdInsDeVO;
+import com.example.demo.production.ProdInsVO;
 import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.ProdPlanBVO;
 import com.example.demo.production.ProdPlanDeVO;
@@ -22,7 +24,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	@Autowired ProdPlanMapper prodPlanMapper;
 
 	
-	/* < 생산요청 > */
+/* < 생산요청 > */
 	@Override
 	public Map<String,Object> getProdReq() {
 		Map<String,Object> map = new HashMap<>();
@@ -39,7 +41,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	}
 
 
-	/* < 생산계획 > */
+/* < 생산계획 > */
 	//1)조회
 	@Override
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo) {
@@ -105,7 +107,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	}
 
 	
-	/* < 생산지시 > */
+/* < 생산지시 > */
 	
 	//+지시 전 주간생산계획
 	@Override
@@ -122,6 +124,43 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 		}
 		return map;
 	}
+
+	//+지시 전 설비상태 확인
+	@Override
+	public List<ProdInsVO> getEqm() {
+		return prodPlanMapper.getEqm();
+	}
+	
+	
+	//1)등록
+	@Override
+	@Transactional
+	public int insertProdInstruct(ProdInsVO vo) {
+		//생산지시
+		prodPlanMapper.insertProdInstruct(vo);
+		
+		//생산지시 상세
+		int result = 0;
+		for(int i = 0; i < vo.getPidvo().size(); i++) {
+			ProdInsDeVO dvo = vo.getPidvo().get(i);
+			System.out.println(dvo);
+			
+			dvo.setProdInstructCode(vo.getProdInstructCode()); //생산지시코드
+			result = prodPlanMapper.insertProdInstructDetail(dvo);
+		}
+		return result;
+	}
+	//+지시 등록하면서 => 계획의 미지시&지시수량 변경
+	@Override
+	public int updateAfterInstruct(List<ProdPlanDeVO> dvo) {
+		int result = 0;
+		for(int i = 0; i < dvo.size(); i++) {
+			result = prodPlanMapper.updateAfterInstruct(dvo.get(i));
+		}
+		return result;
+	}
+
+
 
 
 
