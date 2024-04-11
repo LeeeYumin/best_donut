@@ -114,9 +114,6 @@ const prodPlanDetail = new tui.Grid({
             header: '계획수량',
             name: 'planCnt',
             align: 'center',
-            formatter: function (cnt) {
-                return priceFormat(cnt.value);
-            }
         }
     ],
     summary: {
@@ -130,7 +127,7 @@ const prodPlanDetail = new tui.Grid({
             },
             planCnt: {
                 template: function (value) {
-                    return priceFormat(value.sum) + ' 개';
+                    return priceFormat(value.sum) + '개';
                 },
             },
         },
@@ -140,17 +137,16 @@ const prodPlanDetail = new tui.Grid({
 //생산계획 클릭 시 아래 생산계획상세내용 출력
 prodPlanList.on('click', e => {
     let plCode = prodPlanList.getValue(e.rowKey, "prodPlanCode");
-    //계획상세목록
     getProdPlanAll(plCode)
 })
 
+// 계획상세목록 ajax
 async function getProdPlanAll(plCode) {
     await fetch(`/ajax/prodPlanAll?prodPlanCode=${plCode}`)
         .then(res => res.json())
         .then(res => {
             prodPlanDetail.resetData(res);
         })
-
     requireMatCal();
 };
 
@@ -159,18 +155,23 @@ const BOMList = new tui.Grid({
     el: document.getElementById('BOMList'),
     scrollX: false,
     scrollY: true,
-    bodyHeight: 160,
+    bodyHeight: 240,
     columns: [
         {
             header: 'BOM 코드',
             name: 'bomCode',
             align: 'center',
-            sortable: true,
             rowSpan: true
         },
         {
             header: '제품명',
-            name: 'productCode',
+            name: 'productName',
+            rowSpan: true,
+            hidden: true,
+        },
+        {
+            header: '제품명',
+            name: 'productName',
             align: 'center',
             rowSpan: true
         },
@@ -178,7 +179,6 @@ const BOMList = new tui.Grid({
             header: '자재코드',
             name: 'matCode',
             align: 'center',
-            sortable: true,
         },
         {
             header: '자재명',
@@ -227,18 +227,11 @@ const matStockList = new tui.Grid({
             header: '자재코드',
             name: 'matCode',
             align: 'center',
-            sortable: true,
-            // validation: {
-            // 	validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
-            // }
         },
         {
             header: '자재명',
             name: 'matName',
             align: 'center',
-            // validation: {
-            // 	validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
-            // }
         },
         {
             header: '현재고량',
@@ -246,17 +239,14 @@ const matStockList = new tui.Grid({
             align: 'end',
             formatter: function (cnt) {
                 return priceFormat(cnt.value);
-            }
-            // validation: {
-            //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
-            // }
+            },
+            validation: {
+                validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
+            },
         },
         {
             header: '단위',
             name: 'unit',
-            // validation: {
-            //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
-            // }
         },
         {
             header: '소요량',
@@ -264,10 +254,7 @@ const matStockList = new tui.Grid({
             align: 'center',
             formatter: function (cnt) {
                 return priceFormat(cnt.value);
-            }
-            // validation: {
-            //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
-            // }
+            },
         },
         {
             header: '현재고-소요량',
@@ -275,10 +262,10 @@ const matStockList = new tui.Grid({
             align: 'center',
             formatter: function (cnt) {
                 return priceFormat(cnt.value);
+            },
+            validation: {
+                validatorFn: (value, row, columnName) => row['differenceStockReq'] == null || Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
             }
-            // validation: {
-            // 	validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
-            // }
         },
         {
             header: '안전재고량',
@@ -286,10 +273,7 @@ const matStockList = new tui.Grid({
             align: 'center',
             formatter: function (cnt) {
                 return priceFormat(cnt.value);
-            }
-            // validation: {
-            // 	validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
-            // }
+            },
         }
     ]
 });
@@ -302,38 +286,66 @@ function getMaterialsList() {
         .then(res => {
             // ajax로 불러온 데이터 그리드에 넣음
             matStockList.resetData(res);
-            console.log(res);
+            for (let i = 0; i < res.length; i++) {
+                matStockList.setValue(i, 'requireMat', 0)
+            }
         })
 };
 
-// 소요량 계산 함수
+// 재고 소요량 계산
 function requireMatCal() {
-    let requireMatData = matStockList.getData();
-    let needCntData = BOMList.getData();
-    let planCntData = prodPlanDetail.getData();
+    let BOMListData = BOMList.getData();
+    let matStockListData = matStockList.getData();
 
-    let planAllCnt = prodPlanDetail.getSummaryValues('planCnt').sum;
-    let matCode = matStockList.getColumnValues('matCode');
     let needCnt = 0;
+    let requireMat = 0;
+    let requireMatSum = 0;
 
-    for (let i = 0; i < requireMatData.length; i++) {
-        for (let j = 0; j < needCntData.length; j++) {
-            if (needCntData[j].matCode == requireMatData[i].matCode) {
-                needCnt = needCntData[j].needCnt;
+    // 자재
+    for (let i = 0; i < matStockListData.length; i++) {
+        requireMatSum = 0;
+        let matCode = matStockListData[i].matCode
+        // BOM
+        for (let j = 0; j < BOMListData.length; j++) {
+            needCnt = 0;
+            if (matCode == BOMListData[j].matCode) {
+                needCnt = BOMListData[j].needCnt;
+                // 계획수량 찾기
+                let planCnt = findPlanCnt(BOMListData[j].productCode);
+                if (matCode == 'MAT00002') {
+                    requireMat = Math.ceil(planCnt * needCnt / 60 / 30);
+                } else if (matCode == 'MAT00009') {
+                    requireMat = Math.ceil(planCnt * needCnt);
+                } else {
+                    requireMat = Math.ceil(planCnt * needCnt / 1000);
+                }
+                requireMatSum += requireMat;
             }
         }
 
-        if (matCode[i] == 'MAT00002') {
-            matStockList.setValue(i, 'requireMat', Math.ceil(planAllCnt * needCnt / 60 / 30))
-        } else if (matCode[i] == 'MAT00009') {
-            matStockList.setValue(i, 'requireMat', planAllCnt)
-        }
-        
-        matStockList.setValue(i, 'differenceStockReq', matStockList.getColumnValues('stockCnt')[i] - matStockList.getColumnValues('requireMat')[i])
-    }
+        matStockList.setValue(i, 'requireMat', requireMatSum)
 
+        // 현재고량과 예상 소요량 차이
+        let diffStockReq = matStockList.getColumnValues('stockCnt')[i] - matStockList.getColumnValues('requireMat')[i];
+        matStockList.setValue(i, 'differenceStockReq', diffStockReq)
+    }
 }
 
+// 제품별 계획 수량 찾기
+function findPlanCnt(productCode) {
+    let prodPlanDetailData = prodPlanDetail.getData();
+    let planCnt = 0
+
+    for (let k = 0; k < prodPlanDetailData.length; k++) {
+        if (productCode == prodPlanDetailData[k].productCode) {
+            planCnt = prodPlanDetailData[k].planCnt;
+            break;
+        }
+    }
+    return planCnt;
+}
+
+// 자재 발주 테이블 행 추가
 matStockList.on('checkAll', function () {
     let checked = matStockList.getCheckedRows();
     matOrderList.resetData(checked);
@@ -394,16 +406,13 @@ const matOrderList = new tui.Grid({
         {
             header: '단위',
             name: 'unit',
-            // validation: {
-            //     validatorFn: (value, row, columnName) => Number(row['differenceStockReq']) > Number(row['safeStockCnt'])
-            // }
         },
         {
             header: '가격',
             name: 'matOrdersPrice',
             align: 'center',
             formatter: function (price) {
-                return priceFormat(price.value) + ' 원';
+                return priceFormat(price.value) + '원';
             }
         }
     ],
@@ -425,6 +434,7 @@ const matOrderList = new tui.Grid({
     },
 });
 
+// 수량 받아서 가격 계산
 matOrderList.on('afterChange', ev => {
     let changeRow = ev.changes[0]
     if (changeRow.columnName == "ordersCnt") {
@@ -433,6 +443,7 @@ matOrderList.on('afterChange', ev => {
     }
 })
 
+// 발주 버튼 이벤트
 document.getElementById('orderBtn').addEventListener('click', insertMatOrders)
 
 // 자재 발주 등록
@@ -441,8 +452,45 @@ function insertMatOrders() {
 
     let prodPlanCode = prodPlanList.getValue(prodPlanList.getFocusedCell().rowKey, 'prodPlanCode');
     let matTotalOrdersPrice = matOrderList.getSummaryValues('matOrdersPrice').sum;
+    let matOrderData = matOrderList.getData();
 
-    console.log(prodPlanCode);
-    console.log(matTotalOrdersPrice);
+    console.log('prodPlanCode : ', prodPlanCode);
+    console.log('matTotalOrdersPrice : ', matTotalOrdersPrice);
+    console.log('matOrderData : ', matOrderData);
 
+    const param = { prodPlanCode, matTotalOrdersPrice, matOrderData }
+
+    console.log(param);
+
+    let result = 0;
+    fetch('/ajax/matOrdersInsert', {
+        method: 'post',
+        headers: jsonHeaders,
+        body: JSON.stringify(param)
+    })
+        .then(res => res.json())
+        .then(res => {
+            result = res;
+            console.log(result);
+        })
+
+    if (result) {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "발주 완료!",
+            text: "발주가 정상적으로 처리되었습니다.",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    } else {
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "발주 실패",
+            text: "발주가 정상적으로 처리되지 않았습니다.",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
 }

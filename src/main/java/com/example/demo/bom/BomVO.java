@@ -26,11 +26,8 @@ public class BomVO {
 	private String matCode; //자재코드
 	
 	// 자재 발주를 위한 칼럼들
-	private Integer unitPrice; //단가
-	private String matName; //자재명
-	
-	//product 완제품명 칼럼
-	private String productName; 
-	
+	private String productName;
+	private Integer unitPrice;
+	private String matName;
 	
 }

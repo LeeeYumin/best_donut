@@ -17,7 +17,7 @@
       <if test="matName != null and matName != ''">
 		   AND mat_name LIKE '%'||#{matName}||'%'         
       </if>
-      ORDER BY stock_cnt - safe_stock_cnt
+      ORDER BY mat_code
    	</select>
 
    	<select id="getMaterialDetails" resultType="MaterialReadVO" parameterType="String">
@@ -51,9 +51,48 @@
         	</foreach>
       	</if>
    	</update>
-
+   	
+   	<!-- 자재 발주 등록 -->
+   	<insert id="insertMatOrders" parameterType="MaterialOrderVO">
+	   	<selectKey keyProperty="matOrdersCode" order="BEFORE" resultType="String">
+			SELECT seq_func('mat_orders') FROM dual
+		</selectKey>
+		INSERT INTO mat_orders
+			(
+				mat_orders_code,
+			    prod_plan_code,
+			    mat_total_orders_price
+			)
+		VALUES 
+			(
+				 #{matOrdersCode},
+			     #{prodPlanCode},
+			     #{matTotalOrdersPrice}
+			)	
+   	</insert>
+	
+	<!-- 자재 발주 상세 등록 -->
+	<insert id="insertMatOrdersDetail" parameterType="MaterialOrderDetailVO">
+		INSERT INTO mat_orders_detail
+			(
+				mat_orders_detail_code,
+			    orders_cnt,
+			    mat_code,
+			    company_code,
+			    mat_orders_price
+			)
+		VALUES
+			(
+				seq_func('mat_orders_detail'),
+			    #{ordersCnt},
+			    #{matCode},
+			    #{companyCode},
+			    #{matOrdersPrice}
+			)
+	</insert>
+	
    	<!-- 자재 발주 관리 -->
-   	<select id="getMaterialOrders" resultType="MaterialOrderlVO">
+   	<select id="getMaterialOrders" resultType="MaterialOrderVO">
 		SELECT o.orders_date,
                o.mat_orders_code,
                u.users_name,

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.materials.MaterialOrderDetailVO;
-import com.example.demo.materials.MaterialOrderlVO;
+import com.example.demo.materials.MaterialOrderVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
@@ -35,9 +35,25 @@ public class MaterialsServiceImpl implements MaterialsService {
 		return materialsMapper.updateMatStatus(matLotCodes);
 	}
 
+	// 자재 발주 등록 + 발주 상세 등록
+	@Override
+	public boolean insertMatOrders(MaterialOrderVO vo) {
+		materialsMapper.insertMatOrders(vo);
+		
+		int result = 0;
+		for(int i = 0; i < vo.getMatOrderDetailVO().size(); i++) {
+			MaterialOrderDetailVO dvo = vo.getMatOrderDetailVO().get(i);
+			
+			dvo.setMatOrdersCode(vo.getMatOrdersCode());
+			result += materialsMapper.insertMatOrdersDetail(dvo);
+		}
+		
+		return result >= 1 ? true : false;
+	}
+	
 	// 자재 발주 관리
 	@Override
-	public List<MaterialOrderlVO> getMaterialOrders(MaterialOrderlVO vo) {
+	public List<MaterialOrderVO> getMaterialOrders(MaterialOrderVO vo) {
 		return materialsMapper.getMaterialOrders(vo);
 	}
 

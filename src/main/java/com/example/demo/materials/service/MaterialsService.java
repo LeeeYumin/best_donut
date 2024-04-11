@@ -3,7 +3,7 @@ package com.example.demo.materials.service;
 import java.util.List;
 
 import com.example.demo.materials.MaterialOrderDetailVO;
-import com.example.demo.materials.MaterialOrderlVO;
+import com.example.demo.materials.MaterialOrderVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
@@ -16,8 +16,11 @@ public interface MaterialsService {
 	
 	public int updateMatStatus(String[] matLotCodes);
 
+	// 자재 발주 등록
+	public boolean insertMatOrders(MaterialOrderVO vo);
+	
 	// 자재 발주 관리
-	public List<MaterialOrderlVO> getMaterialOrders(MaterialOrderlVO vo);
+	public List<MaterialOrderVO> getMaterialOrders(MaterialOrderVO vo);
 	
 	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes);
 
