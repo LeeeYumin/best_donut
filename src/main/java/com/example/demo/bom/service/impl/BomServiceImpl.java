@@ -19,4 +19,21 @@ public class BomServiceImpl implements BomService {
 		return bomMapper.getMatOrdersBom();
 	}
 
+	@Override
+	public List<BomVO> getProdBom() {
+		return bomMapper.getProdBom();
+	}
+
+	@Override
+	public List<BomVO> getListBom() {
+		return bomMapper.getListBom();
+	}
+
+	@Override
+	public List<BomVO> bomselList() {
+		return bomMapper.bomselList();
+	}
+
+
+
 }

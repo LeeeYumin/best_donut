@@ -44,8 +44,7 @@ public class QualityController {
 	
 	//자재 품질 관리 페이지 이동
 	@GetMapping("adminMatQuality")
-	public String adminMatQuality () {
-		
+	public String adminMatQuality () {		
 		return "quality/adminMatQuality";
 	}
 	
@@ -79,6 +78,12 @@ public class QualityController {
 	@ResponseBody
 	public List<Map<String, Object>> selectProQual(){
 		return qualityService.selectProQual();
+	}
+	
+	@GetMapping("ajax/addProQual")
+	@ResponseBody
+	public boolean addProQual(ProDetailVO pvo) {
+		return qualityService.addProQual(pvo);
 	}
 	
 	//완제품 품질 관리

@@ -57,9 +57,10 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	@Override
-	public int addProQual(ProDetailVO pvo) {
-		return 0;
+	public boolean addProQual(ProDetailVO pvo) {
+		return qualityMapper.addProQual(pvo);
 	}
+
 
 
 }

@@ -22,7 +22,7 @@ public interface QualityMapper {
 	public List<ProDetailVO> selectProQuality(); //완제품품질등록(조회. grid1)
 	public List<ProQltyVO> insertProQual(); //완제품품질입력(grid2)
 	public List<Map<String, Object>> selectProQual();
-	public int addProQual(ProDetailVO pvo); 
+	public boolean addProQual(ProDetailVO pvo);
 	
 
 }

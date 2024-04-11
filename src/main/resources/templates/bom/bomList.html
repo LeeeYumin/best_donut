@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+<head>
+<meta charset="UTF-8">
+<title>insertBOM.html</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">BOM / </span> BOM 목록
+		</h3>
+		<div class="prodBList">
+			<button id="prod1" type="button">글레이즈드</button>
+			<button id="prod2" type="button">딸기</button>
+			<button id="prod3" type="button">초코</button>
+			<button id="prod4" type="button">녹차</button>
+		</div>
+
+
+		<div id="grid"></div>
+
+		<script src="/js/bom/bomList.js"></script>
+
+		<div class="prodBList2">
+			<select id="selectbox" name="selectbox" onchange="">
+				<option value="" selected disabled>이전 버전 확인</option>
+				<option value="prod2">글레이즈드_ver.2</option>
+				<option value="prod1">글레이즈드_ver.1</option>
+				<option value="prod3">딸기_ver.1</option>
+				<option value="prod4">초코_ver.1</option>
+				<option value="prod5">녹차_ver.1</option>
+			</select>
+		</div>
+
+</body>
+</html>
+
+<style>
+.prodBList {
+	padding: 10px;
+}
+.prodBList2 {
+	text-align: right;
+	padding: 10px;
+}
+
+</style>
