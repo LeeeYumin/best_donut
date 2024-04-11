@@ -63,6 +63,49 @@ const grid = new tui.Grid({
   ]
 });
 
+const grid2 = new tui.Grid({
+  el : document.getElementById('grid2'),
+  scrollX : false,
+  scrollY : true,
+  columns : [
+    // {
+    //   header : '연번',
+    //   name : '',
+    //   align : "center",
+    // },
+    {
+      header : '자재명',
+      name : 'matName',
+      align : "center",
+    },
+    {
+      header : '자재코드',
+      name : 'matCode',
+      align : "center",
+    },
+    {
+      header : '단가',
+      name : 'unitPrice',
+      align : "center",
+    },
+    {
+      header : '단위',
+      name : 'unit',
+      align : "center",
+    },
+    {
+      header : '소요수량',
+      name : 'needCnt',
+      align : "center",
+    },
+    {
+      header : '공정명',
+      name : 'procName',
+      align : "center",
+    }
+  ]
+});
+
 async function getListBom(){
   await fetch("ajax/bomList")
   .then(res => res.json())
@@ -80,7 +123,7 @@ async function getSelListBom(){
   .then(res => res.json())
   .then(res => {
     console.log(res);
-    grid.resetData(res);
+    grid2.resetData(res);
   })
 };
 
