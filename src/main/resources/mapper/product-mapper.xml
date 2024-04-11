@@ -34,10 +34,10 @@
 		                           ON o.orders_code = d.orders_code
 		     WHERE 1=1
 		     <if test="dueStartDate != null">
-		     	AND o.due_date <![CDATA[ <= ]]> #{dueStartDate}
+		     	AND o.due_date <![CDATA[ >= ]]> #{dueStartDate}
 		     </if>
 		     <if test="dueEndDate != null">
-			 	AND o.due_date <![CDATA[ >= ]]> #{dueEndDate}
+			 	AND o.due_date <![CDATA[ <= ]]> #{dueEndDate}
 			 </if>
 		     GROUP BY d.product_code
 		    )
@@ -46,7 +46,7 @@
 		       , p.unit_price
 		       , p.stock_cnt
 		       , p.safe_stock_cnt
-		       , NVL(t.cnt, '0') cnt
+		       , NVL(t.cnt, '0') total_orders_cnt
 		  FROM t RIGHT OUTER JOIN product p
 		           ON t.product_code = p.product_code
 		 ORDER BY 1

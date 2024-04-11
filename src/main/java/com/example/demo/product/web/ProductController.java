@@ -25,7 +25,7 @@ public class ProductController {
 	// 제품목록조회
 	@GetMapping("ajax/getReqProd")
 	@ResponseBody
-	public List<ProductVO> getReqProd(ProductVO vo) {
-		return productService.getReqProd(vo);
+	public List<ProductVO> getReqProd(String dueStartDate, String dueEndDate) {
+		return productService.getReqProd(dueStartDate, dueEndDate);
 	}
 }

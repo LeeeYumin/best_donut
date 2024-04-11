@@ -82,10 +82,6 @@ const grid1 = new tui.Grid({
 			align : 'center',
 		},
 	],
-	pageOptions: {
-        useClient: true,
-        perPage: 5
-      }
 })
 
 

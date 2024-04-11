@@ -20,8 +20,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<ProductVO> getReqProd(ProductVO vo) {
-		return productMapper.getReqProd(vo);
+	public List<ProductVO> getReqProd(String dueStartDate, String dueEndDate) {
+		return productMapper.getReqProd(dueStartDate, dueEndDate);
 	}
 
 }
