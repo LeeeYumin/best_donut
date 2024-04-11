@@ -40,10 +40,10 @@ const grid1 = new tui.Grid({
 			}
 		}, 
 		{
-      header : '주문제품',
-      name : 'cntStr',
-      align : 'center',
-    }, 
+		header : '주문제품',
+		name : 'cntStr',
+		align : 'center',
+		}, 
 		{
 			header : '총주문금액',
 			name : "totalOrdersPrice",
@@ -60,16 +60,16 @@ const grid1 = new tui.Grid({
 			sortable: true,	
 			formatter : 'listItemText',
 			editor: {
-        type: 'text',
-        options: {
-          listItems: [
-            { text: '미확인', value: 'OP1' },
-            { text: '확인', value: 'OP2' },
-            { text: '생산요청', value: 'OP3' },
-            { text: '납품완료', value: 'OP4' },
-          ],
-        }
-      }
+				type: 'text',
+				options: {
+				listItems: [
+					{ text: '미확인', value: 'OP1' },
+					{ text: '확인', value: 'OP2' },
+					{ text: '생산요청', value: 'OP3' },
+					{ text: '납품완료', value: 'OP4' },
+				],
+				}
+			}
 		}, 
 		{
 			header : '담당자명',
@@ -81,7 +81,11 @@ const grid1 = new tui.Grid({
 			name : 'companyName',
 			align : 'center',
 		},
-	]
+	],
+	pageOptions: {
+        useClient: true,
+        perPage: 5
+      }
 })
 
 

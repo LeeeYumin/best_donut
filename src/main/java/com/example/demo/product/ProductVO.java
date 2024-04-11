@@ -1,5 +1,7 @@
 package com.example.demo.product;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -12,9 +14,9 @@ public class ProductVO {
 	
 	private Integer defaultProd = 1400;		// 기본생산량
 	private Integer totalOrdersCnt;			// 총주문수량
+	private Integer afterOutCnt;			// 납품후재고량
+	private Integer reqCnt;					// 생산요청수량
 	
-	// 납품후재고량
-	private Integer afterOutCnt;			
-	// 생산요청수량
-	private Integer reqCnt;		
+	private Date dueStartDate;				// 납기검색시작일
+	private Date dueEndDate;				// 납기검색종료일
 }

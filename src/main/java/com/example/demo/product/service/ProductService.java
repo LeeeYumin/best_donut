@@ -7,5 +7,5 @@ import com.example.demo.product.ProductVO;
 public interface ProductService {
 
 	public List<ProductVO> getProduct();
-
+	public List<ProductVO> getReqProd(ProductVO vo);
 }

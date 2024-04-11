@@ -10,4 +10,5 @@ import com.example.demo.product.ProductVO;
 public interface ProductMapper {
 	
 	public List<ProductVO> getProduct();
+	public List<ProductVO> getReqProd(ProductVO vo);
 }

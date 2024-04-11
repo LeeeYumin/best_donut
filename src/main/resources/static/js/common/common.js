@@ -24,8 +24,8 @@ function dateFormat(date) {
 	return dateStr;
 }
 
-// week => yyyy-MM-dd 변환 함수
-function weekFormat(week) {
+// week => date(yyyy-MM-dd) 변환함수
+function getDateFromWeek(week) {
 
 	const y = parseInt(week.substring(0, 4));
 	const w = parseInt(week.substring(6, 8));
@@ -45,4 +45,15 @@ function weekFormat(week) {
 	weekEnd.setDate(weekStart.getDate() + 6)
 
 	return {weekStart, weekEnd};
+}
+
+// date => week(yyyy-w01) 변환함수
+function getWeekFromDate(dt)
+{
+    dt.setHours(0,0,0,0);
+    dt.setDate(dt.getDate() + 3 - (dt.getDay() + 6) % 7);
+    const week1 = new Date(dt.getFullYear(), 0, 4);
+    const weekNumber = 1 + Math.round(((dt.getTime() - week1.getTime())/ 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+ 
+    return `${dt.getFullYear()}-W${weekNumber}`;
 }

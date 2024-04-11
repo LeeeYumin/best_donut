@@ -19,4 +19,9 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.getProduct();
 	}
 
+	@Override
+	public List<ProductVO> getReqProd(ProductVO vo) {
+		return productMapper.getReqProd(vo);
+	}
+
 }
