@@ -118,3 +118,5 @@ async function getListBom(){
 getListBom();
 
 //selectbox 선택시 해당 상품 출력
+
+
