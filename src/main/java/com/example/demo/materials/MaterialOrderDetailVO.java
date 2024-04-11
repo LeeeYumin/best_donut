@@ -10,13 +10,18 @@ import lombok.Data;
 public class MaterialOrderDetailVO {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date ordersDate;
-	private String companyName;
+	private String companyCode;
+	private String matCode;
 	private String ownerName;
-	private String matName;
 	private Integer ordersCnt;
 	private Integer unitPrice;	
 	private Integer matOrdersPrice;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date dueDate;
 	private String usersName;
+	private String matOrdersCode;
+	
+	// 추가 칼럼
+	private String matName;
+	private String companyName;
 }

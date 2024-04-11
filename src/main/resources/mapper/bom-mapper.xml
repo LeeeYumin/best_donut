@@ -4,14 +4,18 @@
 <mapper namespace="com.example.demo.bom.mapper.BomMapper">
    	<select id="getMatOrdersBom" resultType="BomVO">
    		SELECT b.bom_code,
-               b.product_code,
+   		       b.product_code,
+               p.product_name,
                d.mat_code,
-           	   m.mat_name,
+               m.mat_name,
                d.need_cnt,
                d.unit,
                m.unit_price
-    	  FROM bom b
-       	  JOIN bom_detail d ON b.bom_code = d.bom_code
-      	  JOIN mat m ON m.mat_code = d.mat_code
+     	  FROM bom b
+       		JOIN bom_detail d ON b.bom_code = d.bom_code
+      		JOIN mat m ON m.mat_code = d.mat_code
+      		JOIN product p ON p.product_code=b.product_code
+      	 WHERE b.apply_status = 'BAY'
+	 ORDER BY  b.bom_code,d.mat_code
    	</select>
 </mapper>

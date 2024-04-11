@@ -5,16 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.materials.MaterialOrderDetailVO;
-import com.example.demo.materials.MaterialOrderlVO;
+import com.example.demo.materials.MaterialOrderVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
 import com.example.demo.materials.service.MaterialsService;
+import com.example.demo.orders.OrdersVO;
 
 @Controller
 public class MaterialsController {
@@ -56,7 +58,11 @@ public class MaterialsController {
 	}
 	
 	// 자재 발주 등록
-	
+	@PostMapping("/ajax/matOrdersInsert")
+	@ResponseBody
+	public boolean insertOrders(@RequestBody MaterialOrderVO vo) {
+		return materialsService.insertMatOrders(vo);
+	}
 
 	// 자재 발주 목록 페이지 이동
 	@RequestMapping("/materials/ordersList")
@@ -67,7 +73,7 @@ public class MaterialsController {
 	// 자재 발주 목록 조회(ajax)
 	@RequestMapping("/ajax/materialorders")
 	@ResponseBody
-	public List<MaterialOrderlVO> getMaterialOrders(@RequestBody MaterialOrderlVO vo) {
+	public List<MaterialOrderVO> getMaterialOrders(@RequestBody MaterialOrderVO vo) {
 		return materialsService.getMaterialOrders(vo);
 	}
 
