@@ -22,6 +22,15 @@ public class ProdInsVO {
 	private String prodInstructStatus;
 		
 	//생산지시 상세
-	List<ProdInsDeVO> dvo;
+	List<ProdInsDeVO> pidvo;
+	
+	//설비상태
+	private String eqmCode;
+	private String eqmName;
+	private String eqmStatus;
+	private String oprStatus;
+	
+	//생산계획 상세
+	List<ProdPlanDeVO> pldvo;
 
 }
