@@ -14,4 +14,41 @@
        	  JOIN bom_detail d ON b.bom_code = d.bom_code
       	  JOIN mat m ON m.mat_code = d.mat_code
    	</select>
+   	
+   	<!-- BOM관리 품목확인 -->
+   	<select id="getProdBom" resultType="BomVO">
+		SELECT b.bom_code
+				, p.product_code
+		        , p.product_name
+		        , b.apply_status
+		        , b.users_code
+		        , b.write_date
+		    FROM bom b JOIN product p
+		      ON b.product_code = p.product_code
+   	</select>
+   	
+   	<!-- BOM목록 -->
+   	<select id="getListBom" resultType="BomVO">
+		SELECT b.bom_code
+				, p.product_code
+		        , p.product_name
+		        , b.apply_status
+		        , b.users_code
+		        , b.write_date
+		    FROM bom b JOIN product p
+		      ON b.product_code = p.product_code
+   	</select>
+   	
+   	<!-- BOM목록 / 공정보기  -->
+   <select id="bomselList" resultType="BomVO">
+		SELECT m.mat_name
+		    , d.mat_code
+		    , m.unit_price
+		    , m.unit
+		    , d.need_cnt
+		    , d.proc_name
+		FROM mat m JOIN bom_detail d
+		  ON m.mat_code = d.mat_code
+		  order by BOM_CODE
+   </select>
 </mapper>

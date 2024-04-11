@@ -154,7 +154,6 @@ SELECT d.PRODUCT_CODE
 	UPDATE product_detail
 	   SET WAREHOUSING_CNT = WAREHOUSING_CNT + #{goodCnt}
 	 WHERE PRODUCT_LOT_CODE = #{productLotCode}
-
 </update>
 
 
