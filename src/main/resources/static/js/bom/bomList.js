@@ -118,13 +118,5 @@ async function getListBom(){
 getListBom();
 
 //selectbox 선택시 해당 상품 출력
-async function getSelListBom(){
-  await fetch("ajax/bomselList")
-  .then(res => res.json())
-  .then(res => {
-    console.log(res);
-    grid2.resetData(res);
-  })
-};
 
-getSelListBom();
+
