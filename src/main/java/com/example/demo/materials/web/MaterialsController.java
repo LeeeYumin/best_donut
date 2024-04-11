@@ -61,6 +61,7 @@ public class MaterialsController {
 	@PostMapping("/ajax/matOrdersInsert")
 	@ResponseBody
 	public boolean insertOrders(@RequestBody MaterialOrderVO vo) {
+		System.out.println(">>>>>>>>>>>>>>>>>>>"+vo+"");
 		return materialsService.insertMatOrders(vo);
 	}
 

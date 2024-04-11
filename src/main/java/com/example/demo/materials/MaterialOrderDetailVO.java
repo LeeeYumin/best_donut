@@ -10,7 +10,7 @@ import lombok.Data;
 public class MaterialOrderDetailVO {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date ordersDate;
-	private String companyCode;
+	private String mainCompanyCode;
 	private String matCode;
 	private String ownerName;
 	private Integer ordersCnt;

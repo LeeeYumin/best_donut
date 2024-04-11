@@ -25,5 +25,5 @@ public class MaterialOrderVO {
 	private String ordersStatus;
 	
 	// 발주 등록용
-	private List<MaterialOrderDetailVO> MatOrderDetailVO;
+	private List<MaterialOrderDetailVO> matOrderDetailVO;
 }

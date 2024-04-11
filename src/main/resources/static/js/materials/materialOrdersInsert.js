@@ -447,23 +447,23 @@ matOrderList.on('afterChange', ev => {
 document.getElementById('orderBtn').addEventListener('click', insertMatOrders)
 
 // 자재 발주 등록
-function insertMatOrders() {
+async function insertMatOrders() {
     matOrderList.blur();
 
     let prodPlanCode = prodPlanList.getValue(prodPlanList.getFocusedCell().rowKey, 'prodPlanCode');
     let matTotalOrdersPrice = matOrderList.getSummaryValues('matOrdersPrice').sum;
-    let matOrderData = matOrderList.getData();
+    let matOrderDetailVO = matOrderList.getData();
 
     console.log('prodPlanCode : ', prodPlanCode);
     console.log('matTotalOrdersPrice : ', matTotalOrdersPrice);
-    console.log('matOrderData : ', matOrderData);
+    console.log('matOrderDetail : ', matOrderDetailVO);
 
-    const param = { prodPlanCode, matTotalOrdersPrice, matOrderData }
+    const param = { prodPlanCode, matTotalOrdersPrice, matOrderDetailVO }
 
     console.log(param);
 
-    let result = 0;
-    fetch('/ajax/matOrdersInsert', {
+    let result = false;
+    await fetch('/ajax/matOrdersInsert', {
         method: 'post',
         headers: jsonHeaders,
         body: JSON.stringify(param)
@@ -483,6 +483,7 @@ function insertMatOrders() {
             showConfirmButton: false,
             timer: 1500
         });
+        
     } else {
         Swal.fire({
             position: "center",
