@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.orders.OrdersVO;
+import com.example.demo.orders.ProdReqDetailVO;
 import com.example.demo.orders.ProdReqVO;
 import com.example.demo.orders.service.OrdersService;
 import com.example.demo.product.service.ProductService;
@@ -103,6 +104,20 @@ public class OrdersController {
 	@ResponseBody
 	public List<OrdersDetailVO> getOrdersDetail(String ordersCode) {
 		return ordersService.getOrdersDetail(ordersCode);
+	}
+	
+	// 생산요청조회
+	@PostMapping("ajax/getProdReq")
+	@ResponseBody
+	public List<ProdReqVO> getProdReq(@RequestBody ProdReqVO vo){
+		return ordersService.getProdReq(vo);
+	}
+	
+	// 생산요청상세조회
+	@GetMapping("ajax/getProdReqDet")
+	@ResponseBody
+	public List<ProdReqDetailVO> getProdReqDet(String prodReqCode){
+		return ordersService.getProdReqDet(prodReqCode);
 	}
 	
 	

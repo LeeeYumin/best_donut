@@ -9,4 +9,6 @@ public class ProdReqDetailVO {
 	private int reqCnt;
 	private String prodReqCode;
 	private String productCode;
+	
+	private String productName;
 }
