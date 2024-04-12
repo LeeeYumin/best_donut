@@ -33,13 +33,11 @@ public class QualityController {
 		return qualityService.getMatInfo(matLotCode, inoutDate);
 	}
 	
-	
 	//자재 품질 등록 버튼
 	@PostMapping("ajax/insertMatQ")
 	@ResponseBody
 	public boolean insertMatQuality(@RequestBody List<MatQltyCheckVO> vo) {
-		return qualityService.insertMatQuality(vo);
-		
+		return qualityService.insertMatQuality(vo);		
 	}
 	
 	//자재 품질 관리 페이지 이동

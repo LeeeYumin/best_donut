@@ -32,18 +32,27 @@
 </insert>
 
 <!-- 자재품질등록 / 등록 버튼 클릭시 목록에서 사라짐 + 재고수량 업데이트 -->
-<update id="addMatQual" parameterType="MatQltyCheckVO">
+<!-- <update id="addMatQual" parameterType="MatQltyCheckVO">
 	 UPDATE mat
 		SET STOCK_CNT = STOCK_CNT + #{goodCnt}
 	  WHERE mat_code = #{matCode}
-</update>
+</update> -->
 
-<update id="addMatQual2" parameterType="MatQltyCheckVO">
+<!-- 자재품질등록 / 입출수량 업데이트 -->
+<!--  <update id="addMatQual2" parameterType="MatQltyCheckVO">
 	UPDATE mat_inout_history
 	   SET INOUT_CNT = INOUT_CNT + #{goodCnt}
 	 WHERE mat_inout_code = #{matInoutCode}	
-</update>
+</update>-->
 
+<!-- 자재품질등록 / mat_detail 검사완료수량, 잔고수량, 자재검사상태(MI2검사완료) update -->
+<update id="addMatQual3" parameterType="MatQltyCheckVO">
+	UPDATE mat_detail
+	SET CHECK_DONE_CNT = #{goodCnt}
+		, REMAIN_CNT = #{goodCnt}
+		, QLTY_CHECK_STATUS = 'MI2'
+	WHERE MAT_LOT_CODE = #{matLotCode}
+</update>
 
 <!-- 자재품질등록 / if : 자재LOT번호, 입고날짜 검색 -->
 <select id="getMatInfo" resultType="Map">

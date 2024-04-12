@@ -22,15 +22,16 @@ public class QualityServiceImpl implements QualityService {
 	
 	@Override
 	public boolean insertMatQuality(List<MatQltyCheckVO> list) {
-		for(MatQltyCheckVO vo : list) {
-			qualityMapper.insertMatQuality(vo);			
+		
+		int check = 0;
+		for(MatQltyCheckVO vo : list) {		
+			check += qualityMapper.insertMatQuality(vo);			
 			//등록 클릭하면 재고 수량에 update
-			qualityMapper.addMatQual(vo);
-			qualityMapper.addMatQual2(vo);
+			check += qualityMapper.addMatQual3(vo);	
 		}
-		return true;
+		return check > 0 ? true : false;
 	}
-
+	
 	@Override
 	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate) {
 		return qualityMapper.getMatInfo(matLotCode, inoutDate); //자재품질등록
@@ -60,6 +61,9 @@ public class QualityServiceImpl implements QualityService {
 	public boolean addProQual(ProDetailVO pvo) {
 		return qualityMapper.addProQual(pvo);
 	}
+
+
+
 
 
 
