@@ -14,4 +14,6 @@ public interface NotOprService {
 	public List<UsersVO> getUsers();
 	public List<EqmVO> getEqm();
 	
+	public NotOprVO getNotOprInfo(String notOprCode);
+	
 }

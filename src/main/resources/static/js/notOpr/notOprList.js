@@ -127,3 +127,10 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('status0').checked = true;
 	getNotOprList();
 });
+
+
+// 단건조회 이동
+grid.on('dblclick', (event) => {
+	let notOprCode = grid.getValue(event.rowKey, 'notOprCode')
+  location.href = 'notoprinfo/' + notOprCode
+})

@@ -91,5 +91,23 @@
 		WHERE EQM_STATUS = 'ES1' OR EQM_STATUS = 'ES2'
 		ORDER BY 1
 	</select>
+	
+	
+	<!-- 단건조회 -->
+	<select id="getNotOprInfo" resultType="NotOprVO">
+		SELECT n.NOT_OPR_CODE
+	          , n.NOT_OPR_SEP
+	          , n.BEGIN_DATE
+	          , n.END_DATE
+	          , n.CONTENTS_CONTENTS
+	          , n.USERS_CODE
+	          , n.EQM_CODE
+	          , e.EQM_NAME
+	          , u.USERS_NAME
+		FROM NOT_OPR n
+		JOIN EQM e ON n.EQM_CODE = e.EQM_CODE
+		JOIN USERS u ON n.USERS_CODE = u.USERS_CODE
+		WHERE n.NOT_OPR_CODE = #{notOprCode}
+	</select>
 
 </mapper>

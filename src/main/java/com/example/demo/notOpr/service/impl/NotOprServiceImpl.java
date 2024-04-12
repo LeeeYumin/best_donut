@@ -36,4 +36,9 @@ public class NotOprServiceImpl implements NotOprService{
 		return notOprmapper.getEqm();
 	}
 
+	@Override
+	public NotOprVO getNotOprInfo(String notOprCode) {
+		return notOprmapper.getNotOprInfo(notOprCode);
+	}
+
 }
