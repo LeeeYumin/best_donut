@@ -29,9 +29,8 @@ public interface MaterialsMapper {
 	
 	public List<MaterialOrderDetailVO> getMaterialOrderDetail(String[] matOrderCodes);
 	
-	public int updateMatOrderStatus();
-	
-	public int updateMatOrdersDetailStatus();
+	// 발주 취소 못하는 상태로 상태 변경
+	public void updateMatOrderStatus();
 
 	public int updateMatOrderCancel(String[] matOrderCodes);
 	

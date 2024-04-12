@@ -16,6 +16,7 @@ public class MaterialOrderVO {
 	private Date ordersDate;
 	private Integer matTotalOrdersPrice;
 	private String totalOrdersStatus;
+	private String companyCode;
 	
 	// 조건 검색용 컬럼
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -25,5 +26,5 @@ public class MaterialOrderVO {
 	private String ordersStatus;
 	
 	// 발주 등록용
-	private List<MaterialOrderDetailVO> MatOrderDetailVO;
+	private List<MaterialOrderDetailVO> matOrderDetailVO;
 }

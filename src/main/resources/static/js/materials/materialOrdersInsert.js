@@ -247,6 +247,15 @@ const matStockList = new tui.Grid({
         {
             header: '단위',
             name: 'unit',
+            width: 50,
+        },
+        {
+            header: '발주 진행 중 수량',
+            name: 'orderedMat',
+            align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            },
         },
         {
             header: '소요량',
@@ -257,7 +266,7 @@ const matStockList = new tui.Grid({
             },
         },
         {
-            header: '현재고-소요량',
+            header: '현재고+발주수량-소요량',
             name: 'differenceStockReq',
             align: 'center',
             formatter: function (cnt) {
@@ -326,7 +335,7 @@ function requireMatCal() {
         matStockList.setValue(i, 'requireMat', requireMatSum)
 
         // 현재고량과 예상 소요량 차이
-        let diffStockReq = matStockList.getColumnValues('stockCnt')[i] - matStockList.getColumnValues('requireMat')[i];
+        let diffStockReq = matStockList.getColumnValues('stockCnt')[i] + matStockList.getColumnValues('orderedMat')[i] - matStockList.getColumnValues('requireMat')[i];
         matStockList.setValue(i, 'differenceStockReq', diffStockReq)
     }
 }
@@ -444,26 +453,54 @@ matOrderList.on('afterChange', ev => {
 })
 
 // 발주 버튼 이벤트
-document.getElementById('orderBtn').addEventListener('click', insertMatOrders)
+document.getElementById('orderBtn').addEventListener('click', checkOrdersCnt)
+
+// 수량 입력 체크
+function checkOrdersCnt() {
+    matOrderList.blur();
+
+    let matOrdersData = matOrderList.getData()
+    let result = 1;
+
+    for (let i = 0; i < matOrdersData.length; i++) {
+        // 발주 수량이 빈값이거나 0인 자재 체크
+        if (Number(matOrdersData[i].ordersCnt) == 0) {
+            alert(matOrdersData[i].matName + ' 수량을 확인해주세요.');
+            matOrderList.focusAt(i, 3);
+            result = 0;
+            break;
+        // 발주 수량이 숫자인지 체크
+        } else if (isNaN(Number(matOrdersData[i].ordersCnt))) {
+            alert(matOrdersData[i].matName + ' 수량을 숫자로 입력해주세요');
+            matOrderList.focusAt(i, 3);
+            result = 0;
+            break;
+        }
+    }
+
+    if (result) {
+        insertMatOrders()
+    }
+}
 
 // 자재 발주 등록
-function insertMatOrders() {
+async function insertMatOrders() {
     matOrderList.blur();
 
     let prodPlanCode = prodPlanList.getValue(prodPlanList.getFocusedCell().rowKey, 'prodPlanCode');
     let matTotalOrdersPrice = matOrderList.getSummaryValues('matOrdersPrice').sum;
-    let matOrderData = matOrderList.getData();
+    let matOrderDetailVO = matOrderList.getData();
 
     console.log('prodPlanCode : ', prodPlanCode);
     console.log('matTotalOrdersPrice : ', matTotalOrdersPrice);
-    console.log('matOrderData : ', matOrderData);
+    console.log('matOrderDetail : ', matOrderDetailVO);
 
-    const param = { prodPlanCode, matTotalOrdersPrice, matOrderData }
+    const param = { prodPlanCode, matTotalOrdersPrice, matOrderDetailVO }
 
     console.log(param);
 
-    let result = 0;
-    fetch('/ajax/matOrdersInsert', {
+    let result = false;
+    await fetch('/ajax/matOrdersInsert', {
         method: 'post',
         headers: jsonHeaders,
         body: JSON.stringify(param)
@@ -483,6 +520,7 @@ function insertMatOrders() {
             showConfirmButton: false,
             timer: 1500
         });
+
     } else {
         Swal.fire({
             position: "center",

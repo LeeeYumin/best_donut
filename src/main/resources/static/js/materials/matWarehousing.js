@@ -30,7 +30,21 @@ const matWarehousing = new tui.Grid({
             align: 'center',
             formatter: function (cnt) {
 				return priceFormat(cnt.value);
-			}
+			},
+            editor:{
+                type: 'text'
+            }
+        },
+        {
+            header: '유통기한',
+            name: 'expDate',
+            align: 'center',
+            editor:  {
+                type: 'datePicker',
+                options: {
+                  format: 'yyyy-MM-dd'
+                }
+              }
         },
         {
             header: '발주일자',
