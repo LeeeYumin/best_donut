@@ -61,6 +61,8 @@ document.getElementById('matName').addEventListener('keyup', (e) => {
 		getMaterialsList();
 	}
 })
+
+// 초기화 버튼
 document.getElementById('resetBtn').addEventListener('click', () => {
 	document.getElementById('matName').value = '';
 	getMaterialsList();
@@ -236,6 +238,7 @@ function disposeMat(matLotCodes) {
 		.then(res => res.json())
 		.then(res => {
 			// ajax로 불러온 데이터 그리드에 넣음
+			getMaterialsList();
 			getMaterialDetailsList(matCode);
 			console.log(res);
 		})

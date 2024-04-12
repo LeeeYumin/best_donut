@@ -9,7 +9,8 @@
                safe_stock_cnt,
                main_company_code,
                unit_price,
-               unit
+               unit,
+               NVL((SELECT FIND_ORDERED_MAT_CNT(mat_code) FROM dual),0) ordered_mat
           FROM mat
          WHERE 1=1
          
@@ -39,17 +40,38 @@
 	     WHERE d.mat_code = #{matCode} 
    	</select>
    
-   <!-- 폐기 처리 -> 재고도 업데이트 해줘야 함(나중에 꼭 하기 ★) -->
-   	<update id="updateMatStatus" parameterType="String">
-   		UPDATE mat_detail
-		   SET mat_status = 'MSN'
-		   
-		<if test="matLotCodes != null and matLotCodes.length > 0">
-         WHERE mat_lot_code IN
-        	<foreach collection="matLotCodes" item="matLotCode" open="(" close=")" separator=",">
+   <!-- 폐기 처리 -> 재고도 업데이트 -->
+   	<update id="updateMatStatus">
+   		DECLARE
+   			v_remain_cnt Number;
+   			v_mat_code VARCHAR2(100);
+   		BEGIN 
+   		<!-- 자재 폐기 수량 조회 -->
+   		SELECT sum(remain_cnt), min(mat_code)
+   		INTO v_remain_cnt, v_mat_code
+   		FROM mat_detail
+   		WHERE mat_lot_code IN
+        	<foreach collection="matLotCodes" item="matLotCode" open="(" close=");" separator=",">
          		#{matLotCode}
         	</foreach>
-      	</if>
+   		<!-- 자재 자재 재고 업데이트 -->
+   		UPDATE mat
+   		SET stock_cnt = stock_cnt - v_remain_cnt
+   		WHERE mat_code = v_mat_code;
+   		
+   		<!-- 자재 폐기 반출 -->
+   		
+   		
+   		
+   		
+   		<!-- 자재 폐기 상태 업데이트 -->
+   		UPDATE mat_detail
+		   SET mat_status = 'MSN'
+         WHERE mat_lot_code IN
+        	<foreach collection="matLotCodes" item="matLotCode" open="(" close=");" separator=",">
+         		#{matLotCode}
+        	</foreach>
+      	END;
    	</update>
    	
    	<!-- 자재 발주 등록 -->
@@ -61,13 +83,15 @@
 			(
 				mat_orders_code,
 			    prod_plan_code,
-			    mat_total_orders_price
+			    mat_total_orders_price,
+			    company_code
 			)
 		VALUES 
 			(
 				 #{matOrdersCode},
 			     #{prodPlanCode},
-			     #{matTotalOrdersPrice}
+			     #{matTotalOrdersPrice},
+			     #{companyCode}
 			)	
    	</insert>
 	
@@ -118,52 +142,33 @@
 		
 	<!-- 발주 상세 목록 -->
    	<select id="getMaterialOrderDetail" resultType="MaterialOrderDetailVO" parameterType="String">
-		WITH s AS (SELECT m.mat_code,
-                          m.mat_name,
-                          o.orders_date + m.lead_time due_date
-                     FROM mat_orders o 
-                     JOIN mat_orders_detail d ON o.mat_orders_code=d.mat_orders_code
-                     JOIN mat m ON m.mat_code=d.mat_code)
-        
-		SELECT DISTINCT o.orders_date,
-                        c.company_name,
-                        c.owner_name,
-                        s.mat_name,
-                        d.orders_cnt,
-                        md.unit_price,
-                        d.mat_orders_price,
-                        s.due_date,
-                        (SELECT FIND_USERSNAME(o.users_code) FROM dual) users_name
+		SELECT o.orders_date,
+               c.company_name,
+               c.owner_name,
+               m.mat_name,
+               d.orders_cnt,
+               m.unit_price,
+               d.mat_orders_price,
+               o.orders_date + m.lead_time due_date,
+               (SELECT FIND_USERSNAME(o.users_code) FROM dual) users_name
                         
-	  			   FROM mat_orders_detail d
-	  			   JOIN mat_orders o  ON o.mat_orders_code = d.mat_orders_code
-			  	   JOIN s ON s.mat_code = d.mat_code
-			  	   JOIN mat_detail md ON md.mat_code = d.mat_code
-			  	   JOIN company c ON c.company_code = d.company_code
+   		  FROM mat_orders_detail d
+	      	JOIN mat_orders o  ON o.mat_orders_code = d.mat_orders_code
+	        JOIN mat m ON m.mat_code = d.mat_code
+	        JOIN company c ON c.company_code = d.company_code
 			  	   
-               	<if	test="matOrderCodes != null and matOrderCodes.length > 0">
-				  WHERE d.mat_orders_code IN
-				<foreach collection="matOrderCodes" item="matOrdersCode" open="(" close=")" separator=",">
+        <if	test="matOrderCodes != null and matOrderCodes.length > 0">
+		 WHERE d.mat_orders_code IN
+			<foreach collection="matOrderCodes" item="matOrdersCode" open="(" close=")" separator=",">
 				#{matOrdersCode}
-				</foreach>
-				</if>
+			</foreach>
+		</if>
+  	</select>
+   	
+   	<!-- 발주 취소 못하는 상태로 스케줄러&프로시져로 업데이트 발주테이블 -->
+   	<select id="updateMatOrderStatus" parameterType="String" statementType="CALLABLE">
+		CALL update_orders_status()
    	</select>
-   	
-   	<!-- 발주 취소 못하는 상태로 스케줄러로 변경 발주테이블 -->
-   	<update id="updateMatOrderStatus" parameterType="String">
-   		UPDATE mat_orders
-		   SET total_orders_status = 'OSN'
-		 WHERE (sysdate - orders_date) * 24 >= 1
-		   AND total_orders_status = 'OSP'
-   	</update>
-   	
-   	<!-- 발주 취소 못하는 상태로 스케줄러로 변경 발주상세테이블 -->
-   	<update id="updateMatOrdersDetailStatus" parameterType="String">
-   		UPDATE mat_orders
-		   SET total_orders_status = 'OSN'
-		 WHERE (sysdate - orders_date) * 24 >= 1
-		   AND total_orders_status = 'OSP'
-   	</update>
    	
    	<!-- 발주 취소 상태 변경 -->
    	<update id="updateMatOrderCancel" parameterType="String">
@@ -181,6 +186,7 @@
    	<!-- 입고 목록 테이블 출력 -->
    	<select id="getWarehousingList" resultType="MaterialWarehousingVO">
    		SELECT d.mat_orders_code,
+   			   d.mat_orders_detail_code,
        		   c.company_name,
        		   m.mat_name,
        		   d.orders_cnt,

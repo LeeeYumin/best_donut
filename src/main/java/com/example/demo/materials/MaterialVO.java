@@ -11,4 +11,7 @@ public class MaterialVO {
 	private String mainCompanyCode;
 	private Integer unitPrice;
 	private String unit;
+	
+	// 발주 등록 참고용 칼럼
+	private Integer orderedMat;
 }

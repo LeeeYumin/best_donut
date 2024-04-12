@@ -17,6 +17,11 @@ import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
 import com.example.demo.materials.service.MaterialsService;
 
+/**
+ * 자재 관리
+ * @author 이효진
+ *
+ */
 @Controller
 public class MaterialsController {
 
@@ -96,7 +101,7 @@ public class MaterialsController {
 		return "materials/materialWarehousing"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
 	
-	// 자재 입고 등록 테이블 출력
+	// 자재 입고 대기건 조회
 	@RequestMapping("/ajax/materialwarehousing")
 	@ResponseBody
 	public List<MaterialWarehousingVO> getWarehousingList() {

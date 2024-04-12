@@ -1,6 +1,9 @@
 package com.example.demo.materials.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,14 +41,39 @@ public class MaterialsServiceImpl implements MaterialsService {
 	// 자재 발주 등록 + 발주 상세 등록
 	@Override
 	public boolean insertMatOrders(MaterialOrderVO vo) {
-		materialsMapper.insertMatOrders(vo);
+		
+		Map<String,List<MaterialOrderDetailVO>> map = new HashMap<>();
+		List<MaterialOrderDetailVO> list = vo.getMatOrderDetailVO();
+		for(int i = 0; i < list.size(); i++) {
+			List<MaterialOrderDetailVO> orderlist = map.get(list.get(i).getMainCompanyCode());
+			// 같은 거래처 찾기
+			if(orderlist ==null){
+				// list 생성
+				orderlist = new ArrayList<MaterialOrderDetailVO>();
+				map.put(list.get(i).getMainCompanyCode(), orderlist);
+			}			
+			// 발주 내역 add
+			orderlist.add(list.get(i));
+		}
+		
+		// System.out.println(map);
+		//materialsMapper.insertMatOrders(vo);
 		
 		int result = 0;
-		for(int i = 0; i < vo.getMatOrderDetailVO().size(); i++) {
-			MaterialOrderDetailVO dvo = vo.getMatOrderDetailVO().get(i);
+	
+		// 거래처 수만큼 반복
+		for ( String key : map.keySet() ) {
+			// 발주서 헤더
+			vo.setCompanyCode(key);
+			materialsMapper.insertMatOrders(vo);
 			
-			dvo.setMatOrdersCode(vo.getMatOrdersCode());
-			result += materialsMapper.insertMatOrdersDetail(dvo);
+			List<MaterialOrderDetailVO> dlist = (List<MaterialOrderDetailVO>)map.get(key);
+			for(int i = 0; i < dlist.size(); i++) {
+				MaterialOrderDetailVO dvo = dlist.get(i);
+				
+				dvo.setMatOrdersCode(vo.getMatOrdersCode());
+				result += materialsMapper.insertMatOrdersDetail(dvo);
+			}
 		}
 		
 		return result >= 1 ? true : false;
@@ -62,14 +90,10 @@ public class MaterialsServiceImpl implements MaterialsService {
 		return materialsMapper.getMaterialOrderDetail(matOrderCodes);
 	}
 
+	// 발주 취소 못하는 상태로 상태 변경
 	@Override
-	public int updateMatOrderStatus() {
-		return materialsMapper.updateMatOrderStatus();
-	}
-
-	@Override
-	public int updateMatOrdersDetailStatus() {
-		return materialsMapper.updateMatOrdersDetailStatus();
+	public void updateMatOrderStatus() {
+		materialsMapper.updateMatOrderStatus();
 	}
 
 	@Override

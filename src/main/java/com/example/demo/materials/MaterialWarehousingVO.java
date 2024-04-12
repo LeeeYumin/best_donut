@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class MaterialWarehousingVO {
 	private String matOrdersCode;
+	private String matOrdersDetailCode;
 	private String companyName;
 	private String matName;
 	private Integer ordersCnt;
