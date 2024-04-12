@@ -204,9 +204,10 @@ grid.on('afterChange', event => {
   }
 })
 
-//체크하고 등록하면 목록에서 사라지고 재고에 수량 업데이트
+//체크하고 등록하면 목록에서 사라지고 재고에 수량, 상태 업데이트
 async function insertMat() {
   const checkedRows = grid.getCheckedRows()
+  console.log(checkedRows);
 
     await fetch("ajax/insertMatQ",{
       method : 'post',
@@ -216,6 +217,8 @@ async function insertMat() {
     .then (res => res.json())
     .then (res => {
       console.log(res);
+
     })
 }
 
+insertMat();

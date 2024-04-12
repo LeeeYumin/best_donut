@@ -24,4 +24,6 @@ public class MatQltyCheckVO {
 	private Integer inoutCnt;
 	private String matCode;
 	private String matInoutCode;
+	private Integer checkDoneCnt; //검사완료수량
+	private Integer remainCnt; //적합수량
 }
