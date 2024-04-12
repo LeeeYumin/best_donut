@@ -29,9 +29,9 @@ const matWarehousing = new tui.Grid({
             name: 'ordersCnt',
             align: 'center',
             formatter: function (cnt) {
-				return priceFormat(cnt.value);
-			},
-            editor:{
+                return priceFormat(cnt.value);
+            },
+            editor: {
                 type: 'text'
             }
         },
@@ -39,12 +39,12 @@ const matWarehousing = new tui.Grid({
             header: '유통기한',
             name: 'expDate',
             align: 'center',
-            editor:  {
+            editor: {
                 type: 'datePicker',
                 options: {
-                  format: 'yyyy-MM-dd'
+                    format: 'yyyy-MM-dd'
                 }
-              }
+            },
         },
         {
             header: '발주일자',
@@ -62,9 +62,9 @@ const matWarehousing = new tui.Grid({
 // 입고 예정 자재 목록 ajax
 function getMatWarehousingList() {
     fetch("/ajax/materialwarehousing")
-    .then(res => res.json())
-    .then(res => {
-        console.log(res);
-        matWarehousing.resetData(res);
-    })
+        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+            matWarehousing.resetData(res);
+        })
 }
