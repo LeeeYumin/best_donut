@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.production.ProcessVO;
 import com.example.demo.production.ProdInsDeVO;
 import com.example.demo.production.ProdInsVO;
 import com.example.demo.production.ProdPlanAllVO;
@@ -148,8 +149,14 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 			dvo.setProdInstructCode(vo.getProdInstructCode()); //생산지시코드
 			result = prodPlanMapper.insertProdInstructDetail(dvo);
 		}
+		//공정생성
+		ProcessVO pvo = new ProcessVO();
+		pvo.setProdInstructCode(vo.getProdInstructCode()); //생산지시코드
+		prodPlanMapper.insertProcDetail(pvo);
+		
 		return result;
 	}
+	
 	//+지시 등록하면서 => 계획의 미지시&지시수량 변경
 	@Override
 	public int updateAfterInstruct(List<ProdPlanDeVO> dvo) {

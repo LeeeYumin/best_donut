@@ -1,7 +1,7 @@
 getTodayIns();
+//getProcessInfo('PID00009');
 
 //생산지시 진행상태
-// 설비상태
   class InsStatus {
     constructor(props) {
         const el = document.createElement('div');
@@ -28,6 +28,34 @@ getTodayIns();
     }
     return result;
   }
+
+//생산지시 진행상태
+class ProcStatus {
+  constructor(props) {
+      const el = document.createElement('div');
+
+      this.el = el;
+      this.render(props);
+  }
+  render(props) {
+      this.el.innerText = procStatus(props.formattedValue);
+  }
+  getElement() {
+      return this.el;
+  }
+}
+
+function procStatus(value){
+  let result;
+  if(value == "CS1") {
+      result = "대기";
+  } else if(value == "CS2") {
+      result = "공정중";
+  } else if(value == "CS3") {
+      result = "공정완료";
+  }
+  return result;
+}
 
 /* < 당일 생산지시 > */
 const todayIns = new tui.Grid({
@@ -96,6 +124,11 @@ const todayInsD = new tui.Grid({
       name : 'prodCnt',
       align: 'center'
     },
+    {
+      header : '공정상태', //수정하기
+      name : 'procStatus',
+      align: 'center'
+    },
   ]
 });
 
@@ -110,3 +143,159 @@ async function getTodayIns(){
     todayInsD.resetData(res.prodInsDe);
   })
 };
+
+//==============================================================
+/* < 공정 > */
+
+const procInfo = new tui.Grid({
+  el : document.getElementById('procInfo'),
+  scrollX : false,
+  scrollY : false,
+  columns : [
+    {
+      header : 'NO',
+      name : 'serialNum',
+      align: 'center'
+    },
+    {
+      header : '공정명',
+      name : 'procName',
+      align: 'center'
+    }, 
+    {
+      header : '공정코드',
+      name : 'procDetailCode',
+      align: 'center'
+    },
+    {
+      header : '설비코드',
+      name : 'eqmCode',
+      align: 'center'
+    }, 
+    {
+      header : '시작시간',
+      name : 'beginTime',
+      align: 'center'
+    },
+    {
+      header : '종료시간',
+      name : 'endTime',
+      align: 'center'
+    },
+    {
+      header : '담당자',
+      name : 'usersCode',
+      align: 'center',
+      editor: 'text'
+    },
+    {
+      header : '진행상태',
+      name : 'procStatus',
+      align: 'center',
+      renderer: {type: ProcStatus}
+    },
+  ]
+});
+const procMat = new tui.Grid({
+  el : document.getElementById('procMat'),
+  scrollX : false,
+  scrollY : false,
+  columns : [
+    {
+      header : '공정자재코드',
+      name : 'procMatCode',
+      align: 'center'
+    },
+    {
+      header : '자재LOT코드',
+      name : 'matLotCode',
+      align: 'center'
+    }, 
+    {
+      header : '수량',
+      name : 'matCnt',
+      align: 'center'
+    }
+  ]
+});
+//공정진행 정보 조회
+//생산지시 상세 클릭 시 아래에 출력
+todayInsD.on('click', e => {
+  let pidCode = todayInsD.getValue(e.rowKey, "prodInstructDetailCode");
+
+  getProcessInfo(pidCode);
+
+})
+
+async function getProcessInfo(pidCode){
+  await fetch(`/ajax/processInfo?prodInsDetailCode=${pidCode}`)
+  .then(res => res.json())
+  .then(res => {
+    //console.log(res);
+    procInfo.resetData(res);
+  })
+};
+
+//공정자재 정보 조회
+//공정진행 목록 클릭 시 옆에 출력
+procInfo.on('click', e => {
+  let prdCode = procInfo.getValue(e.rowKey, "procDetailCode");
+  getProcMatInfo(prdCode);
+})
+
+async function getProcMatInfo(prdCode){
+  await fetch(`/ajax/procMatInfo?procDetailCode=${prdCode}`)
+  .then(res => res.json())
+  .then(res => {
+    //console.log(res);
+    procMat.resetData(res);
+  })
+};
+
+//==================================================================
+/* < 공정 시작 & 종료 > */
+
+//시작버튼 클릭 시 유효성 검사
+function beforeStartCheck() {
+  const alert = document.getElementById('alertMsg');
+  
+  const row = procInfo.getFocusedCell().rowKey;
+  const ucode = procInfo.getData()[row].usersCode;
+
+  //담당자 정보
+    if(ucode == null || ucode == '') {
+      alert.innerHTML = '<span style="color:red">※</span> 담당자 정보를 입력하세요.';
+      return false;
+    }
+
+  alert.innerHTML = '';
+  return true;
+}
+
+//공정 시작하기
+async function startProc() {
+  procInfo.blur();
+
+  if(!beforeStartCheck()) {
+    return;
+  }
+
+  const row = procInfo.getFocusedCell().rowKey;
+  const pcode = procInfo.getData()[row].procDetailCode;
+  const ecode = procInfo.getData()[row].eqmCode;
+  
+  let param = {procDetailCode: pcode, eqmCode: ecode}
+
+  await fetch('ajax/updateBeginTime', {
+    method: 'post',
+    headers: jsonHeaders,
+    body : JSON.stringify(param)
+  })
+  .then(res => res.json())
+  .then(res => {
+    console.log(res);
+  })
+
+  
+
+}

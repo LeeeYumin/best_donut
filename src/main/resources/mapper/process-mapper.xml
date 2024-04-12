@@ -26,5 +26,54 @@
                                   JOIN product p
                                     ON pld.product_code = p.product_code
     WHERE prod_instruct_code = #{prodInstructCode}
+    ORDER BY prod_instruct_detail_code
 	</select>
+	
+<!-- 공정진행 조회 -->
+  <select id="getProcessInfo" resultType="ProcessVO" parameterType="String">
+    SELECT pr.serial_num 
+      , pr.proc_name
+      , pr.eqm_code 
+      , pd.proc_detail_code
+      , pd.proc_code
+      , pd.begin_time
+      , pd.end_time
+      , pd.proc_status
+      , pd.users_code
+      , pd.prod_instruct_detail_code
+    FROM proc_detail pd JOIN proc pr
+                         ON pd.proc_code = pr.proc_code
+    WHERE pd.prod_instruct_detail_code = #{prodInstructDetailCode}
+  </select>
+<!-- 공정자재 조회 -->  
+  <select id="getProcMatInfo" resultType="ProcessVO" parameterType="String">
+	  SELECT proc_mat_code
+	       , proc_detail_code
+	       , mat_lot_code
+	       , mat_cnt
+	  FROM proc_mat
+	  WHERE proc_detail_code = #{procDetailCode}
+  </select>
+
+<!-- 공정 시작 -->
+	<update id="updateBeginTime" parameterType="ProcessVO" >
+		UPDATE proc_detail
+		SET begin_time = SYSDATE
+		  , proc_status = 'CS2'
+		WHERE proc_detail_code = #{procDetailCode}
+	</update>
+<!-- 공정 종료 -->
+	<update id="updateEndTime" parameterType="ProcessVO" >
+		UPDATE proc_detail
+		SET end_time = SYSDATE
+		  , proc_status = 'CS3'
+		WHERE proc_detail_code = #{procDetailCode}
+	</update>
+<!-- 설비상태 변경 -->
+	<update id="updateOprStatus" parameterType="ProcessVO">
+		UPDATE eqm
+		SET opr_status = #{oprStatus}
+		WHERE eqm_code = #{eqmCode}
+	</update>
+
 </mapper>

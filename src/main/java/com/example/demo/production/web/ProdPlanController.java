@@ -98,6 +98,7 @@ public class ProdPlanController {
 	public Map<String,Object> remove(@RequestBody ProdPlanVO vo) { 
 		System.out.println(vo);
 		prodPlanService.deleteProdPlan(vo);
+		
 		return Collections.singletonMap("result", 1);
 	}
 	

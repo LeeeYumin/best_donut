@@ -526,6 +526,7 @@ getEqmCheck();
 					{
 						header: '설비상태',
 						name: 'eqmStatus',
+						sortable: true,
 						align: 'center',
 						renderer: {type: ColumnConverter1}
 					},

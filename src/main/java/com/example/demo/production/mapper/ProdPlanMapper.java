@@ -52,7 +52,7 @@ public interface ProdPlanMapper {
 	//1)등록
 	public int insertProdInstruct(ProdInsVO vo); //1건에
 	public int insertProdInstructDetail(ProdInsDeVO dvo); //여러 건
-	//public int insertProcDetail(ProcessVO pvo); //공정상세 테이블 일부 등록
+	public int insertProcDetail(ProcessVO pvo); //공정상세 테이블 일부 등록
 	//+미지시&지시수량 수정
 	public int updateAfterInstruct(ProdPlanDeVO dvo); 
 	
