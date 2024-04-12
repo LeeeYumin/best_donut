@@ -74,5 +74,46 @@
 			, #{eqmStatus}
 			, #{oprStatus})
 	</insert>
+	
+	
+	<!-- 단건조회 -->
+	<select id="getEqmInfo" resultType="EqmVO">
+		SELECT EQM_CODE
+				, EQM_NAME
+				, MODEL_NAME
+				, MAKER
+				, PURPOSE
+				, INSTALL_PLACE
+				, BUY_COMPANY
+				, BUY_PRICE
+				, BUY_DATE
+				, DUMP_DATE
+				, CHECK_CYCLE
+				, LAST_CHECK_DATE
+				, EQM_STATUS
+				, OPR_STATUS
+		FROM EQM
+		WHERE EQM_CODE = #{eqmCode}
+	</select>
+	
+	
+	<!-- 수정 -->
+	<update id="updateEqm" parameterType="EqmVO">
+		UPDATE EQM
+		SET EQM_NAME = #{eqmName}
+			, MODEL_NAME = #{modelName}
+			, MAKER = #{maker}
+			, PURPOSE = #{purpose}
+			, INSTALL_PLACE = #{installPlace}
+			, BUY_COMPANY = #{buyCompany}
+			, BUY_PRICE = #{buyPrice}
+			, BUY_DATE = #{buyDate}
+			, DUMP_DATE = #{dumpDate}
+			, CHECK_CYCLE = #{checkCycle}
+			, LAST_CHECK_DATE = #{lastCheckDate}
+			, EQM_STATUS = #{eqmStatus}
+			, OPR_STATUS = #{oprStatus}
+		WHERE EQM_CODE = #{eqmCode}
+	</update>
 
 </mapper>

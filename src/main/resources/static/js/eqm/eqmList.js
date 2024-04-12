@@ -153,3 +153,10 @@ document.getElementById('keyword').addEventListener('keyup', (e) => {
     getEqmList();
   }
 })
+
+
+// 단건조회 이동
+grid.on('dblclick', (event) => {
+	let eqmCode = grid.getValue(event.rowKey, 'eqmCode')
+  location.href = 'eqminfo/' + eqmCode
+})

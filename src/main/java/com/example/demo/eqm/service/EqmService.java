@@ -8,5 +8,7 @@ public interface EqmService {
 	
 	public List<EqmVO> getEqm(EqmVO vo);
 	public int insertEqm(EqmVO vo);
+	public EqmVO getEqmInfo(String eqmCode);
+	public int updateEqm(EqmVO vo);
 	
 }

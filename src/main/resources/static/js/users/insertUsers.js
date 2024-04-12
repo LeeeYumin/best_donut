@@ -126,3 +126,64 @@ $(function() {
   $('[name="perm"]').on('change', function(){if($('[name="perm"]:checked').length == 1) $("#notice3").html("")})
   $('[name="usersStatus"]').on('change', function(){if($('[name="usersStatus"]:checked').length == 1) $("#notice4").html("")})
 })
+
+
+// 정보수정 버튼
+async function updateUsers() {
+  // if(!formValidation()) {
+  //   return;
+  // }
+  
+  let formData = new FormData(document.insertForm);
+
+  for (let data of formData) {
+    console.log(data[0]+ ', ' + data[1]);
+  }
+  
+	await fetch('/ajax/updateusers',{
+		method : 'POST',
+    headers: formDataHeaders,
+		body : formData
+	})
+	.then(res => res.json())
+	.then(res => {
+    console.log(res);
+    result = res;
+  })
+  // .then(res => {
+  //   window.setTimeout(function() {
+  //     location.href = '/userslist';
+  //   }, 1000);
+  // })
+  
+
+  // SweetAlert
+	if(result > 0){
+		Swal.fire({
+			position: "center",
+			icon: "success",
+			title: "정보수정 완료!",
+			// text: "정보수정이 정상적으로 처리되었습니다.",
+			showConfirmButton: false,
+			timer: 2000
+		});
+	}
+	else {
+		Swal.fire({
+			position: "center",
+			icon: "error",
+			title: "정보수정 실패",
+			// text: "정보수정이 정상적으로 처리되지 않았습니다.",
+			showConfirmButton: false,
+			timer: 2000
+		});
+	}
+};
+
+
+// 삭제 버튼
+async function deleteUsers() {
+  let usersCode = insertForm.usersCode.value
+  console.log(usersCode);
+  location.href = '/deleteusers/' + usersCode
+};
