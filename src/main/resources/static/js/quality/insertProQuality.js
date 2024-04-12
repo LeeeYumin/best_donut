@@ -164,6 +164,11 @@ const grid2 = new tui.Grid({
             }
     },
     {
+      header : '입고수량',
+      name : 'warehousingCnt',
+      align : "center",
+    },
+    {
       header : '적합수량',
       name : 'goodCnt',
       align : "center",
@@ -217,11 +222,12 @@ grid2.on('afterChange', event => {
     grid2.setValue(ev.rowKey,'lastResult','PRY');
   }
 
+  let whc = grid2.getValue(ev.rowKey,'warehousingCnt');
   console.log(event.changes[0].columnName);
-  if(event.changes[0].columnName == 'goodPd'){
-    if(event.changes[0].value > grid2.getValue(ev.rowKey,'inoutCnt')){
+  if(event.changes[0].columnName == 'goodCnt'){
+    if(event.changes[0].value > whc){
       alert("적합수량이 입고수량을 초과하였습니다");
-      grid2.setValue(ev.rowKey,'goodPd',null);
+      grid2.setValue(ev.rowKey,'goodCnt',whc);
     }
   }
 })

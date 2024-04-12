@@ -128,6 +128,7 @@ SELECT d.PRODUCT_CODE
 	        , 'PWY' "productWeight"
 	        , 'PRY' "lastResult"
 	        , warehousing_cnt "goodCnt"
+	        , warehousing_cnt "warehousingCnt"
 	FROM product_detail
 	WHERE qlty_check_status = 'PQ1'
 </select>

@@ -18,6 +18,11 @@ public class QualityUnfitVO {
 	private String usersCode;
 	private String badContents;
 	private String mngContents;
+	 
+	//완제품 불량품등록 : 제품코드 생산지시코드 제품명 완제품LOT 판매가능여부
+	private String productCode;
+	private String productLotCode;
+	
 	
 	
 	
