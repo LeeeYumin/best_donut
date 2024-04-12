@@ -1,6 +1,5 @@
 package com.example.demo.orders.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -9,17 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.orders.OrdersVO;
-import com.example.demo.orders.ProdReqDetailVO;
-import com.example.demo.orders.ProdReqVO;
 import com.example.demo.orders.mapper.OrdersMapper;
 import com.example.demo.orders.service.OrdersService;
 
 @Service
 public class OrdersServiceImpl implements OrdersService{
 
-	// 의존성 주입
 	@Autowired OrdersMapper ordersMapper;
 
+	// 1. 주문조회
+	
 	// 거래처 조회
 	@Override
 	public List<Map<String, Object>> getCompany() {
@@ -38,6 +36,9 @@ public class OrdersServiceImpl implements OrdersService{
 		return ordersMapper.getOrdersDetail(ordersCode);
 	}
 
+	
+	// 2. 주문등록
+	
 	// 주문등록 + 주문상세등록
 	@Override
 	public boolean insertOrders(OrdersVO vo) {
@@ -53,36 +54,17 @@ public class OrdersServiceImpl implements OrdersService{
 		
 		return result >= 1 ? true : false;
 	}
-
-	// 생산요청등록 + 생산요청상세등록 + 주문상태변경
-	@Override
-	public boolean insertProdReq(ProdReqVO vo) {
-		ordersMapper.insertProdReq(vo);
-		
-		int result = 0;
-		for(int i = 0; i < vo.getProdReqDetList().size(); i++) {
-			ProdReqDetailVO dvo = vo.getProdReqDetList().get(i);
-			
-			dvo.setProdReqCode(vo.getProdReqCode());
-			result += ordersMapper.insertProdReqDet(dvo);
-		}
-		
-		ordersMapper.updateOrdStat(vo.getDueStartDate(), vo.getDueEndDate());
-		
-		return result >= 1 ? true : false;
-	}
-
-	// 생산요청 조회
-	@Override
-	public List<ProdReqVO> getProdReq(ProdReqVO vo) {
-		return ordersMapper.getProdReq(vo);
-	}
-
-	// 생산요청 상세조회
-	@Override
-	public List<ProdReqDetailVO> getProdReqDet(String prodReqCode) {
-		return ordersMapper.getProdReqDet(prodReqCode);
-	}
-
 	
+	// 3. 주문 삭제
+
+	@Override
+	public int deleteOrders(String ordersCode) {
+		return ordersMapper.deleteOrders(ordersCode);
+	}
+
+	@Override
+	public int deleteOrdDet(String ordersCode) {
+		return ordersMapper.deleteOrdDet(ordersCode);
+	}
+		
 }

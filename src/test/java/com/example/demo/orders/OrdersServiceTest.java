@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.demo.orders.mapper.OrdersMapper;
+import com.example.demo.prodReq.ProdReqVO;
+import com.example.demo.prodReq.mapper.ProdReqMapper;
 import com.example.demo.product.ProductVO;
 import com.example.demo.product.mapper.ProductMapper;
 
@@ -18,6 +20,8 @@ public class OrdersServiceTest {
 
 	@Autowired OrdersMapper ordersMapper;
 	@Autowired ProductMapper productMapper;
+	@Autowired ProdReqMapper prodReqMapper;
+	
 	
 //	@Test
 	public void 주문조회() {
@@ -50,16 +54,28 @@ public class OrdersServiceTest {
 			
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
+		ProdReqVO vo = new ProdReqVO();
+		
 		Date dueStartDate = new Date();
 		Date dueEndDate = new Date();
+		
 		try {
 			dueStartDate = sdf.parse("2024-04-23");
 			dueEndDate = sdf.parse("2024-04-28");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		vo.setDueStartDate(dueStartDate);
+		vo.setDueEndDate(dueEndDate);
 		
-		int result = ordersMapper.updateOrdStat(dueStartDate, dueEndDate);
+		int result = prodReqMapper.updateOrdStat(vo);
 		System.out.println("주문상태변경 result : " + result);
 	}
+
+	@Test
+	public void 자재LOT조회() {
+		String prodReqCode = "PRQ00001";
+		System.out.println(prodReqMapper.getProdReqDet(prodReqCode));
+	}
+	
 }

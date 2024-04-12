@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.demo.product.ProductDetailVO;
 import com.example.demo.product.ProductVO;
 
 @Mapper
@@ -11,4 +12,7 @@ public interface ProductMapper {
 	
 	public List<ProductVO> getProduct();
 	public List<ProductVO> getReqProd(String dueStartDate, String dueEndDate);
+	
+	public List<ProductDetailVO> getProdDet(ProductDetailVO vo);
+	
 }

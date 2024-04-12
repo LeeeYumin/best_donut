@@ -51,5 +51,34 @@
 		           ON t.product_code = p.product_code
 		 ORDER BY 1
 	</select>
+	
+	<!-- 완제품조회 -->
+	<select id="getProdDet" resultType="ProductDetailVO">
+		SELECT d.product_lot_code
+		       , d.warehousing_cnt
+		       , d.check_done_cnt
+		       , d.delivery_cnt
+		       , d.remain_cnt
+		       , d.qlty_check_status
+		       , d.product_status
+		       , d.dump_date
+		       , d.product_code
+		       , d.proc_result_code
+		       , p.product_name
+		  FROM product_detail d JOIN product p
+		                          ON d.product_code = p.product_code
+         WHERE 1=1
+        <if test="productLotCode != null and productLotCode != ''">
+			AND d.product_lot_code LIKE '%' || #{productLotCode} || '%'
+		</if>
+        <if test="productName != null and productName != ''">
+			AND d.product_name LIKE '%' || #{productName} || '%'
+		</if>	
+	</select>
+	
+	<!-- 자재LOT조회 -->
+	<select id="getMatLot">
+	
+	</select>
 
 </mapper>

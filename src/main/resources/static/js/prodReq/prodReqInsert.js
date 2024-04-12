@@ -275,7 +275,7 @@ function getReqList() {
 
 	// (4) 등록폼 데이터
 	const prodReqSum = reqGrid.getSummaryValues('reqCnt').sum;
-	document.querySelector('#totalReqCnt').value = prodReqSum;
+	document.querySelector('#totalReqCnt').value = priceFormat(prodReqSum);
 	document.querySelector('#reqDate').value = new Date().toISOString().substring(0, 10);
 }
 
@@ -372,3 +372,9 @@ function searchOrders() {
 	getOrdersList(param);
 }
 
+function testFunc(){
+	const dueStartDate = dateFormat(searchForm.dueStartDate.value);
+	const dueEndDate = dateFormat(searchForm.dueEndDate.value);
+
+	console.log(`dueStartDate : ${dueStartDate}, dueEndDate : ${dueEndDate}`);
+}

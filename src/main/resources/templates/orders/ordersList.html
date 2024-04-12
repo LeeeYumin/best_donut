@@ -73,12 +73,25 @@
 				<!-- 주문 목록 -->
 				<h5 class="card-header">주문 목록</h5>
 				<div class="card-body demo-vertical-spacing demo-only-element">
-					<div id="grid1"></div>
+					<!-- 그리드 div-->
+					<div id="ordGrid"></div>
+					<!-- 버튼 div -->
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+						<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="deleteOrders()">선택삭제</button>
+						<!-- <button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button> -->
+					</div>
 				</div>
+
 				<!-- 주문 상세 목록 -->
 				<h5 class="card-header">주문상세 목록</h5>
 				<div class="card-body demo-vertical-spacing demo-only-element">
-					<div id="grid2"></div>
+					<!-- 그리드 div-->
+					<div id="detGrid"></div>
+					<!-- 버튼 div -->
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+						<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchOrders()">수정</button>
+						<button type="button" class="btn btn-primary me-md-2" id="resetBtn" onclick="searchReset()">취소</button>
+					</div>
 				</div>
 			</div>
 		</div>
