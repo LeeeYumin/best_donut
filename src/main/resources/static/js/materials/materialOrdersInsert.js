@@ -453,10 +453,10 @@ matOrderList.on('afterChange', ev => {
 })
 
 // 발주 버튼 이벤트
-document.getElementById('orderBtn').addEventListener('click', checkOrdersCnt)
+document.getElementById('orderBtn').addEventListener('click', checkValidation)
 
 // 수량 입력 체크
-function checkOrdersCnt() {
+function checkValidation() {
     matOrderList.blur();
 
     let matOrdersData = matOrderList.getData()
@@ -485,17 +485,13 @@ function checkOrdersCnt() {
 
 // 자재 발주 등록
 async function insertMatOrders() {
-    matOrderList.blur();
-
     let prodPlanCode = prodPlanList.getValue(prodPlanList.getFocusedCell().rowKey, 'prodPlanCode');
-    let matTotalOrdersPrice = matOrderList.getSummaryValues('matOrdersPrice').sum;
     let matOrderDetailVO = matOrderList.getData();
 
     console.log('prodPlanCode : ', prodPlanCode);
-    console.log('matTotalOrdersPrice : ', matTotalOrdersPrice);
     console.log('matOrderDetail : ', matOrderDetailVO);
 
-    const param = { prodPlanCode, matTotalOrdersPrice, matOrderDetailVO }
+    const param = { prodPlanCode, matOrderDetailVO }
 
     console.log(param);
 

@@ -104,8 +104,8 @@ public class MaterialsController {
 	// 자재 입고 대기건 조회
 	@RequestMapping("/ajax/materialwarehousing")
 	@ResponseBody
-	public List<MaterialWarehousingVO> getWarehousingList() {
-		return materialsService.getWarehousingList();
+	public List<MaterialWarehousingVO> getWarehousingList(@RequestBody MaterialWarehousingVO vo) {
+		return materialsService.getWarehousingList(vo);
 	}
 
 	// 자재 불출 등록 페이지 이동

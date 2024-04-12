@@ -61,10 +61,83 @@ const matWarehousing = new tui.Grid({
 
 // 입고 예정 자재 목록 ajax
 function getMatWarehousingList() {
-    fetch("/ajax/materialwarehousing")
-        .then(res => res.json())
-        .then(res => {
-            console.log(res);
-            matWarehousing.resetData(res);
-        })
+    const sDate = document.getElementById('sDate').value;
+    const eDate = document.getElementById('eDate').value;
+    const matName = document.getElementById('matName').value;
+
+    if (sDate != '' && eDate != '' && sDate > eDate) {
+        Swal.fire({
+            title: "시작일이 종료일보다 늦습니다.",
+            icon: "warning"
+        });
+    } else {
+        const searchreq = { sDate: sDate, eDate: eDate, matName: matName };
+        const data = {
+            method: 'POST',
+            headers: jsonHeaders,
+            body: JSON.stringify(searchreq)
+        };
+
+        fetch("/ajax/materialwarehousing", data)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                matWarehousing.resetData(res);
+            })
+    }
+}
+
+// 검색 조건
+document.getElementById('searchBtn').addEventListener('click', getMatWarehousingList);
+document.getElementById('matName').addEventListener('keyup', (e) => {
+    if (e.keyCode == 13) {
+        getMatWarehousingList();
+    }
+})
+// 초기화 버튼
+document.getElementById('resetBtn').addEventListener('click', () => {
+    document.getElementById('sDate').value = '';
+    document.getElementById('eDate').value = '';
+    document.getElementById('matName').value = '';
+
+    getMatWarehousingList();
+});
+
+// 입고 버튼
+document.getElementById('insertBtn').addEventListener('click', checkValidation);
+
+// 유효성 검사
+function checkValidation() {
+    matWarehousing.blur();
+
+    let warehousingData = matWarehousing.getCheckedRows();
+    let validation = 1;
+
+    if (warehousingData == '') {
+        alert('입고할 자재를 선택해 주세요.');
+        validation = 0;
+    } else {
+        for (let i = 0; i < warehousingData.length; i++) {
+            if (warehousingData[i].ordersCnt == 0) {
+                alert('수량이 0인 자재는 입고할 수 없습니다.');
+                validation = 0;
+                matWarehousing.focusAt(i, 3)
+                break;
+            } else if (warehousingData[i].matCode != 'MAT00009' && warehousingData[i].expDate == null) {
+                alert('유통기한을 입력해주세요.');
+                validation = 0;
+                matWarehousing.focusAt(i, 4)
+                break;
+            }
+        }
+    }
+
+    if (validation) {
+        matWarehousing()
+    }
+}
+
+// 자재 입고 등록
+function matWarehousing() {
+
 }
