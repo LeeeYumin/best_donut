@@ -237,6 +237,11 @@
 			, 0
 			)
 	</insert>
+	<!-- 공정상세 일부 등록  -->
+<!-- 	<insert id="insertProcDetail" parameterType="ProcessVO" statementType="CALLABLE">
+		{ CALL proc_de_insert(#{prodInstructDetailCode}) }
+	</insert> -->
+	
 	<!-- 생산지시 등록 시 => 생산계획의 수량들 수정 -->
 	<update id="updateAfterInstruct" parameterType="ProdPlanDeVO">
 		UPDATE prod_plan_detail
