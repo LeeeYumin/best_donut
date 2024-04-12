@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/index}">
 <head>
 	<meta charset="UTF-8">
-	<title>prodReqList.html</title>
+	<title>productList.html</title>
 	<!-- Toast UI CDN -->
 	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
@@ -14,7 +14,7 @@
 	<div layout:fragment="content">
 	
 		<h3 class="fw-bold py-1 mb-4">
-			<span class="text-muted fw-light">영업관리 / </span> 생산요청관리
+			<span class="text-muted fw-light">영업관리 / </span> 완제품재고관리
 		</h3>
 
 		<!-- 검색 폼 -->
@@ -25,9 +25,16 @@
 					<div class="card-body demo-vertical-spacing demo-only-element">
 
 						<div class="row mb-3">
-							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">생산요청코드</label>
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">완제품LOT코드</label>
 							<div class="col-sm-6">
-								<input class="form-control" type="text" id="prodReqCode" name="prodReqCode">
+								<input class="form-control" type="text" id="prodLotCode" name="prodLotCode">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">제품명</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="prodName" name="prodName">
 							</div>
 						</div>
 
@@ -57,7 +64,7 @@
 						</div> -->
 
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchProdReq()">검색</button>
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchProd()">검색</button>
 							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
 						</div>
 					</div>
@@ -69,20 +76,20 @@
 		<div class="ordersGrid">
 			<div class="card">
 				<!-- 주문 목록 -->
-				<h5 class="card-header">생산요청 목록</h5>
+				<h5 class="card-header">완제품 목록</h5>
 				<div class="card-body demo-vertical-spacing demo-only-element">
-					<div id="prodReqGrid"></div>
+					<div id="prodLotGrid"></div>
 				</div>
 				<!-- 주문 상세 목록 -->
-				<h5 class="card-header">생산요청상세 목록</h5>
+				<h5 class="card-header">자재 목록</h5>
 				<div class="card-body demo-vertical-spacing demo-only-element">
-					<div id="prodReqDetGrid"></div>
+					<div id="matLotGrid"></div>
 				</div>
 			</div>
 		</div>
 		
 		<!-- script -->
-		<script src="/js/orders/prodReqList.js"></script>
+		<script src="/js/product/productList.js"></script>
 	</div>
 </body>
 

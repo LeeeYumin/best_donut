@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.orders.OrdersVO;
-import com.example.demo.orders.ProdReqDetailVO;
-import com.example.demo.orders.ProdReqVO;
 import com.example.demo.orders.service.OrdersService;
 import com.example.demo.product.service.ProductService;
 
@@ -24,6 +22,7 @@ public class OrdersController {
 
 	@Autowired OrdersService ordersService;
 	@Autowired ProductService productService;
+	
 	
 	// 1. 페이지 이동
 	
@@ -50,24 +49,6 @@ public class OrdersController {
 	public String insertOrders(Model model) {
 		model.addAttribute("productList", productService.getProduct());
 		return "orders/ordersInsert";
-	}
-	
-	// 생산요청관리 페이지
-	@GetMapping("prodReqList")
-	public String prodReqList() {
-		return "orders/prodReqList";
-	}
-	
-	// 생산요청등록 페이지
-	@GetMapping("prodReqInsert")
-	public String prodReqInsert() {
-		return "orders/prodReqInsert";
-	}
-	
-	// 완제품재고관리 페이지
-	@GetMapping("productList")
-	public String productList() {
-		return "orders/productList";
 	}
 
 	// 완제품출고관리 페이지
@@ -105,21 +86,7 @@ public class OrdersController {
 	public List<OrdersDetailVO> getOrdersDetail(String ordersCode) {
 		return ordersService.getOrdersDetail(ordersCode);
 	}
-	
-	// 생산요청조회
-	@PostMapping("ajax/getProdReq")
-	@ResponseBody
-	public List<ProdReqVO> getProdReq(@RequestBody ProdReqVO vo){
-		return ordersService.getProdReq(vo);
-	}
-	
-	// 생산요청상세조회
-	@GetMapping("ajax/getProdReqDet")
-	@ResponseBody
-	public List<ProdReqDetailVO> getProdReqDet(String prodReqCode){
-		return ordersService.getProdReqDet(prodReqCode);
-	}
-	
+		
 	
 	// 3. 등록
 	
@@ -130,10 +97,22 @@ public class OrdersController {
 		return ordersService.insertOrders(vo);
 	}
 	
-	// 생산요청등록
-	@PostMapping("ajax/insertProdReq")
+	
+	// 4. 삭제
+	
+	// 주문삭제
+	@PostMapping("ajax/deleteOrders")
 	@ResponseBody
-	public boolean insertProdReq(@RequestBody ProdReqVO vo) {
-		return ordersService.insertProdReq(vo);
+	public int deleteOrders(@RequestBody String[] ordersCodes) {
+
+		int result = 0;
+		for(String ocode : ordersCodes) {
+			if(ocode != "" && ocode != null) {
+				ordersService.deleteOrdDet(ocode);
+				result += ordersService.deleteOrders(ocode);
+			}			
+		}
+		return result;
 	}
+	
 }

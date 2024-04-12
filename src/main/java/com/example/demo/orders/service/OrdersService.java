@@ -5,8 +5,6 @@ import java.util.Map;
 
 import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.orders.OrdersVO;
-import com.example.demo.orders.ProdReqDetailVO;
-import com.example.demo.orders.ProdReqVO;
 
 public interface OrdersService {
 	
@@ -18,10 +16,7 @@ public interface OrdersService {
 	// 2. 주문등록
 	public boolean insertOrders(OrdersVO vo);
 	
-	// 3. 생산요청조회
-	public List<ProdReqVO> getProdReq(ProdReqVO vo);					// 생산요청조회
-	public List<ProdReqDetailVO> getProdReqDet(String prodReqCode);		// 생산요청상세조회
-	
-	// 4. 생산요청등록
-	public boolean insertProdReq(ProdReqVO vo);
+	// 3. 주문 삭제
+	public int deleteOrders(String ordersCode);
+	public int deleteOrdDet(String ordersCode);							// 주문상세ㄴ삭제
 }

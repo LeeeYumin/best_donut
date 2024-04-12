@@ -1,10 +1,10 @@
 getOrdersList({});
 
-// grid1.  주문 조회
+// ordGrid.  주문 조회
 
 // 1. grid 생성
-const grid1 = new tui.Grid({
-	el : document.getElementById('grid1'),
+const ordGrid = new tui.Grid({
+	el : document.getElementById('ordGrid'),
 	scrollX : false,
 	scrollY : true,
 	rowHeaders: ['checkbox'],
@@ -99,7 +99,7 @@ function getOrdersList(param){
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
-		grid1.resetData(res);
+		ordGrid.resetData(res);
 	})
 }
 
@@ -129,7 +129,6 @@ async function searchOrders(){
 	let ordersEndDate = searchForm.ordersEndDate.value;
 	let dueStartDate = searchForm.dueStartDate.value;
 	let dueEndDate = searchForm.dueEndDate.value;
-	console.log('companyCode : ', companyCode);
 
 	let param = {ordersCode, companyCode, ordersStartDate, ordersEndDate, dueStartDate, dueEndDate};
 	getOrdersList(param);
@@ -142,17 +141,17 @@ function searchReset() {
 }
 
 // 주문상세 목록 띄우기
-grid1.on('click', (event) => {
-	let ordersCode = grid1.getValue(event.rowKey, 'ordersCode')
+ordGrid.on('click', (event) => {
+	let ordersCode = ordGrid.getValue(event.rowKey, 'ordersCode')
 	getOrdersDetail(ordersCode);
 })
 
 
-// grid2.  주문 상세 조회
+// detGrid.  주문 상세 조회
 
 // 1. grid 생성
-const grid2 = new tui.Grid({
-	el : document.getElementById('grid2'),
+const detGrid = new tui.Grid({
+	el : document.getElementById('detGrid'),
 	scrollX : false,
 	scrollY : true,
 	rowHeaders: ['checkbox'],
@@ -218,8 +217,45 @@ function getOrdersDetail(ordersCode){
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
-		grid2.resetData(res);
+		detGrid.resetData(res);
 	})
 };
 
 // 3. 이벤트
+function deleteOrders(){
+
+	let checkedList = ordGrid.getCheckedRows();
+	let delList = [];
+	for(orders of checkedList){
+		delList.push(orders.ordersCode)
+	}
+ 
+	fetch('ajax/deleteOrders', {
+		method: 'POST',
+		headers: jsonHeaders,
+		body : JSON.stringify(delList)
+	})
+	.then(res => res.json())
+	.then(res => {
+		if(res > 0){
+			Swal.fire({
+				position: "center",
+				icon: "success",
+				title: "주문삭제 완료!",
+				text: "주문삭제가 정상적으로 처리되었습니다.",
+				showConfirmButton: false,
+				timer: 1500
+			});
+		}
+		else {
+			Swal.fire({
+				position: "center",
+				icon: "error",
+				title: "주문삭제 실패",
+				text: "주문삭제가 정상적으로 처리되지 않았습니다.",
+				showConfirmButton: false,
+				timer: 1500
+			});
+		}
+	})
+}

@@ -1,4 +1,4 @@
-package com.example.demo.orders;
+package com.example.demo.prodReq;
 
 import lombok.Data;
 
