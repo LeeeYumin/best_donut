@@ -229,7 +229,7 @@ const grid = new tui.Grid({
 
 
 
-// 목록조회
+// 전체조회
 getUsersList();
 async function getUsersList() {
   const keyword = document.getElementById('keyword').value;
@@ -343,8 +343,8 @@ tui.Grid.applyTheme('custom', {
 });
 
 
-// 단건조회
-grid.on('click', (event) => {
+// 단건조회 이동
+grid.on('dblclick', (event) => {
 	let usersCode = grid.getValue(event.rowKey, 'usersCode')
   location.href = 'usersinfo/' + usersCode
 })

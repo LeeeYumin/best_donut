@@ -97,5 +97,41 @@
 		        , u.LOCAL_TEL
 		        , u.USERS_STATUS
 	</select>
+	
+	
+	<!-- 수정 -->
+	<update id="updateUsers" parameterType="UsersVO">
+		UPDATE USERS
+		SET USERS_NAME = #{usersName}
+			, POSITION = #{position}
+			, LOCAL_TEL = #{localTel}
+			, USERS_STATUS = #{usersStatus}
+		WHERE USERS_CODE = #{usersCode}
+	</update>
+	
+<!-- 	<insert id="updateUsersPerm" parameterType="UsersVO">
+		MERGE INTO USERS_PERM
+		USING DUAL
+		ON (USERS_CODE = #{usersCode})
+		WHEN MATCHED THEN
+		DELETE WHERE USERS_CODE = #{usersCode}
+		<foreach collection="perm" item="permCode">
+		INSERT (
+				USERS_PERM_CODE
+				, USERS_CODE
+				, PERM_CODE)
+		VALUES(
+				SEQ_FUNC('USERS_PERM')
+				, #{usersCode}
+				, #{permCode})
+		</foreach>
+	</insert> -->
+	
 
+	<!-- 삭제 -->
+	<delete id="deleteUsers">
+		DELETE FROM USERS
+		WHERE USERS_CODE = #{usersCode}
+	</delete>
+	
 </mapper>

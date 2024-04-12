@@ -58,9 +58,9 @@
 				</div>
 				<div>
 					<label>사용자상태*</label>
-					<input type="radio" name="usersStatus" id="status1" value="USY" class="form-check-input" th:checked='${usersVO.usersStatus=="USY"}'>
+					<input type="radio" name="usersStatus" id="status1" value="USY" class="form-check-input" th:checked='${usersVO.usersStatus == "USY"}'>
 					<label for="status1">활성</label>
-					<input type="radio" name="usersStatus" id="status2" value="USN" class="form-check-input" th:checked='${usersVO.usersStatus=="USN"}'>
+					<input type="radio" name="usersStatus" id="status2" value="USN" class="form-check-input" th:checked='${usersVO.usersStatus == "USN"}'>
 					<label for="status2">비활성</label>
 					<div id="notice4" class="form-text notice"></div>
 				</div>
@@ -71,10 +71,11 @@
 			<button type="button" id="saveBtn">등록완료</button>
 		</div>
 		<div class="mb-4" th:if = "${usersVO.usersCode} != null">
-			<button type="button" id="saveBtn">정보수정</button>
+			<button type="button" id="delBtn" class="btn btn-secondary me-sm-2 me-1" onclick="deleteUsers()">삭제</button>
+			<button type="button" id="updateBtn" class="btn btn-primary" onclick="updateUsers()">정보수정</button>
 		</div>
 		
-		<script src="/js/users/insertUsers.js"></script>
+		<script src="/js/users/insertUsers.js" defer></script>
 	</div>
 </body>
 </html>

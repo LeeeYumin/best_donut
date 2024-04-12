@@ -23,6 +23,16 @@ public class EqmServiceImpl implements EqmService{
 	public int insertEqm(EqmVO vo) {
 		return eqmMapper.insertEqm(vo);
 	}
+
+	@Override
+	public EqmVO getEqmInfo(String eqmCode) {
+		return eqmMapper.getEqmInfo(eqmCode);
+	}
+
+	@Override
+	public int updateEqm(EqmVO vo) {
+		return eqmMapper.updateEqm(vo);
+	}
 	
 	
 }

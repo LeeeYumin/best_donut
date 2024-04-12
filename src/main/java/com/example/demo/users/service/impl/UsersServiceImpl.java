@@ -28,5 +28,16 @@ public class UsersServiceImpl implements UsersService{
 	public UsersVO getUsersInfo(String usersCode) {
 		return usersMapper.getUsersInfo(usersCode);
 	}
+
+	@Override
+	public int updateUsers(UsersVO vo) {
+//		usersMapper.updateUsersPerm(vo);
+		return usersMapper.updateUsers(vo);
+	}
+
+	@Override
+	public int deleteUsers(String usersCode) {
+		return usersMapper.deleteUsers(usersCode);
+	}
 	
 }

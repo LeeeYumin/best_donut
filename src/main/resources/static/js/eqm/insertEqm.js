@@ -116,3 +116,52 @@ function changeOption2() {
     insertForm.eqmStatus.value = 'ES1';
   }
 }
+
+
+// 등록버튼
+async function updateEqm() {
+  // if(!formValidation()) {
+  //     return;
+  //   }
+
+  let formData = new FormData(document.insertForm);
+  
+	await fetch('/ajax/updateeqm',{
+		method : 'POST',
+    headers: formDataHeaders,
+		body : formData
+	})
+	.then(res => res.json())
+	.then(res => {
+    console.log(res);
+    result = res;
+  })
+  // .then(res => {
+  //   window.setTimeout(function() {
+  //     location.href = '/notoprlist';
+  //   }, 1000);
+  // })
+
+  
+  // SweetAlert
+	if(result > 0){
+		Swal.fire({
+			position: "center",
+			icon: "success",
+			title: "정보수정 완료!",
+			// text: "정보수정이 정상적으로 처리되었습니다.",
+			showConfirmButton: false,
+			timer: 2000
+		});
+	}
+	else {
+		Swal.fire({
+			position: "center",
+			icon: "error",
+			title: "정보수정 실패",
+			// text: "정보수정이 정상적으로 처리되지 않았습니다.",
+			showConfirmButton: false,
+			timer: 2000
+		});
+	}
+};

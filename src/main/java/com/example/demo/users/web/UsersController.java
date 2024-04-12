@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.production.ProdPlanDeVO;
 import com.example.demo.users.UsersVO;
 import com.example.demo.users.service.UsersService;
 
@@ -52,6 +53,24 @@ public class UsersController {
 		model.addAttribute("usersVO", usersService.getUsersInfo(usersCode));
 		return "users/insertUsers";
 	}
+	
+	
+	// 수정
+	@PostMapping("/ajax/updateusers")
+	@ResponseBody
+	public int updateUsers(UsersVO vo) { 
+		return usersService.updateUsers(vo);
+	}
+	
+	
+	// 삭제
+    @GetMapping("/deleteusers")
+    public String deleteUsers(@PathVariable String usersCode) {
+    	usersService.deleteUsers(usersCode);
+    	return "redirect:userslist";
+    }
+    
+    
 
 	
 }
