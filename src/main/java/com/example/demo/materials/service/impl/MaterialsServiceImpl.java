@@ -56,9 +56,6 @@ public class MaterialsServiceImpl implements MaterialsService {
 			orderlist.add(list.get(i));
 		}
 		
-		// System.out.println(map);
-		//materialsMapper.insertMatOrders(vo);
-		
 		int result = 0;
 	
 		// 거래처 수만큼 반복
