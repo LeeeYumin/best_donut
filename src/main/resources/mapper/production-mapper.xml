@@ -187,6 +187,14 @@
 
 <!-- 지시 전 설비상태 확인 -->
 	<select id="getEqm" resultType="ProdInsVO">
+	SELECT eqm_code
+	     , eqm_name
+	     , eqm_status
+	     , opr_status
+	FROM eqm
+	WHERE eqm_status != 'ES5'
+	</select>
+<!-- 	<select id="getEqm" resultType="ProdInsVO">
 	SELECT p.eqm_code
 	     , eqm_name
 	     , eqm_status
@@ -194,7 +202,7 @@
 	FROM eqm e JOIN proc p
 	            ON e.eqm_code = p.eqm_code
 	WHERE eqm_status != 'ES5'
-	</select>
+	</select> -->
 	
 	<!-- 생산지시 등록(1건) -->
 	<insert id="insertProdInstruct" parameterType="ProdInsVO">
@@ -237,10 +245,10 @@
 			, 0
 			)
 	</insert>
-	<!-- 공정상세 일부 등록  -->
-<!-- 	<insert id="insertProcDetail" parameterType="ProcessVO" statementType="CALLABLE">
-		{ CALL proc_de_insert(#{prodInstructDetailCode}) }
-	</insert> -->
+	<!-- 공정상세 일부 등록  (프로시저사용) -->
+	<insert id="insertProcDetail" parameterType="ProcessVO" statementType="CALLABLE">
+		{ CALL proc_de_insert(#{prodInstructCode}) }
+	</insert>
 	
 	<!-- 생산지시 등록 시 => 생산계획의 수량들 수정 -->
 	<update id="updateAfterInstruct" parameterType="ProdPlanDeVO">

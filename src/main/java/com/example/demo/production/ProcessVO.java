@@ -2,6 +2,8 @@ package com.example.demo.production;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -11,9 +13,26 @@ public class ProcessVO {
 	private String prodInstructDetailCode;
 	private String procCode; //공정흐름(5단계)
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:SS", timezone = "Asia/Seoul")
 	private Date beginTime;
 	private Date endTime;
-
-	private String procStatus;
+	private String procStatus; //CS1 대기 / CS2 공정중 / CS3 공정완료
 	private String usersCode;
+
+	private String prodInstructCode;
+	
+	//공정
+	private String serialNum;
+	private String procName;
+	private String eqmCode;
+
+	//공정자재
+	private String procMatCode;
+	private String matLotCode;
+	private int matCnt;
+	
+	//설비
+	private String oprStatus;
+
+	
 }

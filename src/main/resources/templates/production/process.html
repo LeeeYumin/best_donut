@@ -11,12 +11,23 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style>
-.btn-addinput,
-.btn-insert {
-	width: 60px;
-	margin-left: auto; /* display:flex 적용되어 있어 float: right X */
-	/* margin-top: 10px; */
+.btn-start,
+.btn-end {
+	width: 80px;
+	height: 70px;
+	font-size: large;
+	float: right;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 10px;
+	/* margin-left: auto; display:flex 적용되어 있어 float: right X */
 }
+.card-padding {
+	padding-left: 37px;
+	padding-right: 37px;
+}
+
+
 .btn-addrow,
 .btn-delrow {
 	width: 60px;
@@ -49,13 +60,6 @@ h4 {
 			<span class="text-muted fw-light">생산관리 / </span> 공정진행
 		</h3>
 
-		<!-- <div class="card mb-3" style="padding-bottom: 20px">
-			<div class="pt30"></div>
-			<h4>일일 생산지시</h4>
-				<div id="todayIns" class="pt30"></div>
-			<h5 class="pt30">상세</h5>
-				<div id="todayInsD"></div>
-		 </div> -->
 		
      <div class="card mb-3">
       <!-- 생산 계획 목록 -->
@@ -79,25 +83,35 @@ h4 {
 
 		<div style="padding-top: 50px;"></div>
 		
-		<div class="card mb-3" style="padding-bottom: 20px">
-			<div class="pt30"></div>
-			
-			<h4>진행 중인 공정</h4>
-			<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertPlan()">등록</button>
-			<div id="alertMsg" class="warn-alert">
-				<!-- 알림문구 -->
-			</div>
+		<div class="card mb-3 card-padding">
 
-			<div id="plInsert" style="padding-bottom: 30px;"></div>
-	
-			<h5>상세</h5>
-			<span>
-			 <button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">행삭제</button>		
-			 <button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
-			</span>
-			<div id="plDeInsert"></div>
-	
-			</div>
+			<!-- <div class="row"> -->
+
+				<!-- <div class="col-sm-8"> -->
+				<h3 class="card-header" style="padding-bottom: 0;">공정진행</h3>
+				<span>
+					<button type="button" class="btn btn-secondary btn-sm btn-end" id="endProcBtn" onclick="">종료</button>
+					<button type="button" class="btn btn-primary btn-sm btn-start" id="startProcBtn" onclick="startProc()">시작</button>
+				</span>
+				<div id="alertMsg" class="warn-alert">
+					<!-- 알림문구 -->
+				</div>
+				<div id="procInfo" style="padding-bottom: 20px;"></div>
+				<!-- </div> -->
+
+				<div class="col-sm-6">
+					<h4 class="card-header">투입자재정보</h4>
+					<!-- <span>
+					<button type="button" class="btn btn-secondary btn-sm btn-delrow" id="delRowBtn">행삭제</button>		
+					<button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
+					</span> -->
+					<div id="procMat"></div>
+					<div style="padding-bottom: 20px;"></div>
+				</div>
+
+			<!-- </div> -->
+
+		</div>
 
 		 
 		
