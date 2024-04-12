@@ -32,5 +32,7 @@ public class ProdInsVO {
 	
 	//생산계획 상세
 	List<ProdPlanDeVO> pldvo;
+	//공정상세
+	List<ProcessVO> procvo;
 
 }

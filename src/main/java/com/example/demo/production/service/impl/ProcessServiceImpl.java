@@ -29,6 +29,7 @@ public class ProcessServiceImpl implements ProcessService {
 		//지시상세
 		if(list != null && list.size() > 0) {
 			map.put("prodInsDe", processMapper.getTodayInsDetail(list.get(0).getProdInstructCode()));
+			
 		}
 		return map;
 	}
