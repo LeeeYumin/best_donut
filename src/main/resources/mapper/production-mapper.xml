@@ -235,7 +235,7 @@
 			, INSTRUCT_CNT
 			, NOT_PROD_CNT
 			, PROD_CNT
-     		 )
+     	)
 		VALUES 
 			( seq_func('prod_instruct_detail')
 			, #{prodPlanDetailCode}

@@ -171,7 +171,7 @@ getEqmCheck();
 		await fetch("/ajax/weeklyPlan")
 		.then(res => res.json())
 		.then(res => {
-			//console.log(res);
+			console.log(res);
 
 			wplan.resetData(res.weeklyPlan); //ServiceImpl에서 넘겨 준 변수명
 			wplanD.resetData(res.weeklyPlanDe);
@@ -544,7 +544,7 @@ getEqmCheck();
 				await fetch("/ajax/eqmCheck")
 				.then(res => res.json())
 				.then(res => {
-					console.log(res);
+					//console.log(res);
 					eqmCheck.resetData(res);
 				})
 			};
