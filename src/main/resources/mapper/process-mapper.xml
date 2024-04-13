@@ -58,15 +58,16 @@
 <!-- 공정 시작 -->
 	<update id="updateBeginTime" parameterType="ProcessVO" >
 		UPDATE proc_detail
-		SET begin_time = SYSDATE
-		  , proc_status = 'CS2'
+		SET    begin_time = SYSDATE
+		     , proc_status = 'CS2'
+		     , users_code = #{usersCode}
 		WHERE proc_detail_code = #{procDetailCode}
 	</update>
 <!-- 공정 종료 -->
 	<update id="updateEndTime" parameterType="ProcessVO" >
 		UPDATE proc_detail
-		SET end_time = SYSDATE
-		  , proc_status = 'CS3'
+		SET    end_time = SYSDATE
+		     , proc_status = 'CS3'
 		WHERE proc_detail_code = #{procDetailCode}
 	</update>
 <!-- 설비상태 변경 -->

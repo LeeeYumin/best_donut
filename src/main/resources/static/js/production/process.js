@@ -255,18 +255,71 @@ async function getProcMatInfo(prdCode){
 //==================================================================
 /* < 공정 시작 & 종료 > */
 
-//시작버튼 클릭 시 유효성 검사
+//시작버튼 클릭 시 유효성 검사 (수정하기)
 function beforeStartCheck() {
   const alert = document.getElementById('alertMsg');
   
   const row = procInfo.getFocusedCell().rowKey;
   const ucode = procInfo.getData()[row].usersCode;
 
+  const btime = procInfo.getData()[row].beginTime;
+  const etime = procInfo.getData()[row].endTime;
+
+    // if(row == null) {
+    //   alert.innerHTML = '<span style="color:red">※</span> 시작할 공정을 선택하세요.';
+    //   return false;
+    // }
   //담당자 정보
-    if(ucode == null || ucode == '') {
+    if (ucode == null || ucode == '') {
       alert.innerHTML = '<span style="color:red">※</span> 담당자 정보를 입력하세요.';
       return false;
     }
+    
+    if ( btime != null && etime != null ) {
+      alert.innerHTML = '<span style="color:red">※</span> 이미 완료된 공정입니다.';
+      return false;
+    } else  if ( btime != null ) {
+      alert.innerHTML = '<span style="color:red">※</span> 이미 진행 중인 공정입니다.';
+      return false;
+    } 
+    // if(btime != null || btime != '') {
+    //   alert.innerHTML = '<span style="color:red">※</span> 이미 진행 중인 공정입니다.';
+    //   return false;
+    // }
+
+    // if(btime != null && etime != null) {
+    //   alert.innerHTML = '<span style="color:red">※</span> 이미 완료된 공정입니다.';
+    //   return false;
+    // }
+
+
+  alert.innerHTML = '';
+  return true;
+}
+function beforeEndCheck() {
+  const alert = document.getElementById('alertMsg');
+  
+  const row = procInfo.getFocusedCell().rowKey;
+
+  const btime = procInfo.getData()[row].beginTime;
+  const etime = procInfo.getData()[row].endTime;
+
+  // if(row == null) {
+  //   alert.innerHTML = '<span style="color:red">※</span> 종료할 공정을 선택하세요.';
+  //   return false;
+  // }
+
+  if ( btime == null ) {
+    alert.innerHTML = '<span style="color:red">※</span> 아직 시작되지 않은 공정입니다.';
+    return false;
+  } else if ( btime != null && etime != null ) {
+    alert.innerHTML = '<span style="color:red">※</span> 이미 종료된 공정입니다.';
+    return false;
+  }
+  // if(etime != null || etime != '') {
+  //   alert.innerHTML = '<span style="color:red">※</span> 이미 종료된 공정입니다.';
+  //   return false;
+  // }
 
   alert.innerHTML = '';
   return true;
@@ -274,7 +327,7 @@ function beforeStartCheck() {
 
 //공정 시작하기
 async function startProc() {
-  procInfo.blur();
+  //procInfo.blur();
 
   if(!beforeStartCheck()) {
     return;
@@ -283,8 +336,10 @@ async function startProc() {
   const row = procInfo.getFocusedCell().rowKey;
   const pcode = procInfo.getData()[row].procDetailCode;
   const ecode = procInfo.getData()[row].eqmCode;
+  const ucode = procInfo.getData()[row].usersCode;
   
-  let param = {procDetailCode: pcode, eqmCode: ecode}
+  let param = {procDetailCode: pcode, eqmCode: ecode, usersCode: ucode}
+  console.log(param);
 
   await fetch('ajax/updateBeginTime', {
     method: 'post',
@@ -294,8 +349,32 @@ async function startProc() {
   .then(res => res.json())
   .then(res => {
     console.log(res);
-  })
+    //getProcessInfo(res.procDetailCode);
+  });
+}
+//공정 종료하기
+async function endProc() {
 
+  if(!beforeEndCheck()) {
+    return;
+  }
+
+  const row = procInfo.getFocusedCell().rowKey;
+  const pcode = procInfo.getData()[row].procDetailCode;
+  const ecode = procInfo.getData()[row].eqmCode;
   
+  let param = {procDetailCode: pcode, eqmCode: ecode}
+  console.log(param);
 
+  await fetch('ajax/updateEndTime', {
+    method: 'post',
+    headers: jsonHeaders,
+    body : JSON.stringify(param)
+  })
+  .then(res => res.json())
+  .then(res => {
+    console.log(res);
+    //그리드만 새로 로딩되는 거?
+    //getProcessInfo(res.procDetailCode);
+  });
 }
