@@ -48,8 +48,14 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	@Override
-	public List<ProQltyVO> insertProQual() {
-		return qualityMapper.insertProQual(); //grid2 완제품품질입력
+	public boolean insertProQual(List<ProQltyVO> list) {
+		int result = 0;
+		
+		for(ProQltyVO vo : list) {
+			result += qualityMapper.insertProQual(vo);
+			result += qualityMapper.addProQual(vo);
+		}
+		return result > 0 ? true : false; //grid2 완제품품질입력
 	}
 
 	@Override
@@ -57,10 +63,10 @@ public class QualityServiceImpl implements QualityService {
 		return qualityMapper.selectProQual();
 	}
 
-	@Override
-	public boolean addProQual(ProDetailVO pvo) {
-		return qualityMapper.addProQual(pvo);
-	}
+//	@Override
+//	public boolean addProQual(int goodCnt, String productLotCode) {
+//		return qualityMapper.addProQual(goodCnt, productLotCode);
+//	}
 
 
 
