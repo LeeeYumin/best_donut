@@ -33,6 +33,11 @@ const grid1 = new tui.Grid({
   rowHeaders: ['checkbox'],
   columns : [
     {
+      header : '완제품Lot코드',
+      name : 'productLotCode',
+      align : "center",
+    },
+    {
       header : '완제품코드',
       name : 'productCode',
       align : "center",
@@ -42,11 +47,7 @@ const grid1 = new tui.Grid({
       name : 'productName',
       align : "center",
     },
-    {
-      header : '완제품Lot코드',
-      name : 'productLotCode',
-      align : "center",
-    },
+
     {
       header : '생산완료일자',
       name : 'allEndTime',
@@ -202,6 +203,18 @@ const grid2 = new tui.Grid({
 });
 
 
+async function selectProQual(){
+  await fetch(`ajax/selectProQual`)
+  .then(res => res.json())
+  .then(res => {
+    // ajax로 불러온 데이터 그리드에 넣음
+    console.log("selectProQual: ", res);
+    grid2.resetData(res);
+  })
+};
+
+selectProQual();
+
 //grid2 입력값
 grid2.on('afterChange', event => {
   console.log(event.changes[0]); //0번째 배열에 정보가 들어있음
@@ -232,36 +245,28 @@ grid2.on('afterChange', event => {
   }
 })
 
-// grid2 완제품 품질입력
-function insertProDtl(insertPro){
-	fetch(`ajax/selectProQuality?selectProQuality=${insertPro}`)
-	.then(res => res.json())
-	.then(res => {
-		// ajax로 불러온 데이터 그리드에 넣음
-    console.log("insertProDtl: ", res);
-		grid2.resetData(res);
-	})
-};
-
-insertProDtl();
-
-function selectProQual(){
-	fetch(`ajax/selectProQual`)
-	.then(res => res.json())
-	.then(res => {
-		// ajax로 불러온 데이터 그리드에 넣음
-    console.log("selectProQual: ", res);
-		grid2.resetData(res);
-	})
-};
-
-selectProQual();
+// grid2 완제품 품질입력 : 생산완료일자 검색
+// function insertProDtl(insertPro){
+// 	fetch(`ajax/selectProQuality?selectProQuality=${insertPro}`)
+// 	.then(res => res.json())
+// 	.then(res => {
+// 		// ajax로 불러온 데이터 그리드에 넣음
+//     console.log("insertProDtl: ", res);
+// 		grid2.resetData(res);
+// 	})
+// };
 
 //버튼누르면 적합수량->적합 수량에 insert & 입고 수량에 update
 function addProQual(){
-  fetch(`ajax/addProQual`)
+  const data = grid2.getData();
+  console.log(JSON.stringify(data));
+  fetch(`ajax/insertProQual`,{
+    method : 'post',
+   	headers: jsonHeaders,
+		body : JSON.stringify(data)
+  })
   .then(res => res.json())
 	.then(res => {
-    grid2.resetData(res);
+    console.log(res);
 })
 }

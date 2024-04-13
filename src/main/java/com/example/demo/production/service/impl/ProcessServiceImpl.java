@@ -38,37 +38,48 @@ public class ProcessServiceImpl implements ProcessService {
 /* < 공정 > */
 	//1)조회
 	@Override
-	public List<ProcessVO> getProcessInfo(String prodInsDetailCode) {
+	public List<ProcessVO> getProcessInfo(String prodInsDetailCode) { //공정진행
 		return processMapper.getProcessInfo(prodInsDetailCode);
 	}
-
 	@Override
-	public List<ProcessVO> getProcMatInfo(String procDetailCode) {
+	public List<ProcessVO> getProcMatInfo(String procDetailCode) { //투입자재
 		return processMapper.getProcMatInfo(procDetailCode);
 	}
+	@Override
+	public List<ProcessVO> getProcEqmInfo() { //사용설비 가동상태
+		return processMapper.getProcEqmInfo();
+	}
+
 
 	//2)수정
 	@Override
-	public int updateBeginTime(ProcessVO vo) {
-		int result = 0;
-		processMapper.updateBeginTime(vo);
-		
-		vo.setOprStatus("FO2");
-		result = processMapper.updateOprStatus(vo);
-		
-		return result;
+	public int updateProc(ProcessVO vo) {
+		return processMapper.updateProc(vo);
 	}
+	
+//	@Override
+//	public int updateBeginTime(ProcessVO vo) {
+//		int result = 0;
+//		processMapper.updateBeginTime(vo);
+//		
+//		vo.setOprStatus("FO2");
+//		result = processMapper.updateOprStatus(vo);
+//		
+//		return result;
+//	}
+//
+//	@Override
+//	public int updateEndTime(ProcessVO vo) {
+//		int result = 0;
+//		processMapper.updateEndTime(vo);
+//		
+//		vo.setOprStatus("FO1");
+//		result = processMapper.updateOprStatus(vo);
+//		
+//		return result;
+//	}
 
-	@Override
-	public int updateEndTime(ProcessVO vo) {
-		int result = 0;
-		processMapper.updateEndTime(vo);
-		
-		vo.setOprStatus("FO1");
-		result = processMapper.updateOprStatus(vo);
-		
-		return result;
-	}
+
 
 
 

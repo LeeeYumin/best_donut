@@ -21,6 +21,8 @@ public class ProcessVO {
 	private String usersCode;
 
 	private String prodInstructCode;
+	private String se; //시작종료 구분
+	private String result; //프로시저 성공여부
 	
 	//공정
 	private String serialNum;
@@ -34,6 +36,7 @@ public class ProcessVO {
 	
 	//설비
 	private String oprStatus;
+	private String eqmName;
 
 	
 }

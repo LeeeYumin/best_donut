@@ -35,7 +35,9 @@ public class WebSecurityConfig {
 		http
 			.authorizeHttpRequests((requests) -> requests
 				.antMatchers("/**", "/home").permitAll()
+//				.antMatchers("/login").permitAll()
 				//.antMatchers("/empList").hasAnyRole("ADMIN")
+				//.antMatchers("/userslist").hasAnyRole("PER00001")
 				//.anyRequest().authenticated()
 			)
 			// 람다식

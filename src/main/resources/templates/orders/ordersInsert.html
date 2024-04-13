@@ -14,6 +14,7 @@
   <!-- thymeleaf -->
   <div layout:fragment="content">
 
+		<!-- 페이지 제목 안내 -->
     <h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">영업관리 / </span> 주문 등록
 		</h3>
@@ -25,14 +26,10 @@
 				<div class="card mb-4">
 					<h5 class="card-header">주문정보 입력</h5>
 					<div class="card-body demo-vertical-spacing demo-only-element">
-            <!-- 입력정보 -->
-						<!-- <div class="row mb-3">
-							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문코드</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control" id="ordersCode" name="ordersCode">
-							</div>
-						</div> -->
+            
+						<!-- 입력정보 -->
 
+						<!-- 주문일자 -->
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문일자</label>
 							<div class="col-sm-6">
@@ -40,6 +37,7 @@
               </div>
 						</div>
 
+						<!-- 납기일자 -->
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
 							<div class="col-sm-6 input-group">
@@ -47,6 +45,7 @@
 							</div>
 						</div>
 
+						<!-- 총주문금액 -->
             <div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">총주문금액</label>
 							<div class="col-sm-6 input-group">
@@ -68,6 +67,7 @@
 							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="saveInsert()">등록</button>
 							<button type="button" class="btn btn-primary" id="resetOrdBtn" onclick="resetInsert()">초기화</button>
 						</div>
+
 					</div>
 				</div>
 			</form>
@@ -76,7 +76,7 @@
 		<!-- grid -->
 		<div class="ordDetGrid">
 			<div class="card">
-				<!-- 주문 목록 -->
+				<!-- 주문 목록 그리드-->
 				<h5 class="card-header col-sm-6">주문상세정보 입력</h5>
 				<div class="card-body demo-vertical-spacing demo-only-element">
 					<div id="ordDetGrid"></div>

@@ -92,17 +92,12 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 
 		//생산계획 상세
 		int result = 0;
-		for(int i = 0; i < vo.getDvo().size(); i++) {
-			ProdPlanDeVO dvo = vo.getDvo().get(i);
-			
-			dvo.setProdPlanCode(vo.getProdPlanCode()); //생산계획코드
-			result = prodPlanMapper.deleteProdPlanDetail(dvo);
-		}
+		prodPlanMapper.deleteProdPlanDetail(vo.getProdPlanCode());
 		
 		//생산계획 (상세 삭제 후)
 		prodPlanMapper.deleteProdPlan(vo);
 		//생산요청 상태 수정
-		prodPlanMapper.cancelProdReqStatus(vo);
+		result = prodPlanMapper.cancelProdReqStatus(vo);
 		
 		return result;
 	}

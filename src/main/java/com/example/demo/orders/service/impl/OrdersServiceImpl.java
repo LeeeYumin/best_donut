@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.orders.OrdersVO;
+import com.example.demo.orders.ProdReqDetailVO;
+import com.example.demo.orders.ProdReqVO;
 import com.example.demo.orders.mapper.OrdersMapper;
 import com.example.demo.orders.service.OrdersService;
 
@@ -16,32 +18,34 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Autowired OrdersMapper ordersMapper;
 
-	// 1. 주문조회
+// I. 주문
 	
-	// 거래처 조회
+	// 1. 조회
+	
+	// (1) 거래처조회
 	@Override
 	public List<Map<String, Object>> getCompany() {
 		return ordersMapper.getCompany();
 	}
 	
-	// 주문조회
+	// (2) 주문조회
 	@Override
 	public List<OrdersVO> getOrders(OrdersVO vo) {
 		return ordersMapper.getOrders(vo);
 	}
 
-	// 주문상세조회
+	// (3) 주문상세조회
 	@Override
 	public List<OrdersDetailVO> getOrdersDetail(String ordersCode) {
 		return ordersMapper.getOrdersDetail(ordersCode);
 	}
-
 	
-	// 2. 주문등록
+	// 2. 등록
 	
-	// 주문등록 + 주문상세등록
+	// (1) 주문등록 + 주문상세등록
 	@Override
 	public boolean insertOrders(OrdersVO vo) {
+		// 주문등록
 		ordersMapper.insertOrders(vo);
 		
 		int result = 0;
@@ -49,22 +53,51 @@ public class OrdersServiceImpl implements OrdersService{
 			OrdersDetailVO dvo = vo.getOrdDetList().get(i);
 			
 			dvo.setOrdersCode(vo.getOrdersCode());
+			// 주문상세등록
 			result += ordersMapper.insertOrdDet(dvo);
 		}
 		
 		return result >= 1 ? true : false;
 	}
-	
-	// 3. 주문 삭제
+		
+	// 3. 삭제
 
+	// (1) 주문삭제
 	@Override
 	public int deleteOrders(String ordersCode) {
 		return ordersMapper.deleteOrders(ordersCode);
 	}
 
+	// (2) 주문상세삭제
 	@Override
 	public int deleteOrdDet(String ordersCode) {
 		return ordersMapper.deleteOrdDet(ordersCode);
 	}
+	
+	
+// II. 생산요청
+
+	// 1 .조회
+	
+	// (1) 생산요청조회
+	@Override
+	public List<ProdReqVO> getProdReq(ProdReqVO vo) {
+		return ordersMapper.getProdReq(vo);
+	}
+	
+	// (2) 생산요청상세조회
+	@Override
+	public List<ProdReqDetailVO> getProdReqDet(String prodReqCode) {
+		return ordersMapper.getProdReqDet(prodReqCode);
+	}
+		
+	// 2. 등록
+
+	// (1) 생산요청등록
+	@Override
+	public boolean insertProdReq(ProdReqVO vo) {
+		return ordersMapper.insertProdReq(vo) == 1 ? true : false;
+	}
+	
 		
 }
