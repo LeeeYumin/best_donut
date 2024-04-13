@@ -66,10 +66,10 @@ public class QualityController {
 		return qualityService.selectProQuality();
 	}
 	
-	@GetMapping("ajax/insertProQual")
+	@PostMapping("ajax/insertProQual")
 	@ResponseBody
-	public List<ProQltyVO> insertProQual(){
-		return qualityService.insertProQual();
+	public boolean insertProQual(@RequestBody List<ProQltyVO> vo){
+		return qualityService.insertProQual(vo);
 	}
 	
 	@GetMapping("ajax/selectProQual")
@@ -78,11 +78,11 @@ public class QualityController {
 		return qualityService.selectProQual();
 	}
 	
-	@GetMapping("ajax/addProQual")
-	@ResponseBody
-	public boolean addProQual(ProDetailVO pvo) {
-		return qualityService.addProQual(pvo);
-	}
+//	@GetMapping("ajax/addProQual")
+//	@ResponseBody
+//	public boolean addProQual(int goodCnt, String productLotCode) {
+//		return qualityService.addProQual(goodCnt, productLotCode);
+//	}
 	
 	//완제품 품질 관리
 	

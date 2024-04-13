@@ -64,6 +64,7 @@
        , 'PFN' "foreignExist"
        , 'PSY' "packStatus"
        , 'MCY' "lastResult"
+       , h.INOUT_CNT "goodCnt"
 	  FROM MAT_DETAIL s JOIN MAT_INOUT_HISTORY h
 		ON s.MAT_LOT_CODE = h.MAT_LOT_CODE
 		<where>
@@ -160,12 +161,27 @@ SELECT d.PRODUCT_CODE
 				)
 </insert>
 
-<update id="addProQual" parameterType="ProDetailVO">
+<update id="addProQual">
 	UPDATE product_detail
-	   SET WAREHOUSING_CNT = WAREHOUSING_CNT + #{goodCnt}
+	   SET check_done_cnt = #{goodCnt}
+	   		, remain_cnt = #{goodCnt}
+	   		, delivery_cnt = 0
+	   		, qlty_check_status = 'PQ2'
 	 WHERE PRODUCT_LOT_CODE = #{productLotCode}
 </update>
 
+<!-- 완제품 불량등록 -->
 
+<!-- 완제품 품질 관리 -->
+<select id="adminProQuality" resultType="ProQltyVO">
+	SELECT p.product_code
+		, d.product_name
+		,c.check_recv_date
+		,c.last_result
+	FROM  PRODUCT p JOIN PRODUCT_DETAIL d
+	  		          ON p.PRODUCT_CODE = d.PRODUCT_CODE
+	  		          RIGHT OUTER JOIN PROC_RESULT c 
+                      ON c.PRODUCT_LOT_CODE = d.PRODUCT_LOT_CODE 
+</select>
 
 </mapper>
