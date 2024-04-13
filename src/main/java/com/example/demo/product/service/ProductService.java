@@ -3,12 +3,17 @@ package com.example.demo.product.service;
 import java.util.List;
 
 import com.example.demo.product.ProductDetailVO;
+import com.example.demo.product.ProductInoutVO;
 import com.example.demo.product.ProductVO;
 
 public interface ProductService {
 
-	public List<ProductVO> getProduct();
-	public List<ProductVO> getReqProd(String dueStartDate, String dueEndDate);
-	public List<ProductDetailVO> getProdDet(ProductDetailVO vo);
+	// 1. 조회
+	public List<ProductVO> getProduct();										// 제품조회
+	public List<ProductVO> getReqProd(String dueStartDate, String dueEndDate);	// 제품조회
+	public List<ProductDetailVO> getProdDet(ProductDetailVO vo);				// 제품상세조회 
+	public List<ProductDetailVO> getProdLot(String productCode);				// 제품상세조회
 
+	// 2. 등록
+	public boolean insertInout(ProductInoutVO vo);								// 완제품출고등록
 }

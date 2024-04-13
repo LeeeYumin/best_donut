@@ -10,13 +10,96 @@
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 </head>
 <body>
-	<!--  레이아웃 div -->
+	<!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
-		<h2>완제품 출고 등록</h2>
+	
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">영업관리 / </span> 완제품출고등록
+		</h3>
 
-		<!-- script import -->
+		<!-- 검색 폼 -->
+		<div class="search">
+			<form name="searchForm" method="post">
+				<div class="card mb-4">
+					<h5 class="card-header">검색조건</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="ordersCode" name="ordersCode">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
+							<div class="col-sm-6">
+								<select class="form-select" id="companyName" aria-label="companyName">
+									<option value="" selected="">거래처명</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문일자</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="ordersStartDate" id="ordersStartDate">
+								<span class="input-group-text">~</span> 
+								<input type="date" class="form-control" name="ordersEndDate" id="ordersEndDate">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="dueStartDate" id="dueStartDate">
+								<span class="input-group-text">~</span> 
+								<input type="date" class="form-control" name="dueEndDate" id="dueEndDate">
+							</div>
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchOrders()">검색</button>
+							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
+						</div>
+
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- grid -->
+		<div class="ordersGrid">
+			<div class="card">
+
+				<!-- 주문 목록 -->
+				<h5 class="card-header">주문 목록</h5>
+				<!-- 그리드 div-->
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="ordGrid"></div>
+				</div>
+
+				<!-- 주문 상세 목록 -->
+				<h5 class="card-header">주문상세 목록</h5>
+				<!-- 그리드 div-->
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="detGrid"></div>
+				</div>
+
+			</div>
+		</div>		
+		<!-- script -->
 		<script src="/js/product/exportInsert.js"></script>
 	</div>
 </body>
-
+<script>
+	
+	// <!-- 완제품 LOT 목록 -->
+	// <h5 class="card-header">완제품 LOT 목록</h5>
+	// <!-- 그리드 div-->
+	// <div class="card-body demo-vertical-spacing demo-only-element">
+	// 	<div id="prodLotGrid"></div>
+	// </div>
+	
+</script>
 </html>
