@@ -15,10 +15,13 @@ public interface ProcessService {
 	//1)조회
 	public List<ProcessVO> getProcessInfo(String prodInsDetailCode);
 	public List<ProcessVO> getProcMatInfo(String procDetailCode);
+	public List<ProcessVO> getProcEqmInfo(); //사용되는 설비 가동현황
 	
 	//2)수정
-	public int updateBeginTime(ProcessVO vo);
-	public int updateEndTime(ProcessVO vo);
+//	public int updateBeginTime(ProcessVO vo);
+//	public int updateEndTime(ProcessVO vo);
+	public int updateProc(ProcessVO vo);
+
 	
 
 	

@@ -1,5 +1,5 @@
 getTodayIns();
-//getProcessInfo('PID00009');
+getEqmOpr();
 
 //생산지시 진행상태
   class InsStatus {
@@ -22,7 +22,7 @@ getTodayIns();
     if(value == "IS1") {
         result = "지시완료";
     } else if(value == "IS2") {
-        result = "진행중";
+        result = "생산중";
     } else if(value == "IS3") {
         result = "생산완료";
     }
@@ -57,6 +57,36 @@ function procStatus(value){
   return result;
 }
 
+//설비가동현황
+class EqmOprStatus {
+  constructor(props) {
+      const el = document.createElement('div');
+
+      this.el = el;
+      this.render(props);
+  }
+  render(props) {
+    this.el.innerText = eqmOprStatus(props.formattedValue);
+  }
+  getElement() {
+      return this.el;
+  }
+}
+
+function eqmOprStatus(value){
+  let result;
+  if(value == "FO1") {
+      result = "대기";
+  } else if(value == "FO2") {
+      result = "가동중";
+  } else if(value == "FO3") {
+      result = "전원꺼짐";
+  }
+  return result;
+}
+
+
+// =============================================================
 /* < 당일 생산지시 > */
 const todayIns = new tui.Grid({
   el : document.getElementById('todayIns'),
@@ -255,38 +285,99 @@ async function getProcMatInfo(prdCode){
 //==================================================================
 /* < 공정 시작 & 종료 > */
 
-//시작버튼 클릭 시 유효성 검사
+//시작버튼 클릭 시 유효성 검사 (수정하기)
 function beforeStartCheck() {
   const alert = document.getElementById('alertMsg');
   
   const row = procInfo.getFocusedCell().rowKey;
   const ucode = procInfo.getData()[row].usersCode;
 
+  const btime = procInfo.getData()[row].beginTime;
+  const etime = procInfo.getData()[row].endTime;
+
+    // if(row == null) {
+    //   alert.innerHTML = '<span style="color:red">※</span> 시작할 공정을 선택하세요.';
+    //   return false;
+    // }
   //담당자 정보
-    if(ucode == null || ucode == '') {
+    if (ucode == null || ucode == '') {
       alert.innerHTML = '<span style="color:red">※</span> 담당자 정보를 입력하세요.';
       return false;
     }
+    
+    if ( btime != null && etime != null ) {
+      alert.innerHTML = '<span style="color:red">※</span> 이미 완료된 공정입니다.';
+      return false;
+    } else  if ( btime != null ) {
+      alert.innerHTML = '<span style="color:red">※</span> 이미 진행 중인 공정입니다.';
+      return false;
+    } 
+    // if(btime != null || btime != '') {
+    //   alert.innerHTML = '<span style="color:red">※</span> 이미 진행 중인 공정입니다.';
+    //   return false;
+    // }
+
+    // if(btime != null && etime != null) {
+    //   alert.innerHTML = '<span style="color:red">※</span> 이미 완료된 공정입니다.';
+    //   return false;
+    // }
+
+
+  alert.innerHTML = '';
+  return true;
+}
+function beforeEndCheck() {
+  const alert = document.getElementById('alertMsg');
+  
+  const row = procInfo.getFocusedCell().rowKey;
+
+  const btime = procInfo.getData()[row].beginTime;
+  const etime = procInfo.getData()[row].endTime;
+
+  // if(row == null) {
+  //   alert.innerHTML = '<span style="color:red">※</span> 종료할 공정을 선택하세요.';
+  //   return false;
+  // }
+
+  if ( btime == null ) {
+    alert.innerHTML = '<span style="color:red">※</span> 아직 시작되지 않은 공정입니다.';
+    return false;
+  } else if ( btime != null && etime != null ) {
+    alert.innerHTML = '<span style="color:red">※</span> 이미 종료된 공정입니다.';
+    return false;
+  }
+  // if(etime != null || etime != '') {
+  //   alert.innerHTML = '<span style="color:red">※</span> 이미 종료된 공정입니다.';
+  //   return false;
+  // }
 
   alert.innerHTML = '';
   return true;
 }
 
 //공정 시작하기
-async function startProc() {
-  procInfo.blur();
+function startProc() {
+  //procInfo.blur();
 
   if(!beforeStartCheck()) {
     return;
   }
 
   const row = procInfo.getFocusedCell().rowKey;
-  const pcode = procInfo.getData()[row].procDetailCode;
-  const ecode = procInfo.getData()[row].eqmCode;
-  
-  let param = {procDetailCode: pcode, eqmCode: ecode}
 
-  await fetch('ajax/updateBeginTime', {
+  // const pcode = procInfo.getValue(row, "procDetailCode");
+  const pdcode = procInfo.getValue(row, "prodInstructDetailCode");
+  // const ecode = procInfo.getValue(row, "row].eqmCode;
+  // const ucode = procInfo.getData()[row].usersCode;
+
+  const picode = todayIns.getValue(0, 'prodInstructCode');
+  
+  let param = procInfo.getRow(row);
+  param.se = 's';
+  param.prodInstructCode = picode;
+  console.log(param);
+
+  fetch('ajax/updateProc', {
     method: 'post',
     headers: jsonHeaders,
     body : JSON.stringify(param)
@@ -294,8 +385,82 @@ async function startProc() {
   .then(res => res.json())
   .then(res => {
     console.log(res);
-  })
 
-  
-
+    getProcessInfo(pdcode);
+  });
 }
+//공정 종료하기
+function endProc() {
+
+  if(!beforeEndCheck()) {
+    return;
+  }
+
+  const row = procInfo.getFocusedCell().rowKey;
+  // const pcode = procInfo.getData()[row].procDetailCode;
+  // const ecode = procInfo.getData()[row].eqmCode;
+  const picode = todayIns.getValue(0, 'prodInstructCode');
+  const pdcode = procInfo.getValue(row, "prodInstructDetailCode");
+
+  let param = procInfo.getRow(row);
+  console.log(param);
+  param.se = 'e';
+  param.prodInstructCode = picode;
+
+  fetch('ajax/updateProc', {
+    method: 'post',
+    headers: jsonHeaders,
+    body : JSON.stringify(param)
+  })
+  .then(res => res.json())
+  .then(res => {
+    console.log(res);
+    
+    getProcessInfo(pdcode);
+  });
+}
+
+
+
+//=======================================================
+		/* 공정에 사용되는 설비 가동현황*/
+			const eqmOpr = new tui.Grid({
+				el: document.getElementById('eqmOpr'),
+				scrollX: false,
+				scrollY: true,
+				bodyHeight: 200,
+				rowHeaders: ['rowNum'],
+				columns: [
+          {
+            header : 'NO',
+            name : 'serialNum',
+            align: 'center'
+          }, 
+          {
+          header : '설비코드',
+          name : 'eqmCode',
+          align: 'center'
+          },
+          {
+            header : '설비명',
+            name : 'eqmName',
+            align: 'center'
+          },
+					{
+						header: '가동현황',
+						name: 'oprStatus',
+						align: 'center',
+						renderer: {type: EqmOprStatus}
+					}
+				]
+			});
+
+			// 설비조회(ajax)
+			async function getEqmOpr(){
+				await fetch("/ajax/procEqmInfo")
+				.then(res => res.json())
+				.then(res => {
+					console.log(res);
+					eqmOpr.resetData(res);
+				})
+			};
