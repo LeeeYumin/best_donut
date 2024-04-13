@@ -16,16 +16,40 @@ public class NotOprServiceImpl implements NotOprService{
 
 	@Autowired NotOprMapper notOprmapper;
 	
+	// 전체조회
 	@Override
 	public List<NotOprVO> getNotOpr(NotOprVO vo) {
 		return notOprmapper.getNotOpr(vo);
 	}
 
+	// 등록
 	@Override
 	public int insertNotOpr(NotOprVO vo) {
 		return notOprmapper.insertNotOpr(vo);
 	}
 
+	// 단건조회
+	@Override
+	public NotOprVO getNotOprInfo(String notOprCode) {
+		return notOprmapper.getNotOprInfo(notOprCode);
+	}
+
+	// 수정
+	@Override
+	public int updateNotOpr(NotOprVO vo) {
+		return notOprmapper.updateNotOpr(vo);
+	}
+	
+	// 삭제
+	@Override
+	public int deleteNotOpr(String notOprCode) {
+		return notOprmapper.deleteNotOpr(notOprCode);
+	}
+	
+	
+	
+	
+	// Select Option
 	@Override
 	public List<UsersVO> getUsers() {
 		return notOprmapper.getUsers();
@@ -34,11 +58,6 @@ public class NotOprServiceImpl implements NotOprService{
 	@Override
 	public List<EqmVO> getEqm() {
 		return notOprmapper.getEqm();
-	}
-
-	@Override
-	public NotOprVO getNotOprInfo(String notOprCode) {
-		return notOprmapper.getNotOprInfo(notOprCode);
 	}
 
 }

@@ -13,10 +13,11 @@ public interface NotOprMapper {
 
 	public List<NotOprVO> getNotOpr(NotOprVO vo);
 	public int insertNotOpr(NotOprVO vo);
+	public NotOprVO getNotOprInfo(String notOprCode);
+	public int updateNotOpr(NotOprVO vo);
+	public int deleteNotOpr(String notOprCode);
 	
 	public List<UsersVO> getUsers();
 	public List<EqmVO> getEqm();
-	
-	public NotOprVO getNotOprInfo(String notOprCode);
 	
 }

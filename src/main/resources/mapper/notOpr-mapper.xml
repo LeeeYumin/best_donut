@@ -88,7 +88,8 @@
 				, EQM_STATUS
 				, OPR_STATUS
 		FROM EQM
-		WHERE EQM_STATUS = 'ES1' OR EQM_STATUS = 'ES2'
+		WHERE (EQM_STATUS = 'ES1' OR EQM_STATUS = 'ES2')
+		AND (OPR_STATUS = 'FO1' OR OPR_STATUS = 'FO3')
 		ORDER BY 1
 	</select>
 	
@@ -109,5 +110,25 @@
 		JOIN USERS u ON n.USERS_CODE = u.USERS_CODE
 		WHERE n.NOT_OPR_CODE = #{notOprCode}
 	</select>
+	
+	
+	<!-- 수정 -->
+	<update id="updateNotOpr" parameterType="NotOprVO">
+		UPDATE NOT_OPR
+		SET NOT_OPR_SEP = #{notOprSep}
+			, BEGIN_DATE = #{beginDate}
+			, END_DATE = #{endDate}
+			, CONTENTS_CONTENTS = #{contentsContents}
+			, USERS_CODE = #{usersCode}
+			, EQM_CODE = #{eqmCode}
+		WHERE NOT_OPR_CODE = #{notOprCode}
+	</update>
+	
+	
+	<!-- 삭제 -->
+	<delete id="deleteNotOpr" parameterType="String">
+		DELETE FROM NOT_OPR
+		WHERE NOT_OPR_CODE = #{notOprCode}
+	</delete>
 
 </mapper>
