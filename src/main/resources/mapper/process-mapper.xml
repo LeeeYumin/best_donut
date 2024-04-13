@@ -55,26 +55,43 @@
 	  WHERE proc_detail_code = #{procDetailCode}
   </select>
 
-<!-- 공정 시작 -->
-	<update id="updateBeginTime" parameterType="ProcessVO" >
+<!-- 공정-->
+	<insert id="updateProc" parameterType="ProcessVO" statementType="CALLABLE">
+		{ CALL PROC_UPDATE(#{prodInstructCode}, #{usersCode}, #{procDetailCode}, #{se}, #{eqmCode}, #{result, mode=OUT, jdbcType=VARCHAR, javaType=string}) }
+	</insert>
+<!-- 	<update id="updateBeginTime" parameterType="ProcessVO" >
 		UPDATE proc_detail
 		SET    begin_time = SYSDATE
 		     , proc_status = 'CS2'
 		     , users_code = #{usersCode}
 		WHERE proc_detail_code = #{procDetailCode}
-	</update>
+	</update> -->
 <!-- 공정 종료 -->
-	<update id="updateEndTime" parameterType="ProcessVO" >
+	<!-- <update id="updateEndTime" parameterType="ProcessVO" >
 		UPDATE proc_detail
 		SET    end_time = SYSDATE
 		     , proc_status = 'CS3'
 		WHERE proc_detail_code = #{procDetailCode}
-	</update>
+	</update> -->
 <!-- 설비상태 변경 -->
-	<update id="updateOprStatus" parameterType="ProcessVO">
+<!-- 	<update id="updateOprStatus" parameterType="ProcessVO">
 		UPDATE eqm
 		SET opr_status = #{oprStatus}
 		WHERE eqm_code = #{eqmCode}
-	</update>
+	</update> -->
+	
+<!-- 공정에 사용되는 설비 가동현황 -->
+  <select id="getProcEqmInfo" resultType="ProcessVO">
+    SELECT p.proc_code
+         , p.serial_num
+         , p.eqm_code
+         , eqm_name
+         , opr_status
+    FROM eqm e JOIN proc p
+                ON e.eqm_code = p.eqm_code
+    WHERE eqm_status != 'ES5'
+	</select>
+
+
 
 </mapper>

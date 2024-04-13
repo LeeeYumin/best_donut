@@ -37,7 +37,7 @@ public interface ProdPlanMapper {
 
 	//4)삭제
 	public int deleteProdPlan(ProdPlanVO vo); //1건에
-	public int deleteProdPlanDetail(ProdPlanDeVO dvo); //여러 건
+	public int deleteProdPlanDetail(String prodPlanCode); //여러 건
 	//+ 생산요청상태 수정
 	public int cancelProdReqStatus(ProdPlanVO vo);
 

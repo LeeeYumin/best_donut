@@ -1,5 +1,5 @@
 getTodayIns();
-//getProcessInfo('PID00009');
+getEqmOpr();
 
 //생산지시 진행상태
   class InsStatus {
@@ -22,7 +22,7 @@ getTodayIns();
     if(value == "IS1") {
         result = "지시완료";
     } else if(value == "IS2") {
-        result = "진행중";
+        result = "생산중";
     } else if(value == "IS3") {
         result = "생산완료";
     }
@@ -57,6 +57,36 @@ function procStatus(value){
   return result;
 }
 
+//설비가동현황
+class EqmOprStatus {
+  constructor(props) {
+      const el = document.createElement('div');
+
+      this.el = el;
+      this.render(props);
+  }
+  render(props) {
+    this.el.innerText = eqmOprStatus(props.formattedValue);
+  }
+  getElement() {
+      return this.el;
+  }
+}
+
+function eqmOprStatus(value){
+  let result;
+  if(value == "FO1") {
+      result = "대기";
+  } else if(value == "FO2") {
+      result = "가동중";
+  } else if(value == "FO3") {
+      result = "전원꺼짐";
+  }
+  return result;
+}
+
+
+// =============================================================
 /* < 당일 생산지시 > */
 const todayIns = new tui.Grid({
   el : document.getElementById('todayIns'),
@@ -326,7 +356,7 @@ function beforeEndCheck() {
 }
 
 //공정 시작하기
-async function startProc() {
+function startProc() {
   //procInfo.blur();
 
   if(!beforeStartCheck()) {
@@ -334,14 +364,20 @@ async function startProc() {
   }
 
   const row = procInfo.getFocusedCell().rowKey;
-  const pcode = procInfo.getData()[row].procDetailCode;
-  const ecode = procInfo.getData()[row].eqmCode;
-  const ucode = procInfo.getData()[row].usersCode;
+
+  // const pcode = procInfo.getValue(row, "procDetailCode");
+  const pdcode = procInfo.getValue(row, "prodInstructDetailCode");
+  // const ecode = procInfo.getValue(row, "row].eqmCode;
+  // const ucode = procInfo.getData()[row].usersCode;
+
+  const picode = todayIns.getValue(0, 'prodInstructCode');
   
-  let param = {procDetailCode: pcode, eqmCode: ecode, usersCode: ucode}
+  let param = procInfo.getRow(row);
+  param.se = 's';
+  param.prodInstructCode = picode;
   console.log(param);
 
-  await fetch('ajax/updateBeginTime', {
+  fetch('ajax/updateProc', {
     method: 'post',
     headers: jsonHeaders,
     body : JSON.stringify(param)
@@ -349,24 +385,29 @@ async function startProc() {
   .then(res => res.json())
   .then(res => {
     console.log(res);
-    //getProcessInfo(res.procDetailCode);
+
+    getProcessInfo(pdcode);
   });
 }
 //공정 종료하기
-async function endProc() {
+function endProc() {
 
   if(!beforeEndCheck()) {
     return;
   }
 
   const row = procInfo.getFocusedCell().rowKey;
-  const pcode = procInfo.getData()[row].procDetailCode;
-  const ecode = procInfo.getData()[row].eqmCode;
-  
-  let param = {procDetailCode: pcode, eqmCode: ecode}
-  console.log(param);
+  // const pcode = procInfo.getData()[row].procDetailCode;
+  // const ecode = procInfo.getData()[row].eqmCode;
+  const picode = todayIns.getValue(0, 'prodInstructCode');
+  const pdcode = procInfo.getValue(row, "prodInstructDetailCode");
 
-  await fetch('ajax/updateEndTime', {
+  let param = procInfo.getRow(row);
+  console.log(param);
+  param.se = 'e';
+  param.prodInstructCode = picode;
+
+  fetch('ajax/updateProc', {
     method: 'post',
     headers: jsonHeaders,
     body : JSON.stringify(param)
@@ -374,7 +415,52 @@ async function endProc() {
   .then(res => res.json())
   .then(res => {
     console.log(res);
-    //그리드만 새로 로딩되는 거?
-    //getProcessInfo(res.procDetailCode);
+    
+    getProcessInfo(pdcode);
   });
 }
+
+
+
+//=======================================================
+		/* 공정에 사용되는 설비 가동현황*/
+			const eqmOpr = new tui.Grid({
+				el: document.getElementById('eqmOpr'),
+				scrollX: false,
+				scrollY: true,
+				bodyHeight: 200,
+				rowHeaders: ['rowNum'],
+				columns: [
+          {
+            header : 'NO',
+            name : 'serialNum',
+            align: 'center'
+          }, 
+          {
+          header : '설비코드',
+          name : 'eqmCode',
+          align: 'center'
+          },
+          {
+            header : '설비명',
+            name : 'eqmName',
+            align: 'center'
+          },
+					{
+						header: '가동현황',
+						name: 'oprStatus',
+						align: 'center',
+						renderer: {type: EqmOprStatus}
+					}
+				]
+			});
+
+			// 설비조회(ajax)
+			async function getEqmOpr(){
+				await fetch("/ajax/procEqmInfo")
+				.then(res => res.json())
+				.then(res => {
+					console.log(res);
+					eqmOpr.resetData(res);
+				})
+			};
