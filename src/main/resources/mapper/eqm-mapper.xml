@@ -115,5 +115,12 @@
 			, OPR_STATUS = #{oprStatus}
 		WHERE EQM_CODE = #{eqmCode}
 	</update>
+	
+	
+	<!-- 삭제 -->
+	<delete id="deleteEqm" parameterType="String">
+		DELETE FROM EQM
+		WHERE EQM_CODE = #{eqmCode}
+	</delete>
 
 </mapper>

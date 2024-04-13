@@ -36,7 +36,6 @@ public class EqmController {
 	// 등록
 	@GetMapping("inserteqm")
 	public String insertEqmForm(EqmVO vo) {
-//		model.addAttribute("eqmList", eqmService.getEqm(vo));
 		return "eqm/insertEqm";
 	}
 	
@@ -61,5 +60,13 @@ public class EqmController {
 	public int updateEqm(EqmVO vo) { 
 		return eqmService.updateEqm(vo);
 	}
+	
+	
+	// 삭제
+    @GetMapping("/deleteeqm/{eqmCode}")
+    public String deleteEqm(@PathVariable String eqmCode) {
+    	eqmService.deleteEqm(eqmCode);
+    	return "redirect:/eqmlist";
+    }
 	
 }

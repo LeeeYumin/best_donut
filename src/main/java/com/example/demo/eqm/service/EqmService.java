@@ -10,5 +10,6 @@ public interface EqmService {
 	public int insertEqm(EqmVO vo);
 	public EqmVO getEqmInfo(String eqmCode);
 	public int updateEqm(EqmVO vo);
+	public int deleteEqm(String eqmCode);
 	
 }

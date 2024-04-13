@@ -33,6 +33,11 @@ public class EqmServiceImpl implements EqmService{
 	public int updateEqm(EqmVO vo) {
 		return eqmMapper.updateEqm(vo);
 	}
+
+	@Override
+	public int deleteEqm(String eqmCode) {
+		return eqmMapper.deleteEqm(eqmCode);
+	}
 	
 	
 }
