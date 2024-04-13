@@ -2,6 +2,10 @@ package com.example.demo.product;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -17,8 +21,12 @@ public class ProductDetailVO {
 	private String productStatus;		// 완제품상태
 	private Date dumpDate;				// 폐기일자
 	private String productCode;			// 완제품코드
+	
 	private String procResultCode;		// 공정실적코드
 	
 	// 추가 필드
 	private String productName;			// 제품명
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
+	private Date allEndTime;			// 공정종료시간		
 }

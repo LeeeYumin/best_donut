@@ -8,13 +8,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrdersDetailVO {
-	private String ordersDetailCode;
-	private String ordersCode;
-	private String productCode;
-	private Integer ordersCnt;
-	private Integer supplyPrice;
-	private Integer tax;
-	private Integer totalSupplyPrice;
 	
-	private String productName;
+	// DB 필드
+	private String ordersDetailCode;	// 주문상세코드
+	private String ordersCode;			// 주문코드
+	private String productCode;			// 제품코드
+	private Integer ordersCnt;			// 주문수량
+	private Integer supplyPrice;		// 공급단가
+	private Integer tax;				// 부가세
+	private Integer totalSupplyPrice;	// 총공급대가
+	
+	// 추가 필드
+	private String productName;			// 제품명
 }
