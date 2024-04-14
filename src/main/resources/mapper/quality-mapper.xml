@@ -134,7 +134,7 @@ SELECT d.PRODUCT_CODE
 	WHERE qlty_check_status = 'PQ1'
 </select>
 
-<!-- 완제품품질등록 grid2 / +등록버튼 클릭하면 적합수량에 포함-->
+<!-- 완제품품질등록 grid2 / +등록버튼 클릭하면 적합수량에 포함. addProQual이랑 같이.-->
 <insert id="insertProQual" parameterType="ProQltyVO">
 	INSERT INTO PRODUCT_QLTY_CHECK
 				(
@@ -174,14 +174,14 @@ SELECT d.PRODUCT_CODE
 
 <!-- 완제품 품질 관리 -->
 <select id="adminProQuality" resultType="ProQltyVO">
-	SELECT p.product_code
-		, d.product_name
-		,c.check_recv_date
-		,c.last_result
-	FROM  PRODUCT p JOIN PRODUCT_DETAIL d
-	  		          ON p.PRODUCT_CODE = d.PRODUCT_CODE
-	  		          RIGHT OUTER JOIN PROC_RESULT c 
-                      ON c.PRODUCT_LOT_CODE = d.PRODUCT_LOT_CODE 
+SELECT d.product_code
+    , p.product_name
+    ,c.check_recv_date
+    ,c.last_result
+FROM PRODUCT p JOIN PRODUCT_DETAIL d
+                  ON p.PRODUCT_CODE = d.PRODUCT_CODE
+                  right OUTER JOIN product_qlty_check c 
+                  ON d.PRODUCT_LOT_CODE = c.PRODUCT_LOT_CODE
 </select>
 
 </mapper>

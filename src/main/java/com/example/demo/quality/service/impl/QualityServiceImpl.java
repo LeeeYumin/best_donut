@@ -63,6 +63,11 @@ public class QualityServiceImpl implements QualityService {
 		return qualityMapper.selectProQual();
 	}
 
+	@Override
+	public List<ProQltyVO> adminProQuality() {	
+		return qualityMapper.adminProQuality();
+	}
+
 //	@Override
 //	public boolean addProQual(int goodCnt, String productLotCode) {
 //		return qualityMapper.addProQual(goodCnt, productLotCode);

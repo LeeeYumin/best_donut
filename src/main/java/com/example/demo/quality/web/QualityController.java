@@ -84,9 +84,19 @@ public class QualityController {
 //		return qualityService.addProQual(goodCnt, productLotCode);
 //	}
 	
+	//완제품 품질 관리 페이지 이동
+	@GetMapping("adminProQuality")
+	public String adminProQuality () {		
+		return "quality/adminProQuality";
+	}
+	
 	//완제품 품질 관리
+	@GetMapping("ajax/adminPro")
+	@ResponseBody
+	public List<ProQltyVO> adminProQual() {
+		return qualityService.adminProQuality();
+	}
 	
-	
-	//품질 검사 관리
+
 	
 }

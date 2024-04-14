@@ -16,6 +16,7 @@ public interface QualityService {
 	public List<ProDetailVO> selectProQuality(); //grid1
 	public boolean insertProQual(List<ProQltyVO> vo); //완제품품질입력(grid2)
 	public List<Map<String, Object>> selectProQual();
-//	public boolean addProQual(int goodCnt, String productLotCode);
-	
+	//public boolean addProQual(int goodCnt, String productLotCode);
+	public List<ProQltyVO> adminProQuality(); //완제품품질관리
+
 }
