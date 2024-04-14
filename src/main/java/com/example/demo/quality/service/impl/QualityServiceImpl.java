@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.ProDetailVO;
 import com.example.demo.quality.ProQltyVO;
+import com.example.demo.quality.QualityUnfitVO;
 import com.example.demo.quality.QualityVO;
 import com.example.demo.quality.mapper.QualityMapper;
 import com.example.demo.quality.service.QualityService;
@@ -66,6 +67,11 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public List<ProQltyVO> adminProQuality() {	
 		return qualityMapper.adminProQuality();
+	}
+
+	@Override
+	public List<QualityUnfitVO> getUnfitProd() {
+		return qualityMapper.getUnfitProd();
 	}
 
 //	@Override

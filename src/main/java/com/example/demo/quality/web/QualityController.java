@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.ProDetailVO;
 import com.example.demo.quality.ProQltyVO;
+import com.example.demo.quality.QualityUnfitVO;
 import com.example.demo.quality.service.QualityService;
 
 @Controller
@@ -95,6 +96,18 @@ public class QualityController {
 	@ResponseBody
 	public List<ProQltyVO> adminProQual() {
 		return qualityService.adminProQuality();
+	}
+	
+	//불량품 등록 페이지 이동
+	@GetMapping("insertUnfitProd")
+	public String insertUnfitProd () {
+		return "quality/insertUnfitProd";
+	}
+	
+	@GetMapping("ajax/unfitProd")
+	@ResponseBody
+	public List<QualityUnfitVO> getUnfitProd(){
+		return qualityService.getUnfitProd();
 	}
 	
 

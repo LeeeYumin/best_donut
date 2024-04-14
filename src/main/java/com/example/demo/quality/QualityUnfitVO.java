@@ -25,11 +25,13 @@ public class QualityUnfitVO {
 	private String badContents;
 	private String mngContents;
 	
-	//완제품 불량폐기 : 제품코드 생산지시코드 제품명 완제품LOT 
-	private String productCode; //PRODUCT
-	private String prodInstructDetailCode; //PROD_INSTRUCT_DETAIL
-	private String productName; //PRODUCT
-	private String productLotCode; //PRODUCT_QLTY_CHECK
+	//완제품 불량폐기 : 제품코드 생산지시코드 완제품LOT 
+	private String productCode; //PROD_PLAN_DETAIL
+	private String prodReqDetailCode; //PROD_PLAN_DETAIL
+	private String productLotCode; //PRODUCT_INOUT_HISTORY
 	private String lastResult; //PRODUCT_QLTY_CHECK 최종결과
+	
+	//폐기보고서
+	
 	 	
 }
