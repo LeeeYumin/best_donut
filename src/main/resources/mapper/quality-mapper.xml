@@ -171,17 +171,27 @@ SELECT d.PRODUCT_CODE
 </update>
 
 <!-- 완제품 불량등록 -->
+<select id="getUnfitProd" resultType="QualityUnfitVO">
+	SELECT d.product_code
+			, d.prod_req_detail_code
+			, h.product_lot_code
+			, c.last_result
+	FROM PROD_PLAN_DETAIL d JOIN PRODUCT_INOUT_HISTORY h
+	                  ON d.prod_req_detail_code = h.prod_req_detail_code
+	                  right OUTER JOIN product_qlty_check c
+	                  ON h.PRODUCT_LOT_CODE = c.PRODUCT_LOT_CODE 
+</select>
 
 <!-- 완제품 품질 관리 -->
 <select id="adminProQuality" resultType="ProQltyVO">
-SELECT d.product_code
-    , p.product_name
-    ,c.check_recv_date
-    ,c.last_result
-FROM PRODUCT p JOIN PRODUCT_DETAIL d
-                  ON p.PRODUCT_CODE = d.PRODUCT_CODE
-                  right OUTER JOIN product_qlty_check c 
-                  ON d.PRODUCT_LOT_CODE = c.PRODUCT_LOT_CODE
+	SELECT d.product_code
+	    , p.product_name
+	    ,c.check_recv_date
+	    ,c.last_result
+	FROM PRODUCT p JOIN PRODUCT_DETAIL d
+	                  ON p.PRODUCT_CODE = d.PRODUCT_CODE
+	                  right OUTER JOIN product_qlty_check c 
+	                  ON d.PRODUCT_LOT_CODE = c.PRODUCT_LOT_CODE
 </select>
 
 </mapper>

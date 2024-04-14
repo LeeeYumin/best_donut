@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.ProDetailVO;
 import com.example.demo.quality.ProQltyVO;
+import com.example.demo.quality.QualityUnfitVO;
 import com.example.demo.quality.QualityVO;
 
 @Mapper
@@ -23,6 +24,7 @@ public interface QualityMapper {
 	public List<Map<String, Object>> selectProQual();
 	public int addProQual(ProQltyVO vo);
 	public List<ProQltyVO> adminProQuality(); //완제품품질관리
+	public List<QualityUnfitVO> getUnfitProd(); //완제품 불량등록
 	
 
 }

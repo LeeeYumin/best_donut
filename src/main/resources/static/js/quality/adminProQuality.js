@@ -8,17 +8,17 @@ adminProQual();
 		columns : [
 			{
 				header : '제품코드',
-				name : 'PRODUCT_CODE',
+				name : 'productCode',
 				align : "center",
 			},
 			{
 				header : '제품명',
-				name : 'PRODUCT_NAME',
+				name : 'productName',
 				align : "center",
 			},
 			{
 				header : '검사접수일자',
-				name : 'CHECK_RECV_DATE',
+				name : 'checkRecvDate',
 				align : "center",
 				formatter: function(date) {
 			        let dateForm = new Date(date.value);
@@ -31,7 +31,7 @@ adminProQual();
 			},
 			{
 				header : '검사결과',
-				name : 'LAST_RESULT',
+				name : 'lastResult',
 				align : "center",
 			}
 		]

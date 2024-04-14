@@ -6,6 +6,7 @@ import java.util.Map;
 import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.ProDetailVO;
 import com.example.demo.quality.ProQltyVO;
+import com.example.demo.quality.QualityUnfitVO;
 import com.example.demo.quality.QualityVO;
 
 public interface QualityService {
@@ -18,5 +19,6 @@ public interface QualityService {
 	public List<Map<String, Object>> selectProQual();
 	//public boolean addProQual(int goodCnt, String productLotCode);
 	public List<ProQltyVO> adminProQuality(); //완제품품질관리
+	public List<QualityUnfitVO> getUnfitProd(); //완제품 불량등록
 
 }
