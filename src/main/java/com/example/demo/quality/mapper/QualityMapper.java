@@ -22,6 +22,7 @@ public interface QualityMapper {
 	public int insertProQual(ProQltyVO vo); //완제품품질입력(grid2)
 	public List<Map<String, Object>> selectProQual();
 	public int addProQual(ProQltyVO vo);
+	public List<ProQltyVO> adminProQuality(); //완제품품질관리
 	
 
 }
