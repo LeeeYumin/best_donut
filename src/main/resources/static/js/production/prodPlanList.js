@@ -273,6 +273,9 @@ getProdPlanList()
 					console.log(res);
 					if(res.result == 1) { //controller에서 "result"로 값 넘김
 						alert('삭제되었습니다.');
+						getProdPlanList();
+						plAll.resetData([]);
+
 					}else {
 						alert('삭제 중 오류 발생');
 					}

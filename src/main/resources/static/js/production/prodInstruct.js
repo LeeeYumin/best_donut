@@ -309,6 +309,7 @@ getEqmCheck();
 				}
 			});
 
+
 			//생산지시 그리드의 지시수량 입력 시 => 위 생산계획 그리드 지시수량 & 미지시수량 값 변경
 			piDeInsert.on('afterChange', e => {
 				let row = piDeInsert.getRow(e.changes[0].rowKey);

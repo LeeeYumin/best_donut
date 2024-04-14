@@ -16,6 +16,7 @@ public interface ProdPlanService {
 	
 /* 2.생산계획 */
 	//1)조회
+	public ProdPlanVO beforeInsertPlanCode();	//생산계획코드 미리 보기
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo);
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
 	

@@ -1,4 +1,5 @@
 getProdReq();
+beforeInsertPlanCode();
 		
 		/* < 생산요청 > */
 		const plreq = new tui.Grid({
@@ -62,21 +63,27 @@ getProdReq();
 		});
 
 		// 생산요청조회(ajax)
-		async function getProdReq(){
-			await fetch("/ajax/prodReq")
+		function getProdReq(){
+			fetch("/ajax/prodReq")
 			.then(res => res.json())
 			.then(res => {
-				//console.log(res);
+				console.log(res);
 
-				plreq.resetData(res.prodReq); //ServiceImpl에서 넘겨 준 변수명
-				plreqD.resetData(res.prodReqDe);
+				if(res.prodReq.length == 0 ) {
+					document.querySelector('.show-list').style.display = 'none';
+				} else {					
+					plreq.resetData(res.prodReq); //ServiceImpl에서 넘겨 준 변수명
+					plreqD.resetData(res.prodReqDe);
+
+				}
+				
 			})
 		};
-//==========================================================		
-			/* < 생산계획 > */
-
-			//생산계획 등록
-			const plInsert = new tui.Grid({
+		//==========================================================		
+		/* < 생산계획 > */
+		
+		//생산계획 등록
+		const plInsert = new tui.Grid({
 				el : document.getElementById('plInsert'),
 				scrollX : false,
 				scrollY : false,
@@ -110,8 +117,23 @@ getProdReq();
 				]
 			});
       //화면로딩부터 행 추가되도록
-			plInsert.appendRow({planDate: dateFormat(new Date())});
 			
+			function beforeInsertPlanCode(){
+				fetch("/ajax/beforeInsertPlanCode")
+				.then(res => res.json())
+				.then(res => {
+					let beforeplcode = res.prodPlanCode;
+					plInsert.appendRow({prodPlanCode: beforeplcode, planDate: dateFormat(new Date())});
+
+				})
+			};
+
+
+
+
+
+
+
 			/* < 생산계획 상세 > */
 			const plDeInsert = new tui.Grid({
 				el : document.getElementById('plDeInsert'),

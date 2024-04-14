@@ -375,6 +375,7 @@ function startProc() {
   let param = procInfo.getRow(row);
   param.se = 's';
   param.prodInstructCode = picode;
+  param.prodInstructDetailCode = pdcode;
   console.log(param);
 
   fetch('ajax/updateProc', {
@@ -387,6 +388,8 @@ function startProc() {
     console.log(res);
 
     getProcessInfo(pdcode);
+    getEqmOpr();
+    getTodayIns();
   });
 }
 //공정 종료하기
@@ -406,6 +409,7 @@ function endProc() {
   console.log(param);
   param.se = 'e';
   param.prodInstructCode = picode;
+  param.prodInstructDetailCode = pdcode;
 
   fetch('ajax/updateProc', {
     method: 'post',
@@ -417,6 +421,8 @@ function endProc() {
     console.log(res);
     
     getProcessInfo(pdcode);
+    getEqmOpr();
+    getTodayIns();
   });
 }
 
@@ -429,7 +435,7 @@ function endProc() {
 				scrollX: false,
 				scrollY: true,
 				bodyHeight: 200,
-				rowHeaders: ['rowNum'],
+				//rowHeaders: ['rowNum'],
 				columns: [
           {
             header : 'NO',

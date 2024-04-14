@@ -45,6 +45,11 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 /* < 생산계획 > */
 	//1)조회
 	@Override
+	public ProdPlanVO beforeInsertPlanCode() { //생산계획코드 미리보기
+		return prodPlanMapper.beforeInsertPlanCode();
+	}
+	
+	@Override
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo) {
 		return prodPlanMapper.getProdPlan(vo);
 	}
@@ -161,6 +166,9 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 		}
 		return result;
 	}
+
+
+
 
 
 
