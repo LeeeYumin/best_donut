@@ -13,13 +13,19 @@
 <style>
 .btn-addinput,
 .btn-insert {
-	width: 60px;
+	width: 70px;
+	height: 38px;
+	font-size: 18px;
 	margin-left: auto; /* display:flex 적용되어 있어 float: right X */
 	/* margin-top: 10px; */
 }
 .btn-addrow,
 .btn-delrow {
-	width: 60px;
+	width: 80px;
+	height: 38px;
+	font-size: 16px;
+	margin-bottom: 5px;
+	margin-right: 3px;
 	float: right;
 	/* margin-left: auto; */
 }
@@ -34,6 +40,9 @@ h4 {
 	font-size: larger;
 	padding-bottom: 10px;
 }
+.show-list {
+	display: block;
+}
 
 </style>
 </head>
@@ -46,7 +55,7 @@ h4 {
 			<span class="text-muted fw-light">생산관리 / </span> 생산계획 등록
 		</h3>
 
-		<div class="card mb-3" style="padding-bottom: 20px">
+		<div class="card mb-3 show-list" style="padding-bottom: 20px">
 			<div class="pt30"></div>
 			<h4>주간 생산요청</h4>
 			<h5 class="pt30">생산요청</h5>

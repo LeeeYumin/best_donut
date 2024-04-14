@@ -61,6 +61,12 @@ public class ProdPlanController {
 /* < 생산계획 > */
 	
 	//1)조회
+	@GetMapping("/ajax/beforeInsertPlanCode")	// fetch 함수에 들어가는 uri
+	@ResponseBody
+	public ProdPlanVO beforeInsertPlanCode(){
+		return prodPlanService.beforeInsertPlanCode();
+	}
+	
 	@PostMapping("/ajax/prodPlanList")
 	@ResponseBody
 	public List<ProdPlanVO> getProdPlanList(@RequestBody ProdPlanVO vo){

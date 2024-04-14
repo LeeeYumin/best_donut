@@ -57,7 +57,7 @@
 
 <!-- 공정-->
 	<insert id="updateProc" parameterType="ProcessVO" statementType="CALLABLE">
-		{ CALL PROC_UPDATE(#{prodInstructCode}, #{usersCode}, #{procDetailCode}, #{se}, #{eqmCode}, #{result, mode=OUT, jdbcType=VARCHAR, javaType=string}) }
+		{ CALL PROC_UPDATE(#{prodInstructCode}, #{prodInstructDetailCode}, #{usersCode}, #{procDetailCode}, #{se}, #{eqmCode}, #{result, mode=OUT, jdbcType=VARCHAR, javaType=string}) }
 	</insert>
 <!-- 	<update id="updateBeginTime" parameterType="ProcessVO" >
 		UPDATE proc_detail
