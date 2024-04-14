@@ -36,7 +36,7 @@
      		 , users_code
 		FROM prod_plan
 		<include refid="condition"></include>
-		ORDER BY plan_date DESC
+		ORDER BY prod_plan_code DESC
 	</select>
 
 <!-- 동적쿼리(검색) -->
@@ -75,12 +75,11 @@
 		ORDER BY 1
 	</select>
 	
-<!-- 생산계획 등록 전 계획코드 조회 -->
+<!-- 생산계획 등록 전 계획,상세 코드 조회 -->
 	<select id="beforeInsertPlanCode"  resultType="ProdPlanVO">
-		SELECT (substr(max(prod_plan_code),0,3)) || LPAD((to_number(substr(max(prod_plan_code),4,8))+1), 5, '0') as prod_plan_code 
+		SELECT (SUBSTR(MAX(prod_plan_code),0,3)) || LPAD((TO_NUMBER(SUBSTR(MAX(prod_plan_code),4,8))+1), 5, '0') as prod_plan_code
 		FROM prod_plan
 	</select>
-
 <!-- 생산계획 등록(1건) -->
 	<insert id="insertProdPlan" parameterType="ProdPlanVO">
 		<selectKey keyProperty="prodPlanCode"
@@ -123,7 +122,7 @@
 			, #{productCode}
 			, #{fixCnt}
 			, #{reqCnt}
-			, #{fixCnt} + #{reqCnt}
+			, #{planCnt}
 			, #{fixCnt} + #{reqCnt}
 			, 0
 			)
@@ -201,7 +200,13 @@
 	WHERE eqm_status != 'ES5'
 	</select>
 	
-	<!-- 생산지시 등록(1건) -->
+	
+<!-- 생산지시 등록 전 생산지시코드 조회 -->
+<!-- 	<select id="beforeInsertPlanCode"  resultType="ProdPlanVO">
+		SELECT (SUBSTR(MAX(prod_plan_code),0,3)) || LPAD((TO_NUMBER)(SUBSTR(max(prod_plan_code),4,8))+1), 5, '0') as prod_plan_code 
+		FROM prod_plan
+	</select>	 -->
+<!-- 생산지시 등록(1건) -->
 	<insert id="insertProdInstruct" parameterType="ProdInsVO">
 		<selectKey keyProperty="prodInstructCode"
 				   order="BEFORE"

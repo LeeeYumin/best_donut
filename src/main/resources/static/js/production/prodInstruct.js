@@ -299,9 +299,10 @@ getEqmCheck();
 			});
 			wplanD.on('uncheck', function(e) {
 				let delCode = wplanD.getValue(e.rowKey, 'prodPlanDetailCode');
-				let delRow = piDeInsert.getData()
+				let delRow = piDeInsert.getData();
 
-				for(let i = 0; i < piDeInsert.getData().length; i++) {
+				console.log(delRow);
+				for(let i = 0; i < delRow.length; i++) {
 					if(delRow[i].prodPlanDetailCode == delCode) {
 						delRow.splice(i, 1);
 						piDeInsert.resetData(delRow);
