@@ -43,7 +43,7 @@
    <!-- 폐기 처리 -> 재고도 업데이트 -->
    	<update id="updateMatStatus">
    		DECLARE
-   			v_remain_cnt Number;
+   			v_remain_cnt NUMBER;
    			v_mat_code VARCHAR2(100);
    		BEGIN 
    		<!-- 자재 폐기 수량 조회 -->
@@ -138,6 +138,7 @@
 				<if test="ordersStatus != null and ordersStatus != ''">
 					AND o.total_orders_status = #{ordersStatus}
 				</if>
+					AND o.total_orders_status != 'OSC'
 			</where>
      	  ORDER BY o.orders_date DESC
    	</select>		
@@ -174,15 +175,26 @@
    	
    	<!-- 발주 취소 상태 변경 -->
    	<update id="updateMatOrderCancel" parameterType="String">
-   		UPDATE mat_orders
-		   SET total_orders_status = 'OSC'
-		
-		<if test="matOrderCodes != null and matOrderCodes.length > 0">
-         WHERE mat_orders_code IN
-        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=")" separator=",">
-         		#{matOrderCode}
-        	</foreach>
-      	</if>
+   		BEGIN
+   			UPDATE mat_orders_detail
+   			SET orders_status = 'OSC'
+   			<if test="matOrderCodes != null and matOrderCodes.length > 0">
+	         WHERE mat_orders_code IN
+	        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=");" separator=",">
+	         		#{matOrderCode}
+	        	</foreach>
+	        </if>
+   		
+	   		UPDATE mat_orders
+			   SET total_orders_status = 'OSC'
+			
+			<if test="matOrderCodes != null and matOrderCodes.length > 0">
+	         WHERE mat_orders_code IN
+	        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=");" separator=",">
+	         		#{matOrderCode}
+	        	</foreach>
+	      	</if>    	
+        END;
    	</update>
    	
    	<!-- 입고 목록 테이블 출력 -->
