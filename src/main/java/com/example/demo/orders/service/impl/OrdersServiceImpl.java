@@ -14,7 +14,7 @@ import com.example.demo.orders.mapper.OrdersMapper;
 import com.example.demo.orders.service.OrdersService;
 
 @Service
-public class OrdersServiceImpl implements OrdersService{
+public class OrdersServiceImpl implements OrdersService {
 
 	@Autowired OrdersMapper ordersMapper;
 
