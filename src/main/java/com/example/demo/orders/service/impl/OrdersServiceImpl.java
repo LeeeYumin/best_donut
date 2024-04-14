@@ -96,7 +96,19 @@ public class OrdersServiceImpl implements OrdersService{
 	// (1) 생산요청등록
 	@Override
 	public boolean insertProdReq(ProdReqVO vo) {
-		return ordersMapper.insertProdReq(vo) == 1 ? true : false;
+		ordersMapper.insertProdReq(vo);
+		
+		int result = 0;
+		for(int i = 0; i < vo.getProdReqDetList().size(); i++) {
+
+			ProdReqDetailVO dvo = vo.getProdReqDetList().get(i);
+			dvo.setProdReqCode(vo.getProdReqCode());
+			result += ordersMapper.insertProdReqDet(dvo);
+		}
+		
+		ordersMapper.updateOrdStat(vo);
+		
+		return result >= 1 ? true : false;
 	}
 	
 		
