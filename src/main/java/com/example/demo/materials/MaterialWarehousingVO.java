@@ -1,6 +1,7 @@
 package com.example.demo.materials;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -33,4 +34,5 @@ public class MaterialWarehousingVO {
 	private Integer warehousingCnt;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date expDate;
+	private List<MaterialWarehousingVO> MaterialWarehousingVO;
 }

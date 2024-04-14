@@ -19,6 +19,7 @@ import com.example.demo.materials.service.MaterialsService;
 
 /**
  * 자재 관리
+ * 
  * @author 이효진
  *
  */
@@ -60,7 +61,7 @@ public class MaterialsController {
 	public String orders() {
 		return "materials/materialOrders"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
-	
+
 	// 자재 발주 등록
 	@PostMapping("/ajax/matOrdersInsert")
 	@ResponseBody
@@ -100,12 +101,19 @@ public class MaterialsController {
 	public String warehousing() {
 		return "materials/materialWarehousing"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
-	
+
 	// 자재 입고 대기건 조회
 	@RequestMapping("/ajax/materialwarehousing")
 	@ResponseBody
 	public List<MaterialWarehousingVO> getWarehousingList(@RequestBody MaterialWarehousingVO vo) {
 		return materialsService.getWarehousingList(vo);
+	}
+
+	// 자재 입고 등록
+	@PostMapping("/ajax/matWarehousingInsert")
+	@ResponseBody
+	public boolean matWarehousingInsert(@RequestBody MaterialWarehousingVO vo) {
+		return materialsService.insertMatWarehousing(vo);
 	}
 
 	// 자재 불출 등록 페이지 이동

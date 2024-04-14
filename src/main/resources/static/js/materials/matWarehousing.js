@@ -138,6 +138,43 @@ function checkValidation() {
 }
 
 // 자재 입고 등록
-function insertMatWarehousing() {
+async function insertMatWarehousing() {
+    let MaterialWarehousingVO = matWarehousing.getCheckedRows();
 
+    console.log(MaterialWarehousingVO);
+
+    const param = { MaterialWarehousingVO }
+
+    let result = false;
+    await fetch('/ajax/matWarehousingInsert', {
+        method: 'post',
+        headers: jsonHeaders,
+        body: JSON.stringify(param)
+    })
+        .then(res => res.json())
+        .then(res => {
+            result = res;
+            console.log(result);
+        })
+
+    if (result) {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "입고 완료!",
+            text: "입고가 정상적으로 처리되었습니다.",
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+    } else {
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "입고 실패",
+            text: "입고가 정상적으로 처리되지 않았습니다.",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
 }

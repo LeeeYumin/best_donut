@@ -107,8 +107,10 @@ public class MaterialsServiceImpl implements MaterialsService {
 	
 	// 자재 입고 등록
 	@Override
-	public void insertMatWarehousing(MaterialWarehousingVO vo) {
+	public boolean insertMatWarehousing(MaterialWarehousingVO vo) {
+		int result = 0;
 		vo.setWarehousingCnt(vo.getOrdersCnt());
-		materialsMapper.insertMatWarehousing(vo);
+		result = materialsMapper.insertMatWarehousing(vo);
+		return result >= 1 ? true : false;
 	}
 }
