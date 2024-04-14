@@ -30,4 +30,7 @@ public class MaterialWarehousingVO {
 	
 	// 입고 등록용 칼럼
 	private Integer unitPrice;
+	private Integer warehousingCnt;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date expDate;
 }

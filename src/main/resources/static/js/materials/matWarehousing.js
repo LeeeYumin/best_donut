@@ -133,11 +133,11 @@ function checkValidation() {
     }
 
     if (validation) {
-        matWarehousing()
+        insertMatWarehousing()
     }
 }
 
 // 자재 입고 등록
-function matWarehousing() {
+function insertMatWarehousing() {
 
 }

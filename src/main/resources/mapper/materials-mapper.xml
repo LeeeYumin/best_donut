@@ -168,7 +168,7 @@
   	</select>
    	
    	<!-- 발주 취소 못하는 상태로 스케줄러&프로시져로 업데이트 발주테이블 -->
-   	<select id="updateMatOrderStatus" parameterType="String" statementType="CALLABLE">
+   	<select id="updateMatOrderStatus" statementType="CALLABLE">
 		CALL update_orders_status()
    	</select>
    	
@@ -215,5 +215,16 @@
 			</where>
 	  ORDER BY d.mat_orders_code
    	</select>
+   	
+   	<insert id="insertMatWarehousing" statementType="CALLABLE" parameterType="MaterialWarehousingVO">
+   		CALL MAT_WAREHOUSING_INSERT(
+   			#{warehousingCnt, mode=IN, jdbcType=INTEGER},
+   			#{expDate, mode=IN, jdbcType=DATE},
+   			#{unitPrice, mode=IN, jdbcType=INTEGER},
+   			#{matCode, mode=IN, jdbcType=VARCHAR},
+   			#{companyCode, mode=IN, jdbcType=VARCHAR},
+   			#{matOrdersCode, mode=IN, jdbcType=VARCHAR}
+   		)
+   	</insert>
    	
 </mapper>

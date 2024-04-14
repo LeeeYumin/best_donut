@@ -92,14 +92,23 @@ public class MaterialsServiceImpl implements MaterialsService {
 	public void updateMatOrderStatus() {
 		materialsMapper.updateMatOrderStatus();
 	}
-
+	
+	// 자재 발주 취소 기능
 	@Override
 	public int updateMatOrderCancel(String[] matOrderCodes) {
 		return materialsMapper.updateMatOrderCancel(matOrderCodes);
 	}
 
+	// 자재 입고 예정 목록 조회
 	@Override
 	public List<MaterialWarehousingVO> getWarehousingList(MaterialWarehousingVO vo) {
 		return materialsMapper.getWarehousingList(vo);
+	}
+	
+	// 자재 입고 등록
+	@Override
+	public void insertMatWarehousing(MaterialWarehousingVO vo) {
+		vo.setWarehousingCnt(vo.getOrdersCnt());
+		materialsMapper.insertMatWarehousing(vo);
 	}
 }
