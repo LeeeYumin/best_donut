@@ -32,5 +32,5 @@ public interface MaterialsService {
 	// 자재 입고 등록
 	public List<MaterialWarehousingVO> getWarehousingList(MaterialWarehousingVO vo);
 
-	public boolean insertMatWarehousing(MaterialWarehousingVO vo);
+	public boolean insertMatWarehousing(List<MaterialWarehousingVO> vo);
 }

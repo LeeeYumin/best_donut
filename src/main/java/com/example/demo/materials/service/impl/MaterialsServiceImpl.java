@@ -44,6 +44,7 @@ public class MaterialsServiceImpl implements MaterialsService {
 
 		Map<String, List<MaterialOrderDetailVO>> map = new HashMap<>();
 		List<MaterialOrderDetailVO> list = vo.getMatOrderDetailVO();
+		
 		for (int i = 0; i < list.size(); i++) {
 			List<MaterialOrderDetailVO> orderList = map.get(list.get(i).getMainCompanyCode());
 			// 같은 거래처 찾기
@@ -72,6 +73,9 @@ public class MaterialsServiceImpl implements MaterialsService {
 				result += materialsMapper.insertMatOrdersDetail(dvo);
 			}
 		}
+		
+		// 전체 발주 금액 업데이트
+		
 
 		return result >= 1 ? true : false;
 	}
@@ -107,10 +111,12 @@ public class MaterialsServiceImpl implements MaterialsService {
 	
 	// 자재 입고 등록
 	@Override
-	public boolean insertMatWarehousing(MaterialWarehousingVO vo) {
+	public boolean insertMatWarehousing(List<MaterialWarehousingVO> list) {
 		int result = 0;
-		vo.setWarehousingCnt(vo.getOrdersCnt());
-		result = materialsMapper.insertMatWarehousing(vo);
+		for(MaterialWarehousingVO vo:list) {
+			vo.setWarehousingCnt(vo.getOrdersCnt());
+			result = materialsMapper.insertMatWarehousing(vo);			
+		}
 		return result >= 1 ? true : false;
 	}
 }

@@ -112,7 +112,7 @@ public class MaterialsController {
 	// 자재 입고 등록
 	@PostMapping("/ajax/matWarehousingInsert")
 	@ResponseBody
-	public boolean matWarehousingInsert(@RequestBody MaterialWarehousingVO vo) {
+	public boolean matWarehousingInsert(@RequestBody List<MaterialWarehousingVO> vo) {
 		return materialsService.insertMatWarehousing(vo);
 	}
 

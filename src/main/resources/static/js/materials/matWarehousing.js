@@ -139,11 +139,9 @@ function checkValidation() {
 
 // 자재 입고 등록
 async function insertMatWarehousing() {
-    let MaterialWarehousingVO = matWarehousing.getCheckedRows();
+    let param = matWarehousing.getCheckedRows();
 
-    console.log(MaterialWarehousingVO);
-
-    const param = { MaterialWarehousingVO }
+    console.log(param);
 
     let result = false;
     await fetch('/ajax/matWarehousingInsert', {
