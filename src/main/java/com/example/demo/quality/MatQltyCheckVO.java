@@ -26,4 +26,9 @@ public class MatQltyCheckVO {
 	private String matInoutCode;
 	private Integer checkDoneCnt; //검사완료수량
 	private Integer remainCnt; //적합수량
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date inoutDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date inoutDate2;
 }

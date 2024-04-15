@@ -144,16 +144,16 @@ const todayInsD = new tui.Grid({
       name : 'instructCnt',
       align: 'center'
     },
-    {
-      header : '미생산수량',
-      name : 'notProdCnt',
-      align: 'center'
-    },
-    {
-      header : '생산수량',
-      name : 'prodCnt',
-      align: 'center'
-    },
+    // {
+    //   header : '미생산수량',
+    //   name : 'notProdCnt',
+    //   align: 'center'
+    // },
+    // {
+    //   header : '생산수량',
+    //   name : 'prodCnt',
+    //   align: 'center'
+    // },
     {
       header : '공정상태', //수정하기
       name : 'procStatus',
@@ -236,6 +236,11 @@ const procMat = new tui.Grid({
       name : 'procMatCode',
       align: 'center'
     },
+    // {
+    //   header : '자재명',
+    //   name : 'procMatName',
+    //   align: 'center'
+    // },
     {
       header : '자재LOT코드',
       name : 'matLotCode',

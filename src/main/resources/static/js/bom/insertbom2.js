@@ -54,16 +54,6 @@ const grid = new tui.Grid({
       header : '적용여부',
       name : 'applyStatus',
       align : "center",
-      formatter : 'listItemText',
-      // editingEvent : 'click',
-      editor: {
-        options: {
-          listItems: [
-            { text: '적용', value: 'BAY' },
-            { text: '미적용', value: 'BAN' }
-          ],
-          }
-        }
     },
     {
       header : '담당자코드',
@@ -79,7 +69,7 @@ const grid = new tui.Grid({
 });
 
 async function getProdBom(){
-  await fetch("ajax/insertBom")
+  await fetch("ajax/insertBom2")
   .then(res => res.json())
   .then(res => {
     console.log(res);

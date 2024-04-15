@@ -1,4 +1,4 @@
-getMatInfo('','');
+getMatInfo('','','');
 
 class CustomNumberEditor {
 	constructor(props) {
@@ -37,6 +37,16 @@ const grid = new tui.Grid({
     {
       header : '자재LOT코드',
       name : 'matLotCode',
+      align : "center",
+    },
+    {
+      header : '자재코드',
+      name : 'matCode',
+      align : "center",
+    },
+    {
+      header : '자재명',
+      name : 'matName',
       align : "center",
     },
     {
@@ -163,8 +173,9 @@ const grid = new tui.Grid({
   ]
 });
 
-async function getMatInfo(matLotCode, inoutDate){
-  await fetch("ajax/matInfo?matLotCode="+matLotCode+"&inoutDate="+inoutDate)
+async function getMatInfo(matLotCode, inoutDate, inoutDate2){
+  const param = `matLotCode=${matLotCode}&inoutDate=${inoutDate}&inoutDate2=${inoutDate2}`
+  await fetch("ajax/matInfo?"+param)
   .then(res => res.json())
   .then(res => {
     console.log(res);
@@ -176,7 +187,8 @@ async function getMatInfo(matLotCode, inoutDate){
 function findMat() {
   let matLotCode = document.querySelector('#matLOT').value;
   let inoutDate = document.querySelector('#inDate').value; //#id
-  getMatInfo(matLotCode, inoutDate);
+  let inoutDate2 = document.querySelector('#inDate2').value;
+  getMatInfo(matLotCode, inoutDate, inoutDate2);
 }
 
 //부적합기준(total) 변경 + 적합수량보다 많이 입력할 경우 알림
@@ -221,4 +233,6 @@ async function insertMat() {
     })
 }
 
-insertMat();
+//검색일자 초기화
+//document.getElementById("inDate2").value=today();
+//document.getElementById("inDate").value=addDate(0,0,-7);

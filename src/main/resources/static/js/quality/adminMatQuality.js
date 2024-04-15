@@ -25,6 +25,16 @@ getMatAdmin('','');
 				header : '적합여부',
 				name : 'LAST_RESULT',
 				align : "center",
+				formatter : 'listItemText',
+				editor: {
+					type: 'select',
+					options: {
+					listItems: [
+							{ text: '적합', value: 'MCY' },
+					{ text: '부적합', value: 'MCN' }
+						]
+		        }
+					}
 			},
 			{
 				header : '검사 종결여부',

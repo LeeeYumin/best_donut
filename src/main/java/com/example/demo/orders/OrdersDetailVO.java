@@ -20,4 +20,5 @@ public class OrdersDetailVO {
 	
 	// 추가 필드
 	private String productName;			// 제품명
+	private String stockCnt;			// 재고수량
 }

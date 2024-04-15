@@ -83,10 +83,15 @@ async function getProDetail(){
   .then(res => {
     console.log(res);
     grid1.resetData(res);
+    //grid2.resetData(res);
   })
 };
 
-getProDetail();
+//grid1 생산완료일자 검색
+function findProd() {
+  let endDate = document.querySelector('#inDate').value; //#id
+  getProDetail(endDate);
+}
 
 
 const grid2 = new tui.Grid({
@@ -213,7 +218,6 @@ async function selectProQual(){
   })
 };
 
-selectProQual();
 
 //grid2 입력값
 grid2.on('afterChange', event => {
@@ -245,16 +249,7 @@ grid2.on('afterChange', event => {
   }
 })
 
-// grid2 완제품 품질입력 : 생산완료일자 검색
-// function insertProDtl(insertPro){
-// 	fetch(`ajax/selectProQuality?selectProQuality=${insertPro}`)
-// 	.then(res => res.json())
-// 	.then(res => {
-// 		// ajax로 불러온 데이터 그리드에 넣음
-//     console.log("insertProDtl: ", res);
-// 		grid2.resetData(res);
-// 	})
-// };
+
 
 //버튼누르면 적합수량->적합 수량에 insert & 입고 수량에 update
 function addProQual(){
@@ -270,3 +265,6 @@ function addProQual(){
     console.log(res);
 })
 }
+
+getProDetail();
+selectProQual();

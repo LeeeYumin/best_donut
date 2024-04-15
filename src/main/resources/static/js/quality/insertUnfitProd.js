@@ -7,7 +7,6 @@ class CustomNumberEditor {
 
 		el.type = 'number';
 		el.min = 0;
-		el.max = grid.getColumnValues('inoutCnt');
 		el.step = 1;
     el.width = 5;
 		el.maxLength = maxLength;
@@ -53,24 +52,33 @@ const grid = new tui.Grid({
       name : 'lastResult',
       align : "center",
       formatter : 'listItemText',
-    },
+    }
   ]
 });
 
 	grid.on('beforeChange', ev => {
 		      console.log('before change:', ev);
 		    });
-	    
-    grid.on('afterChange', ev => {
-      console.log('after change:', ev);
-    })
+
+  grid.on('afterChange', ev => {
+    console.log('after change:', ev);
+  })
 
 	async function getUnfitProd(){
-	  await fetch("ajax/unfitProd")
+	  await fetch(`ajax/unfitProd`)
 	  .then(res => res.json())
 	  .then(res => {
+
 	    console.log(res);
 	    grid.resetData(res);
 	  })
 	};
+
+
+  //완제품Lot번호, 검사접수일자로 검색
+  function findUnfit() {
+    let prodLot = document.querySelector('#prodLOT').value;
+    let checkDate = document.querySelector('#inDate').value; //#id
+    getUnfitProd(prodLot, checkDate);
+  }
 
