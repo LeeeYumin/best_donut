@@ -37,8 +37,8 @@ public class WebSecurityConfig {
 				.antMatchers("/**", "/home").permitAll()
 //				.antMatchers("/login").permitAll()
 				//.antMatchers("/empList").hasAnyRole("ADMIN")
-				//.antMatchers("/userslist").hasAnyRole("PER00001")
-				//.anyRequest().authenticated()
+//				.antMatchers("/userslist").hasAnyRole("PER00001")
+//				.anyRequest().authenticated()
 			)
 			// 람다식
 //			.formLogin((form) -> form
@@ -46,13 +46,13 @@ public class WebSecurityConfig {
 //					.permitAll()
 //			)
 			.formLogin().loginPage("/login")
-						.usernameParameter("userId")
+						.usernameParameter("userid")
 						.loginProcessingUrl("/userlogin")
 						.successHandler(successHandler())
 						.permitAll()
 			.and()
 //			.logout((logout) -> logout.permitAll())
-			.logout().logoutSuccessUrl("/customLogout")
+			.logout().logoutSuccessUrl("/login")
 					 .permitAll()
 			.and()
 //			.exceptionHandling().accessDeniedHandler(accessDeniedHandler());

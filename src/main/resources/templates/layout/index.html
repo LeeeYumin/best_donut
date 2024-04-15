@@ -21,6 +21,7 @@
   data-template="vertical-menu-template-free"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 >
   <head>
     <meta charset="utf-8" />
@@ -422,7 +423,7 @@
 
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
-                <li class="nav-item lh-1 me-3">
+<!--                 <li class="nav-item lh-1 me-3">
                   <a
                     class="github-button"
                     href="https://github.com/themeselection/sneat-html-admin-template-free"
@@ -432,10 +433,15 @@
                     aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
                     >Star</a
                   >
-                </li>
+                </li> -->
 
                 <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <i class="bx bx-user me-2"></i>
+<!--                 <div sec:authentication="principal.usersVO.usersName" class="user"></div>님&emsp;
+                <form th:action="@{/logout}" method="post">
+		            <input type="submit" value="로그아웃"/>
+		        </form> -->
+<!--                <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
                       <img src="/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
@@ -457,7 +463,7 @@
                         </div>
                       </a>
                     </li>
-                    <li>
+                     <li>
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
@@ -491,7 +497,7 @@
                       </a>
                     </li>
                   </ul>
-                </li>
+                </li> -->
                 <!--/ User -->
               </ul>
             </div>
