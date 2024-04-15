@@ -17,7 +17,7 @@ public class BomVO {
 	private String applyStatus;
 	private String productCode;
 	private String usersCode;
-	private String procName; //PROC 컬럼에서 추가함. 공정이름 
+	private String procCode; //PROC 컬럼에서 추가함. 공정 코드 
 	
 	// bom_detail 칼럼들 
 	private String bomDetailCode;
@@ -29,5 +29,6 @@ public class BomVO {
 	private String productName;
 	private Integer unitPrice;
 	private String matName;
+	private Integer procNeedCnt;
 	
 }

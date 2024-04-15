@@ -14,31 +14,35 @@
 		</h3>
 		
 		<!-- 검색 폼 -->
-		<div class="mb-3 card">
-			<h5 class="card-header">검색조건</h5>
-			<div class="card-body">
-				<div class="row mb-3">
-					<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재명</label>
-					<div class="col-sm-6 input-group">
-						<input type="text" class="form-control" name="matName" id="matName" placeholder="검색하고자하는 자재명을 입력하세요.">
+		<div>
+			<div class="mb-3 card">
+				<h5 class="card-header">검색조건</h5>
+				<div class="card-body">
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재명</label>
+						<div class="col-sm-6 input-group">
+							<input type="text" class="form-control" name="matName" id="matName" placeholder="검색하고자하는 자재명을 입력하세요.">
+						</div>
 					</div>
-				</div>
-				<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-					<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
-					<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
+					<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+						<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
+						<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="card">
-			<!-- 자재 목록 -->
-			<h5 class="card-header">자재 재고 목록</h5>
-			<div class="card-body" id="materialsList"></div>
-			<!-- 자재 상세 목록 -->
-			<h5 class="card-header">LOT별 자재 재고 목록</h5>
-			<div class="card-body" style="padding-bottom: 5px" id="materialDetails"></div>
-			<div class="d-grid gap-2 d-md-flex justify-content-md-end mx-4 mb-4">
-				<button type="button" class="btn btn-primary" id="disposeBtn">폐기</button>
+		<div>
+			<div class="card">
+				<!-- 자재 목록 -->
+				<h5 class="card-header">자재 재고 목록</h5>
+				<div class="card-body" id="materialsList"></div>
+				<!-- 자재 상세 목록 -->
+				<h5 class="card-header">LOT별 자재 재고 목록</h5>
+				<div class="card-body" style="padding-bottom: 5px" id="materialDetails"></div>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end mx-4 mb-4">
+					<button type="button" class="btn btn-primary" id="disposeBtn">폐기</button>
+				</div>
 			</div>
 		</div>
 

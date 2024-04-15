@@ -38,31 +38,59 @@
   	      FROM mat_detail d 
   	      JOIN mat m ON d.mat_code = m.mat_code
 	     WHERE d.mat_code = #{matCode} 
+	       AND d.mat_status = 'MSY'
    	</select>
    
    <!-- 폐기 처리 -> 재고도 업데이트 -->
    	<update id="updateMatStatus">
    		DECLARE
-   			v_remain_cnt Number;
+   			v_remain_cnt NUMBER;
    			v_mat_code VARCHAR2(100);
+   			
+   			CURSOR lot_cursor IS
+   				SELECT remain_cnt, mat_lot_code
+   		  		  FROM mat_detail
+   		 		 WHERE mat_lot_code IN
+        			<foreach collection="matLotCodes" item="matLotCode" open="(" close=");" separator=",">
+         				#{matLotCode}
+        			</foreach>
+        			
+        	lot_record lot_cursor%ROWTYPE;
    		BEGIN 
    		<!-- 자재 폐기 수량 조회 -->
    		SELECT sum(remain_cnt), min(mat_code)
-   		INTO v_remain_cnt, v_mat_code
-   		FROM mat_detail
-   		WHERE mat_lot_code IN
+   		  INTO v_remain_cnt, v_mat_code
+   		  FROM mat_detail
+   		 WHERE mat_lot_code IN
         	<foreach collection="matLotCodes" item="matLotCode" open="(" close=");" separator=",">
          		#{matLotCode}
         	</foreach>
+        	
    		<!-- 자재 자재 재고 업데이트 -->
    		UPDATE mat
-   		SET stock_cnt = stock_cnt - v_remain_cnt
-   		WHERE mat_code = v_mat_code;
+   		   SET stock_cnt = stock_cnt - v_remain_cnt
+   		 WHERE mat_code = v_mat_code;
    		
-   		<!-- 자재 폐기 반출 -->
-   		
-   		
-   		
+   		<!-- 자재 폐기 배출 기록 insert -->
+        OPEN lot_cursor;
+        LOOP
+        	FETCH lot_cursor INTO lot_record;
+        	EXIT WHEN lot_cursor%NOTFOUND;
+         	INSERT INTO mat_inout_history(mat_inout_code,
+   									  	  mat_lot_code,
+   									 	  inout_sep,
+   									  	  inout_cnt)
+   			 	VALUES (seq_func('mat_inout_history'),
+   			 		 	lot_record.mat_lot_code,
+   			 		 	'DIS',
+   			 		 	lot_record.remain_cnt);
+   			 
+   			 UPDATE mat_detail
+   			 	SET remain_cnt = 0
+   			  WHERE mat_lot_code = lot_record.mat_lot_code;   			 
+   		END LOOP;
+   		COMMIT;
+   		CLOSE lot_cursor;
    		
    		<!-- 자재 폐기 상태 업데이트 -->
    		UPDATE mat_detail
@@ -97,24 +125,40 @@
 	
 	<!-- 자재 발주 상세 등록 -->
 	<insert id="insertMatOrdersDetail" parameterType="MaterialOrderDetailVO">
-		INSERT INTO mat_orders_detail
-			(
-				mat_orders_detail_code,
-			    orders_cnt,
-			    mat_orders_code,
-			    mat_code,
-			    company_code,
-			    mat_orders_price
-			)
-		VALUES
-			(
-				seq_func('mat_orders_detail'),
-			    #{ordersCnt},
-			    #{matOrdersCode},
-			    #{matCode},
-			    #{mainCompanyCode},
-			    #{matOrdersPrice}
-			)
+		DECLARE
+			v_mat_total_orders_price NUMBER;
+		BEGIN
+			<!-- 자재 발주 상세 등록 -->
+			INSERT INTO mat_orders_detail
+				(
+					mat_orders_detail_code,
+				    orders_cnt,
+				    mat_orders_code,
+				    mat_code,
+				    company_code,
+				    mat_orders_price
+				)
+			VALUES
+				(
+					seq_func('mat_orders_detail'),
+				    #{ordersCnt},
+				    #{matOrdersCode},
+				    #{matCode},
+				    #{mainCompanyCode},
+				    #{matOrdersPrice}
+				);
+				
+			<!-- 발주 상세 등록 후 발주 총 금액 찾기 -->
+			SELECT SUM(mat_orders_price)
+			  INTO v_mat_total_orders_price
+			  FROM mat_orders_detail
+			 WHERE mat_orders_code = #{matOrdersCode};
+			 
+			<!--  발주 총 금액을 발주 테이블에 업데이트 -->
+			UPDATE mat_orders
+			   SET mat_total_orders_price = v_mat_total_orders_price
+			 WHERE mat_orders_code = #{matOrdersCode};
+		END;
 	</insert>
 	
    	<!-- 자재 발주 관리 -->
@@ -123,9 +167,11 @@
                o.mat_orders_code,
                u.users_name,
                o.mat_total_orders_price,
-               o.total_orders_status
+               o.total_orders_status,
+               c.company_name
    		  FROM mat_orders o
-     	  JOIN users u ON o.users_code= u.users_code
+     	  JOIN users u ON o.users_code = u.users_code
+     	  JOIN company c ON o.company_code = c.company_code
      	  	<where>
 				<if test="sDate != null">
 					TRUNC(o.orders_date) <![CDATA[ >= ]]> TRUNC(#{sDate})
@@ -136,6 +182,7 @@
 				<if test="ordersStatus != null and ordersStatus != ''">
 					AND o.total_orders_status = #{ordersStatus}
 				</if>
+					AND o.total_orders_status != 'OSC'
 			</where>
      	  ORDER BY o.orders_date DESC
    	</select>		
@@ -165,30 +212,44 @@
 		</if>
   	</select>
    	
-   	<!-- 발주 취소 못하는 상태로 스케줄러&프로시져로 업데이트 발주테이블 -->
-   	<select id="updateMatOrderStatus" parameterType="String" statementType="CALLABLE">
+   	<!-- 발주 취소 못하는 상태로 스케줄러 & 프로시저로 업데이트 발주테이블 -->
+   	<select id="updateMatOrderStatus" statementType="CALLABLE">
 		CALL update_orders_status()
    	</select>
    	
    	<!-- 발주 취소 상태 변경 -->
    	<update id="updateMatOrderCancel" parameterType="String">
-   		UPDATE mat_orders
-		   SET total_orders_status = 'OSC'
-		
-		<if test="matOrderCodes != null and matOrderCodes.length > 0">
-         WHERE mat_orders_code IN
-        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=")" separator=",">
-         		#{matOrderCode}
-        	</foreach>
-      	</if>
+   		BEGIN
+   			UPDATE mat_orders_detail
+   			SET orders_status = 'OSC'
+   			<if test="matOrderCodes != null and matOrderCodes.length > 0">
+	         WHERE mat_orders_code IN
+	        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=");" separator=",">
+	         		#{matOrderCode}
+	        	</foreach>
+	        </if>
+   		
+	   		UPDATE mat_orders
+			   SET total_orders_status = 'OSC'
+			
+			<if test="matOrderCodes != null and matOrderCodes.length > 0">
+	         WHERE mat_orders_code IN
+	        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=");" separator=",">
+	         		#{matOrderCode}
+	        	</foreach>
+	      	</if>    	
+        END;
    	</update>
    	
    	<!-- 입고 목록 테이블 출력 -->
    	<select id="getWarehousingList" resultType="MaterialWarehousingVO">
    		SELECT d.mat_orders_code,
    			   d.mat_orders_detail_code,
+   			   d.company_code,
        		   c.company_name,
+       		   d.mat_code,
        		   m.mat_name,
+       		   m.unit_price,
        		   d.orders_cnt,
        		   o.orders_date,
        		   o.orders_date + m.lead_time as due_date
@@ -196,8 +257,32 @@
      		JOIN company c ON d.company_code=c.company_code
     		JOIN mat m ON d.mat_code=m.mat_code
     		JOIN mat_orders o ON d.mat_orders_code=o.mat_orders_code
-   		 WHERE d.orders_status='OSN'
+   		 <where>
+   		 		d.orders_status IN ('OSN', 'OSP')
+				<if test="sDate != null">
+					AND TRUNC(o.orders_date) <![CDATA[ >= ]]> TRUNC(#{sDate})
+				</if>
+				<if test="eDate != null">
+					AND TRUNC(o.orders_date) <![CDATA[ <= ]]> TRUNC(#{eDate})
+				</if>
+				<if test="matName != null and matName != ''">
+		   			AND mat_name LIKE '%'||#{matName}||'%'         
+      			</if>
+			</where>
 	  ORDER BY d.mat_orders_code
    	</select>
+   	
+   	<!-- 입고 등록 프로시저 호출 -->
+   	<insert id="insertMatWarehousing" statementType="CALLABLE" parameterType="MaterialWarehousingVO">
+   		CALL MAT_WAREHOUSING_INSERT(
+   			#{warehousingCnt, mode=IN, jdbcType=INTEGER},
+   			#{expDate, mode=IN, jdbcType=DATE},
+   			#{unitPrice, mode=IN, jdbcType=INTEGER},
+   			#{matCode, mode=IN, jdbcType=VARCHAR},
+   			#{companyCode, mode=IN, jdbcType=VARCHAR},
+   			#{matOrdersCode, mode=IN, jdbcType=VARCHAR},
+   			#{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
+   		)
+   	</insert>
    	
 </mapper>

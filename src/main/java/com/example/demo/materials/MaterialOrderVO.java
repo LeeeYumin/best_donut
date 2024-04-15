@@ -24,6 +24,7 @@ public class MaterialOrderVO {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date eDate;
 	private String ordersStatus;
+	private String companyName;
 	
 	// 발주 등록용
 	private List<MaterialOrderDetailVO> matOrderDetailVO;

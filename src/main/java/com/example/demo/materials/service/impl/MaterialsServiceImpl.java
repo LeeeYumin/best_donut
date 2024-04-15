@@ -40,45 +40,43 @@ public class MaterialsServiceImpl implements MaterialsService {
 
 	// 자재 발주 등록 + 발주 상세 등록
 	@Override
-	public boolean insertMatOrders(MaterialOrderVO vo) {
-		
-		Map<String,List<MaterialOrderDetailVO>> map = new HashMap<>();
+	public int insertMatOrders(MaterialOrderVO vo) {
+
+		Map<String, List<MaterialOrderDetailVO>> map = new HashMap<>();
 		List<MaterialOrderDetailVO> list = vo.getMatOrderDetailVO();
-		for(int i = 0; i < list.size(); i++) {
-			List<MaterialOrderDetailVO> orderlist = map.get(list.get(i).getMainCompanyCode());
+		
+		for (int i = 0; i < list.size(); i++) {
+			List<MaterialOrderDetailVO> orderList = map.get(list.get(i).getMainCompanyCode());
 			// 같은 거래처 찾기
-			if(orderlist ==null){
+			if (orderList == null) {
 				// list 생성
-				orderlist = new ArrayList<MaterialOrderDetailVO>();
-				map.put(list.get(i).getMainCompanyCode(), orderlist);
-			}			
+				orderList = new ArrayList<MaterialOrderDetailVO>();
+				map.put(list.get(i).getMainCompanyCode(), orderList);
+			}
 			// 발주 내역 add
-			orderlist.add(list.get(i));
+			orderList.add(list.get(i));
 		}
-		
-		// System.out.println(map);
-		//materialsMapper.insertMatOrders(vo);
-		
+
 		int result = 0;
-	
+
 		// 거래처 수만큼 반복
-		for ( String key : map.keySet() ) {
+		for (String key : map.keySet()) {
 			// 발주서 헤더
 			vo.setCompanyCode(key);
 			materialsMapper.insertMatOrders(vo);
-			
-			List<MaterialOrderDetailVO> dlist = (List<MaterialOrderDetailVO>)map.get(key);
-			for(int i = 0; i < dlist.size(); i++) {
-				MaterialOrderDetailVO dvo = dlist.get(i);
-				
+
+			List<MaterialOrderDetailVO> dList = (List<MaterialOrderDetailVO>) map.get(key);
+			for (int i = 0; i < dList.size(); i++) {
+				MaterialOrderDetailVO dvo = dList.get(i);
+
 				dvo.setMatOrdersCode(vo.getMatOrdersCode());
 				result += materialsMapper.insertMatOrdersDetail(dvo);
 			}
 		}
-		
-		return result >= 1 ? true : false;
+
+		return result;
 	}
-	
+
 	// 자재 발주 관리
 	@Override
 	public List<MaterialOrderVO> getMaterialOrders(MaterialOrderVO vo) {
@@ -95,14 +93,27 @@ public class MaterialsServiceImpl implements MaterialsService {
 	public void updateMatOrderStatus() {
 		materialsMapper.updateMatOrderStatus();
 	}
-
+	
+	// 자재 발주 취소 기능
 	@Override
 	public int updateMatOrderCancel(String[] matOrderCodes) {
 		return materialsMapper.updateMatOrderCancel(matOrderCodes);
 	}
 
+	// 자재 입고 예정 목록 조회
 	@Override
-	public List<MaterialWarehousingVO> getWarehousingList() {
-		return materialsMapper.getWarehousingList();
+	public List<MaterialWarehousingVO> getWarehousingList(MaterialWarehousingVO vo) {
+		return materialsMapper.getWarehousingList(vo);
+	}
+	
+	// 자재 입고 등록
+	@Override
+	public int insertMatWarehousing(List<MaterialWarehousingVO> list) {
+		int result = 0;
+		for(MaterialWarehousingVO vo:list) {
+			vo.setWarehousingCnt(vo.getOrdersCnt());
+			result += materialsMapper.insertMatWarehousing(vo);			
+		}
+		return result;
 	}
 }

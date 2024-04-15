@@ -35,6 +35,7 @@ public interface MaterialsMapper {
 	public int updateMatOrderCancel(String[] matOrderCodes);
 	
 	// 자재 입고 등록
-	public List<MaterialWarehousingVO> getWarehousingList();
+	public List<MaterialWarehousingVO> getWarehousingList(MaterialWarehousingVO vo);
 	
+	public int insertMatWarehousing(MaterialWarehousingVO vo);
 }

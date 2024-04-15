@@ -61,6 +61,11 @@ const grid1 = new tui.Grid({
 			name: 'totalOrdersStatus',
 			align: 'center',
 			renderer: { type: OrderStatusConverter }
+		},
+		{
+			header: '거래처명',
+			name: 'companyName',
+			align: 'center'
 		}
 	]
 });
