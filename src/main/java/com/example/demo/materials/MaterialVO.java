@@ -6,7 +6,7 @@ import lombok.Data;
 public class MaterialVO {
 	private String matCode;
 	private String matName;
-	private Integer stockCnt;
+	private Double stockCnt;
 	private Integer safeStockCnt;
 	private String mainCompanyCode;
 	private Integer unitPrice;

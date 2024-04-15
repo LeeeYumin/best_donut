@@ -25,12 +25,20 @@ const grid1 = new tui.Grid({
 		{
 			header: '재고량',
 			name: 'stockCnt',
-			align: 'center',
+			align: 'end',
 			sortable: true,
 			validation: {
 				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
 			}
 		},
+		{
+            header: '단위',
+            name: 'unit',
+			width: 50,
+			validation: {
+				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
+			}
+        },
 		{
 			header: '안전재고량',
 			name: 'safeStockCnt',
@@ -120,6 +128,11 @@ const grid2 = new tui.Grid({
 			align: 'center'
 		},
 		{
+            header: '단위',
+            name: 'matUnit',
+			width: 50,
+        },
+		{
 			header: '불출수량',
 			name: 'outCnt',
 			align: 'center',
@@ -131,6 +144,11 @@ const grid2 = new tui.Grid({
 			align: 'center',
 			defaultValue: 0
 		},
+		{
+            header: '단위',
+            name: 'matUnit',
+			width: 50,
+        },
 		{
 			header: '유통기한',
 			name: 'expDate',

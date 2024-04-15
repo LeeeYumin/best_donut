@@ -10,7 +10,7 @@ import lombok.Data;
 public class MaterialReadVO {
 	private String matCode;
 	private String matName;
-	private Integer stockCnt;
+	private Double stockCnt;
 	private Integer safeStockCnt;
 	
 	private String matLotCode;
@@ -26,4 +26,7 @@ public class MaterialReadVO {
 	private Date dumpDate;
 	private Integer unitPrice;
 	private String companyCode;
+	
+	private String unit;
+	private String matUnit;
 }

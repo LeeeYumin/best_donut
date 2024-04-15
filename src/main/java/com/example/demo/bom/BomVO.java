@@ -30,5 +30,6 @@ public class BomVO {
 	private Integer unitPrice;
 	private String matName;
 	private Integer procNeedCnt;
+	private String matUnit;
 	
 }
