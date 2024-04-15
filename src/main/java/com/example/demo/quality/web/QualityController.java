@@ -16,6 +16,11 @@ import com.example.demo.quality.ProQltyVO;
 import com.example.demo.quality.QualityUnfitVO;
 import com.example.demo.quality.service.QualityService;
 
+/*
+ *  작성자 : 이유민
+ *  작성일자 : 2024.04.15
+ *  컨트롤러 내용 : 자재, 완제품에 관련된 품질검사
+ */
 @Controller
 public class QualityController {
 	
@@ -28,10 +33,11 @@ public class QualityController {
 		return "quality/insertMatQuality"; // 파일위치(qualityMain 에서 이름변경)
 	}
 	
+	//Lot별 자재 목록
 	@GetMapping("ajax/matInfo") //정보를 가져오는 ajax. ajax 는 @ResponseBody 같이!
 	@ResponseBody
-	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate){
-		return qualityService.getMatInfo(matLotCode, inoutDate);
+	public List<Map<String, Object>> getMatInfo(MatQltyCheckVO vo){
+		return qualityService.getMatInfo(vo);
 	}
 	
 	//자재 품질 등록 버튼

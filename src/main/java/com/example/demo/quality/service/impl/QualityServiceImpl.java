@@ -28,14 +28,15 @@ public class QualityServiceImpl implements QualityService {
 		for(MatQltyCheckVO vo : list) {		
 			check += qualityMapper.insertMatQuality(vo);			
 			//등록 클릭하면 재고 수량에 update
-			check += qualityMapper.addMatQual3(vo);	
+			check += qualityMapper.addMatQual3(vo);
+			qualityMapper.addMatQual(vo);
 		}
 		return check > 0 ? true : false;
 	}
 	
 	@Override
-	public List<Map<String, Object>> getMatInfo(String matLotCode, String inoutDate) {
-		return qualityMapper.getMatInfo(matLotCode, inoutDate); //자재품질등록
+	public List<Map<String, Object>> getMatInfo(MatQltyCheckVO vo) {
+		return qualityMapper.getMatInfo(vo); //자재품질등록
 	}
 
 	@Override
@@ -55,6 +56,7 @@ public class QualityServiceImpl implements QualityService {
 		for(ProQltyVO vo : list) {
 			result += qualityMapper.insertProQual(vo);
 			result += qualityMapper.addProQual(vo);
+			result += qualityMapper.addProQual2(vo.getProductCode());
 		}
 		return result > 0 ? true : false; //grid2 완제품품질입력
 	}

@@ -54,6 +54,28 @@ function getWeekFromDate(dt)
     dt.setDate(dt.getDate() + 3 - (dt.getDay() + 6) % 7);
     const week1 = new Date(dt.getFullYear(), 0, 4);
     const weekNumber = 1 + Math.round(((dt.getTime() - week1.getTime())/ 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
- 
+
     return `${dt.getFullYear()}-W${weekNumber}`;
+}
+
+//오늘날짜
+function today(){
+  var today = new Date();
+
+  var year = today.getFullYear();
+  var month = ('0' + (today.getMonth() + 1)).slice(-2);
+  var day = ('0' + today.getDate()).slice(-2);
+
+  var dateString = year + '-' + month  + '-' + day;
+
+  return dateString;
+}
+
+function addDate(y,m,d){
+	const newDate = new Date();
+	newDate.setFullYear(newDate.getFullYear() + y);
+	newDate.setMonth(newDate.getMonth() + m);
+	newDate.setDate(newDate.getDate() + d);
+	return dateFormat(newDate);
+
 }
