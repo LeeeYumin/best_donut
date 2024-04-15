@@ -1,4 +1,4 @@
-adminProQual();
+adminProQual('','');
 
 	const grid = new tui.Grid({
 		el : document.getElementById('grid'),
@@ -41,16 +41,23 @@ adminProQual();
 	grid.on('beforeChange', ev => {
 	      console.log('before change:', ev);
 	    });
-    grid.on('afterChange', ev => {
+  grid.on('afterChange', ev => {
       console.log('after change:', ev);
-    })
+   		})
 
-	async function adminProQual(){
-	await fetch(`ajax/adminPro`)
-	.then(res => res.json())
-	.then(res => {
-		console.log(res);
-		grid.resetData(res);
-	})
-};
-    
+	async function adminProQual(prodCode, checkDate){
+		await fetch("ajax/adminPro?prodCode="+prodCode+"&checkDate="+checkDate)
+								//`ajax/adminPro?prodCode=${prodCode}&checkDate=${checkDate}`
+		.then(res => res.json())
+		.then(res => {
+			console.log(res);
+			grid.resetData(res);
+		})
+	};
+
+//제품명, 검사접수일자 검색
+function findProd() {
+  let prodCode = document.querySelector('#prodCode').value;
+  let checkDate = document.querySelector('#inDate').value; //#id
+  adminProQual(prodCode, checkDate);
+}
