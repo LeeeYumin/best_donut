@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.bom.mapper.BomMapper">
-	<!-- 자재 발주용 BOM 조회 -->
    	<select id="getMatOrdersBom" resultType="BomVO">
    		SELECT b.bom_code,
    		       b.product_code,
@@ -18,27 +17,6 @@
       		JOIN product p ON p.product_code=b.product_code
       	 WHERE b.apply_status = 'BAY'
 	 ORDER BY  b.bom_code,d.mat_code
-   	</select>
-   	
-   	<!-- 자재 불출용 BOM 조회 -->
-   	<select id="getMatOutBom">
-   		SELECT d.bom_code,
-               b.product_code,
-               p.product_name,
-               d.mat_code, 
-               m.mat_name,
-   	           d.need_cnt, 
-   	           d.unit, 
-   	           d.proc_code
-          FROM bom_detail d 
-          	JOIN mat m ON d.mat_code = m.mat_code
-    		JOIN bom b ON d.bom_code = b.bom_code
-    		JOIN product p ON p.product_code = b.product_code
-		 WHERE d.bom_code = (SELECT bom_code
-                               FROM bom
-                              WHERE product_code= #{productCode}
-                                AND apply_status='BAY')
-      ORDER BY mat_code
    	</select>
    	
    	<!-- BOM관리 품목확인 -->
@@ -77,4 +55,6 @@
 		  ON m.mat_code = d.mat_code
 		  order by BOM_CODE
    </select>
+   
+   <!-- BOM작성화면 -->
 </mapper>
