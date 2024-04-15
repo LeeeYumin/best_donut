@@ -31,6 +31,7 @@ public class ProcessVO {
 
 	//공정자재
 	private String procMatCode;
+	private String procMatName;
 	private String matLotCode;
 	private int matCnt;
 	
