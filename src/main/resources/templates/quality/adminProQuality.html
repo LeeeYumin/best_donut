@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+<head>
+<meta charset="UTF-8">
+<title>adminProQuality.html</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+<div layout:fragment="content">
+	<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">품질관리 / </span> 완제품 품질 관리
+		</h3>
+		<div class="btnClass">
+			<label>제품명</label>
+				<input id="matCode" type="text" name="matCode"><br>
+			<label for="date">검사접수날짜
+  			<input type="date"
+         		id="inDate"
+         		max="2100-12-31"
+         		min="1970-01-01"
+         		value=today>
+			</label><br>
+			<button id="findBtn" type="button" onclick="findMat()">검색</button>
+		</div>
+
+	<div id="grid"></div>
+
+
+<script src="/js/quality/adminProQuality.js"></script>
+
+<div class="downBtn">
+	<button id="updateBtn" type="button">수정</button>
+</div>
+</div>
+</body>
+</html>
+
+<style>
+.btnClass {
+	/* text-align : right; */
+	margin-right : 10px;
+	padding : 10px;
+}
+.downBtn {
+	/* text-align : right; */
+	margin-top : 10px;
+}
+</style>

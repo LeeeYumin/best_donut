@@ -76,9 +76,46 @@
 		</if>	
 	</select>
 	
-	<!-- 자재LOT조회 -->
-	<select id="getMatLot">
-	
+	<!-- 완제품LOT조회 -->
+	<select id="getProdLot" resultType="ProductDetailVO">
+		SELECT d.product_lot_code
+			   , d.product_code
+		       , d.check_done_cnt
+		       , d.delivery_cnt
+		       , d.remain_cnt
+		       , d.qlty_check_status
+		       , d.proc_result_code
+		       , r.all_end_time
+		  FROM product_detail d JOIN proc_result r
+		                          ON d.proc_result_code = r.proc_result_code
+		 WHERE d.product_code = #{productCode}
+		   AND d.qlty_check_status = 'PQ2'
 	</select>
+	
+	<!-- 완제품출고등록 -->
+	<insert id="insertInout" parameterType="ProductInoutVO">
+		INSERT INTO product_inout_history
+		    (
+		        product_inout_code
+		        , inout_sep
+		        , inout_cnt
+		        , inout_date
+		        , product_lot_code
+		        , orders_detail_code
+		        , prod_req_detail_code
+		        , users_code
+		    )
+		VALUES
+		    (
+				seq_func(' product_inout_history')
+				, 'IO2'
+				, #{inoutCnt}
+				, #{inoutDate}
+				, #{productLotCode}
+				, #{ordersDetailCode}
+				, #{prodReqDetailCode}
+				, #{usersCode}
+		    )
+	</insert>
 
 </mapper>

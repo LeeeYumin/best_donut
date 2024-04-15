@@ -16,11 +16,25 @@ import com.example.demo.product.service.ProductService;
 public class ProductController {
 	
 	@Autowired ProductService productService;
-	
+
+	// I. 제품
+
 	// 완제품 관리 페이지
 	@GetMapping("productList")
 	public String productList() {
 		return "product/productList";
+	}
+	
+	// 완제품출고관리 페이지
+	@GetMapping("exportList")
+	public String exportList() {
+		return "product/exportList";
+	}
+	
+	// 완제품출고등록 페이지
+	@GetMapping("exportInsert")
+	public String exportInsert() {
+		return "product/exportInsert";
 	}
 	
 	// 제품목록조회
@@ -44,6 +58,10 @@ public class ProductController {
 		return productService.getProdDet(vo);
 	}
 	
-	// 자재상세목록조회
-	
+	// 제품상세목록조회
+	@GetMapping("ajax/getProdLot")
+	@ResponseBody
+	public List<ProductDetailVO> getProdLot(String productCode){
+		return productService.getProdLot(productCode);
+	}
 }

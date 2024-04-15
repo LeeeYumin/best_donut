@@ -48,28 +48,40 @@ public class ProcessController {
 	public List<ProcessVO> getProcessInfo(String prodInsDetailCode){
 		return processService.getProcessInfo(prodInsDetailCode);
 	}
-	//공정자재
-	@GetMapping("/ajax/procMatInfo")	// fetch 함수에 들어가는 uri
+	//공정 투입자재
+	@GetMapping("/ajax/procMatInfo")
 	@ResponseBody
 	public List<ProcessVO> getProcMatInfo(String procDetailCode){
 		return processService.getProcMatInfo(procDetailCode);
 	}
+	//공정 설비가동상태
+	@GetMapping("/ajax/procEqmInfo")
+	@ResponseBody
+	public List<ProcessVO> getProcEqmInfo(String procDetailCode){
+		return processService.getProcEqmInfo();
+	}
+	
 
 //2)수정
-	
-	//공정시작&가동중
-	@RequestMapping("/ajax/updateBeginTime")
+	@RequestMapping("/ajax/updateProc")
 	@ResponseBody
-	public int modifyBegin(@RequestBody ProcessVO vo) { 
-		//System.out.println(vo);
-		return processService.updateBeginTime(vo);	
+	public String modifyProc(@RequestBody ProcessVO vo) {
+		processService.updateProc(vo);
+		return vo.getResult();
 	}
-	//공정종료&대기
-	@RequestMapping("/ajax/updateEndTime")
-	@ResponseBody
-	public int modifyEnd(@RequestBody ProcessVO vo) { 
-		return processService.updateEndTime(vo);	
-	}
+//	//공정시작&가동중
+//	@RequestMapping("/ajax/updateBeginTime")
+//	@ResponseBody
+//	public int modifyBegin(@RequestBody ProcessVO vo) { 
+//		//System.out.println(vo);
+//		return processService.updateBeginTime(vo);	
+//	}
+//	//공정종료&대기
+//	@RequestMapping("/ajax/updateEndTime")
+//	@ResponseBody
+//	public int modifyEnd(@RequestBody ProcessVO vo) { 
+//		return processService.updateEndTime(vo);	
+//	}
 	
 	
 	

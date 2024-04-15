@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.ProDetailVO;
 import com.example.demo.quality.ProQltyVO;
+import com.example.demo.quality.QualityUnfitVO;
 import com.example.demo.quality.service.QualityService;
 
 @Controller
@@ -66,10 +67,10 @@ public class QualityController {
 		return qualityService.selectProQuality();
 	}
 	
-	@GetMapping("ajax/insertProQual")
+	@PostMapping("ajax/insertProQual")
 	@ResponseBody
-	public List<ProQltyVO> insertProQual(){
-		return qualityService.insertProQual();
+	public boolean insertProQual(@RequestBody List<ProQltyVO> vo){
+		return qualityService.insertProQual(vo);
 	}
 	
 	@GetMapping("ajax/selectProQual")
@@ -78,15 +79,37 @@ public class QualityController {
 		return qualityService.selectProQual();
 	}
 	
-	@GetMapping("ajax/addProQual")
-	@ResponseBody
-	public boolean addProQual(ProDetailVO pvo) {
-		return qualityService.addProQual(pvo);
+//	@GetMapping("ajax/addProQual")
+//	@ResponseBody
+//	public boolean addProQual(int goodCnt, String productLotCode) {
+//		return qualityService.addProQual(goodCnt, productLotCode);
+//	}
+	
+	//완제품 품질 관리 페이지 이동
+	@GetMapping("adminProQuality")
+	public String adminProQuality () {		
+		return "quality/adminProQuality";
 	}
 	
 	//완제품 품질 관리
+	@GetMapping("ajax/adminPro")
+	@ResponseBody
+	public List<ProQltyVO> adminProQual() {
+		return qualityService.adminProQuality();
+	}
 	
+	//불량품 등록 페이지 이동
+	@GetMapping("insertUnfitProd")
+	public String insertUnfitProd () {
+		return "quality/insertUnfitProd";
+	}
 	
-	//품질 검사 관리
+	@GetMapping("ajax/unfitProd")
+	@ResponseBody
+	public List<QualityUnfitVO> getUnfitProd(){
+		return qualityService.getUnfitProd();
+	}
+	
+
 	
 }

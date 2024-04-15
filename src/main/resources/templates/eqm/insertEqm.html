@@ -73,25 +73,25 @@
 				</div>
 				<div>
 					<label>설비상태*</label>
-					<input type="radio" name="eqmStatus" id="status1" value="ES1" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES1"}'>
+					<input type="radio" name="eqmStatus" id="status1" value="ES1" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES1"}' onchange="changeOption1()">
 					<label for="status1">정상</label>
-					<input type="radio" name="eqmStatus" id="status2" value="ES2" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES2"}'>
+					<input type="radio" name="eqmStatus" id="status2" value="ES2" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES2"}' onchange="changeOption1()">
 					<label for="status2">설비고장</label>
-					<input type="radio" name="eqmStatus" id="status3" value="ES3" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES3"}'>
+					<input type="radio" name="eqmStatus" id="status3" value="ES3" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES3"}' onchange="changeOption1()">
 					<label for="status3">설비점검</label>
-					<input type="radio" name="eqmStatus" id="status4" value="ES4" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES4"}'>
+					<input type="radio" name="eqmStatus" id="status4" value="ES4" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES4"}' onchange="changeOption1()">
 					<label for="status4">설비수리</label>
-					<input type="radio" name="eqmStatus" id="status5" value="ES5" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES5"}'>
+					<input type="radio" name="eqmStatus" id="status5" value="ES5" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES5"}' onchange="changeOption1()">
 					<label for="status5">폐기</label>															
 					<div id="notice5" class="form-text notice"></div>
 				</div>
 				<div>
 					<label>가동현황*</label>
-					<input type="radio" name="oprStatus" id="status1" value="FO1" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO1"}'>
+					<input type="radio" name="oprStatus" id="status1" value="FO1" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO1"}' onchange="changeOption2()">
 					<label for="status1">대기</label>
-					<input type="radio" name="oprStatus" id="status2" value="FO2" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO2"}'>
+					<input type="radio" name="oprStatus" id="status2" value="FO2" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO2"}' onchange="changeOption2()">
 					<label for="status2">가동중</label>
-					<input type="radio" name="oprStatus" id="status3" value="FO3" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO3"}'>
+					<input type="radio" name="oprStatus" id="status3" value="FO3" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO3"}' onchange="changeOption2()">
 					<label for="status3">전원꺼짐</label>
 				</div>
 			</div>

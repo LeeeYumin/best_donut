@@ -127,11 +127,39 @@
 		</foreach>
 	</insert> -->
 	
+	<insert id="insertPerm" parameterType="UsersVO">
+		INSERT ALL
+			<foreach collection="perm" item="permCode">
+			INTO USERS_PERM(
+						USERS_PERM_CODE
+						, USERS_CODE
+						, PERM_CODE)
+			VALUES(
+				SEQ_FUNC('USERS_PERM')
+				, #{usersCode}
+				, #{permCode})
+			</foreach>
+		SELECT * FROM DUAL
+	</insert>
+	
 
 	<!-- 삭제 -->
-	<delete id="deleteUsers">
+	<delete id="deleteUsers" parameterType="String">
 		DELETE FROM USERS
 		WHERE USERS_CODE = #{usersCode}
 	</delete>
+	
+	<delete id="deletePerm" parameterType="String">
+		DELETE FROM USERS_PERM
+		WHERE USERS_CODE = #{usersCode}
+	</delete>
+	
+	
+	<!-- 로그인 -->
+	<select id="getPerm" parameterType="String" resultType="String">
+		SELECT 'ROLE_' || PERM_CODE
+		FROM USERS_PERM
+		WHERE USERS_CODE = #{usersCode}
+	</select>
 	
 </mapper>

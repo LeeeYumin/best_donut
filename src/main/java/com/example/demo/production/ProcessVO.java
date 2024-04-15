@@ -15,11 +15,14 @@ public class ProcessVO {
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:SS", timezone = "Asia/Seoul")
 	private Date beginTime;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:SS", timezone = "Asia/Seoul")
 	private Date endTime;
 	private String procStatus; //CS1 대기 / CS2 공정중 / CS3 공정완료
 	private String usersCode;
 
 	private String prodInstructCode;
+	private String se; //시작종료 구분
+	private String result; //프로시저 성공여부
 	
 	//공정
 	private String serialNum;
@@ -33,6 +36,7 @@ public class ProcessVO {
 	
 	//설비
 	private String oprStatus;
+	private String eqmName;
 
 	
 }

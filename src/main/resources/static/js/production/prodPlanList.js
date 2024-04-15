@@ -1,4 +1,4 @@
-getProdPlanList()
+getProdPlanList();
 
 		//생산계획 진행상태
 		class PlanStatus {
@@ -221,26 +221,52 @@ getProdPlanList()
 		})
 
 		//생산계획 상세 수정하기
-		async function updatePlanDetail() {
+		function updatePlanDetail() {
 			plAll.blur();
 			const plDe = plAll.getModifiedRows().updatedRows
 			console.log(plDe);
 			
+			const row = plList.getFocusedCell().rowKey;
+			const plcode = plList.getValue(row, "prodPlanCode");
 
-			await fetch('ajax/updateProdPlanDetail', {
+			fetch('ajax/updateProdPlanDetail', {
 				method: 'post',
 				headers: jsonHeaders,
 				body : JSON.stringify(plDe)
 			})
 			.then(res => res.json())
 			.then(res => {
-				console.log(res);
-				if(res == 1) {
-					alert('수정되었습니다.');
-				}else if(res) {
-					alert('수정 중 오류 발생');
-				}
-			})
+
+				// console.log(res);
+				// if(res == 1) {
+				// 	alert('수정되었습니다.');
+				// }else if(res) {
+				// 	alert('수정 중 오류 발생');
+				// }
+
+					if(res == 1){ 
+						Swal.fire({
+							position: "center",
+							icon: "success",
+							title: "생산계획 수정 완료",
+							showConfirmButton: false,
+							timer: 2000
+						});
+						getProdPlanAll(plcode);
+						//plDeInsert.resetData([]);
+
+					} else {
+						Swal.fire({
+							position: "center",
+							icon: "error",
+							title: "생산계획 수정 실패",
+							showConfirmButton: false,
+							timer: 2000
+						});
+					};
+
+
+			});
 		}
 
 		// //생산계획 상태 미지시일 경우에만 삭제하기
@@ -263,6 +289,7 @@ getProdPlanList()
 			plan.dvo =  plAll.getData();
 
 			if(plan.prodPlanStatus == 'LS1') {
+
 				await fetch('ajax/deleteProdPlan', {
 					method: 'post',
 					headers: jsonHeaders,
@@ -271,16 +298,50 @@ getProdPlanList()
 				.then(res => res.json())
 				.then(res => {
 					console.log(res);
-					if(res.result == 1) { //controller에서 "result"로 값 넘김
-						alert('삭제되었습니다.');
-					}else {
-						alert('삭제 중 오류 발생');
-					}
-				})
+
+					// if(res.result == 1) { //controller에서 "result"로 값 넘김
+					// 	alert('삭제되었습니다.');
+					// 	getProdPlanList();
+					// 	plAll.resetData([]);
+
+					// }else {
+					// 	alert('삭제 중 오류 발생');
+					// };
+
+					// SweetAlert
+					if(res.result == 1){ //controller에서 "result"로 값 넘김
+						Swal.fire({
+							position: "center",
+							icon: "success",
+							title: "생산계획 삭제 완료",
+							showConfirmButton: false,
+							timer: 2000
+						});
+						getProdPlanList();
+						plAll.resetData([]);
+					} else {
+						Swal.fire({
+							position: "center",
+							icon: "error",
+							title: "생산계획 삭제 실패",
+							showConfirmButton: false,
+							timer: 2000
+						});
+					};
+
+				});
+
 			} else {
-				alert('지시등록된 건으로 삭제 불가');
+				//alert('지시등록된 건으로 삭제 불가');
+				Swal.fire({
+					position: "center",
+					icon: "error",
+					title: "지시등록된 건으로 삭제 불가",
+					showConfirmButton: false,
+					timer: 2000
+				});
 			}
-		}
+		};
 		//삭제응답 (그리드에 입력된 모든 정보 비우기)
 		// function saveRes(res) {
 		// 	plDeInsert.resetData([]);

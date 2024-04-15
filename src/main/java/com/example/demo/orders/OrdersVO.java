@@ -17,27 +17,27 @@ import lombok.NoArgsConstructor;
 public class OrdersVO {
 	
 	// DB 필드
-	private String ordersCode;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")	// vo 담을떄
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul") // 꺼내올때
-	private Date ordersDate;
+	private String ordersCode;									// 주문코드
+	@DateTimeFormat(pattern = "yyyy-MM-dd")									// vo 담을때					
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul") 				// 꺼내올때
+	private Date ordersDate;									// 주문일자
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
-	private Date dueDate;
-	private Integer totalOrdersPrice;
-	private String ordersStatus;
-	private String usersCode;
-	private String companyCode;
+	private Date dueDate;										// 납기일자
+	private Integer totalOrdersPrice;							// 총주문금
+	private String ordersStatus;								// 주문상태
+	private String usersCode;									// 담당자코드
+	private String companyCode;									// 거래처코드
 	
 	// 추가 필드
-	private List<OrdersDetailVO> ordDetList;
-	private String usersName;
-	private String companyName;
-	private String cntStr;
+	private List<OrdersDetailVO> ordDetList;					// 주문상세VO
+	private String usersName;									// 담당자명
+	private String companyName;									// 거래처명
+	private String cntStr;										// 주문품목(~ 외 몇개)
 	
-	private Date dueStartDate;	
-	private Date dueEndDate;
-	private Date ordersStartDate;
-	private Date ordersEndDate;
+	private Date dueStartDate;									// 납기일검색시작일
+	private Date dueEndDate;									// 납기일검색종료일
+	private Date ordersStartDate;								// 주문일검색시작일
+	private Date ordersEndDate;									// 주문일검색종료일
 	
 }

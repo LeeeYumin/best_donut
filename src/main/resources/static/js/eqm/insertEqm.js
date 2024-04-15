@@ -165,3 +165,10 @@ async function updateEqm() {
 		});
 	}
 };
+
+
+// 삭제 버튼
+async function deleteEqm() {
+  let eqmCode = insertForm.eqmCode.value
+  location.href = '/deleteeqm/' + eqmCode
+};

@@ -14,7 +14,11 @@ public interface UsersMapper {
 	public UsersVO getUsersInfo(String usersCode);
 	
 	public int updateUsers(UsersVO vo);
-//	public UsersVO updateUsersPerm(UsersVO vo);
+	public int insertPerm(UsersVO vo);
 	
 	public int deleteUsers(String usersCode);
+	public int deletePerm(String usersCode);
+	
+	public List<String> getPerm(String usersCode);
+	
 }
