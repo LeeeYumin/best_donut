@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.product.ProductDetailVO;
 import com.example.demo.product.ProductInoutVO;
 import com.example.demo.product.ProductVO;
@@ -47,8 +48,26 @@ public class ProductServiceImpl implements ProductService{
 	
 	// 완제품출고등록
 	@Override
-	public boolean insertInout(ProductInoutVO vo) {
-		return productMapper.insertInout(vo) == 1 ? true : false;
+	public boolean insertInout(List<ProductInoutVO> list) {
+		
+		int result = 0;
+		for(ProductInoutVO vo : list) {
+			result += productMapper.insertInout(vo);
+		}
+		return result > 0 ? true : false;
+	}
+
+	@Override
+	public boolean updateOutCnt(List<OrdersDetailVO> list) {
+		
+		int result = 0;
+		
+		for(OrdersDetailVO vo : list) {
+			result += productMapper.updateOutCnt(vo.getProductCode(), vo.getOrdersCnt());
+			result += productMapper.updateOrdStat(vo.getOrdersCode());
+		}
+		
+		return result > 0 ? true : false;
 	}
 	
 	

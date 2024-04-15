@@ -92,7 +92,7 @@
 		   AND d.qlty_check_status = 'PQ2'
 	</select>
 	
-	<!-- 완제품출고등록 -->
+	<!-- 완제품출고등록 테이블 insert -->
 	<insert id="insertInout" parameterType="ProductInoutVO">
 		INSERT INTO product_inout_history
 		    (
@@ -102,7 +102,6 @@
 		        , inout_date
 		        , product_lot_code
 		        , orders_detail_code
-		        , prod_req_detail_code
 		        , users_code
 		    )
 		VALUES
@@ -113,9 +112,20 @@
 				, #{inoutDate}
 				, #{productLotCode}
 				, #{ordersDetailCode}
-				, #{prodReqDetailCode}
 				, #{usersCode}
 		    )
 	</insert>
+	
+	<!-- 완제품출고시 재고 update 프로시저 -->
+	<update id="updateOutCnt" statementType="CALLABLE">
+		{ CALL prod_out_fifo(#{productCode}, #{ordersCnt}) }
+	</update>
+	
+	<!-- 완제품출고시 주문상태 변경 -->
+	<update id="updateOrdStat" parameterType="String">
+		UPDATE orders
+		   SET orders_status = 'OP4'
+		 WHERE ordersCode = #{ordersCode}
+	</update>
 
 </mapper>

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.product.ProductDetailVO;
+import com.example.demo.product.ProductInoutVO;
 import com.example.demo.product.ProductVO;
 import com.example.demo.product.service.ProductService;
 
@@ -63,5 +65,19 @@ public class ProductController {
 	@ResponseBody
 	public List<ProductDetailVO> getProdLot(String productCode){
 		return productService.getProdLot(productCode);
+	}
+	
+	// 완제품출고등록
+	@PostMapping("ajax/insertProdOut")
+	@ResponseBody
+	public boolean insertInout(List<ProductInoutVO> list) {
+		return productService.insertInout(list);
+	}
+	
+	// 완제품출고시 재고량 update
+	@PostMapping("ajax/updateOutCnt")
+	@ResponseBody
+	public boolean updateOutCnt(List<OrdersDetailVO> list) {
+		return productService.updateOutCnt(list);
 	}
 }

@@ -17,4 +17,9 @@ public class ProductInoutVO {
 	private String prodReqDetailCode;	// 생산 요청 상세 코드
 	private String usersCode;			// 담당자 코드
 	
+	// 추가 필드
+//	private String ordersCode;			// 주문 코드
+//	private String productCode;			// 제품 코드
+//	private int ordersCnt;				// 주문 수량
+	
 }
