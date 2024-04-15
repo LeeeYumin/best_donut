@@ -176,7 +176,7 @@
 	<update id="updateOrdStat" parameterType="String">
 		UPDATE orders
 		   SET orders_status = 'OP4'
-		 WHERE ordersCode = #{ordersCode}
+		 WHERE orders_code = #{ordersCode}
 	</update>
 
 </mapper>
