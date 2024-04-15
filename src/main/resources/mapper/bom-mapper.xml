@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.bom.mapper.BomMapper">
-	<!-- 자재 발주용 BOM 조회 -->
    	<select id="getMatOrdersBom" resultType="BomVO">
    		SELECT b.bom_code,
    		       b.product_code,
@@ -79,4 +78,6 @@
 		  ON m.mat_code = d.mat_code
 		  order by BOM_CODE
    </select>
+   
+   <!-- BOM작성화면 -->
 </mapper>
