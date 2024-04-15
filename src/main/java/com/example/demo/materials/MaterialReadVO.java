@@ -26,4 +26,6 @@ public class MaterialReadVO {
 	private Date dumpDate;
 	private Integer unitPrice;
 	private String companyCode;
+	
+	private String unit;
 }

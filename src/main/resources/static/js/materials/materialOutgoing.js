@@ -163,6 +163,7 @@ const BOMList = new tui.Grid({
         {
             header: '단위',
             name: 'unit',
+            width: 50,
         },
         {
             header: '생산 소요량',
@@ -171,7 +172,12 @@ const BOMList = new tui.Grid({
             formatter: function (cnt) {
                 return priceFormat(cnt.value);
             }
-        }
+        },
+        {
+            header: '단위',
+            name: 'matUnit',
+            width: 50,
+        },
     ]
 });
 
@@ -197,11 +203,13 @@ function requireMatCal() {
     // 자재
     for (let i = 0; i < BOMListData.length; i++) {
         let needCnt = BOMListData[i].needCnt;
-        
-        console.log(needCnt);
 
         if(BOMListData[i].matCode == 'MAT00002'){
-            BOMList.setValue(i, 'procNeedCnt', needCnt * instructCnt / 60);
+            BOMList.setValue(i, 'procNeedCnt', needCnt * instructCnt / 60 );
+        }else if(BOMListData[i].matCode == 'MAT00009'){
+            BOMList.setValue(i, 'procNeedCnt', needCnt * instructCnt );
+        }else{
+            BOMList.setValue(i, 'procNeedCnt', needCnt * instructCnt / 1000 );
         }
 
     }
@@ -263,6 +271,10 @@ const matStockList = new tui.Grid({
             name: 'remainCnt',
             align: 'center',
             defaultValue: 0
+        },
+        {
+            header: '단위',
+            name: 'unit',
         },
         {
             header: '유통기한',

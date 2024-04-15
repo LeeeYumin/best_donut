@@ -34,7 +34,8 @@
                d.unit_price,
                d.mat_code,
                d.company_code,
-               m.mat_name
+               m.mat_name,
+               d.unit
   	      FROM mat_detail d 
   	      JOIN mat m ON d.mat_code = m.mat_code
 	     WHERE d.mat_code = #{matCode} 
