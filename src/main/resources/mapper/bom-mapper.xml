@@ -80,4 +80,7 @@
    </select>
    
    <!-- BOM작성화면 -->
+   <insert id="insertBom" parameterType="BomVO">
+   
+   </insert>
 </mapper>

@@ -20,7 +20,7 @@ class CustomNumberEditor {
 
 	getValue() {
 		return this.el.value;
-	}
+	 }
 
 	mounted() {
 		this.el.select();
