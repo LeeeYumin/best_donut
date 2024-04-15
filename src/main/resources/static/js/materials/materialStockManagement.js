@@ -129,7 +129,7 @@ const grid2 = new tui.Grid({
 		},
 		{
             header: '단위',
-            name: 'unit',
+            name: 'matUnit',
 			width: 50,
         },
 		{
@@ -144,6 +144,11 @@ const grid2 = new tui.Grid({
 			align: 'center',
 			defaultValue: 0
 		},
+		{
+            header: '단위',
+            name: 'matUnit',
+			width: 50,
+        },
 		{
 			header: '유통기한',
 			name: 'expDate',

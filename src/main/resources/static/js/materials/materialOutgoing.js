@@ -274,7 +274,7 @@ const matStockList = new tui.Grid({
         },
         {
             header: '단위',
-            name: 'unit',
+            name: 'matUnit',
         },
         {
             header: '유통기한',

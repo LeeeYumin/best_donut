@@ -19,9 +19,9 @@ public class QualityServiceTest {
 	public void 자재조회() {
 		String matLotCode = "";
 		 String inoutDate ="";
-		 List<Map<String, Object>> matList = qualityMapper.getMatInfo(matLotCode,inoutDate);
-		 for(Map<String, Object> list : matList) {
-			 System.out.println(list);
-		 }
+//		 List<Map<String, Object>> matList = qualityMapper.getMatInfo(matLotCode,inoutDate);
+//		 for(Map<String, Object> list : matList) {
+//			 System.out.println(list);
+//		 }
 	}
 }
