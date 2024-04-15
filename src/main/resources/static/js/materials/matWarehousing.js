@@ -164,7 +164,7 @@ async function insertMatWarehousing() {
             showConfirmButton: false,
             timer: 1500
         });
-
+        getMatWarehousingList();
     } else {
         Swal.fire({
             position: "center",

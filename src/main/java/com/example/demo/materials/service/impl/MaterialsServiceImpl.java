@@ -40,7 +40,7 @@ public class MaterialsServiceImpl implements MaterialsService {
 
 	// 자재 발주 등록 + 발주 상세 등록
 	@Override
-	public boolean insertMatOrders(MaterialOrderVO vo) {
+	public int insertMatOrders(MaterialOrderVO vo) {
 
 		Map<String, List<MaterialOrderDetailVO>> map = new HashMap<>();
 		List<MaterialOrderDetailVO> list = vo.getMatOrderDetailVO();
@@ -73,11 +73,8 @@ public class MaterialsServiceImpl implements MaterialsService {
 				result += materialsMapper.insertMatOrdersDetail(dvo);
 			}
 		}
-		
-		// 전체 발주 금액 업데이트
-		
 
-		return result >= 1 ? true : false;
+		return result;
 	}
 
 	// 자재 발주 관리
@@ -111,12 +108,12 @@ public class MaterialsServiceImpl implements MaterialsService {
 	
 	// 자재 입고 등록
 	@Override
-	public boolean insertMatWarehousing(List<MaterialWarehousingVO> list) {
+	public int insertMatWarehousing(List<MaterialWarehousingVO> list) {
 		int result = 0;
 		for(MaterialWarehousingVO vo:list) {
 			vo.setWarehousingCnt(vo.getOrdersCnt());
-			result = materialsMapper.insertMatWarehousing(vo);			
+			result += materialsMapper.insertMatWarehousing(vo);			
 		}
-		return result >= 1 ? true : false;
+		return result;
 	}
 }

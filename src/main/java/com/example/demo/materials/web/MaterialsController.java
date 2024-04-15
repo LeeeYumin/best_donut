@@ -65,7 +65,7 @@ public class MaterialsController {
 	// 자재 발주 등록
 	@PostMapping("/ajax/matOrdersInsert")
 	@ResponseBody
-	public boolean insertOrders(@RequestBody MaterialOrderVO vo) {
+	public int insertOrders(@RequestBody MaterialOrderVO vo) {
 		return materialsService.insertMatOrders(vo);
 	}
 
@@ -112,7 +112,7 @@ public class MaterialsController {
 	// 자재 입고 등록
 	@PostMapping("/ajax/matWarehousingInsert")
 	@ResponseBody
-	public boolean matWarehousingInsert(@RequestBody List<MaterialWarehousingVO> vo) {
+	public int matWarehousingInsert(@RequestBody List<MaterialWarehousingVO> vo) {
 		return materialsService.insertMatWarehousing(vo);
 	}
 

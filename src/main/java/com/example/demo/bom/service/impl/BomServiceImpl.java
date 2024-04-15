@@ -20,6 +20,11 @@ public class BomServiceImpl implements BomService {
 	}
 
 	@Override
+	public List<BomVO> getMatOutBom(String productCode) {
+		return bomMapper.getMatOutBom(productCode);
+	}
+
+	@Override
 	public List<BomVO> getProdBom() {
 		return bomMapper.getProdBom();
 	}
@@ -33,6 +38,7 @@ public class BomServiceImpl implements BomService {
 	public List<BomVO> bomselList() {
 		return bomMapper.bomselList();
 	}
+
 
 
 

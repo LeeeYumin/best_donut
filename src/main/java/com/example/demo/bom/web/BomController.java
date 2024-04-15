@@ -23,6 +23,13 @@ public class BomController {
 		return bomService.getMatOrdersBom();
 	}
 	
+	// 자재 불출용 BOM 목록 조회
+	@GetMapping("/ajax/bomoutlist") // fetch 함수에 들어가는 uri
+	@ResponseBody
+	public List<BomVO> getMatOutBom(String productCode) {
+		return bomService.getMatOutBom(productCode);
+	}
+	
 	//BOM관리
 	@GetMapping("/insertBom")
 	public String insertBom() {

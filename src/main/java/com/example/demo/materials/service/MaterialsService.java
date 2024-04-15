@@ -17,7 +17,7 @@ public interface MaterialsService {
 	public int updateMatStatus(String[] matLotCodes);
 
 	// 자재 발주 등록
-	public boolean insertMatOrders(MaterialOrderVO vo);
+	public int insertMatOrders(MaterialOrderVO vo);
 	
 	// 자재 발주 관리
 	public List<MaterialOrderVO> getMaterialOrders(MaterialOrderVO vo);
@@ -32,5 +32,5 @@ public interface MaterialsService {
 	// 자재 입고 등록
 	public List<MaterialWarehousingVO> getWarehousingList(MaterialWarehousingVO vo);
 
-	public boolean insertMatWarehousing(List<MaterialWarehousingVO> vo);
+	public int insertMatWarehousing(List<MaterialWarehousingVO> vo);
 }
