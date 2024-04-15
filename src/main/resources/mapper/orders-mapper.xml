@@ -74,6 +74,7 @@
 			   , d.orders_code
 			   , d.product_code
 			   , p.product_name
+			   , p.stock_cnt
 		  FROM orders_detail d JOIN product p
 		    ON d.product_code = p.product_code
 		 WHERE d.orders_code = #{ordersCode}
