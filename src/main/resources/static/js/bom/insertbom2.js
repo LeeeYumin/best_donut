@@ -36,39 +36,44 @@ const grid = new tui.Grid({
     //   align : "center",
     // },
     {
-      header : 'BOM 코드',
-      name : 'bomCode',
-      align : "center",
-    },
-    // {
-    //   header : '제품 코드',
-    //   name : 'productCode',
-    //   align : "center",
-    // },
-    {
-      header : '제품명',
-      name : 'productName',
+      header : '자재명',
+      name : 'matName',
       align : "center",
     },
     {
-      header : '적용여부',
-      name : 'applyStatus',
+      header : '자재 코드',
+      name : 'matCode',
       align : "center",
     },
     {
-      header : '담당자코드',
-      name : 'usersCode',
+      header : '단가',
+      name : 'unitPrice',
       align : "center",
     },
     {
-      header : '작성일자',
-      name : 'writeDate',
+      header : '단위',
+      name : 'unit',
+      align : "center",
+    },
+    {
+      header : '소요량',
+      name : 'needCnt',
+      align : "center",
+    },
+    {
+      header : '공정',
+      name : 'procCode',
+      align : "center",
+    },
+    {
+      header : '거래처코드',
+      name : 'companyCode',
       align : "center",
     }
   ]
 });
 
-async function getProdBom(){
+async function getProdBom2(){
   await fetch("ajax/insertBom2")
   .then(res => res.json())
   .then(res => {
