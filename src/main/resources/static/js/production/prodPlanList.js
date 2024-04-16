@@ -97,11 +97,17 @@ getProdPlanList();
 
 		//검색버튼
 		document.getElementById('searchBtn').addEventListener('click', getProdPlanList);
-		
+		document.getElementById('prodPlanCode').addEventListener('keyup', (e) => { //*확인하기
+			if (e.keyCode == 13) {
+				getProdPlanList();
+			}
+		})
+
 		//초기화버튼
 		document.getElementById('resetBtn').addEventListener('click', function() {
 			document.getElementById('searchStartDate').value = '';
 			document.getElementById('searchEndDate').value = '';
+			document.getElementById('prodPlanCode').value = '';
 			plList.resetData([]);
 			getProdPlanList();
 		});
@@ -159,24 +165,41 @@ getProdPlanList();
 						return priceFormat(price.value);
 					}
 				},
-				{
-					header : '미지시수량',
-					name : 'notInstructCnt',
-					align: 'center',
-					formatter: function(price) {
-						return priceFormat(price.value);
+				// {
+				// 	header : '미지시수량',
+				// 	name : 'notInstructCnt',
+				// 	align: 'center',
+				// 	formatter: function(price) {
+				// 		return priceFormat(price.value);
+				// 	},
+				// },
+				// {
+				// 	header : '지시수량',
+				// 	name : 'instructDoneCnt',
+				// 	align: 'center',
+				// 	formatter: function(price) {
+				// 		return priceFormat(price.value);
+				// 	},
+				// },	
+			],
+			summary: {
+				//align: 'right',
+				height: 40,
+				position: 'bottom',
+				columnContent: {
+					prodPlanDetailCode: {
+						template: function() {
+							return '총 계획수량 합계';
+						}, 
+					},
+					planCnt: {
+						//align: 'right',
+						template: function(value) {
+							return priceFormat(value.sum);
+						}, 
 					},
 				},
-				{
-					header : '지시수량',
-					name : 'instructDoneCnt',
-					align: 'center',
-					formatter: function(price) {
-						return priceFormat(price.value);
-					},
-				},
-				
-			]
+			}	
 		});
 
 		//생산계획 클릭 시 아래 생산계획상세내용 출력
@@ -299,15 +322,6 @@ getProdPlanList();
 				.then(res => {
 					console.log(res);
 
-					// if(res.result == 1) { //controller에서 "result"로 값 넘김
-					// 	alert('삭제되었습니다.');
-					// 	getProdPlanList();
-					// 	plAll.resetData([]);
-
-					// }else {
-					// 	alert('삭제 중 오류 발생');
-					// };
-
 					// SweetAlert
 					if(res.result == 1){ //controller에서 "result"로 값 넘김
 						Swal.fire({
@@ -342,12 +356,6 @@ getProdPlanList();
 				});
 			}
 		};
-		//삭제응답 (그리드에 입력된 모든 정보 비우기)
-		// function saveRes(res) {
-		// 	plDeInsert.resetData([]);
-		// 	plreq.resetData([]);
-		// 	plreqD.resetData([]);
-		// }
 
 
 		

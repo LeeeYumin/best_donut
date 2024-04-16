@@ -193,7 +193,6 @@ class CustomNumberEditor {
             formatter: function(price) {
               return priceFormat(price.value);
             },
-						editor: 'text'
 					},
 					{
 						header : '요청수량',

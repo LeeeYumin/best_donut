@@ -257,6 +257,7 @@
 		UPDATE prod_plan_detail
 		SET not_instruct_cnt = #{notInstructCnt}
 		  , instruct_done_cnt = #{instructDoneCnt}
+		  , prod_plan_status = 'LS2'
 		WHERE prod_plan_detail_code = #{prodPlanDetailCode}
 	</update>
 
