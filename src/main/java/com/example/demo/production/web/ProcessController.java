@@ -60,14 +60,26 @@ public class ProcessController {
 	public List<ProcessVO> getProcEqmInfo(String procDetailCode){
 		return processService.getProcEqmInfo();
 	}
+	//공정별 모든 설비
+	@GetMapping("/ajax/eqmAllInfo")
+	@ResponseBody
+	public List<ProcessVO> getEqmAllInfo(String eqmName){
+		return processService.getEqmAllInfo(eqmName);
+	}
 	
 
 //2)수정
-	@RequestMapping("/ajax/updateProc")
+	@RequestMapping("/ajax/updateProc") //공정update 프로시저 결과
 	@ResponseBody
 	public String modifyProc(@RequestBody ProcessVO vo) {
 		processService.updateProc(vo);
 		return vo.getResult();
+	}
+	
+	@PostMapping("/ajax/updateProcEqm")
+	@ResponseBody
+	public int modifyProcEqm(@RequestBody ProcessVO vo) { //공정사용 설비 변경
+		return processService.updateProcEqm(vo);	
 	}
 //	//공정시작&가동중
 //	@RequestMapping("/ajax/updateBeginTime")

@@ -109,7 +109,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 
 	
 /* < 생산지시 > */
-	
+	//1)조회
 	//+지시 전 주간생산계획
 	@Override
 	public Map<String,Object> getWeeklyPlan() {
@@ -132,13 +132,20 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 		return prodPlanMapper.getEqm();
 	}
 	
+	@Override
+	public ProdInsVO beforeInsertInsCode() { //지시코드 미리보기
+		return prodPlanMapper.beforeInsertInsCode();
+	}
 	
-	//1)등록
+	
+	//2)등록
 	@Override
 	@Transactional
 	public int insertProdInstruct(ProdInsVO vo) {
 		//생산지시
 		prodPlanMapper.insertProdInstruct(vo);
+		//생산계획 상태 update
+		prodPlanMapper.updateProdPlanStatus(vo);
 		
 		//생산지시 상세
 		int result = 0;
@@ -158,14 +165,14 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	}
 	
 	//+지시 등록하면서 => 계획의 미지시&지시수량 변경
-	@Override
-	public int updateAfterInstruct(List<ProdPlanDeVO> dvo) {
-		int result = 0;
-		for(int i = 0; i < dvo.size(); i++) {
-			result = prodPlanMapper.updateAfterInstruct(dvo.get(i));
-		}
-		return result;
-	}
+//	@Override
+//	public int updateAfterInstruct(List<ProdPlanDeVO> dvo) {
+//		int result = 0;
+//		for(int i = 0; i < dvo.size(); i++) {
+//			result = prodPlanMapper.updateAfterInstruct(dvo.get(i));
+//		}
+//		return result;
+//	}
 
 
 

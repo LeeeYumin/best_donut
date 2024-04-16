@@ -37,6 +37,7 @@ public class ProcessVO {
 	
 	//설비
 	private String oprStatus;
+	private String eqmStatus;
 	private String eqmName;
 
 	

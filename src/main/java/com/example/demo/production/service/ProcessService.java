@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.demo.production.ProcessVO;
+import com.example.demo.production.ProdPlanAllVO;
 
 
 public interface ProcessService {
@@ -16,12 +17,11 @@ public interface ProcessService {
 	public List<ProcessVO> getProcessInfo(String prodInsDetailCode);
 	public List<ProcessVO> getProcMatInfo(String procDetailCode);
 	public List<ProcessVO> getProcEqmInfo(); //사용되는 설비 가동현황
+	public List<ProcessVO> getEqmAllInfo(String eqmName);
 	
 	//2)수정
-//	public int updateBeginTime(ProcessVO vo);
-//	public int updateEndTime(ProcessVO vo);
 	public int updateProc(ProcessVO vo);
-
+	public int updateProcEqm(ProcessVO vo); //공정사용 설비 변경
 	
 
 	

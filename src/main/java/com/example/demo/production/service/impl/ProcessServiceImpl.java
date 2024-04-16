@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.production.ProcessVO;
 import com.example.demo.production.ProdInsVO;
+import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.mapper.ProcessMapper;
 import com.example.demo.production.service.ProcessService;
 
@@ -49,13 +50,23 @@ public class ProcessServiceImpl implements ProcessService {
 	public List<ProcessVO> getProcEqmInfo() { //사용설비 가동상태
 		return processMapper.getProcEqmInfo();
 	}
-
+	@Override
+	public List<ProcessVO> getEqmAllInfo(String eqmName) { //공정별 모든 설비 정보 조회
+		return processMapper.getEqmAllInfo(eqmName);
+	}
 
 	//2)수정
 	@Override
 	public int updateProc(ProcessVO vo) {
 		return processMapper.updateProc(vo);
 	}
+
+	@Override
+	public int updateProcEqm(ProcessVO vo) { //공정사용 설비 변경
+		return processMapper.updateProcEqm(vo);
+	}
+
+
 	
 //	@Override
 //	public int updateBeginTime(ProcessVO vo) {

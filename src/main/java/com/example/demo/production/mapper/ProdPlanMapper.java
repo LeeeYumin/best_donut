@@ -44,18 +44,24 @@ public interface ProdPlanMapper {
 
 	
 /* 3.생산지시 */
+	//1)조회
 	//+지시 전 주간생산계획
 	public List<ProdPlanVO> getWeeklyPlan();
 	public List<ProdPlanDeVO> getWeeklyPlanDetail(String prodPlanCode);
 	//설비상태
 	public List<ProdInsVO> getEqm();
+	//지시코드 미리 보기
+	public ProdInsVO beforeInsertInsCode();
 	
-	//1)등록
+	//2)등록
 	public int insertProdInstruct(ProdInsVO vo); //1건에
 	public int insertProdInstructDetail(ProdInsDeVO dvo); //여러 건
 	public int insertProcDetail(ProcessVO pvo); //공정상세 테이블 일부 등록
+	//+ 생산계획상태 수정
+	public int updateProdPlanStatus(ProdInsVO vo);
+	
 	//+미지시&지시수량 수정
-	public int updateAfterInstruct(ProdPlanDeVO dvo); 
+	//public int updateAfterInstruct(ProdPlanDeVO dvo); 
 	
 
 }

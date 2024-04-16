@@ -202,7 +202,7 @@ getProdPlanList();
 			}	
 		});
 
-		//생산계획 클릭 시 아래 생산계획상세내용 출력
+		//생산계획 클릭 시 => 아래 생산계획상세내용 출력
 		plList.on('click', e => {
 			let status = plList.getValue(e.rowKey, "prodPlanStatus");
 			let plCode = plList.getValue(e.rowKey, "prodPlanCode");
@@ -217,10 +217,10 @@ getProdPlanList();
 			}else { //아니면 수정불가
 				plAll.disableColumn('fixCnt');
 			}		
-		})
+		});
 		
- 		async function getProdPlanAll(plCode){
-			await fetch(`/ajax/prodPlanAll?prodPlanCode=${plCode}`)
+ 		function getProdPlanAll(plCode){
+			fetch(`/ajax/prodPlanAll?prodPlanCode=${plCode}`)
 			.then(res => res.json())
 			.then(res => {
 				//console.log(res);
@@ -287,10 +287,8 @@ getProdPlanList();
 							timer: 2000
 						});
 					};
-
-
 			});
-		}
+		};
 
 		// //생산계획 상태 미지시일 경우에만 삭제하기
 		// plList.on('click', e => {

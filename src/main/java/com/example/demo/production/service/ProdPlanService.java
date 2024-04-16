@@ -31,15 +31,18 @@ public interface ProdPlanService {
 	
 	
 /* 3.생산지시 */
+	//1)조회
 	//+지시 전 주간생산계획
 	public Map<String,Object> getWeeklyPlan();
 	//+설비상태 확인
 	public List<ProdInsVO> getEqm();
+	//지시코드 미리 보기
+	public ProdInsVO beforeInsertInsCode();
 	
-	//1)등록
+	//2)등록
 	public int insertProdInstruct(ProdInsVO vo);
 	//+계획의 미지시&지시수량 수정
-	public int updateAfterInstruct(List<ProdPlanDeVO> dvo); //updatedRows 배열
+	//public int updateAfterInstruct(List<ProdPlanDeVO> dvo); //updatedRows 배열
 	
 	
 }
