@@ -42,7 +42,7 @@
 		                   ON o.users_code = u.users_code
 		                 JOIN t
 		                   ON o.orders_code = t.ocode
-		 WHERE 1=1
+		 WHERE o.orders_status = 'OP1'
 			<if test="ordersCode != null and ordersCode != ''">
 				AND o.orders_code LIKE '%' || #{ordersCode} || '%'
 			</if>
@@ -76,7 +76,7 @@
 			   , p.product_name
 			   , p.stock_cnt
 		  FROM orders_detail d JOIN product p
-		    ON d.product_code = p.product_code
+		                         ON d.product_code = p.product_code
 		 WHERE d.orders_code = #{ordersCode}
 		 ORDER BY 1
 	</select>
@@ -220,7 +220,7 @@
 	<!-- 주문 상태 변경 -->
 	<update id="updateOrdStat" parameterType="ProdReqVO">
 		UPDATE orders
-		   SET orders_status = 'OP2'
+		   SET orders_status = 'OP3'
 		 WHERE due_date <![CDATA[ >= ]]> #{dueStartDate}
 		   AND due_date <![CDATA[ <= ]]> #{dueEndDate}
 	</update>

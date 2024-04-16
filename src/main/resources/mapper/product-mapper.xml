@@ -32,7 +32,7 @@
 		           , SUM(d.orders_cnt) cnt
 		      FROM orders_detail d JOIN orders o
 		                           ON o.orders_code = d.orders_code
-		     WHERE 1=1
+		     WHERE o.orders_status = 'OP2' 
 		     <if test="dueStartDate != null">
 		     	AND o.due_date <![CDATA[ >= ]]> #{dueStartDate}
 		     </if>
@@ -49,6 +49,57 @@
 		       , NVL(t.cnt, '0') total_orders_cnt
 		  FROM t RIGHT OUTER JOIN product p
 		           ON t.product_code = p.product_code
+		 ORDER BY 1
+	</select>
+	
+	<!-- 주문조회 -->
+	<select id="getOrders" resultType="OrdersVO">
+		WITH t AS 
+		    (
+		    SELECT o.orders_code         AS ocode
+		           , MAX(p.product_name) AS prod
+		           , COUNT(*)            AS cnt
+		      FROM orders o JOIN orders_detail d
+		                      ON o.orders_code = d.orders_code
+		                    JOIN product p
+		                      ON d.product_code = p.product_code
+		     GROUP BY o.orders_code
+		    )
+		SELECT o.orders_code
+		       , o.orders_date
+		       , o.due_date
+		       , o.total_orders_price
+		       , o.orders_status
+		       , c.company_name
+		       , u.users_name
+		       , CASE WHEN t.cnt = 1 THEN t.prod
+		              ELSE t.prod || ' 외 ' || CAST(t.cnt - 1 AS VARCHAR(20)) || '건' 
+		         END AS cnt_str
+		  FROM orders o  JOIN company c
+		                   ON o.company_code = c.company_code
+		                 JOIN users u
+		                   ON o.users_code = u.users_code
+		                 JOIN t
+		                   ON o.orders_code = t.ocode
+		 WHERE o.orders_status != 'OP4'
+			<if test="ordersCode != null and ordersCode != ''">
+				AND o.orders_code LIKE '%' || #{ordersCode} || '%'
+			</if>
+			<if test="companyCode != null and companyCode != ''">
+				AND o.company_code = #{companyCode}
+			</if>
+			<if test="dueStartDate != null">
+				AND TRUNC(o.due_date) <![CDATA[ >= ]]> TRUNC(#{dueStartDate})
+			</if>
+			<if test="dueEndDate != null">
+				AND TRUNC(o.due_date) <![CDATA[ <= ]]> TRUNC(#{dueEndDate})
+			</if>
+			<if test="ordersStartDate != null">
+				AND TRUNC(o.orders_date) <![CDATA[ >= ]]> TRUNC(#{ordersStartDate})
+			</if>
+			<if test="ordersEndDate != null">
+				AND TRUNC(o.orders_date) <![CDATA[ <= ]]> TRUNC(#{ordersEndDate})
+			</if>
 		 ORDER BY 1
 	</select>
 	
@@ -125,7 +176,7 @@
 	<update id="updateOrdStat" parameterType="String">
 		UPDATE orders
 		   SET orders_status = 'OP4'
-		 WHERE ordersCode = #{ordersCode}
+		 WHERE orders_code = #{ordersCode}
 	</update>
 
 </mapper>

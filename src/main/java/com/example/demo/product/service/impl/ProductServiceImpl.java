@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.orders.OrdersDetailVO;
+import com.example.demo.orders.OrdersVO;
 import com.example.demo.product.ProductDetailVO;
 import com.example.demo.product.ProductInoutVO;
 import com.example.demo.product.ProductVO;
@@ -43,6 +44,12 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.getProdLot(productCode);
 	}
 
+	// 주문조회
+	@Override
+	public List<OrdersVO> getOrders(OrdersVO vo) {
+		return productMapper.getOrders(vo);
+	}
+	
 	
 	// 2. 등록
 	
@@ -57,6 +64,7 @@ public class ProductServiceImpl implements ProductService{
 		return result > 0 ? true : false;
 	}
 
+	// 완제품출고 재고 update 처리
 	@Override
 	public boolean updateOutCnt(List<OrdersDetailVO> list) {
 		
@@ -69,7 +77,7 @@ public class ProductServiceImpl implements ProductService{
 		
 		return result > 0 ? true : false;
 	}
-	
+
 	
 
 }

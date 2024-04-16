@@ -94,7 +94,7 @@ function getOrdersList(param){
 		body : JSON.stringify(param)
 	};
 
-	fetch('ajax/ordersList', data)
+	fetch('ajax/getOrders', data)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
@@ -152,7 +152,7 @@ ordGrid.on('click', (event) => {
 // 1. grid 생성
 const detGrid = new tui.Grid({
 	el : document.getElementById('detGrid'),
-	bodyHeight : 200,
+	bodyHeight : 230,
 	scrollX : false,
 	scrollY : true,
 	columns : [ 
@@ -209,8 +209,11 @@ function getOrdersDetail(ordersCode){
 // 3. 이벤트
 
 function insertProdOut() {
-	// 1. history insrt
-	fetch(`ajax/insertProdOut`)
+
+	
+
+	// // 1. history insert
+	// fetch(`ajax/insertInout`)
 }
 
 

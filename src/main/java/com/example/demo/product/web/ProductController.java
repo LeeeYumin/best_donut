@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.orders.OrdersDetailVO;
+import com.example.demo.orders.OrdersVO;
 import com.example.demo.product.ProductDetailVO;
 import com.example.demo.product.ProductInoutVO;
 import com.example.demo.product.ProductVO;
@@ -67,8 +69,15 @@ public class ProductController {
 		return productService.getProdLot(productCode);
 	}
 	
+	// 주문조회
+	@PostMapping("ajax/getOrders")	// fetch 함수에 들어가는 uri
+	@ResponseBody
+	public List<OrdersVO> getOrders(@RequestBody OrdersVO vo){
+		return productService.getOrders(vo);
+	}
+	
 	// 완제품출고등록
-	@PostMapping("ajax/insertProdOut")
+	@PostMapping("ajax/insertInout")
 	@ResponseBody
 	public boolean insertInout(List<ProductInoutVO> list) {
 		return productService.insertInout(list);
