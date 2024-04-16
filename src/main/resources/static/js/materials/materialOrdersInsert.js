@@ -114,7 +114,7 @@ const prodPlanDetail = new tui.Grid({
             header: '계획수량',
             name: 'planCnt',
             align: 'center',
-        }
+        },
     ],
     summary: {
         height: 40,
@@ -240,9 +240,6 @@ const matStockList = new tui.Grid({
             formatter: function (cnt) {
                 return priceFormat(cnt.value);
             },
-            validation: {
-                validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
-            },
         },
         {
             header: '단위',
@@ -256,6 +253,17 @@ const matStockList = new tui.Grid({
             formatter: function (cnt) {
                 return priceFormat(cnt.value);
             },
+        },
+        {
+            header: '현재고+발주수량',
+            name: 'plusStockOrders',
+            align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            },
+            validation: {
+                validatorFn: (value, row, columnName) => Number(row['plusStockOrders']) > Number(row['safeStockCnt'])
+            }
         },
         {
             header: '소요량',
@@ -297,6 +305,10 @@ function getMaterialsList() {
             matStockList.resetData(res);
             for (let i = 0; i < res.length; i++) {
                 matStockList.setValue(i, 'requireMat', 0)
+
+                // 현재고량 + 발주 진행 중 수량 합
+                let plusStockOrder = matStockList.getColumnValues('stockCnt')[i] + matStockList.getColumnValues('orderedMat')[i];
+                matStockList.setValue(i, 'plusStockOrders', plusStockOrder);
             }
         })
 };
@@ -469,7 +481,7 @@ function checkValidation() {
             matOrderList.focusAt(i, 3);
             result = 0;
             break;
-        // 발주 수량이 숫자인지 체크
+            // 발주 수량이 숫자인지 체크
         } else if (isNaN(Number(matOrdersData[i].ordersCnt))) {
             alert(matOrdersData[i].matName + ' 수량을 숫자로 입력해주세요');
             matOrderList.focusAt(i, 3);
@@ -508,7 +520,7 @@ async function insertMatOrders() {
         })
 
     if (result) {
-        matOrderList.resetData();
+        matOrderList.resetData([]);
         getMaterialsList();
 
         Swal.fire({

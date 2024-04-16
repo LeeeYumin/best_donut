@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.materials.MaterialInOutVO;
 import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderVO;
 import com.example.demo.materials.MaterialOutgoingVO;
@@ -127,5 +128,11 @@ public class MaterialsServiceImpl implements MaterialsService {
 			result += materialsMapper.insertMatOutgoing(vo);			
 		}
 		return result;
+	}
+
+	// 자재 입출고 목록
+	@Override
+	public List<MaterialInOutVO> getMatInOutList(MaterialInOutVO vo) {
+		return materialsMapper.getMatInOutList(vo);
 	}
 }

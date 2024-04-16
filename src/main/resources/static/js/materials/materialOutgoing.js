@@ -83,6 +83,11 @@ const prodInsDetail = new tui.Grid({
             name: 'instructCnt',
             align: 'center'
         },
+        {
+            header: '자재 불출 유무',
+            name: 'matOutgoingStatus',
+            align: 'center',
+        },
     ]
 });
 
@@ -468,6 +473,7 @@ async function insertMatOutgoing() {
     if (result) {
         matOutgoingList.resetData([]);
         matStockList.resetData([]);
+        getTodayIns();
 
         Swal.fire({
             position: "center",

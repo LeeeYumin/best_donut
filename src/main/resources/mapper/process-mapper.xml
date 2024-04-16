@@ -21,6 +21,7 @@
          , not_prod_cnt
          , prod_cnt
          , prod_instruct_code
+         , mat_outgoing_status
     FROM prod_instruct_detail pid JOIN prod_plan_detail pld
                                     ON pid.prod_plan_detail_code = pld.prod_plan_detail_code
                                   JOIN product p
