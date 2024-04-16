@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderVO;
+import com.example.demo.materials.MaterialOutgoingVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
@@ -38,4 +39,7 @@ public interface MaterialsMapper {
 	public List<MaterialWarehousingVO> getWarehousingList(MaterialWarehousingVO vo);
 	
 	public int insertMatWarehousing(MaterialWarehousingVO vo);
+	
+	// 자재 불출 등록
+	public int insertMatOutgoing(MaterialOutgoingVO vo);
 }

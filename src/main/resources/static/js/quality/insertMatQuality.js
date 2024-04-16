@@ -1,33 +1,5 @@
 getMatInfo('','','');
 
-class CustomNumberEditor {
-	constructor(props) {
-		const el = document.createElement('input');
-		const { maxLength } = props.columnInfo.editor.options;
-
-		el.type = 'number';
-		el.min = 0;
-		el.max = grid.getColumnValues('inoutCnt');
-		el.step = 1;
-    el.width = 5;
-		el.maxLength = maxLength;
-		this.el = el;
-
-	}
-
-	getElement() {
-		return this.el;
-	}
-
-	getValue() {
-		return this.el.value;
-	}
-
-	mounted() {
-		this.el.select();
-	}
-}
-
 const grid = new tui.Grid({
   el : document.getElementById('grid'),
   scrollX : false,

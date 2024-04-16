@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderVO;
+import com.example.demo.materials.MaterialOutgoingVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
@@ -32,5 +33,8 @@ public interface MaterialsService {
 	// 자재 입고 등록
 	public List<MaterialWarehousingVO> getWarehousingList(MaterialWarehousingVO vo);
 
-	public int insertMatWarehousing(List<MaterialWarehousingVO> vo);
+	public int insertMatWarehousing(List<MaterialWarehousingVO> list);
+	
+	// 자재 불출 등록
+	public int insertMatOutgoing(List<MaterialOutgoingVO> list);
 }

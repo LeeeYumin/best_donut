@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderVO;
+import com.example.demo.materials.MaterialOutgoingVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
@@ -113,6 +114,17 @@ public class MaterialsServiceImpl implements MaterialsService {
 		for(MaterialWarehousingVO vo:list) {
 			vo.setWarehousingCnt(vo.getOrdersCnt());
 			result += materialsMapper.insertMatWarehousing(vo);			
+		}
+		return result;
+	}
+
+	// 자재 불출 등록
+	@Override
+	public int insertMatOutgoing(List<MaterialOutgoingVO> list) {
+		int result = 0;
+		for(MaterialOutgoingVO vo : list) {
+			vo.setOutCnt(vo.getRemainCnt());
+			result += materialsMapper.insertMatOutgoing(vo);			
 		}
 		return result;
 	}

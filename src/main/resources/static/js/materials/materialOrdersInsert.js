@@ -508,6 +508,9 @@ async function insertMatOrders() {
         })
 
     if (result) {
+        matOrderList.resetData();
+        getMaterialsList();
+
         Swal.fire({
             position: "center",
             icon: "success",

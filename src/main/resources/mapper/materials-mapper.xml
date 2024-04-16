@@ -288,4 +288,14 @@
    		)
    	</insert>
    	
+   	<!-- 불출 등록 프로시저 호출 -->
+   	<insert id="insertMatOutgoing" statementType="CALLABLE" parameterType="MaterialWarehousingVO">
+   		CALL MAT_OUTGOING_INSERT( 
+   			#{prodInstructDetailCode, mode=IN, jdbcType=VARCHAR},
+   			#{matLotCode, mode=IN, jdbcType=VARCHAR},
+   			#{outCnt, mode=IN, jdbcType=INTEGER},
+   			#{matCode, mode=IN, jdbcType=VARCHAR},
+   			#{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
+   		)
+   	</insert>
 </mapper>
