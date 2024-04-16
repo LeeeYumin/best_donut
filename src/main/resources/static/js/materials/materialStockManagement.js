@@ -125,7 +125,7 @@ const grid2 = new tui.Grid({
 		{
 			header: '입고수량',
 			name: 'warehousingCnt',
-			align: 'center'
+			align: 'end'
 		},
 		{
             header: '단위',
@@ -141,7 +141,7 @@ const grid2 = new tui.Grid({
 		{
 			header: '현재고량',
 			name: 'remainCnt',
-			align: 'center',
+			align: 'end',
 			defaultValue: 0
 		},
 		{

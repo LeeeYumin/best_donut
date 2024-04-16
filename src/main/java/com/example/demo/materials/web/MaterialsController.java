@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderVO;
+import com.example.demo.materials.MaterialOutgoingVO;
 import com.example.demo.materials.MaterialReadVO;
 import com.example.demo.materials.MaterialVO;
 import com.example.demo.materials.MaterialWarehousingVO;
@@ -120,6 +121,13 @@ public class MaterialsController {
 	@RequestMapping("/materials/outgoing")
 	public String outgoing() {
 		return "materials/materialOutgoing"; // "/template(기본값-동적 컨텐츠)/index.html"
+	}
+	
+	// 자재 불출 등록
+	@PostMapping("/ajax/matOutgoingInsert")
+	@ResponseBody
+	public int matOutgoingInsert(@RequestBody List<MaterialOutgoingVO> vo) {
+		return materialsService.insertMatOutgoing(vo);
 	}
 
 	// 자재 입고/불출 목록 페이지 이동
