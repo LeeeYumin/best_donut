@@ -130,9 +130,9 @@ $(function() {
 
 // 정보수정 버튼
 async function updateUsers() {
-  // if(!formValidation()) {
-  //   return;
-  // }
+  if(!formValidation()) {
+    return;
+  }
   
   let formData = new FormData(document.insertForm);
 
@@ -150,11 +150,11 @@ async function updateUsers() {
     console.log(res);
     result = res;
   })
-  // .then(res => {
-  //   window.setTimeout(function() {
-  //     location.href = '/userslist';
-  //   }, 1000);
-  // })
+  .then(res => {
+    window.setTimeout(function() {
+      location.href = '/userslist';
+    }, 1000);
+  })
   
 
   // SweetAlert
@@ -185,5 +185,17 @@ async function updateUsers() {
 async function deleteUsers() {
   let usersCode = insertForm.usersCode.value
   console.log(usersCode);
-  location.href = '/deleteusers/' + usersCode
+
+  window.setTimeout(function() {
+    location.href = '/deleteusers/' + usersCode
+  }, 1000);
+
+  Swal.fire({
+    position: "center",
+    icon: "success",
+    title: "삭제 완료!",
+    // text: "삭제가 정상적으로 처리되었습니다.",
+    showConfirmButton: false,
+    timer: 2000
+  });
 };

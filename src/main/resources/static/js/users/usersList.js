@@ -334,6 +334,15 @@ function checkMaster(){
   })
 }
 
+
+// 단건조회 이동
+grid.on('dblclick', (event) => {
+	let usersCode = grid.getValue(event.rowKey, 'usersCode')
+  location.href = 'usersinfo/' + usersCode
+})
+
+
+// Hover
 tui.Grid.applyTheme('custom', {
   row: {
     hover: {
@@ -341,10 +350,3 @@ tui.Grid.applyTheme('custom', {
     }
   }
 });
-
-
-// 단건조회 이동
-grid.on('dblclick', (event) => {
-	let usersCode = grid.getValue(event.rowKey, 'usersCode')
-  location.href = 'usersinfo/' + usersCode
-})
