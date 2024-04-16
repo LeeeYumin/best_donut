@@ -20,7 +20,7 @@
 <table>
   <tr>
     <td>
-        <a href="">
+        <a href="https://github.com/kimhj365">
             <img src="https://github.com/LeeeYumin/best_donut/assets/152114081/babd1c36-d794-4ff2-8eee-2395c81eb13a.png" width="100" height="100">
         </a>
     </td>
@@ -35,7 +35,7 @@
         </a>
     </td>
     <td>
-        <a href="">
+        <a href="https://github.com/codenamehj">
             <img src="https://github.com/LeeeYumin/best_donut/assets/152114081/5085c2ec-55e8-485b-b669-03f08a579597.png" width="100" height="100">
         </a>
     </td>
