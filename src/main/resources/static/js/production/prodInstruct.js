@@ -30,7 +30,32 @@ getEqmCheck();
 		getElement() {
 			return this.el;
 		}
+	};
+
+	class CustomNumberEditor {
+	constructor(props) {
+		const el = document.createElement('input');
+		const { maxLength } = props.columnInfo.editor.options;
+
+		el.type = 'number';
+		el.min = 0;
+		//el.max = 1000;
+		el.step = 100;
+		this.el = el;
 	}
+
+	getElement() {
+		return this.el;
+	}
+
+	getValue() {
+		return this.el.value;
+	}
+
+	mounted() {
+		this.el.select();
+	}
+};
 
 	/* < 생산계획 > */
 	const wplan = new tui.Grid({
@@ -250,10 +275,14 @@ getEqmCheck();
 					header : '지시수량',
 					name : 'instructCnt',
 					align: 'center',
+					editor: {
+						type: CustomNumberEditor,
+						options: {
+						}
+					},
 					formatter: function(price) {
 						return priceFormat(price.value);
 					},
-					editor: 'text'
 				},			
 			],
 			summary: {
@@ -313,15 +342,23 @@ getEqmCheck();
 
 			//생산지시 그리드의 지시수량 입력 시 => 위 생산계획 그리드 지시수량 & 미지시수량 값 변경
 			piDeInsert.on('afterChange', e => {
+
 				let row = piDeInsert.getRow(e.changes[0].rowKey);
-				
 				let plDeCode = row.prodPlanDetailCode;
-				let instructCnt = parseInt(row.instructCnt);
+				//let instructCnt = parseInt(row.instructCnt);
 				
-				for(let i = 0; i < wplanD.getData().length; i++) {
-					if(wplanD.getData()[i].prodPlanDetailCode == plDeCode) {
+				let beforeCnt = wplanD.getData();
+				
+				for(let i = 0; i < beforeCnt.length; i++) {
+					if(wplanD.beforeCnt[i].prodPlanDetailCode == plDeCode) {
 						let num = i;
-						let notIns = wplanD.getData()[i].planCnt - instructCnt
+						
+						let beforeNotIns = beforeCnt[i].notInstructCnt; //기존 미지시수량
+						let beforeOkIns = beforeCnt[i].instructCnt; //기존 지시수량
+
+						let
+
+						//let notIns = wplanD.getData()[i].planCnt - instructCnt
 						
 						
 						//입력 지시수량이 계획수량보다 클 경우 => 알림 후 계획수량으로 입력
@@ -350,6 +387,44 @@ getEqmCheck();
 					}
 				}
 			});
+			// piDeInsert.on('afterChange', e => {
+			// 	let row = piDeInsert.getRow(e.changes[0].rowKey);
+				
+			// 	let plDeCode = row.prodPlanDetailCode;
+			// 	let instructCnt = parseInt(row.instructCnt);
+				
+			// 	for(let i = 0; i < wplanD.getData().length; i++) {
+			// 		if(wplanD.getData()[i].prodPlanDetailCode == plDeCode) {
+			// 			let num = i;
+			// 			let notIns = wplanD.getData()[i].planCnt - instructCnt
+						
+						
+			// 			//입력 지시수량이 계획수량보다 클 경우 => 알림 후 계획수량으로 입력
+			// 			if(row.instructCnt > wplanD.getData()[i].planCnt) {
+			// 				document.getElementById('alertMsg').innerHTML = '<span style="color:red">※</span> 지시수량이 계획수량을 초과하여 계획수량이 입력됩니다.';
+							
+			// 				let plCnt = parseInt(wplanD.getData()[i].planCnt);
+			// 				piDeInsert.setValue(row.rowKey, 'instructCnt', plCnt);
+			// 				wplanD.setValue(num, 'instructDoneCnt', plCnt);
+
+			// 				let insD =  parseInt(wplanD.getData()[i].instructDoneCnt);
+			// 				let done = parseInt(plCnt - insD);
+
+			// 				wplanD.setValue(num, 'notInstructCnt', done);
+							
+			// 				setTimeout(() => {
+			// 					document.getElementById('alertMsg').innerText = '';
+			// 				}, 4000);
+
+			// 				return;
+
+			// 			} else {
+			// 				wplanD.setValue(num, 'instructDoneCnt', instructCnt);
+			// 				wplanD.setValue(num, 'notInstructCnt', notIns);
+			// 			}
+			// 		}
+			// 	}
+			// });
 
 
 			function beforeInsertCheck() {

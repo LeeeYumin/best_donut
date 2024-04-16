@@ -92,8 +92,8 @@ const todayIns = new tui.Grid({
   el : document.getElementById('todayIns'),
   scrollX : false,
   scrollY : false,
-  bodyHeight: 40,
-  minBodyHeight: 40,
+  // bodyHeight: 40,
+  // minBodyHeight: 40,
   columns : [
     {
       header : '생산지시일자',
