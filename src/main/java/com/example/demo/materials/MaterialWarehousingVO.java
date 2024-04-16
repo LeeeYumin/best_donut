@@ -34,5 +34,6 @@ public class MaterialWarehousingVO {
 	private Integer warehousingCnt;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date expDate;
+	private String unit; 
 	private String result; // 프로시저 성공여부
 }

@@ -34,7 +34,9 @@
                d.unit_price,
                d.mat_code,
                d.company_code,
-               m.mat_name
+               m.mat_name,
+               d.unit mat_unit,
+               m.unit
   	      FROM mat_detail d 
   	      JOIN mat m ON d.mat_code = m.mat_code
 	     WHERE d.mat_code = #{matCode} 
@@ -281,6 +283,7 @@
    			#{matCode, mode=IN, jdbcType=VARCHAR},
    			#{companyCode, mode=IN, jdbcType=VARCHAR},
    			#{matOrdersCode, mode=IN, jdbcType=VARCHAR},
+   			#{unit, mode=IN, jdbcType=VARCHAR},
    			#{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
    		)
    	</insert>
