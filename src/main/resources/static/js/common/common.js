@@ -79,30 +79,3 @@ function addDate(y,m,d){
 	return dateFormat(newDate);
 
 }
-
-// grid custom editor
-class CustomNumberEditor {
-    constructor(props) {
-        const el = document.createElement('input');
-        console.log(props)
-        el.type = 'number';
-        el.min = 0;
-        el.max = 1000;
-        el.step = 1;
-        this.el = el;
-        el.style.width = '100%';
-        el.value = props.value;
-    }
-
-    getElement() {
-        return this.el;
-    }
-
-    getValue() {
-        return this.el.value;
-    }
-
-    mounted() {
-        this.el.select();
-    }
-}
