@@ -18,11 +18,11 @@ async function saveEqm() {
     console.log(res);
     result = res;
   })
-  // .then(res => {
-  //   window.setTimeout(function() {
-  //     location.href = '/notoprlist';
-  //   }, 1000);
-  // })
+  .then(res => {
+    window.setTimeout(function() {
+      location.href = '/eqmlist';
+    }, 1000);
+  })
 
   
   // SweetAlert
@@ -56,6 +56,7 @@ function formValidation() {
   const notice3 = document.getElementById('notice3');
   const notice4 = document.getElementById('notice4');
   const notice5 = document.getElementById('notice5');
+  const notice6 = document.getElementById('notice6');
 
   let result = true;
 
@@ -84,12 +85,18 @@ function formValidation() {
     result = false;
   }
 
+  if(insertForm.oprStatus.value == null || insertForm.oprStatus.value == '') {
+    notice6.innerText = '가동현황을 선택하세요.';
+    result = false;
+  }
+
   return result;
 }
 
 $(function() {
   $('.req').on('change', function(){if(this.value != "") $(this).next().html("")})
   $('[name="eqmStatus"]').on('change', function(){if($('[name="eqmStatus"]:checked').length == 1) $("#notice5").html("")})
+  $('[name="oprStatus"]').on('change', function(){if($('[name="oprStatus"]:checked').length == 1) $("#notice6").html("")})
 })
 
 
@@ -118,11 +125,11 @@ function changeOption2() {
 }
 
 
-// 등록버튼
+// 정보수정 버튼
 async function updateEqm() {
-  // if(!formValidation()) {
-  //     return;
-  //   }
+  if(!formValidation()) {
+      return;
+    }
 
   let formData = new FormData(document.insertForm);
   
@@ -136,11 +143,11 @@ async function updateEqm() {
     console.log(res);
     result = res;
   })
-  // .then(res => {
-  //   window.setTimeout(function() {
-  //     location.href = '/notoprlist';
-  //   }, 1000);
-  // })
+  .then(res => {
+    window.setTimeout(function() {
+      location.href = '/eqmlist';
+    }, 1000);
+  })
 
   
   // SweetAlert
@@ -170,5 +177,17 @@ async function updateEqm() {
 // 삭제 버튼
 async function deleteEqm() {
   let eqmCode = insertForm.eqmCode.value
-  location.href = '/deleteeqm/' + eqmCode
+
+  window.setTimeout(function() {
+    location.href = '/deleteeqm/' + eqmCode
+  }, 1000);
+
+  Swal.fire({
+    position: "center",
+    icon: "success",
+    title: "삭제 완료!",
+    // text: "삭제가 정상적으로 처리되었습니다.",
+    showConfirmButton: false,
+    timer: 2000
+  });
 };

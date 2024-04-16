@@ -10,6 +10,12 @@ class ColumnConverter1 {
   }
   render(props) {
       this.el.innerText = converter1(props.formattedValue);
+
+      // if(props.formattedValue == 'ES1') {
+      //   this.el.setAttribute('class', 'badge bg-label-primary');
+      // } else {
+      //   this.el.setAttribute('class', 'badge bg-label-dark');
+      // }
   }
   getElement() {
       return this.el;
@@ -62,7 +68,6 @@ function converter2(value){
 }
 
 
-
 // 토스트ui 그리드
 const grid = new tui.Grid({
   el: document.getElementById('eqmList'),
@@ -75,40 +80,58 @@ const grid = new tui.Grid({
       name: 'eqmCode',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['eqmStatus'] != 'ES5'
+      }
     },
     {
       header: '설비명',
       name: 'eqmName',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['eqmStatus'] != 'ES5'
+      }
     },
     {
       header: '모델명',
       name: 'modelName',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['eqmStatus'] != 'ES5'
+      }
     },
     {
       header: '최근점검일',
       name: 'lastCheckDate',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['eqmStatus'] != 'ES5'
+      }
     },
     {
       header: '설비상태',
       name: 'eqmStatus',
       align: 'center',
-      renderer: {type: ColumnConverter1}
+      renderer: {type: ColumnConverter1},
+      validation: {
+        validatorFn: (value, row, columnName) => row['eqmStatus'] != 'ES5'
+      }
     },
     {
       header: '가동현황',
       name: 'oprStatus',
       align: 'center',
-      renderer: {type: ColumnConverter2}
+      renderer: {type: ColumnConverter2},
+      validation: {
+        validatorFn: (value, row, columnName) => row['eqmStatus'] != 'ES5'
+      }
     }
   ]
 });
@@ -160,3 +183,13 @@ grid.on('dblclick', (event) => {
 	let eqmCode = grid.getValue(event.rowKey, 'eqmCode')
   location.href = 'eqminfo/' + eqmCode
 })
+
+
+// Hover
+tui.Grid.applyTheme('custom', {
+  row: {
+    hover: {
+      background: '#d4e9f2'
+    }
+  }
+});
