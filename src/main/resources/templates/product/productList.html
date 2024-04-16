@@ -34,16 +34,18 @@
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">제품명</label>
 							<div class="col-sm-6">
-								<input class="form-control" type="text" id="prodName" name="prodName">
+								<select class="form-select" id="prodName" aria-label="prodName">
+									<option value="" selected="">제품명</option>
+								</select>
 							</div>
 						</div>
 
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">생산요청일자</label>
 							<div class="col-sm-6 input-group">
-								<input type="date" class="form-control" name="prodReqStartDate" id="prodReqStartDate">
+								<input type="date" class="form-control" name="expStartDate" id="expStartDate">
 								<span class="input-group-text">~</span> 
-								<input type="date" class="form-control" name="prodReqEndDate" id="prodReqEndDate">
+								<input type="date" class="form-control" name="expEndDate" id="expEndDate">
 							</div>
 						</div>
 
@@ -75,16 +77,25 @@
 		<!-- grid -->
 		<div class="ordersGrid">
 			<div class="card">
+
+				<!-- 주문 목록 -->
+				<h5 class="card-header">제품 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="productGrid"></div>
+				</div>
+
 				<!-- 주문 목록 -->
 				<h5 class="card-header">완제품 목록</h5>
 				<div class="card-body demo-vertical-spacing demo-only-element">
 					<div id="prodLotGrid"></div>
 				</div>
+
 				<!-- 주문 상세 목록 -->
 				<h5 class="card-header">자재 목록</h5>
 				<div class="card-body demo-vertical-spacing demo-only-element">
 					<div id="matLotGrid"></div>
 				</div>
+
 			</div>
 		</div>
 		

@@ -246,6 +246,7 @@ function deleteOrders(){
 				showConfirmButton: false,
 				timer: 1500
 			});
+			searchReset();
 		}
 		else {
 			Swal.fire({

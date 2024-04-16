@@ -116,15 +116,24 @@
 		       , d.product_code
 		       , d.proc_result_code
 		       , p.product_name
+		       , ADD_MONTHS( r.all_end_time, 1) exp_date
 		  FROM product_detail d JOIN product p
 		                          ON d.product_code = p.product_code
-         WHERE 1=1
+		                        JOIN proc_result r
+		                          ON d.proc_result_code = r.proc_result_code
+		 WHERE d.remain_cnt <![CDATA[ > ]]> 0
         <if test="productLotCode != null and productLotCode != ''">
 			AND d.product_lot_code LIKE '%' || #{productLotCode} || '%'
 		</if>
         <if test="productName != null and productName != ''">
-			AND d.product_name LIKE '%' || #{productName} || '%'
-		</if>	
+			AND p.product_name LIKE '%' || #{productName} || '%'
+		</if>
+		<if test="expStartDate != null">
+			AND TRUNC(exp_date) <![CDATA[ >= ]]> TRUNC(#{expStartDate})
+		</if>
+		<if test="expEndDate != null">
+			AND TRUNC(exp_date) <![CDATA[ <= ]]> TRUNC(#{expEndDate})
+		</if>
 	</select>
 	
 	<!-- 완제품LOT조회 -->
@@ -167,16 +176,73 @@
 		    )
 	</insert>
 	
-	<!-- 완제품출고시 재고 update 프로시저 -->
-	<update id="updateOutCnt" statementType="CALLABLE">
-		{ CALL prod_out_fifo(#{productCode}, #{ordersCnt}) }
+	<!-- 완제품출고 insert + 재고 update 프로시저 -->
+	<update id="prodInoutProcess" parameterType="OrdersVO" statementType="CALLABLE">
+		CALL prod_out_process
+			(
+				#{ordersCode}
+			    , #{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
+		    )
 	</update>
 	
-	<!-- 완제품출고시 주문상태 변경 -->
-	<update id="updateOrdStat" parameterType="String">
-		UPDATE orders
-		   SET orders_status = 'OP4'
-		 WHERE orders_code = #{ordersCode}
-	</update>
+	<!-- 완제품 LOT 별 자재 LOT 조회 -->
+	<select id="getProdMat" resultType="Map">
+		SELECT p.product_lot_code "productLotCode"
+		       , p.mat_lot_code "matLotCode"
+		       , d.mat_code "matCode"
+		       , m.mat_name "matName"
+		       , p.mat_cnt "matCnt"
+		       , d.exp_date "expDate"
+		  FROM product_lot_mng p JOIN mat_detail d
+		                           ON p.mat_lot_code = d.mat_lot_code
+		                         JOIN mat m
+		                           ON d.mat_code = m.mat_code
+		 WHERE product_lot_code = #{productLotCode}
+	</select>
+	
+	<!-- 완제품입출고 조회 -->
+	<select id="getProdInout" resultType="ProductInoutVO">
+		SELECT h.product_inout_code
+		       , h.inout_sep
+		       , h.inout_cnt
+		       , h.inout_date
+		       , h.product_lot_code
+		       , h.orders_detail_code
+		       , h.prod_req_detail_code
+		       , p.product_name
+		       , c.company_name
+		  FROM product_inout_history h LEFT OUTER JOIN orders_detail d
+		                                 ON h.orders_detail_code = d.orders_detail_code
+		                               LEFT OUTER JOIN orders o
+		                                 ON d.orders_code = o.orders_code
+		                               LEFT OUTER JOIN company c
+		                                 ON o.company_code = c.company_code
+		                               LEFT OUTER JOIN product p
+		                                 ON d.product_code = p.product_code
+		 WHERE 1=1
+		<if test="productInoutCode != null and productInoutCode != ''">
+			AND h.product_inout_code LIKE '%' || #{productInoutCode} || '%'
+		</if>
+		<if test="productLotCode != null and productLotCode != ''">
+			AND h.product_lot_code LIKE '%' || #{productLotCode} || '%'
+		</if>
+        <if test="productName != null and productName != ''">
+			AND p.product_name LIKE '%' || #{productName} || '%'
+		</if>
+		<if test="companyName != null and companyName != ''">
+			AND c.company_name LIKE '%' || #{companyName} || '%'
+		</if>
+		<if test="inoutSep != null and inoutSep != ''">
+			AND h.inout_sep = #{inoutSep}
+		</if>
+		<if test="searchStartDate != null">
+			AND TRUNC(h.inout_date) <![CDATA[ >= ]]> TRUNC(#{searchStartDate})
+		</if>
+		<if test="searchEndDate != null">
+			AND TRUNC(h.inout_date) <![CDATA[ <= ]]> TRUNC(#{searchEndDate})
+		</if>
+		 ORDER BY 1
+	
+	</select>
 
 </mapper>

@@ -1,21 +1,96 @@
+// I. productGrid 제품조회
 
-getProdDet({});
+// 1. grid 생성
+const productGrid = new tui.Grid({
+	el : document.getElementById('productGrid'),
+	scrollX : false,
+	scrollY : true,
+	header:[
+		align = 'center',
+	],
+	columns : [ 
+		{
+			header : '제품코드',
+			name : 'productCode',
+			align : 'center',
+			sortingType: 'asc',
+			sortable: true,			
+		},
+		{
+			header : '제품명',
+			name : 'productName',
+			align : 'center',
+			sortingType: 'desc',
+			sortable: true,			
+		},
+    {
+      header : '단가',
+      name : 'unitPrice',
+      align : 'center',
+      sortingType: 'desc',
+      sortable: true,
+      formatter: function(price) {
+				return priceFormat(price.value);
+			},
+    }, 
+    {
+			header : '재고수량',
+			name : "stockCnt",
+			align : 'center',
+      sortingType: 'desc',
+      sortable: true,
+			formatter: function(price) {
+				return priceFormat(price.value);
+			},
+		},  
+    {
+			header : '안전재고수량',
+			name : "safeStockCnt",
+			align : 'center',
+      sortingType: 'desc',
+      sortable: true,
+			formatter: function(price) {
+				return priceFormat(price.value);
+			},
+		},  
+	],
+})
 
-// prodLotGrid.  주문 조회
+// 2. gridData 생성
+
+async function getProductList() {
+	let res = await fetch("ajax/productList")
+	let result = await res.json();
+
+	productGrid.resetData(result);
+
+	for(product of result){
+		let optionHtml = '<option value="' + product.productName + '">' + product.productName + '</option>'
+		let productName = document.querySelector("#prodName")
+		productName.insertAdjacentHTML('beforeend', optionHtml);
+	}
+};
+// II. prodLotGrid.  완제품LOT조회
 
 // 1. grid 생성
 const prodLotGrid = new tui.Grid({
 	el : document.getElementById('prodLotGrid'),
 	scrollX : false,
 	scrollY : true,
-	rowHeaders: ['checkbox'],
 	header:[
 		align = 'center',
 	],
 	columns : [ 
 		{
-			header : '생산요청코드',
+			header : '완제품LOT코드',
 			name : 'productLotCode',
+			align : 'center',
+			sortingType: 'desc',
+			sortable: true,			
+		},
+		{
+			header : '제품명',
+			name : 'productName',
 			align : 'center',
 			sortingType: 'desc',
 			sortable: true,			
@@ -59,20 +134,23 @@ const prodLotGrid = new tui.Grid({
 			formatter: function(price) {
 				return priceFormat(price.value);
 			},
-		},  
-		{
-			header : '품질검사상태',
-			name : 'qltyCheckStatus',
-			align : 'center',
-			sortingType: 'desc',
-			sortable: true,			
 		}, 
     {
 			header : '완제품상태',
 			name : 'productStatus',
 			align : 'center',
 			sortingType: 'desc',
-			sortable: true,			
+			sortable: true,
+			formatter : 'listItemText',
+			editor: {
+				type: 'text',
+				options: {
+				listItems: [
+					{ text: '보유', value: 'PD1' },
+					{ text: '폐기', value: 'PD2' },
+				],
+				}
+			}		
 		}, 
     {
 			header : '폐기일자',
@@ -82,19 +160,19 @@ const prodLotGrid = new tui.Grid({
 			sortable: true,			
 		}, 
     {
-			header : '제품코드',
-			name : 'productCode',
-			align : 'center',
-			sortingType: 'desc',
-			sortable: true,			
-		},
-    {
 			header : '공정실적코드',
 			name : 'procResultCode',
 			align : 'center',
 			sortingType: 'desc',
 			sortable: true,			
-		}
+		},
+		{
+			header : '유통기한',
+			name : 'expDate',
+			align : 'center',
+			sortingType: 'desc',
+			sortable: true,		
+		},
 	],
 })
 
@@ -103,6 +181,7 @@ const prodLotGrid = new tui.Grid({
 
 // 주문 조회(ajax)
 function getProdDet(param){
+	console.log(param);
 	const data = {
 		method: 'POST',
 		headers: jsonHeaders,
@@ -123,27 +202,30 @@ function getProdDet(param){
 
 // 주문 검색버튼 클릭 이벤트
 async function searchProd(){
-	let prodLotCode = searchForm.prodLotCode.value;
-	let prodName = searchForm.prodName.value;
+	let productLotCode = document.querySelector('#prodLotCode').value;
+	let productName = document.querySelector('#prodName').value;
+	let expStartDate = document.querySelector('#expStartDate').value;
+	let expEndDate = document.querySelector('#expEndDate').value;
 
-	let param = {prodLotCode, prodName};
-	getProdReq(param);
+	let param = {productLotCode, productName, expStartDate, expEndDate};
+	getProdDet(param);
 }
 
 // 검색 초기화
 function searchReset() {
 	searchForm.reset();
-	getProdReq({});
+	getProdDet({});
 }
 
 // 주문상세 목록 띄우기
-prodLotGrid.on('click', (matLotGrid) => {
-	let prodLotGrid = prodReqGrid.getValue(event.rowKey, 'matLotGrid')
-	getProdReqDet(prodLotGrid);
+prodLotGrid.on('click', (event) => {
+	let productLot = prodLotGrid.getValue(event.rowKey, 'productLotCode')
+	getMatLot(productLot);
 })
 
 
-// matLotGrid.  주문 상세 조회
+
+// III. matLotGrid.  주문 상세 조회
 
 // 1. grid 생성
 const matLotGrid = new tui.Grid({
@@ -153,24 +235,29 @@ const matLotGrid = new tui.Grid({
 	rowHeaders: ['checkbox'],
 	columns : [ 
     {
-      header : '생산요청코드',
-      name : 'prodReqCode',
+      header : '자재LOT코드',
+      name : 'matLotCode',
       align : 'center',
     }, 
 		{
-			header : '생산요청상세코드',
-			name : 'prodReqDetailCode',
+			header : '자재코드',
+			name : 'matCode',
 			align : 'center',
 		}, 
     {
-      header : '제품명',
-      name : 'productName',
+      header : '자재명',
+      name : 'matName',
       align : 'center',
     }, 
 		{
-			header : '요청수량',
-			name : 'reqCnt',
+			header : '자재수량',
+			name : 'matCnt',
 			align : 'center',
+			formatter : {
+				function(price) {
+					return priceFormat(price);
+				}
+			}
 		}, 
 	],
 })
@@ -178,8 +265,8 @@ const matLotGrid = new tui.Grid({
 // 2. gridData 생성
 
 // 주문 상세 조회(ajax)
-function getProdReqDet(prodReqCode){
-	fetch(`ajax/getProdReqDet?prodReqCode=${prodReqCode}`)
+function getMatLot(productLotCode){
+	fetch(`ajax/getProdMat?productLotCode=${productLotCode}`)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
@@ -187,4 +274,8 @@ function getProdReqDet(prodReqCode){
 	})
 };
 
+
 // 3. 이벤트
+
+getProdDet({});
+getProductList();
