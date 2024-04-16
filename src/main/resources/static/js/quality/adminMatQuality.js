@@ -85,5 +85,6 @@ getMatAdmin('','');
 	function findMat() {
 		let matCode = document.querySelector('#matCode').value;
   	let inoutDate = document.querySelector('#inDate').value; //#id
+		console.log(matCode, inoutDate);
   	getMatAdmin(matCode, inoutDate);
 	}

@@ -74,7 +74,6 @@ const grid = new tui.Grid({
 	  })
 	};
 
-
   //완제품Lot번호, 검사접수일자로 검색
   function findUnfit() {
     let prodLot = document.querySelector('#prodLOT').value;

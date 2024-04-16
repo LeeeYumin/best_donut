@@ -1,6 +1,6 @@
 package com.example.demo.quality.service.impl;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,8 +45,8 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	@Override
-	public List<ProDetailVO> selectProQuality(){
-		return qualityMapper.selectProQuality(); //grid1 완제품품질등록 
+	public List<ProDetailVO> selectProQuality(String allEndTime){
+		return qualityMapper.selectProQuality(allEndTime); //grid1 완제품품질등록 
 	}
 
 	@Override
@@ -67,8 +67,8 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	@Override
-	public List<ProQltyVO> adminProQuality() {	
-		return qualityMapper.adminProQuality();
+	public List<ProQltyVO> adminProQuality(String productName, String checkRecvDate) {	
+		return qualityMapper.adminProQuality(productName, checkRecvDate);
 	}
 
 	@Override

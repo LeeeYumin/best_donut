@@ -36,45 +36,50 @@ const grid = new tui.Grid({
     //   align : "center",
     // },
     {
-      header : '자재명',
-      name : 'matName',
+      header : 'BOM 코드',
+      name : 'bomCode',
+      align : "center",
+    },
+    // {
+    //   header : '제품 코드',
+    //   name : 'productCode',
+    //   align : "center",
+    // },
+    {
+      header : '제품명',
+      name : 'productName',
       align : "center",
     },
     {
-      header : '자재 코드',
-      name : 'matCode',
+      header : '적용여부',
+      name : 'applyStatus',
+      align : "center",
+      formatter : 'listItemText',
+      // editingEvent : 'click',
+      editor: {
+        options: {
+          listItems: [
+            { text: '적용', value: 'BAY' },
+            { text: '미적용', value: 'BAN' }
+          ],
+          }
+        }
+    },
+    {
+      header : '담당자코드',
+      name : 'usersCode',
       align : "center",
     },
     {
-      header : '단가',
-      name : 'unitPrice',
-      align : "center",
-    },
-    {
-      header : '단위',
-      name : 'unit',
-      align : "center",
-    },
-    {
-      header : '소요량',
-      name : 'needCnt',
-      align : "center",
-    },
-    {
-      header : '공정',
-      name : 'procCode',
-      align : "center",
-    },
-    {
-      header : '거래처코드',
-      name : 'companyCode',
+      header : '작성일자',
+      name : 'writeDate',
       align : "center",
     }
   ]
 });
 
-async function getProdBom2(){
-  await fetch("ajax/insertBom2")
+async function getProdBom(){
+  await fetch("ajax/insertBom")
   .then(res => res.json())
   .then(res => {
     console.log(res);
@@ -83,4 +88,3 @@ async function getProdBom2(){
 };
 
 getProdBom();
-

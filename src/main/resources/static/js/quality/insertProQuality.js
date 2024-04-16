@@ -1,3 +1,4 @@
+getProDetail('');
 
 class CustomNumberEditor {
 	constructor(props) {
@@ -77,19 +78,20 @@ const grid1 = new tui.Grid({
   ]
 });
 
-async function getProDetail(){
-  await fetch("ajax/selectProQuality")
-  .then(res => res.json())
-  .then(res => {
-    console.log(res);
-    grid1.resetData(res);
+async function getProDetail(endDate){
+  let res = await fetch("ajax/selectProQuality?allEndTime="+endDate);
+    let result = await res.json();
+
+    console.log(result);
+    grid1.resetData(result);
     //grid2.resetData(res);
-  })
+
 };
 
 //grid1 생산완료일자 검색
 function findProd() {
   let endDate = document.querySelector('#inDate').value; //#id
+  console.log(endDate);
   getProDetail(endDate);
 }
 
@@ -250,7 +252,6 @@ grid2.on('afterChange', event => {
 })
 
 
-
 //버튼누르면 적합수량->적합 수량에 insert & 입고 수량에 update
 function addProQual(){
   const data = grid2.getData();
@@ -266,5 +267,4 @@ function addProQual(){
 })
 }
 
-getProDetail();
 selectProQual();

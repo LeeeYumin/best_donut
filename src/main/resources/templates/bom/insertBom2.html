@@ -1,36 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
- 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
 <head>
-<meta charset="UTF-8">
-<title>insertBom2.html</title>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<link rel="stylesheet" href="/fonts/common.css" />
-<link rel="stylesheet" href="/css/common.css" />
+  <meta charset="UTF-8">
+  <title>insertBom2.html</title>
+  <!-- Toast UI CDN -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+  <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 </head>
 <body>
-<div layout:fragment="content">
-		<h3 class="fw-bold py-1 mb-4">
-			<span class="text-muted fw-light">BOM / </span> BOM 작성
+
+  <!-- thymeleaf -->
+  <div layout:fragment="content">
+
+		<!-- 페이지 제목 안내 -->
+    <h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">BOM 관리 / </span> BOM 관리
 		</h3>
-		<div class="grade">
-		<button id="insertBom" type="button">BOM작성</button>
-		<button id="cplBom" type="button">작성완료</button>
+
+		<!-- 입력 폼 -->
+		<div class="insertDiv">
+			<form name="insertForm" method="post">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+				<div class="card mb-4">
+					<h5 class="card-header">bom 정보입력</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+
+						<!-- 입력정보 -->
+
+						<!-- 작성일자 -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">작성일자</label>
+							<div class="col-sm-6">
+								<input type="date" class="form-control" name="writeDate" id="writeDate">
+              </div>
+						</div>
+
+						<!-- 완제품 코드 -->
+            <div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">완제품 코드</label>
+							<div class="col-sm-6 input-group">
+								<input type="text" class="form-control" name="productCode" id="productCode">
+							</div>
+						</div>
+
+           	<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">담당자 코드</label>
+							<div class="col-sm-6 input-group">
+								<input type="text" class="form-control" name="usersCode" id="usersCode">
+							</div>
+						</div>
+
+						<div id="defaultFormControlHelp" class="form-text"></div>
+
+						<!-- 버튼 -->
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="saveInsert()">등록</button>
+							<button type="button" class="btn btn-primary" id="resetOrdBtn" onclick="resetInsert()">초기화</button>
+						</div>
+
+					</div>
+				</div>
+			</form>
 		</div>
 
-		<div id="grid"></div>
+		<!-- grid -->
+		<div class="Grid">
+			<div class="card">
+				<!-- bom 상세보기 그리드-->
+				<h5 class="card-header col-sm-6">bom상세 정보 입력</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="bomGrid"></div>
+				</div>
+			</div>
+		</div>
 
-		<script src="/js/bom/insertbom2.js"></script>
-
+    <!-- js -->
+    <script src="/js/bom/insertBom2.js"></script>
+  </div>
 </body>
 </html>
-
-<style>
-.grade {
-	margin-right : 10px;
-	padding : 10px;
-}
-
-</style>

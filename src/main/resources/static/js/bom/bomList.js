@@ -87,11 +87,9 @@ const grid2 = new tui.Grid({
       header : '단가',
       name : 'unitPrice',
       align : "center",
-    },
-    {
-      header : '단위',
-      name : 'unit',
-      align : "center",
+      formatter: function (price) {
+        return priceFormat(price.value);
+      }
     },
     {
       header : '소요수량',
@@ -99,8 +97,13 @@ const grid2 = new tui.Grid({
       align : "center",
     },
     {
-      header : '공정명',
-      name : 'procName',
+      header : '단위',
+      name : 'unit',
+      align : "center",
+    },
+    {
+      header : '공정코드',
+      name : 'procCode',
       align : "center",
     }
   ]
@@ -119,4 +122,24 @@ getListBom();
 
 //selectbox 선택시 해당 상품 출력
 
+//grid에서 클릭하면 grid2에서 내역 출력
+grid.on('click', (event) => {
+  // console.log(event.rowKey);
+  let bomCode = grid.getValue(event.rowKey,"bomCode")
+
+  console.log(bomCode);
+  getBomEleList(bomCode);
+})
+
+async function getBomEleList(bomCode) {
+  // let bomCode = grid2.getValue(grid2.getFocusedCell().rowKey,'bomCode');
+
+  await fetch("ajax/bomselList?bomCode=" + bomCode)
+      .then(res => res.json())
+      .then(res => {
+          // ajax로 불러온 데이터 그리드에 넣음
+          grid2.resetData(res);
+          console.log(res);
+      })
+};
 
