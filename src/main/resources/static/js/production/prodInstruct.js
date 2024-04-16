@@ -232,8 +232,7 @@ getEqmOpr();
 					header : '생산지시일자',
 					name : 'instructDate',
 					align: 'center',
-					editor: 'text',
-					//formatter: dateFormat //공통함수
+					editor: 'text'
 				},
 				{
 					header : '담당자',
@@ -250,7 +249,8 @@ getEqmOpr();
 			.then(res => {
 				let beforeInscode = res.prodInstructCode;
 				//화면로딩부터 기본 행 추가
-				piInsert.appendRow({prodInstructCode: beforeInscode, instructDate: dateFormat(new Date())});		
+				plCode = wplan.getData()[0].prodPlanCode;
+				piInsert.appendRow({prodInstructCode: beforeInscode, prodPlanCode: plCode, instructDate: dateFormat(new Date())});		
 			})
 		};
 		
@@ -260,11 +260,11 @@ getEqmOpr();
 			scrollX : false,
 			scrollY : false,
 			columns : [
-				{
-					header : '생산지시상세코드',
-					name : 'prodInstructDetailCode',
-					align: 'center'
-				},
+				// {
+				// 	header : '생산지시상세코드',
+				// 	name : 'prodInstructDetailCode',
+				// 	align: 'center'
+				// },
 				{
 					header : '생산계획상세코드',
 					name : 'prodPlanDetailCode',
@@ -396,7 +396,7 @@ getEqmOpr();
 				
 				//지시상세
 				if(piDeInsert.getData().length == 0) {
-					alert.innerHTML = '<span style="color:red">※</span> 지시상세 내용을 입력하세요.';
+					alert.innerHTML = '<span style="color:red">※</span> 지시상세 내용을 입력하세요';
 					return false;
 				}
 
@@ -478,23 +478,6 @@ getEqmOpr();
 				piInsert.setValue(0,"prodPlanCode",'');
 				piDeInsert.resetData([]);
 			}
-
-			// //생산계획 상세 수정하기
-			// async function updateAfterInstruct() {
-
-			// 	const wplDe = wplanD.getModifiedRows().updatedRows
-			// 	console.log(wplDe);
-				
-			// 	await fetch('ajax/updateAfterInstruct', {
-			// 		method: 'post',
-			// 		headers: jsonHeaders,
-			// 		body : JSON.stringify(wplDe)
-			// 	})
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		console.log(res);
-			// 	})
-			// }
 
 //=======================================================
 			// 설비상태

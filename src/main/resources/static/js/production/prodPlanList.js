@@ -165,22 +165,6 @@ getProdPlanList();
 						return priceFormat(price.value);
 					}
 				},
-				// {
-				// 	header : '미지시수량',
-				// 	name : 'notInstructCnt',
-				// 	align: 'center',
-				// 	formatter: function(price) {
-				// 		return priceFormat(price.value);
-				// 	},
-				// },
-				// {
-				// 	header : '지시수량',
-				// 	name : 'instructDoneCnt',
-				// 	align: 'center',
-				// 	formatter: function(price) {
-				// 		return priceFormat(price.value);
-				// 	},
-				// },	
 			],
 			summary: {
 				//align: 'right',
@@ -243,8 +227,28 @@ getProdPlanList();
 			plAll.setValue(row.rowKey, 'notInstructCnt', notInstructCnt);
 		})
 
+		//수정 유효성
+		function beforeUpdateCheck() {
+			const alert = document.getElementById('alertMsg2');
+
+			const updateCnt = plAll.getModifiedRows().updatedRows;
+
+			if(updateCnt.length == 0) {
+				alert.innerHTML = '<span style="color:red">※</span> 수정할 고정수량을 입력하세요';
+				return false;
+			}
+
+			alert.innerHTML = '';
+			return true;
+		};
+		
 		//생산계획 상세 수정하기
 		function updatePlanDetail() {
+
+			if(!beforeUpdateCheck()){
+				return;
+			}
+
 			plAll.blur();
 			const plDe = plAll.getModifiedRows().updatedRows
 			console.log(plDe);
@@ -290,18 +294,26 @@ getProdPlanList();
 			});
 		};
 
-		// //생산계획 상태 미지시일 경우에만 삭제하기
-		// plList.on('click', e => {
-		// 	const status = plList.getValue(e.rowKey,"prodPlanStatus");
-		// 	console.log(status);
+		//삭제 유효성
+		function beforeDelCheck() {
+			const alert = document.getElementById('alertMsg'); //삭제
+			
+			const row = plList.getFocusedCell().rowKey;
 
-		// 	if(status == 'LS1') {
+			if(row == null) {
+				alert.innerHTML = '<span style="color:red">※</span> 삭제할 계획을 선택하세요';
+				return false;
+			}
 
-		// 	}
-		// });
-
-
-		async function deletePlan() {
+			alert.innerHTML = '';
+			return true;
+		};
+		//미지시 생산계획 삭제
+		function deletePlan() {
+			
+			if(!beforeDelCheck()){
+				return;
+			}
 			
 			let row = plList.getFocusedCell().rowKey;
 			let plan = plList.getData()[row];
@@ -311,7 +323,7 @@ getProdPlanList();
 
 			if(plan.prodPlanStatus == 'LS1') {
 
-				await fetch('ajax/deleteProdPlan', {
+				fetch('ajax/deleteProdPlan', {
 					method: 'post',
 					headers: jsonHeaders,
 					body : JSON.stringify(plan)
@@ -331,6 +343,7 @@ getProdPlanList();
 						});
 						getProdPlanList();
 						plAll.resetData([]);
+
 					} else {
 						Swal.fire({
 							position: "center",
