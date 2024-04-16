@@ -151,10 +151,8 @@ class CustomNumberEditor {
 				.then(res => res.json())
 				.then(res => {
 					let beforeplcode = res.prodPlanCode;
-
 					//화면로딩부터 기본 행 추가
 					plInsert.appendRow({prodPlanCode: beforeplcode, planDate: dateFormat(new Date())});
-					
 				})
 			};
 

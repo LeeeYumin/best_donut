@@ -1,5 +1,7 @@
 getWeeklyPlan();
-getEqmCheck();
+beforeInsertInsCode();
+//getEqmCheck();
+getEqmOpr();
 
 	//생산요청코드 없으면 '-'로 표시
 	class ProdReqCode {
@@ -32,30 +34,30 @@ getEqmCheck();
 		}
 	};
 
-	class CustomNumberEditor {
-	constructor(props) {
-		const el = document.createElement('input');
-		const { maxLength } = props.columnInfo.editor.options;
+// 	class CustomNumberEditor {
+// 	constructor(props) {
+// 		const el = document.createElement('input');
+// 		const { maxLength } = props.columnInfo.editor.options;
 
-		el.type = 'number';
-		el.min = 0;
-		//el.max = 1000;
-		el.step = 100;
-		this.el = el;
-	}
+// 		el.type = 'number';
+// 		el.min = 0;
+// 		el.max = 1000;
+// 		el.step = 100;
+// 		this.el = el;
+// 	}
 
-	getElement() {
-		return this.el;
-	}
+// 	getElement() {
+// 		return this.el;
+// 	}
 
-	getValue() {
-		return this.el.value;
-	}
+// 	getValue() {
+// 		return this.el.value;
+// 	}
 
-	mounted() {
-		this.el.select();
-	}
-};
+// 	mounted() {
+// 		this.el.select();
+// 	}
+// };
 
 	/* < 생산계획 > */
 	const wplan = new tui.Grid({
@@ -242,8 +244,15 @@ getEqmCheck();
 			]
 		});
 
-		//화면로딩부터 행 추가되도록
-		piInsert.appendRow({instructDate: dateFormat(new Date())});
+		function beforeInsertInsCode(){
+			fetch("/ajax/beforeInsertInsCode")
+			.then(res => res.json())
+			.then(res => {
+				let beforeInscode = res.prodInstructCode;
+				//화면로딩부터 기본 행 추가
+				piInsert.appendRow({prodInstructCode: beforeInscode, instructDate: dateFormat(new Date())});		
+			})
+		};
 		
 		/* < 생산계획 상세 > */
 		const piDeInsert = new tui.Grid({
@@ -275,14 +284,15 @@ getEqmCheck();
 					header : '지시수량',
 					name : 'instructCnt',
 					align: 'center',
-					editor: {
-						type: CustomNumberEditor,
-						options: {
-						}
-					},
+					// editor: {
+					// 	type: CustomNumberEditor,
+					// 	options: {
+					// 	}
+					// },
 					formatter: function(price) {
 						return priceFormat(price.value);
 					},
+					editor: 'text'
 				},			
 			],
 			summary: {
@@ -339,54 +349,7 @@ getEqmCheck();
 				}
 			});
 
-
 			//생산지시 그리드의 지시수량 입력 시 => 위 생산계획 그리드 지시수량 & 미지시수량 값 변경
-			piDeInsert.on('afterChange', e => {
-
-				let row = piDeInsert.getRow(e.changes[0].rowKey);
-				let plDeCode = row.prodPlanDetailCode;
-				//let instructCnt = parseInt(row.instructCnt);
-				
-				let beforeCnt = wplanD.getData();
-				
-				for(let i = 0; i < beforeCnt.length; i++) {
-					if(wplanD.beforeCnt[i].prodPlanDetailCode == plDeCode) {
-						let num = i;
-						
-						let beforeNotIns = beforeCnt[i].notInstructCnt; //기존 미지시수량
-						let beforeOkIns = beforeCnt[i].instructCnt; //기존 지시수량
-
-						let
-
-						//let notIns = wplanD.getData()[i].planCnt - instructCnt
-						
-						
-						//입력 지시수량이 계획수량보다 클 경우 => 알림 후 계획수량으로 입력
-						if(row.instructCnt > wplanD.getData()[i].planCnt) {
-							document.getElementById('alertMsg').innerHTML = '<span style="color:red">※</span> 지시수량이 계획수량을 초과하여 계획수량이 입력됩니다.';
-							
-							let plCnt = parseInt(wplanD.getData()[i].planCnt);
-							piDeInsert.setValue(row.rowKey, 'instructCnt', plCnt);
-							wplanD.setValue(num, 'instructDoneCnt', plCnt);
-
-							let insD =  parseInt(wplanD.getData()[i].instructDoneCnt);
-							let done = parseInt(plCnt - insD);
-
-							wplanD.setValue(num, 'notInstructCnt', done);
-							
-							setTimeout(() => {
-								document.getElementById('alertMsg').innerText = '';
-							}, 4000);
-
-							return;
-
-						} else {
-							wplanD.setValue(num, 'instructDoneCnt', instructCnt);
-							wplanD.setValue(num, 'notInstructCnt', notIns);
-						}
-					}
-				}
-			});
 			// piDeInsert.on('afterChange', e => {
 			// 	let row = piDeInsert.getRow(e.changes[0].rowKey);
 				
@@ -427,6 +390,7 @@ getEqmCheck();
 			// });
 
 
+			//지시등록 유효성
 			function beforeInsertCheck() {
 				const alert = document.getElementById('alertMsg');
 				
@@ -457,13 +421,24 @@ getEqmCheck();
 					alert.innerHTML = '<span style="color:red">※</span> 생산관리자만 등록 가능';
 					return false;
 				}
+				//설비상태 체크
+				let procEqm = eqmOpr.getData();
+				for(let i = 0; i < procEqm.length; i++) {
+					
+					if(procEqm[i].eqmStatus != 'ES1') {
+						let checkEqm = procEqm[i].eqmName;
+						alert.innerHTML = `<span style="color:red">※</span> ${checkEqm}의 설비상태를 확인하세요`;
+						return false;
+					}
+				}
 
 				alert.innerHTML = '';
 				return true;
 
-			}
+			};
+
 			//생산지시+상세지시 등록
-			async function insertInstruct() {
+			function insertInstruct() {
 
 				piInsert.blur(); //값 등록 후 enter 안 쳐도 값 들어가도록
 				piDeInsert.blur();
@@ -472,26 +447,28 @@ getEqmCheck();
 					return;
 				}
 
-				const pi = piInsert.getModifiedRows().createdRows
-				const piDeAll = piDeInsert.getData();
-				let param = {...pi[0], pidvo: piDeAll} //생산지시1건(배열로 들어와서 펼침연산자로 풀어서), list<detailvo>의 필드명(여러건) 
+					
+						const pi = piInsert.getModifiedRows().createdRows
+						const piDeAll = piDeInsert.getData();
+						let param = {...pi[0], pidvo: piDeAll} //생산지시1건(배열로 들어와서 펼침연산자로 풀어서), list<detailvo>의 필드명(여러건) 
+		
+						fetch('ajax/insertProdInstruct', {
+							method: 'post',
+							headers: jsonHeaders,
+							body : JSON.stringify(param)
+						})
+						.then(res => res.json())
+						.then(res => {
+							//console.log(res);
+							if(res.prodInstructCode != null) { //vo로 넘겨받음
+								//updateAfterInstruct();
+								alert('생산지시가 등록되었습니다.');
+								saveRes(res);
+							} else {
+								alert('등록 중 오류 발생');
+							}
+						});
 
-				await fetch('ajax/insertProdInstruct', {
-					method: 'post',
-					headers: jsonHeaders,
-					body : JSON.stringify(param)
-				})
-				.then(res => res.json())
-				.then(res => {
-					//console.log(res);
-					if(res.prodInstructCode != null) { //vo로 넘겨받음
-						updateAfterInstruct();
-						alert('생산지시가 등록되었습니다.');
-						saveRes(res);
-					} else {
-						alert('등록 중 오류 발생');
-					}
-				})
 			}
 
 			//등록응답 (그리드에 입력된 모든 정보 비우기)
@@ -502,21 +479,22 @@ getEqmCheck();
 				piDeInsert.resetData([]);
 			}
 
-			//생산계획 상세 수정하기
-			async function updateAfterInstruct() {
-				const wplDe = wplanD.getModifiedRows().updatedRows
-				console.log(wplDe);
+			// //생산계획 상세 수정하기
+			// async function updateAfterInstruct() {
+
+			// 	const wplDe = wplanD.getModifiedRows().updatedRows
+			// 	console.log(wplDe);
 				
-				await fetch('ajax/updateAfterInstruct', {
-					method: 'post',
-					headers: jsonHeaders,
-					body : JSON.stringify(wplDe)
-				})
-				.then(res => res.json())
-				.then(res => {
-					console.log(res);
-				})
-			}
+			// 	await fetch('ajax/updateAfterInstruct', {
+			// 		method: 'post',
+			// 		headers: jsonHeaders,
+			// 		body : JSON.stringify(wplDe)
+			// 	})
+			// 	.then(res => res.json())
+			// 	.then(res => {
+			// 		console.log(res);
+			// 	})
+			// }
 
 //=======================================================
 			// 설비상태
@@ -580,51 +558,164 @@ getEqmCheck();
 				return result;
 			}
 
-			const eqmCheck = new tui.Grid({
-				el: document.getElementById('eqmCheck'),
+			/* 공정에 사용되는 설비 상태*/
+			const eqmOpr = new tui.Grid({
+				el: document.getElementById('eqmOpr'),
 				scrollX: false,
 				scrollY: true,
 				bodyHeight: 200,
 				rowHeaders: ['rowNum'],
 				columns: [
 					{
-						header: '설비코드',
-						name: 'eqmCode',
-						sortingType: 'asc',
-						sortable: true,
+						header : '설비코드',
+						name : 'eqmCode',
 						align: 'center'
 					},
-					{
-						header: '설비명',
-						name: 'eqmName',
-						sortingType: 'asc',
-						align: 'center'
-					},
+          {
+            header : '설비명',
+            name : 'eqmName',
+            align: 'center'
+          },
 					{
 						header: '설비상태',
 						name: 'eqmStatus',
-						sortable: true,
 						align: 'center',
 						renderer: {type: ColumnConverter1}
-					},
+					}
+				]
+			});
+			// 설비조회(ajax)
+			async function getEqmOpr(){
+				await fetch("/ajax/procEqmInfo")
+				.then(res => res.json())
+				.then(res => {
+					console.log(res);
+					eqmOpr.resetData(res);
+				})
+			};
+
+			/* 설비명별 모든 설비 상태 */
+			const eqmAll = new tui.Grid({
+				el: document.getElementById('eqmAll'),
+				scrollX: false,
+				scrollY: true,
+				bodyHeight: 200,
+				rowHeaders: ['rowNum'],
+				columns: [
 					{
-						header: '가동현황',
-						name: 'oprStatus',
+						header : '설비코드',
+						name : 'eqmCode',
+						align: 'center'
+					},
+          {
+            header : '설비명',
+            name : 'eqmName',
+            align: 'center'
+          },
+					{
+						header: '설비상태',
+						name: 'eqmStatus',
 						align: 'center',
-						renderer: {type: ColumnConverter2}
+						renderer: {type: ColumnConverter1}
+					},			
+					{
+							header: '가동현황',
+							name: 'oprStatus',
+							align: 'center',
+							renderer: {type: ColumnConverter2}
 					}
 				]
 			});
 
-			// 설비조회(ajax)
-			async function getEqmCheck(){
-				await fetch("/ajax/eqmCheck")
+			//공정 등록설비 클릭 시 => 공정별 모든 설비 조회
+			eqmOpr.on('click', e => {
+				let searchEqmName = eqmOpr.getValue(e.rowKey, "eqmName");
+				//console.log(searchEqmName);
+				getEqmAll(searchEqmName);
+			});
+
+			function getEqmAll(serachEqmName){
+				fetch(`/ajax/eqmAllInfo?eqmName=${serachEqmName}`)
 				.then(res => res.json())
 				.then(res => {
 					//console.log(res);
-					eqmCheck.resetData(res);
+					eqmAll.resetData(res);
 				})
 			};
 
+			//설비변경 유효성
+			function beforeChangeCheck() {
+				const alert = document.getElementById('alertMsg2');
+				
+				const row = eqmOpr.getFocusedCell().rowKey;
+				const info = eqmOpr.getData()[row];
+				const row2 = eqmAll.getFocusedCell().rowKey;
+				const changeInfo = eqmAll.getData()[row2];
+
+				if(row == null || row2 == null) {
+					alert.innerHTML = '<span style="color:red">※</span> 변경할 설비를 선택하세요';
+					return false;
+				}
+
+				if(changeInfo.eqmStatus != 'ES1') {
+					alert.innerHTML = '<span style="color:red">※</span> 변경할 설비상태를 확인하세요';
+					return false;
+				}
+
+				if(changeInfo.eqmCode == info.eqmCode) {
+					alert.innerHTML = '<span style="color:red">※</span> 이미 등록되어있는 설비입니다';
+					return false;
+				}
+
+				alert.innerHTML = '';
+				return true;
+
+			};
+
+			//공정사용 설비 변경
+			function updateProcEqm() {
+
+				if(!beforeChangeCheck()){
+					return;
+				}
+				const row = eqmOpr.getFocusedCell().rowKey;
+				const pcode = eqmOpr.getData()[row].procCode;
+				const row2 = eqmAll.getFocusedCell().rowKey;
+				const ecode = eqmAll.getData()[row2].eqmCode;
+
+				// const searchEqmName = eqmOpr.getValue(row, "procName");
+
+				const changeInfo = {procCode: pcode, eqmCode: ecode};
+
+					fetch('ajax/updateProcEqm', {
+						method: 'post',
+						headers: jsonHeaders,
+						body : JSON.stringify(changeInfo)
+					})
+					.then(res => res.json())
+					.then(res => {
+
+							if(res == 1){ 
+								Swal.fire({
+									position: "center",
+									icon: "success",
+									title: "공정 사용설비 변경 완료",
+									showConfirmButton: false,
+									timer: 2000
+								});
+								getEqmOpr();
+								eqmAll.resetData([]);
+
+							} else {
+								Swal.fire({
+									position: "center",
+									icon: "error",
+									title: "공정 사용설비 변경 실패",
+									showConfirmButton: false,
+									timer: 2000
+								});
+							};
+					});
+			};
 
 

@@ -73,7 +73,7 @@ public class ProdPlanController {
 		return prodPlanService.getProdPlan(vo);
 	}
 	//상세 데이터
-	@GetMapping("/ajax/prodPlanAll")	// fetch 함수에 들어가는 uri
+	@GetMapping("/ajax/prodPlanAll")
 	@ResponseBody
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode){
 		return prodPlanService.getProdPlanAll(prodPlanCode);
@@ -111,6 +111,7 @@ public class ProdPlanController {
 	
 /* < 생산지시 > */
 	
+	//1)조회
 	//+지시 전 주간계획&상세 데이터
 	@GetMapping("/ajax/weeklyPlan")	// fetch 함수에 들어가는 uri
 	@ResponseBody
@@ -124,8 +125,14 @@ public class ProdPlanController {
 	public List<ProdInsVO> getEqm(){
 		return prodPlanService.getEqm();
 	}
+	//지시코드
+	@GetMapping("/ajax/beforeInsertInsCode")	// fetch 함수에 들어가는 uri
+	@ResponseBody
+	public ProdInsVO beforeInsertInsCode(){
+		return prodPlanService.beforeInsertInsCode();
+	}
 	
-	//1)등록
+	//2)등록
 	@PostMapping("/ajax/insertProdInstruct")
 	@ResponseBody
 	public ProdInsVO saveIns(@RequestBody ProdInsVO vo) { 
@@ -133,13 +140,13 @@ public class ProdPlanController {
 		prodPlanService.insertProdInstruct(vo);
 		return vo;
 	}
-	//+지시 등록하면서 => 계획의 미지시&지시수량 변경
-	@PostMapping("/ajax/updateAfterInstruct")
-	@ResponseBody
-	public int modifyAfterIns(@RequestBody List<ProdPlanDeVO> dvo) { 
-		System.out.println(dvo);
-		return prodPlanService.updateAfterInstruct(dvo);	
-	}
+//	//+지시 등록하면서 => 계획의 미지시&지시수량 변경
+//	@PostMapping("/ajax/updateAfterInstruct")
+//	@ResponseBody
+//	public int modifyAfterIns(@RequestBody List<ProdPlanDeVO> dvo) { 
+//		System.out.println(dvo);
+//		return prodPlanService.updateAfterInstruct(dvo);	
+//	}
 	
 	
 	

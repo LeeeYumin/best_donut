@@ -32,5 +32,8 @@ public class ProdInsVO {
 	
 	//생산계획 상세
 	List<ProdPlanDeVO> pldvo;
+	
+	//생산계획상태
+	private String prodPlanStatus;
 
 }
