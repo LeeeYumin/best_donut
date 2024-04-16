@@ -49,6 +49,12 @@ public class BomController {
 		return "bom/bomList";
 	}
 	
+	//BOM작성화면
+	@GetMapping("/insertBom2")
+	public String insertBom2() {
+		return "bom/insertBom2";
+	}
+	
 	//BOM관리 - 품목확인 화면(grid 안에 데이터)
 	@GetMapping("ajax/bomList")
 	@ResponseBody
@@ -56,10 +62,17 @@ public class BomController {
 		return bomService.getListBom();
 	}
 	
-	//BOM관리 - 품목 상세 화면(상품종류별)
+	//BOM관리 - 품목 상세 화면(grid2에 상품종류별)
 	@GetMapping("ajax/bomselList")
 	@ResponseBody
-	public List<BomVO> bomselList() {
-		return bomService.bomselList();
+	public List<BomVO> bomselList(String bomCode) {
+		return bomService.bomselList(bomCode);
+	}
+	
+	//BOM관리 - 조회먼저
+	@GetMapping("ajax/selectBom")
+	@ResponseBody
+	public List<BomVO> selectBom() {
+		return bomService.selectBom();
 	}
 }

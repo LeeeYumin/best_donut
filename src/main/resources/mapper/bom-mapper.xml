@@ -66,21 +66,29 @@
 		      ON b.product_code = p.product_code
    	</select>
    	
-   	<!-- BOM목록 / 공정보기  -->
+   	<!-- BOM목록 / grid2 공정보기  -->
    <select id="bomselList" resultType="BomVO">
-		SELECT m.mat_name
-		    , d.mat_code
-		    , m.unit_price
-		    , m.unit
-		    , d.need_cnt
-		    , d.proc_name
-		FROM mat m JOIN bom_detail d
-		  ON m.mat_code = d.mat_code
-		  order by BOM_CODE
+	SELECT m.mat_name
+			    , d.mat_code
+			    , m.unit_price
+			    , d.unit
+			    , d.need_cnt
+			    , d.proc_code
+			FROM mat m JOIN bom_detail d
+			  ON m.mat_code = d.mat_code
+	        WHERE d.bom_code = #{bomCode}
    </select>
    
-   <!-- BOM작성화면 -->
-   <insert id="insertBom" parameterType="BomVO">
-   
-   </insert>
+   <!-- BOM작성화면 / 조회 -->
+   <select id="selectBom" resultType="BomVO">
+		SELECT b.bom_code
+		       , b.mat_code
+		       , m.mat_name
+		       , b.need_cnt
+		       , b.unit
+		       , m.unit_price
+		       , b.proc_code
+		  FROM bom_detail b JOIN mat m
+		                      ON b.mat_code = m.mat_code
+   </select>
 </mapper>

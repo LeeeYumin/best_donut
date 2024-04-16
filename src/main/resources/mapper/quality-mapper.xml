@@ -49,7 +49,7 @@
 <update id="addMatQual3" parameterType="MatQltyCheckVO">
 	UPDATE mat_detail
 	SET CHECK_DONE_CNT = #{goodCnt}
-		, REMAIN_CNT =  round(#{goodCnt}/30,1)
+		, REMAIN_CNT =  #{goodCnt}
 		, QLTY_CHECK_STATUS = 'MI2'
 	WHERE MAT_LOT_CODE = #{matLotCode}
 </update>
@@ -123,7 +123,7 @@ SELECT d.PRODUCT_CODE
 	  		          LEFT OUTER JOIN PROC_RESULT c 
                       ON c.PROC_RESULT_CODE = d.PROC_RESULT_CODE
       WHERE d.qlty_check_status ='PQ1'
-             <if test="allEndTime != null and allEndTime != ''">
+             <if test="allEndTime != ''">
 			 		AND trunc(c.ALL_END_TIME) = to_Date(#{allEndTime},'yyyy-MM-dd')
 				</if>
                  ORDER BY 1	
@@ -207,7 +207,7 @@ SELECT d.PRODUCT_CODE
 	                  ON h.PRODUCT_LOT_CODE = c.PRODUCT_LOT_CODE
 	           	<where>
 				<if test="productLotCode != null and productLotCode != ''">
-					AND h.product_lot_code LIKE '%'||#{product_lot_code}||'%'
+					AND h.product_lot_code LIKE '%'||#{productLotCode}||'%'
 				</if>
 			 	<if test="checkRecvDate != null and checkRecvDate != ''">
 			 		AND trunc(c.check_recv_date) = to_Date(#{checkRecvDate},'yyyy-MM-dd')
@@ -216,21 +216,23 @@ SELECT d.PRODUCT_CODE
 			ORDER BY 1	                  
 </select>
 
-<!-- 완제품 품질 관리 -->
+<!-- 완제품 품질 관리 / 제품명, 검사접수일자 검색-->
 <select id="adminProQuality" resultType="ProQltyVO">
-	SELECT d.product_code
+	SELECT d.product_lot_code
+		, c.PRODUCT_QLTY_CHECK_CODE
 	    , p.product_name
-	    ,c.check_recv_date
-	    ,c.last_result
+	    , c.check_recv_date
+	    , c.GOOD_CNT
+	    , c.last_result
 	FROM PRODUCT p JOIN PRODUCT_DETAIL d
 	                  ON p.PRODUCT_CODE = d.PRODUCT_CODE
 	                  right OUTER JOIN product_qlty_check c 
 	                  ON d.PRODUCT_LOT_CODE = c.PRODUCT_LOT_CODE
 	           	<where>
-				<if test="productCode != null and productCode != ''">
-					AND d.PRODUCT_CODE LIKE '%'||#{product_code}||'%'
+				<if test="productName != null and productName != ''">
+					AND p.PRODUCT_NAME LIKE '%'||#{productName}||'%'
 				</if>
-			 	<if test="checkRecvDate != null and checkRecvDate != ''">
+			 	<if test="checkRecvDate != ''">
 			 		AND trunc(c.check_recv_date) = to_Date(#{checkRecvDate},'yyyy-MM-dd')
 				</if>
 			</where>

@@ -35,8 +35,13 @@ public class BomServiceImpl implements BomService {
 	}
 
 	@Override
-	public List<BomVO> bomselList() {
-		return bomMapper.bomselList();
+	public List<BomVO> bomselList(String bomCode) {
+		return bomMapper.bomselList(bomCode);
+	}
+
+	@Override
+	public List<BomVO> selectBom() {
+		return bomMapper.selectBom();
 	}
 
 

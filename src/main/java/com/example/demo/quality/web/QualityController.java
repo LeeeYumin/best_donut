@@ -1,5 +1,6 @@
 package com.example.demo.quality.web;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -69,8 +70,8 @@ public class QualityController {
 	//완제품 품질 등록 처리
 	@GetMapping("ajax/selectProQuality")
 	@ResponseBody
-	public List<ProDetailVO> selectProQuality() {
-		return qualityService.selectProQuality();
+	public List<ProDetailVO> selectProQuality(String allEndTime) {
+		return qualityService.selectProQuality(allEndTime);
 	}
 	
 	@PostMapping("ajax/insertProQual")
@@ -98,10 +99,10 @@ public class QualityController {
 	}
 	
 	//완제품 품질 관리
-	@GetMapping("ajax/adminPro")
+	@GetMapping("ajax/adminProQual")
 	@ResponseBody
-	public List<ProQltyVO> adminProQual() {
-		return qualityService.adminProQuality();
+	public List<ProQltyVO> adminProQual(String productName, String checkRecvDate) {
+		return qualityService.adminProQuality(productName, checkRecvDate);
 	}
 	
 	//불량품 등록 페이지 이동

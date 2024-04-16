@@ -10,6 +10,8 @@ public interface BomService {
 	
 	public List<BomVO> getProdBom();
 	public List<BomVO> getListBom();
-	public List<BomVO> bomselList();
+	public List<BomVO> bomselList(String bomCode); //grid2에 출력
+	
+	public List<BomVO> selectBom();
 	
 }
