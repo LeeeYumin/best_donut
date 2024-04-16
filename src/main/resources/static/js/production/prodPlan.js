@@ -151,9 +151,17 @@ class CustomNumberEditor {
 				.then(res => res.json())
 				.then(res => {
 					let beforeplcode = res.prodPlanCode;
+
 					//화면로딩부터 기본 행 추가
-					plInsert.appendRow({prodPlanCode: beforeplcode, planDate: dateFormat(new Date())});
-				})
+					let reqCode = null;
+					if (plreq.getData().length != 0) {
+						reqCode = plreq.getData()[0].prodReqCode;
+					} else {
+						reqCode = '-';
+						plDeInsert.appendRow({prodReqDetailCode: '-', fixCnt: 1400, reqCnt: 0, planCnt: 1400});
+					}
+					plInsert.appendRow({prodPlanCode: beforeplcode, prodReqCode: reqCode, planDate: dateFormat(new Date())});
+				});
 			};
 
 

@@ -11,16 +11,7 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style>
-.btn-addinput,
-.btn-insert {
-	width: 70px;
-	height: 38px;
-	font-size: 18px;
-	margin-left: auto;
-	/* width: 60px;
-	margin-left: auto; display:flex 적용되어 있어 float: right X */
-	/* margin-top: 10px; */
-}
+.btn-insert,
 .btn-update {
 	width: 80px;
 	height: 38px;
@@ -28,17 +19,15 @@
 	float: right;
 	margin-right: 25px;
 	margin-bottom: 10px;
-	/* margin-left: auto; */
-	/* width: 60px;
-	margin-left: auto; display:flex 적용되어 있어 float: right X */
-	/* margin-top: 10px; */
 }
-
-/* h4 {
-	margin-bottom: 0;
-} */
-.pt30 {
-	padding-top: 30px;
+.mgt-43 {
+	margin-top: 43px;
+}
+.mgb-50 {
+	margin-bottom: 50px;
+}
+.pdr-0 {
+	padding-right: 0px;
 }
 /* .plan-cnt-color {
 	background-color: rgb(177, 188, 219);
@@ -47,10 +36,9 @@
 	font-weight: bold;
 	font-size: 16px;
 	padding-bottom: 10px;
-	/* float: right; */
+	padding-left: 20.8px;
 	margin-left: auto;
 }
-
 </style>
 
 </head>
@@ -59,68 +47,52 @@
 <!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
 
-		<h3 class="fw-bold py-1 mb-4">
-			<span class="text-muted fw-light">생산관리 / </span> 생산지시 등록
-		</h3>
-		
-		<div class="card mb-3" style="padding-bottom: 20px">
-			<div class="pt30"></div>
-			
-			<h4>주간 생산계획</h4>
-			 <div id="wplan" class="pt30"></div>
-		  <h5 class="pt30">상세</h5>
-				<div id="wplanD"></div>
+
+<!-- TITLE -->
+		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 생산지시 등록</h3>
+
+
+<!-- 주간 생산계획 FORM  -->
+		<div class="card mgb-50">
+			<h4 class="card-header">주간 생산계획</h4>
+			 <div class="card-body" id="wplan"></div>
+		  <h5 class="card-header">상세</h5>
+				<div class="card-body" id="wplanD"></div>
 		</div>
-
-		<div style="padding-top: 30px;"></div>
 		
-		<div class="card mb-3" style="padding-bottom: 20px">
-			<div class="pt30"></div>
-			
-			<h3>생산지시 등록</h3>
 
-			<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertInstruct()">등록</button>
-			<div id="piInsert" style="padding-bottom: 30px;"></div>
-	
-			<h5>상세</h5>
-			<div id="alertMsg" class="warn-alert">
-				<!-- 알림문구 -->
-			</div>
-			<div id="piDeInsert"></div>
-	
-		</div>
+<!-- 생산지시 등록 FORM -->
+		<div class="card mgb-50">
+      <div class="row">
+        <div class="col-sm-5">
+					<h4 class="card-header">생산지시 등록</h4>
+          	<div class="card-body mgt-43 pdr-0" id="piInsert"></div>
+        </div>
+        <div class="col-sm-7">
+          <h5 class="card-header">상세</h5>
+						<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertInstruct()">등록</button>
+						<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
+          <div class="card-body" id="piDeInsert"></div>
+        </div>
+      </div>
+    </div>
 
-		<!-- <div class="card mb-3" style="padding-bottom: 20px"> -->
-		<div style="padding-top: 50px;"></div>
-			<div class="card mb-3">
-				<div class="pt30"></div>
-				<div class="row">
-	
-					<div class="col-sm-7">
-						<h4>공정 사용설비 상태</h4>
-						<div class="card-body" id="eqmOpr" style="padding-top: 43px; padding-left: 0px"></div>
-					</div>
-					<div class="col-sm-5">
-						<h5>공정별 모든 설비</h5>
-						<button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updateProcEqm()">설비변경</button>
-						<div id="alertMsg2" class="warn-alert">
-							<!-- 알림문구 -->
-						</div>
-						<div class="card-body" id="eqmAll" style="padding-left: 0px"></div>
-					</div>
-	
+
+<!-- 공정설비 FORM -->
+		<div class="card">
+			<div class="row">
+				<div class="col-sm-7">
+					<h4 class="card-header">공정 사용설비 상태</h4>
+						<div class="card-body mgt-43" id="eqmOpr"></div>
 				</div>
-			</div>	
-
-			<!-- <h5>설비 상태</h5>
-			<div id="eqmCheck" class="pt30"></div> -->
-			<!-- <h4>공정설비 상태</h4>
-			<div id="eqmOpr" class="pt30"></div> -->
-
-			 
-		<!-- </div> -->
-
-
+				<div class="col-sm-5">
+					<h5 class="card-header">공정별 보유 설비</h5>
+						<button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updateProcEqm()">설비변경</button>
+						<div id="alertMsg2" class="warn-alert"><!-- 알림문구 --></div>
+						<div class="card-body" id="eqmAll"></div>
+				</div>
+			</div>
+		</div>	
 	
 
 
