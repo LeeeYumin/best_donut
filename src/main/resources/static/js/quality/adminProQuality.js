@@ -65,7 +65,7 @@ adminProQual('','');
       console.log('after change:', ev);
    		})
 
-	async function adminProQual(productName, checkDate){
+	async function adminProQual(productName, checkDate){ //parameter랑 mapper.xml 이랑 맞아야됨
 		await fetch("ajax/adminProQual?productName="+productName+"&checkRecvDate="+checkDate)
 								//`ajax/adminProQual?prodName=${prodName}&checkDate=${checkDate}`
 		.then(res => res.json())
