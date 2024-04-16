@@ -28,5 +28,16 @@ public class ProductDetailVO {
 	private String productName;			// 제품명
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
-	private Date allEndTime;			// 공정종료시간		
+	private Date allEndTime;			// 공정종료시간
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
+	private Date expDate;				// 유통기한
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
+	private Date expStartDate;			// 유통기한검색시작일
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
+	private Date expEndDate;			// 유통기한검색종료일
+	
 }

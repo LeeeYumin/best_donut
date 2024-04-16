@@ -1,3 +1,5 @@
+getProductList();
+
 // 1. 화면 세팅
 
 // grid custom editor
@@ -10,6 +12,8 @@ class CustomNumberEditor {
 		el.min = 0;
 		el.max = 1000;
 		el.step = 100;
+		el.style.width = '100%';
+		el.value = props.value;
 		this.el = el;
 	}
 
@@ -27,7 +31,7 @@ class CustomNumberEditor {
 }
 
 // 제품목록 출력
-(function getProductList() {
+function getProductList() {
 	fetch("ajax/productList")
 	.then(res => res.json())
 	.then(res => {
@@ -47,7 +51,7 @@ class CustomNumberEditor {
 			}
 		grid.resetData(ordDetAry);
 	})
-})();
+};
 
 
 // 2. 주문등록
@@ -85,7 +89,7 @@ async function saveInsert() {
 	const ordersDate = insertForm.ordersDate.value;
 	const dueDate = insertForm.dueDate.value;
 	const totalOrdersPrice = insertForm.totalOrdersPrice.value;
-	const companyCode = insertForm.companyCode.value;
+	const companyCode = insertForm.companyName.value;
 
 	// 주문상세정보 : 주문량 0 아닌 제품 주문만 list에 저장
 	let ordDetlist = [];
@@ -130,6 +134,7 @@ async function saveInsert() {
 			showConfirmButton: false,
 			timer: 1500
 		});
+		resetInsert();
 	}
 	else {
 		Swal.fire({
@@ -150,7 +155,9 @@ function inputValidation() {
 	// 1. 날짜 검사
 	const oDate = new Date(insertForm.ordersDate.value);	// 주문일자
 	const dDate = new Date(insertForm.dueDate.value);			// 납기일자
-	const dateDiff = dDate.getDate()-oDate.getDate()			// 리드타임(2주)
+	const diffDate = Math.abs((dDate.getTime() - oDate.getTime()) / (1000 * 60 * 60 * 24));
+
+	console.log('diffDate : ', diffDate);
 
 	// 주문일자 검사
 	if(insertForm.ordersDate.value == '' || insertForm.ordersDate.value == null) {
@@ -165,13 +172,13 @@ function inputValidation() {
 	}
 
 	// 리드타임 검사(2주)
-	if(dateDiff < 14) {
+	if(diffDate < 14) {
 		valid.innerHTML = '납기일자는 주문일자로부터 최소 2주 후 입니다.';
 		return false;
 	}
 
 	// 2. 거래처코드 검사
-	if(insertForm.companyCode.value == '' || insertForm.companyCode.value == null) {
+	if(insertForm.companyName.value == '' || insertForm.companyName.value == null) {
 		valid.innerHTML = '거래처 코드를 입력해주세요.';
 		return false;
 	}
@@ -186,10 +193,10 @@ function inputValidation() {
 	return true;
 }
 
+// 초기화
 function resetInsert(){
-	insertForm.ordersDate.value = '';
-	insertForm.dueDate.value = '';
-	insertForm.companyCode.value = '';
+	insertForm.reset();
+	getProductList();
 }
 
 // grid 생성
@@ -315,3 +322,18 @@ function resetOrdDet(){
 	grid.setColumnValues('tax',0);
 	grid.setColumnValues('totalSupplyPrice',0)
 }
+
+// 거래처 목록 가져오기
+function getCompany() {
+  fetch('ajax/getCompany')
+  .then(res => res.json())
+  .then(res => {
+
+		for(company of res){
+			let optionHtml = '<option value="' + company.companyCode + '">' + company.companyName + '</option>'
+			let companyName = document.querySelector("#companyName")
+			companyName.insertAdjacentHTML('beforeend', optionHtml);
+		}
+	})
+}
+getCompany();

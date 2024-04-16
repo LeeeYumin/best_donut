@@ -1,7 +1,6 @@
 // 0. 기본값 세팅
 setToday();
 
-
 // 1. 그리드 생성
 
 // (1) 주문목록 그리드
@@ -314,6 +313,7 @@ async function prodReqFunc() {
 			showConfirmButton: false,
 			timer: 1500
 		});
+		searchReset();
 	}
 	else {
 		Swal.fire({
@@ -326,7 +326,6 @@ async function prodReqFunc() {
 		});
 	}
 
-	
 }
 
 
@@ -374,9 +373,8 @@ function searchOrders() {
 	getOrdersList(param);
 }
 
-function testFunc(){
-	const dueStartDate = dateFormat(searchForm.dueStartDate.value);
-	const dueEndDate = dateFormat(searchForm.dueEndDate.value);
-
-	console.log(`dueStartDate : ${dueStartDate}, dueEndDate : ${dueEndDate}`);
+// 초기화
+function searchReset() {
+	setToday();
+	getOrdersList(param);
 }

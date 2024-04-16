@@ -3,7 +3,9 @@ package com.example.demo.orders;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,10 +70,22 @@ public class OrdersServiceTest {
 		System.out.println("주문상태변경 result : " + result);
 	}
 
-	@Test
+//	@Test
 	public void 자재LOT조회() {
 		String prodReqCode = "PRQ00001";
 		System.out.println(ordersMapper.getProdReqDet(prodReqCode));
+	}
+	
+	@Test
+	public void 출고등록() {
+		String ordersCode = "ORD00011";
+		String result = "0";
+		
+		OrdersVO vo = new OrdersVO();
+		vo.setOrdersCode(ordersCode);
+		vo.setResult(result);
+		
+		System.out.println(productMapper.prodInoutProcess(vo));
 	}
 	
 }

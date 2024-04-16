@@ -1,6 +1,8 @@
 package com.example.demo.product.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,34 +52,62 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.getOrders(vo);
 	}
 	
+	// 완제품 LOT 별 자재 LOT 조회
+	@Override
+	public List<Map<String, Object>> getProdMat(String productLotCode) {
+		return productMapper.getProdMat(productLotCode);
+	}
+	
+	// 완제품입출고조회
+	@Override
+	public List<ProductInoutVO> getProdInout(ProductInoutVO vo) {
+		return productMapper.getProdInout(vo);
+	}
+	
 	
 	// 2. 등록
 	
-	// 완제품출고등록
+	// 완제품출고 insert + 재고 update 프로시저
 	@Override
-	public boolean insertInout(List<ProductInoutVO> list) {
-		
-		int result = 0;
-		for(ProductInoutVO vo : list) {
-			result += productMapper.insertInout(vo);
-		}
-		return result > 0 ? true : false;
+	public int prodInoutProcess(OrdersVO vo) {
+		return productMapper.prodInoutProcess(vo);
 	}
-
-	// 완제품출고 재고 update 처리
-	@Override
-	public boolean updateOutCnt(List<OrdersDetailVO> list) {
-		
-		int result = 0;
-		
-		for(OrdersDetailVO vo : list) {
-			result += productMapper.updateOutCnt(vo.getProductCode(), vo.getOrdersCnt());
-			result += productMapper.updateOrdStat(vo.getOrdersCode());
-		}
-		
-		return result > 0 ? true : false;
-	}
-
-	
+//	@Override
+//	public String prodInoutProcess(String ordersCode, String result) {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("ordersCode", ordersCode);
+//		map.put("result", result);
+//		
+//		productMapper.prodInoutProcess(map);
+//		
+//		
+//		return (String)map.get("result");
+//	}
+//	
+//	// 완제품출고등록
+//	@Override
+//	public boolean insertInout(List<ProductInoutVO> list) {
+//		
+//		int result = 0;
+//		for(ProductInoutVO vo : list) {
+//			result += productMapper.insertInout(vo);
+//		}
+//		return result > 0 ? true : false;
+//	}
+//
+//	// 완제품출고 재고 update 처리
+//	@Override
+//	public boolean updateOutCnt(List<OrdersDetailVO> list) {
+//		
+//		int result = 0;
+//		
+//		for(OrdersDetailVO vo : list) {
+//			result += productMapper.updateOutCnt(vo.getProductCode(), vo.getOrdersCnt());
+//			result += productMapper.updateOrdStat(vo.getOrdersCode());
+//		}
+//		
+//		return result > 0 ? true : false;
+//	}
 
 }
+

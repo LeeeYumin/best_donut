@@ -208,12 +208,57 @@ function getOrdersDetail(ordersCode){
 
 // 3. 이벤트
 
-function insertProdOut() {
+async function insertProdOut() {
 
-	
+	// data 준비
+	let ordersCode = document.querySelector('#ordersCodeInput').value;
+	let result = '0';
+	let data = {ordersCode, result};
+	console.log(data);
 
-	// // 1. history insert
-	// fetch(`ajax/insertInout`)
+	// ordersCode 검사
+	if(ordersCode == '' || ordersCode == null){
+		Swal.fire({
+			position: "center",
+			icon: "error",
+			title: "생산요청 등록 실패",
+			text: "주문코드를 입력해주십시오.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+		return;
+	}
+
+	// promise
+	let res = await fetch("ajax/prodInoutProcess",{
+		method: 'POST',
+		headers: jsonHeaders,
+		body : JSON.stringify(data)
+	})
+	let check = await res.json()
+	console.log(check);
+
+	// 알람창 띄우기
+	if(check == -1) {
+		Swal.fire({
+			position: "center",
+			icon: "success",
+			title: "생산요청 등록 완료!",
+			text: "생산요청 등록이 정상적으로 처리되었습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+	}
+	else {
+		Swal.fire({
+			position: "center",
+			icon: "error",
+			title: "생산요청 등록 실패",
+			text: "생산요청 등록이 정상적으로 처리되지 않았습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+	}
 }
 
 

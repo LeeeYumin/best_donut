@@ -10,11 +10,107 @@
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 </head>
 <body>
-	<!--  레이아웃 div -->
+	<!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
-		<h2>완제품 출고 관리</h2>
+	
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">영업관리 / </span> 완제품출고관리
+		</h3>
 
-		<!-- script import -->
+		<!-- 검색 폼 -->
+		<div class="search">
+			<form name="searchForm" method="post">
+				<div class="card mb-4">
+					<h5 class="card-header">검색조건</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입출고코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="productInoutCode" name="productInoutCode">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">LOT코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="productLotCode" name="productLotCode">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">제품명</label>
+							<div class="col-sm-6">
+								<select class="form-select" id="productName" aria-label="productName">
+									<option value="" selected="">제품명</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
+							<div class="col-sm-6">
+								<select class="form-select" id="companyName" aria-label="companyName">
+									<option value="" selected="">거래처명</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입출고일자</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
+								<span class="input-group-text">~</span> 
+								<input type="date" class="form-control" name="searchEndDate" id="searchEndDate">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입출고구분</label>
+							<div class="col-sm-6">
+								<select class="form-select" id="inoutSep" aria-label="inoutSep">
+									<option value="" selected="">입출고구분</option>
+									<option value="IO1">입고</option>
+									<option value="IO2">출고</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="getProdInout()">검색</button>
+							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- grid -->
+		<div class="ordersGrid">
+			<div class="card">
+
+				<!-- 완제품 입출고 목록 -->
+				<h5 class="card-header">완제품 입출고 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="prodInoutGrid"></div>
+				</div>
+
+				<!-- 주문 목록 -->
+				<h5 class="card-header">완제품 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="prodLotGrid"></div>
+				</div>
+
+				<!-- 주문 상세 목록 -->
+				<h5 class="card-header">자재 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="matLotGrid"></div>
+				</div>
+
+			</div>
+		</div>
+		
+		<!-- script -->
 		<script src="/js/product/exportList.js"></script>
 	</div>
 </body>

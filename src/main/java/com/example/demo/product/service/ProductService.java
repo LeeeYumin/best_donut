@@ -1,8 +1,8 @@
 package com.example.demo.product.service;
 
 import java.util.List;
+import java.util.Map;
 
-import com.example.demo.orders.OrdersDetailVO;
 import com.example.demo.orders.OrdersVO;
 import com.example.demo.product.ProductDetailVO;
 import com.example.demo.product.ProductInoutVO;
@@ -16,9 +16,13 @@ public interface ProductService {
 	public List<ProductDetailVO> getProdDet(ProductDetailVO vo);				// 제품상세조회 
 	public List<ProductDetailVO> getProdLot(String productCode);				// 제품상세조회
 	public List<OrdersVO> getOrders(OrdersVO vo);								// 주문조회
+	public List<Map<String, Object>> getProdMat(String productLotCode);
+	public List<ProductInoutVO> getProdInout(ProductInoutVO vo);
 
 
 	// 2. 등록
-	public boolean insertInout(List<ProductInoutVO> list);						// 완제품출고등록
-	public boolean updateOutCnt(List<OrdersDetailVO> list);
+//	public boolean insertInout(List<ProductInoutVO> list);						// 완제품출고등록
+//	public boolean updateOutCnt(List<OrdersDetailVO> list);
+	public int prodInoutProcess(OrdersVO vo);								// 완제품출고 수량 update(프로시저)
+
 }

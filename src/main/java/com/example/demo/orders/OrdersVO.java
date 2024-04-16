@@ -40,4 +40,5 @@ public class OrdersVO {
 	private Date ordersStartDate;								// 주문일검색시작일
 	private Date ordersEndDate;									// 주문일검색종료일
 	
+	private String result;										// 프로시저 결과값(0,1)
 }
