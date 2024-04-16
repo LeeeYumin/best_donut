@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.demo.materials.MaterialInOutVO;
 import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderVO;
 import com.example.demo.materials.MaterialOutgoingVO;
@@ -42,4 +43,7 @@ public interface MaterialsMapper {
 	
 	// 자재 불출 등록
 	public int insertMatOutgoing(MaterialOutgoingVO vo);
+	
+	// 자재 입출고 목록
+	public List<MaterialInOutVO> getMatInOutList(MaterialInOutVO vo);
 }

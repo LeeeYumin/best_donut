@@ -243,7 +243,7 @@
         END;
    	</update>
    	
-   	<!-- 입고 목록 테이블 출력 -->
+   	<!-- 입고 예정 목록 테이블 출력 -->
    	<select id="getWarehousingList" resultType="MaterialWarehousingVO">
    		SELECT d.mat_orders_code,
    			   d.mat_orders_detail_code,
@@ -286,7 +286,7 @@
    			#{unit, mode=IN, jdbcType=VARCHAR},
    			#{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
    		)
-   	</insert>
+   	</insert>   	
    	
    	<!-- 불출 등록 프로시저 호출 -->
    	<insert id="insertMatOutgoing" statementType="CALLABLE" parameterType="MaterialWarehousingVO">
@@ -298,4 +298,22 @@
    			#{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
    		)
    	</insert>
+   	
+   	<!-- 입출고 내역 목록 출력 -->
+   	<select id="getMatInOutList" resultType="MaterialInOutVO">
+   		SELECT h.inout_date,
+       		   h.mat_lot_code,
+       		   FIND_MATNAME(m.mat_code) mat_name,
+       		   FIND_COMPANYNAME(m.company_code) company_name,
+       		   h.inout_cnt,
+       		   h.inout_sep
+		  FROM mat_inout_history h 
+    	  	JOIN mat_detail m ON h.mat_lot_code = m.mat_lot_code
+		 WHERE inout_sep IN
+			<foreach collection="inoutSeps" item="inoutSep" open="(" close=");" separator=",">
+	         		#{inoutSep}
+       		</foreach>
+
+   	</select>
+   	
 </mapper>

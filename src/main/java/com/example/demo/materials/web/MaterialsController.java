@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.materials.MaterialInOutVO;
 import com.example.demo.materials.MaterialOrderDetailVO;
 import com.example.demo.materials.MaterialOrderVO;
 import com.example.demo.materials.MaterialOutgoingVO;
@@ -90,7 +91,7 @@ public class MaterialsController {
 		return materialsService.getMaterialOrderDetail(matOrderCodes);
 	}
 
-	// 발주 취소
+	// 발주 취소(ajax)
 	@GetMapping("/ajax/matordercancel")
 	@ResponseBody
 	public int updateMatOrderCancel(String[] matOrderCodes) {
@@ -103,14 +104,14 @@ public class MaterialsController {
 		return "materials/materialWarehousing"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
 
-	// 자재 입고 대기건 조회
+	// 자재 입고 대기건 조회(ajax)
 	@RequestMapping("/ajax/materialwarehousing")
 	@ResponseBody
 	public List<MaterialWarehousingVO> getWarehousingList(@RequestBody MaterialWarehousingVO vo) {
 		return materialsService.getWarehousingList(vo);
 	}
 
-	// 자재 입고 등록
+	// 자재 입고 등록(ajax)
 	@PostMapping("/ajax/matWarehousingInsert")
 	@ResponseBody
 	public int matWarehousingInsert(@RequestBody List<MaterialWarehousingVO> vo) {
@@ -123,7 +124,7 @@ public class MaterialsController {
 		return "materials/materialOutgoing"; // "/template(기본값-동적 컨텐츠)/index.html"
 	}
 	
-	// 자재 불출 등록
+	// 자재 불출 등록(ajax)
 	@PostMapping("/ajax/matOutgoingInsert")
 	@ResponseBody
 	public int matOutgoingInsert(@RequestBody List<MaterialOutgoingVO> vo) {
@@ -134,5 +135,12 @@ public class MaterialsController {
 	@RequestMapping("/materials/inoutList")
 	public String inoutList() {
 		return "materials/materialInOutList"; // "/template(기본값-동적 컨텐츠)/index.html"
+	}
+	
+	// 자재 입출고 목록(ajax)
+	@PostMapping("/ajax/getMatInOutList")
+	@ResponseBody
+	public List<MaterialInOutVO> getMatInOutList(@RequestBody MaterialInOutVO vo) {
+		return materialsService.getMatInOutList(vo);
 	}
 }

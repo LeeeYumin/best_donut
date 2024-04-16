@@ -9,6 +9,7 @@ public class ProdInsDeVO {
 	private String prodInstructDetailCode;
 	private String prodPlanDetailCode;
 	private String prodInstructCode;
+	private String matOutgoingStatus; // 자재 불출용 컬럼
 	
 	private int instructCnt;
 	private int notProdCnt;
