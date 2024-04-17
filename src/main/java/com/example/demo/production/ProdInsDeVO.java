@@ -19,7 +19,10 @@ public class ProdInsDeVO {
 	private String productName;
 	
 	
-//	public ProdInsDeVO() {
-//		this.instructCnt = 0;
-//	}
+	//지시상세 공정상태
+	private String insDeStatus;
+	
+	private String productLotCode; //완제품lot코드
+	private int failCnt; //불량수량
+
 }

@@ -5,7 +5,7 @@
 	layout:decorate="~{layout/index}">
 <head>
 <meta charset="UTF-8">
-<title>prodPlanList</title>
+<title>processResult</title>
 <!-- Toast UI CDN -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
@@ -42,7 +42,7 @@
 	<div layout:fragment="content">
 
 <!-- TITLE -->
-		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 생산계획 관리</h3>
+		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 공정실적 조회</h3>
 
 
 <!-- 검색 FORM -->
@@ -53,7 +53,7 @@
 					<div class="card-body demo-vertical-spacing demo-only-element">
 						<div class="row mb-3">
 							<div class="row mb-3">
-								<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">계획일자</label>
+								<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">지시일자</label>
 								<div class="col-sm-6 input-group">
 									<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
 									<span style="margin: 0 10px; padding-top: 10px;">-</span>
@@ -61,9 +61,9 @@
 								</div>
 							</div>
 						<div class="row mb-3">
-							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">계획코드</label>
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">지시코드</label>
 							<div class="col-sm-6">
-								<input class="form-control" type="text" name="prodPlanCode" id="prodPlanCode" placeholder="생산계획코드 입력">
+								<input class="form-control" type="text" name="prodInstructCode" id="prodInstructCode" placeholder="생산지시코드 입력">
 							</div>
 						</div>
 
@@ -77,20 +77,20 @@
 		</div>
 
 
-<!-- 생산계획목록 FORM -->
+<!-- 생산지시목록 FORM -->
 		<div class="card">
-			<h4 class="card-header">생산계획 목록</h4>
-			<button type="button" class="btn btn-secondary btn-sm btn-delete" id="deleteBtn" onclick="deletePlan()">삭제</button>
+			<h4 class="card-header">생산지시 목록</h4>
+			<!-- <button type="button" class="btn btn-secondary btn-sm btn-delete" id="deleteBtn" onclick="deletePlan()">삭제</button> -->
 			<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
-				<div class="pdt-0 card-body" id="plList"></div>
+				<div class="pdt-0 card-body" id="piList"></div>
 			<h5 class="card-header">상세 목록</h5>
-				<button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updatePlanDetail()">수정</button>
+				<!-- <button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updatePlanDetail()">수정</button> -->
 				<div id="alertMsg2" class="warn-alert"><!-- 알림문구 --></div>
-			<div class="pdt-0 card-body" id="plAll"></div>
+			<div class="pdt-0 card-body" id="piAll"></div>
 		</div>
 
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->
-		<script src="/js/production/prodPlanList.js"></script>
+		<script src="/js/production/processResult.js"></script>
 
 	</div>
 
