@@ -23,7 +23,7 @@ public class ProdPlanController {
 	
 	@Autowired ProdPlanService prodPlanService;
 
-	/* 페이지 이동 */
+/* 페이지 이동 */
 	
 	//생산계획 등록
 	@GetMapping("prodPlan") // 페이지 uri
@@ -42,12 +42,7 @@ public class ProdPlanController {
 	public String prodInstruct() {
 		return "production/prodInstruct";
 	}
-	
-	//생산지시 관리
 
-	
-
-	
 //============================================================================	
 	
 /* < 생산요청&상세 > 데이터 */
