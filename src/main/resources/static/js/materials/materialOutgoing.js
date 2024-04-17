@@ -280,10 +280,10 @@ const matStockList = new tui.Grid({
 });
 
 // 상세 로트 조회(ajax)
-async function getMaterialDetailsList() {
+function getMaterialDetailsList() {
     let matCode = BOMList.getValue(BOMList.getFocusedCell().rowKey, 'matCode');
 
-    await fetch("/ajax/materiallots?matCode=" + matCode)
+    fetch("/ajax/materiallots?matCode=" + matCode)
         .then(res => res.json())
         .then(res => {
             // ajax로 불러온 데이터 그리드에 넣음
