@@ -253,5 +253,5 @@ function disposeMat(matLotCodes) {
 
 // 폐기 버튼 권한 체크
 if($('#auth').html() != '1'){
-	$('#disposeBtn').attr('style', 'display:none');
+	$('#disposeBtn').attr('style', 'display:none;');
 }
