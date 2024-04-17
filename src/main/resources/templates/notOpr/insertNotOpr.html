@@ -30,7 +30,7 @@
 					<label class="col-sm-1 col-form-label" style="font-size: 15px;">담당자코드<span class="star">*</span></label>
 					<div class="row col">
 						<div class="col-sm-2">
-						<select name="usersCode" onchange="changeOption1()" class="form-control">
+						<select name="usersCode" onchange="changeOption1()" class="form-select">
 							<option value="" th:if = "${notOprVO.notOprCode} == null">담당자코드 선택</option>
 							<option th:value="${notOprVO.usersCode}" th:text="${notOprVO.usersCode}" th:if = "${notOprVO.notOprCode} != null">담당자코드 선택</option>
 							<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersCode}">
@@ -38,7 +38,7 @@
 						</div>
 						<label class="col-sm-1 col-form-label" style="font-size: 15px;">담당자명<span class="star">*</span></label>
 						<div class="col-sm-2">
-						<select name="usersName" class="req form-control" onchange="changeOption2()">
+						<select name="usersName" class="req form-select" onchange="changeOption2()">
 							<option value="" th:if = "${notOprVO.notOprCode} == null">담당자명 선택</option>
 							<option th:value="${notOprVO.usersCode}" th:text="${notOprVO.usersName}" th:if = "${notOprVO.notOprCode} != null">담당자명 선택</option>
 							<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersName}">
@@ -51,7 +51,7 @@
 					<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비코드<span class="star">*</span></label>
 					<div class="row col">
 						<div class="col-sm-2">
-						<select name="eqmCode" onchange="changeOption3()" class="form-control">
+						<select name="eqmCode" onchange="changeOption3()" class="form-select">
 							<option value="" th:if = "${notOprVO.notOprCode} == null">설비코드 선택</option>
 							<option th:value="${notOprVO.eqmCode}" th:text="${notOprVO.eqmCode}" th:if = "${notOprVO.notOprCode} != null">설비코드 선택</option>
 							<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmCode}">
@@ -59,7 +59,7 @@
 						</div>
 						<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비명<span class="star">*</span></label>
 						<div class="col-sm-2">
-						<select name="eqmName" class="req form-control" onchange="changeOption4()">
+						<select name="eqmName" class="req form-select" onchange="changeOption4()">
 							<option value="" th:if = "${notOprVO.notOprCode} == null">설비명 선택</option>
 							<option th:value="${notOprVO.eqmCode}" th:text="${notOprVO.eqmName}" th:if = "${notOprVO.notOprCode} != null">설비명 선택</option>
 							<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmName}">
@@ -107,10 +107,10 @@
 			<div class="mb-4" th:if = "${notOprVO.notOprCode} == null">
 				<button type="button" id="saveBtn" class="btn btn-primary">등록완료</button>
 			</div>
-		</div>
-		<div class="mb-4" th:if = "${notOprVO.notOprCode} != null">
-			<button type="button" id="delBtn" class="btn btn-secondary me-sm-2 me-1" onclick="deleteNotOpr()">삭제</button>
-			<button type="button" id="updateBtn" class="btn btn-primary" onclick="updateNotOpr()">정보수정</button>
+			<div class="mb-4" th:if = "${notOprVO.notOprCode} != null">
+				<button type="button" id="delBtn" class="btn btn-secondary me-sm-2 me-1" onclick="deleteNotOpr()">삭제</button>
+				<button type="button" id="updateBtn" class="btn btn-primary" onclick="updateNotOpr()">정보수정</button>
+			</div>
 		</div>
 
 		<script src="/js/notOpr/insertNotOpr.js"></script>

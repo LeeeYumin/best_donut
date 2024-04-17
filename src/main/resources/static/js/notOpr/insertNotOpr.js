@@ -18,11 +18,11 @@ async function saveNotOpr() {
     console.log(res);
     result = res;
   })
-  // .then(res => {
-  //   window.setTimeout(function() {
-  //     location.href = '/notoprlist';
-  //   }, 1000);
-  // })
+  .then(res => {
+    window.setTimeout(function() {
+      location.href = '/notoprlist';
+    }, 1000);
+  })
 
   
   // SweetAlert
@@ -130,9 +130,9 @@ function changeOption4() {
 
 // 정보수정 버튼
 async function updateNotOpr() {
-  // if(!formValidation()) {
-  //   return;
-  // }
+  if(!formValidation()) {
+    return;
+  }
   
   let formData = new FormData(document.insertForm);
 
@@ -150,11 +150,11 @@ async function updateNotOpr() {
     console.log(res);
     result = res;
   })
-  // .then(res => {
-  //   window.setTimeout(function() {
-  //     location.href = '/userslist';
-  //   }, 1000);
-  // })
+  .then(res => {
+    window.setTimeout(function() {
+      location.href = '/notoprlist';
+    }, 1000);
+  })
   
 
   // SweetAlert
@@ -184,5 +184,17 @@ async function updateNotOpr() {
 // 삭제 버튼
 async function deleteNotOpr() {
   let notOprCode = insertForm.notOprCode.value
-  location.href = '/deletenotopr/' + notOprCode
+
+  window.setTimeout(function() {
+    location.href = '/deletenotopr/' + notOprCode
+  }, 1000);
+
+  Swal.fire({
+    position: "center",
+    icon: "success",
+    title: "삭제 완료!",
+    // text: "삭제가 정상적으로 처리되었습니다.",
+    showConfirmButton: false,
+    timer: 2000
+  });
 };

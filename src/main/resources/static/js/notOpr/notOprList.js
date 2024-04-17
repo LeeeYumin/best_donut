@@ -41,54 +41,75 @@ const grid = new tui.Grid({
       name: 'notOprCode',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['endDate'] != null
+      }
     },
     {
       header: '설비코드',
       name: 'eqmCode',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['endDate'] != null
+      }
     },
     {
       header: '설비명',
       name: 'eqmName',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['endDate'] != null
+      }
     },
     {
       header: '비가동구분',
       name: 'notOprSep',
       align: 'center',
-      renderer: {type: ColumnConverter1}
+      renderer: {type: ColumnConverter1},
+      validation: {
+        validatorFn: (value, row, columnName) => row['endDate'] != null
+      }
     },
     {
       header: '시작일자',
       name: 'beginDate',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['endDate'] != null
+      }
     },
     {
       header: '종료일자',
       name: 'endDate',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['endDate'] != null
+      }
     },
     {
       header: '담당자명',
       name: 'usersName',
       sortingType: 'asc',
       sortable: true,
-      align: 'center'
+      align: 'center',
+      validation: {
+        validatorFn: (value, row, columnName) => row['endDate'] != null
+      }
     }
   ]
 });
 
 
-// 목록조회
+// 전체조회
 getNotOprList();
 async function getNotOprList(){
   const keyword = document.getElementById('keyword').value;
@@ -112,6 +133,14 @@ async function getNotOprList(){
 };
 
 
+// 초기화버튼
+document.getElementById('resetBtn').addEventListener('click', () => {
+	document.getElementById('keyword').value = '';
+  document.getElementById('status0').checked = true;
+	getNotOprList();
+});
+
+
 // 검색버튼
 document.getElementById('searchBtn').addEventListener('click', getNotOprList);
 document.getElementById('keyword').addEventListener('keyup', (e) => {
@@ -121,16 +150,18 @@ document.getElementById('keyword').addEventListener('keyup', (e) => {
 })
 
 
-// 초기화버튼
-document.getElementById('resetBtn').addEventListener('click', () => {
-	document.getElementById('keyword').value = '';
-  document.getElementById('status0').checked = true;
-	getNotOprList();
-});
-
-
 // 단건조회 이동
 grid.on('dblclick', (event) => {
 	let notOprCode = grid.getValue(event.rowKey, 'notOprCode')
   location.href = 'notoprinfo/' + notOprCode
 })
+
+
+// Hover
+tui.Grid.applyTheme('custom', {
+  row: {
+    hover: {
+      background: '#d4e9f2'
+    }
+  }
+});
