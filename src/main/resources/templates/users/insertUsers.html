@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="/css/common.css" />
 <body>
 	<div layout:fragment="content">
-		<h3 class="fw-bold py-1 mb-4" th:if = "${usersVO.usersCode} == null">
+		<h3 class="fw-bold py-1 mb-4" th:if="${usersVO.usersCode} == null">
 			<span class="text-muted fw-light">공통관리 / </span> 사용자 등록
 		</h3>
-		<h3 class="fw-bold py-1 mb-4" th:if = "${usersVO.usersCode} != null">
+		<h3 class="fw-bold py-1 mb-4" th:if="${usersVO.usersCode} != null">
 			<span class="text-muted fw-light">공통관리 / </span> 사용자 정보
 		</h3>
 		
@@ -36,8 +36,8 @@
 					<label class="col-sm-1 col-form-label" style="font-size: 15px;">소속<span class="star">*</span></label>
 					<div class="col-sm-6">
 <!-- 					<input type="search" name="position" placeholder="소속 입력" class="req form-control" th:value="${usersVO.position}"> -->
-						<select name="position" th:value="${usersVO.position}" class="req form-control">
-							<option value="" th:if = "${usersVO.usersCode} == null">소속 선택</option>
+						<select name="position" th:value="${usersVO.position}" class="req form-select">
+							<option value="" th:if="${usersVO.usersCode} == null">소속 선택</option>
 							<option th:value="${usersVO.position}" th:text="${usersVO.position}" th:if = "${usersVO.usersCode} != null"></option>
 							<option>영업관리팀</option>
 							<option>생산관리팀</option>
@@ -88,7 +88,7 @@
 			</div>
 		</form>
 		
-		<div class="mb-5 d-md-flex justify-content-md-center">
+		<div class="mb-5 d-md-flex justify-content-md-center">	
 			<div class="mb-4" th:if = "${usersVO.usersCode} == null">
 				<button type="button" id="saveBtn" class="btn btn-primary">등록완료</button>
 			</div>

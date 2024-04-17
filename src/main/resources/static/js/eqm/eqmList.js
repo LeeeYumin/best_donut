@@ -137,7 +137,7 @@ const grid = new tui.Grid({
 });
 
 
-// 목록조회
+// 전체조회
 getEqmList();
 async function getEqmList(){
   const keyword = document.getElementById('keyword').value;
