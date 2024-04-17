@@ -235,17 +235,6 @@ document.getElementById('disposeBtn').addEventListener('click', () => {
 				});
 			}
 		});
-		// if (confirm('정말로 폐기하시겠습니까?')) {
-		// 	let matLotCodes = '';
-		// 	for (i = 0; i < grid2.getCheckedRows().length; i++) {
-		// 		if (i > 0) {
-		// 			matLotCodes += "&";
-		// 		}
-		// 		matLotCodes += "matLotCodes=" + grid2.getCheckedRows()[i].matLotCode;
-		// 	}
-		// 	console.log(matLotCodes);
-		// 	disposeMat(matLotCodes);
-		// }
 	}
 })
 

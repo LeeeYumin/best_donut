@@ -293,10 +293,13 @@ document.getElementById('cancelBtn').addEventListener('click', cancelOrder);
 // 발주 취소 기능
 function cancelOrder() {
 	if (grid1.getCheckedRows() == '') {
-		// alert('선택한 주문건이 없습니다.');
 		Swal.fire({
-			title: "선택된 주문건이 없습니다.",
-			icon: "warning"
+			position: "center",
+			icon: "warning",
+			title: '선택된 주문건이 없습니다.',
+			text: ' ',
+			showConfirmButton: false,
+			timer: 1500
 		});
 	} else if (checkOrderStatus()) {
 		let matOrderCodes = createparam();
@@ -309,11 +312,13 @@ function cancelOrder() {
 				console.log(res);
 			})
 	} else {
-		// alert('취소할 수 없는 상태의 주문이 선택되었습니다.');
 		Swal.fire({
-			title: "취소 실패",
-			text: "취소할 수 없는 상태의 주문이 선택되었습니다.",
-			icon: "error"
+			position: "center",
+			icon: "warning",
+			title: '취소할 수 없는 상태의 주문이 선택되었습니다.',
+			text: ' ',
+			showConfirmButton: false,
+			timer: 1500
 		});
 	}
 }
