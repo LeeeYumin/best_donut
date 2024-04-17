@@ -1,7 +1,6 @@
 getProdInsList();
 
-
-/* < 생산지시 목록 > */
+/* < 공정완료 생산지시 목록 > */
 const piList = new tui.Grid({
 	el : document.getElementById('piList'),
 	bodyHeight: 200,
@@ -27,7 +26,7 @@ const piList = new tui.Grid({
 	]
 });
 
-// 생산지시 목록 조회(ajax) -검색포함
+// 공정완료 생산지시 목록 조회(ajax) -검색포함
 async function getProdInsList(){
 
 	const searchStartDate = document.getElementById('searchStartDate').value;
@@ -35,7 +34,7 @@ async function getProdInsList(){
 	const prodInstructCode = document.getElementById('prodInstructCode').value;
 
 	const obj = {searchStartDate, searchEndDate, prodInstructCode};
-	console.log(obj);
+	//console.log(obj);
 	
 	const data = {
 		method: 'POST',
@@ -43,17 +42,15 @@ async function getProdInsList(){
 		body : JSON.stringify(obj)
 	};
 
-	await fetch("/ajax/processResult", data)
-	.then(res => res.json())
-	.then(res => {
-		console.log(res);
-		piList.resetData(res);
-	})
+	let response = await fetch("/ajax/processResult", data)
+	let res = await response.json();
+	piList.resetData(res);
+
 };
 
 //검색버튼
 document.getElementById('searchBtn').addEventListener('click', getProdInsList);
-document.getElementById('prodInstructCode').addEventListener('keyup', (e) => { //*확인하기
+document.getElementById('prodInstructCode').addEventListener('keyup', (e) => {
 	if (e.keyCode == 13) {
 		getProdInsList();
 	}
@@ -65,6 +62,7 @@ document.getElementById('resetBtn').addEventListener('click', function() {
 	document.getElementById('searchEndDate').value = '';
 	document.getElementById('prodInstructCode').value = '';
 	piList.resetData([]);
+
 	getProdInsList();
 });
 
@@ -81,7 +79,7 @@ const piAll = new tui.Grid({
 			align: 'center'
 		}, 
 			{
-			header : '완제품코드',
+			header : '완제품LOT',
 			name : 'productLotCode',
 			align: 'center'
 		},
@@ -101,8 +99,7 @@ const piAll = new tui.Grid({
 			align: 'center',
 			formatter: function(price) {
 				return priceFormat(price.value);
-			},
-			editor: 'text'
+			}
 		},
 		{
 			header : '미생산수량',
@@ -116,6 +113,7 @@ const piAll = new tui.Grid({
 			header : '생산수량',
 			name : 'prodCnt',
 			align: 'center',
+			className:'changeColor',
 			formatter: function(price) {
 				return priceFormat(price.value);
 			}
@@ -127,7 +125,9 @@ const piAll = new tui.Grid({
 			formatter: function(price) {
 				return priceFormat(price.value);
 			},
-			editor: 'text'
+			validation : {
+        validatorFn : value => value == 0
+      }
 		},
 	],
 	// summary: {
@@ -150,28 +150,25 @@ const piAll = new tui.Grid({
 	// }	
 });
 
-//생산계획 클릭 시 => 아래 생산계획상세내용 출력
-// plList.on('click', e => {
-// 	let status = plList.getValue(e.rowKey, "prodPlanStatus");
-// 	let plCode = plList.getValue(e.rowKey, "prodPlanCode");
+//완료 지시 클릭 시 => 아래 상세내용 출력
+piList.on('click', e => {
+	let piCode = piList.getValue(e.rowKey, "prodInstructCode");
 
-// 	//계획상세목록
-// 	getProdPlanAll(plCode);
+	//완료 상세목록
+	getProdInsAll(piCode);
 
-// 	//계획상태가 미지시이면 수정가능하게
-// 	if(status == 'LS1') {
-// 		plAll.enableColumn('fixCnt');
+});
 
-// 	}else { //아니면 수정불가
-// 		plAll.disableColumn('fixCnt');
-// 	}		
-// });
-getProdInsAll('PIN00025');
+//완료 상세목록
+// async function getProdInsAll(piCode){
+// 	let response = await fetch(`/ajax/processResultDe?prodInstructCode=${piCode}`);
+// 	let res = response.json();
+// 	piAll.resetData(res);
+// };
 function getProdInsAll(piCode){
 	fetch(`/ajax/processResultDe?prodInstructCode=${piCode}`)
 	.then(res => res.json())
 	.then(res => {
-
 		piAll.resetData(res);
 	})
 };

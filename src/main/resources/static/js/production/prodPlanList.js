@@ -47,9 +47,7 @@ getProdPlanList();
 				{
 					header : '생산계획일자',
 					name : 'planDate',
-					align: 'center',
-					
-					
+					align: 'center'
 				},
 				{
 					header : '생산요청코드',
@@ -203,6 +201,7 @@ getProdPlanList();
 			}		
 		});
 		
+		//계획상세 목록
  		function getProdPlanAll(plCode){
 			fetch(`/ajax/prodPlanAll?prodPlanCode=${plCode}`)
 			.then(res => res.json())

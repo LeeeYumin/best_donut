@@ -1,6 +1,6 @@
 package com.example.demo.production.service.impl;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.production.ProcessVO;
 import com.example.demo.production.ProdInsDeVO;
 import com.example.demo.production.ProdInsVO;
-import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.mapper.ProcessMapper;
 import com.example.demo.production.service.ProcessService;
 
@@ -45,6 +44,21 @@ public class ProcessServiceImpl implements ProcessService {
 		}
 		return map;
 	}
+	
+//	@Override
+//	public List<ProdInsVO> getTodayIns() { //완료된 생산지시
+//		return processMapper.getTodayIns();
+//	}
+//	@Override
+//	public List<ProdInsDeVO> getTodayInsDetail(String prodInstructCode) { //완료된 생산지시 상세
+//		return processMapper.getTodayInsDetail(prodInstructCode);
+//	}
+//	public String getInsDeStatus(String prodInsDetailCode) { //지시상세 상태(함수호출)
+//		return processMapper.getInsDeStatus(prodInsDetailCode);
+//	}
+
+
+	
 
 
 /* 2.공정 */
