@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	layout:decorate="~{layout/index}">
 <head>
 <meta charset="UTF-8">
@@ -12,6 +13,7 @@
 		<h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">자재관리 / </span> 자재 발주 관리
 		</h3>
+		<div sec:authentication="principal.usersVO.perm3" class="user" id="auth" style="display: none;"></div>
 		
 		<!-- 검색 폼 -->
 		<div>
