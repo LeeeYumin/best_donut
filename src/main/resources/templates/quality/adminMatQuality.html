@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
- 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+ 		layout:decorate="~{layout/index}"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- {폴더명/파일명} -->
 <head>
 <meta charset="UTF-8">
 <title>adminMatQuality.html</title>
@@ -11,13 +12,11 @@
 <link rel="stylesheet" href="/css/common.css" />
 </head>
 <body>
+	<div sec:authentication="principal.usersVO.perm4" class="user" id="auth" style="display: none;"></div>
 <div layout:fragment="content">
 	<h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">품질관리 / </span> 자재 품질 관리
 		</h3>
-		<div class="alert alert-primary" role="alert">
-			자재 품질 관리 페이지입니다
-		</div>
 		<div class="me-3 p-3" >
 			<label>자재 코드</label>
 				<input id="matCode" type="text" name="matCode"><br>
@@ -34,8 +33,6 @@
 			<button id="selDelBtn" type="button">선택삭제</button>
 			<button id="updateBtn" type="button">수정</button>
 		</div>
-
-
 
 	<div id="grid"></div>
 

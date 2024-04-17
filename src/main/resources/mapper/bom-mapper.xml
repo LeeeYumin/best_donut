@@ -91,4 +91,59 @@
 		  FROM bom_detail b JOIN mat m
 		                      ON b.mat_code = m.mat_code
    </select>
+   
+   <!-- BOM작성화면 / bom grid -->
+	<select id="selectBom2" resultType="BomVO">	
+	SELECT DISTINCT m.MAT_CODE
+	    	, m.MAT_NAME
+			, d.NEED_CNT
+	   		, m.UNIT
+	   		, m.UNIT_PRICE
+			, d.PROC_CODE
+	FROM mat m JOIN bom_detail d
+	ON m.MAT_CODE = d.MAT_CODE
+    order by mat_code
+	</select>  
+	
+	<!-- BOM작성화면 / bom 작성 --> 
+	<insert id="insertNewBom" parameterType="InsertBomVO">
+		   	<selectKey keyProperty="bomCode" order="BEFORE" resultType="String">
+			SELECT seq_func('bom') FROM dual
+		</selectKey>
+		DECLARE
+		BEGIN
+			UPDATE BOM 
+	        SET APPLY_STATUS = 'BAN'
+	        WHERE PRODUCT_CODE = #{productCode};
+		
+		insert into BOM (BOM_CODE
+						, APPLY_DATE
+						, APPLY_STATUS
+						, PRODUCT_CODE
+						, USERS_CODE)
+				values ( #{bomCode}
+						, sysdate
+						,'BAY'
+						, #{productCode}
+						, #{usersCode}
+						); 
+		END;
+	</insert>
+	
+	<!-- BOM작성화면 / bom_detail 등록 -->
+	<insert id="insertNewBom2" parameterType="BomVO">	
+		INSERT INTO bom_detail
+				(bom_detail_code
+				, need_cnt
+				, unit
+				, bom_code
+				, mat_code
+				, proc_code)
+			VALUES (seq_func('bom_detail')
+					, #{needCnt}
+					, #{unit}
+					, #{bomCode}
+					, #{matCode}
+					, #{procCode})
+	</insert>
 </mapper>

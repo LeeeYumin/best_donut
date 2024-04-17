@@ -155,24 +155,27 @@ const todayInsD = new tui.Grid({
     //   align: 'center'
     // },
     {
-      header : '공정상태', //수정하기
-      name : 'procStatus',
+      header : '진행상태', //수정하기
+      name : 'insDeStatus',
       align: 'center'
     },
   ]
 });
 
 // 당일 생산지시 조회
-async function getTodayIns(){
-  await fetch("/ajax/todayProdIns")
+  //let insnum = 0;
+  function getTodayIns(){
+  fetch("/ajax/todayProdIns")
   .then(res => res.json())
   .then(res => {
-    //console.log(res);
+    console.log(res);
 
     todayIns.resetData(res.prodIns); //ServiceImpl에서 넘겨 준 변수명
     todayInsD.resetData(res.prodInsDe);
   })
 };
+
+
 
 //==============================================================
 /* < 공정 > */
@@ -219,7 +222,7 @@ const procInfo = new tui.Grid({
       editor: 'text'
     },
     {
-      header : '진행상태',
+      header : '공정상태',
       name : 'procStatus',
       align: 'center',
       renderer: {type: ProcStatus}
@@ -236,11 +239,11 @@ const procMat = new tui.Grid({
       name : 'procMatCode',
       align: 'center'
     },
-    // {
-    //   header : '자재명',
-    //   name : 'procMatName',
-    //   align: 'center'
-    // },
+    {
+      header : '자재명',
+      name : 'matName',
+      align: 'center'
+    },
     {
       header : '자재LOT코드',
       name : 'matLotCode',
@@ -471,7 +474,7 @@ function endProc() {
 				await fetch("/ajax/procEqmInfo")
 				.then(res => res.json())
 				.then(res => {
-					console.log(res);
+					//console.log(res);
 					eqmOpr.resetData(res);
 				})
 			};

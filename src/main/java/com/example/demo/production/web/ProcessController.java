@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.production.ProcessVO;
+import com.example.demo.production.ProdInsDeVO;
+import com.example.demo.production.ProdInsVO;
 import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.ProdPlanDeVO;
+import com.example.demo.production.ProdPlanVO;
 import com.example.demo.production.service.ProcessService;
 
 @Controller
@@ -27,6 +30,12 @@ public class ProcessController {
 	@GetMapping("process")
 	public String process() {
 		return "production/process";
+	}
+	
+	//공정실적
+	@GetMapping("processResult")
+	public String processResult() {
+		return "production/processResult";
 	}
 	
 //============================================================================	
@@ -81,20 +90,20 @@ public class ProcessController {
 	public int modifyProcEqm(@RequestBody ProcessVO vo) { //공정사용 설비 변경
 		return processService.updateProcEqm(vo);	
 	}
-//	//공정시작&가동중
-//	@RequestMapping("/ajax/updateBeginTime")
-//	@ResponseBody
-//	public int modifyBegin(@RequestBody ProcessVO vo) { 
-//		//System.out.println(vo);
-//		return processService.updateBeginTime(vo);	
-//	}
-//	//공정종료&대기
-//	@RequestMapping("/ajax/updateEndTime")
-//	@ResponseBody
-//	public int modifyEnd(@RequestBody ProcessVO vo) { 
-//		return processService.updateEndTime(vo);	
-//	}
+
 	
+/* < 공정실적 > */	
+	@PostMapping("/ajax/processResult")
+	@ResponseBody
+	public List<ProdInsVO> getProcResult(@RequestBody ProdInsVO vo){
+		return processService.getProcResultList(vo);
+	}
+	//상세 데이터
+	@GetMapping("/ajax/processResultDe")
+	@ResponseBody
+	public List<ProdInsDeVO> getProcResultDe(String prodInstructCode){
+		return processService.getProcResultDeList(prodInstructCode);
+	}
 	
 	
 }

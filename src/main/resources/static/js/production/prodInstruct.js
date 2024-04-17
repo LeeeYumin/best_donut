@@ -157,21 +157,21 @@ getEqmOpr();
 				}
 			},
 			{
-				header : '미지시수량',
-				name : 'notInstructCnt',
-				align: 'center',
-				formatter: function(price) {
-					return priceFormat(price.value);
-				},
-			},
-			{
-				header : '지시수량',
+				header : '지시완료수량',
 				name : 'instructDoneCnt',
 				align: 'center',
 				formatter: function(price) {
 					return priceFormat(price.value);
 				},
 			},
+			{
+				header : '미지시수량',
+				name : 'notInstructCnt',
+				align: 'center',
+				formatter: function(price) {
+					return priceFormat(price.value);
+				},
+			}
 		],
 		summary: {
 			//align: 'right',
@@ -180,7 +180,7 @@ getEqmOpr();
 			columnContent: {
 				prodPlanDetailCode: {
 					template: function() {
-						return '주간 총 계획수량';
+						return '합계';
 					}, 
 				},
 				planCnt: {
@@ -188,7 +188,19 @@ getEqmOpr();
 					template: function(value) {
 						return priceFormat(value.sum);
 					}, 
-				}
+				},
+				instructDoneCnt: {
+					//align: 'right',
+					template: function(value) {
+						return priceFormat(value.sum);
+					}, 
+				},
+				notInstructCnt: {
+					//align: 'right',
+					template: function(value) {
+						return priceFormat(value.sum);
+					}, 
+				},
 			},
 		}
 	});
@@ -243,15 +255,13 @@ getEqmOpr();
 			]
 		});
 
-		function beforeInsertInsCode(){
-			fetch("/ajax/beforeInsertInsCode")
-			.then(res => res.json())
-			.then(res => {
-				let beforeInscode = res.prodInstructCode;
+		async function beforeInsertInsCode(){
+			let response = await fetch("/ajax/beforeInsertInsCode")
+			let res = await response.json();
+			let beforeInscode = res.prodInstructCode;
 				//화면로딩부터 기본 행 추가
-				plCode = wplan.getData()[0].prodPlanCode;
-				piInsert.appendRow({prodInstructCode: beforeInscode, prodPlanCode: plCode, instructDate: dateFormat(new Date())});		
-			})
+				//plCode = wplan.getData()[0].prodPlanCode;
+				piInsert.appendRow({prodInstructCode: beforeInscode, prodPlanCode: wplan.getData()[0].prodPlanCode, instructDate: dateFormat(new Date())});		
 		};
 		
 		/* < 생산계획 상세 > */
@@ -300,9 +310,9 @@ getEqmOpr();
 				height: 40,
 				position: 'bottom',
 				columnContent: {
-					prodInstructDetailCode: {
+					prodPlanDetailCode: {
 						template: function() {
-							return '지시수량 합계';
+							return '일일 지시수량 합계';
 						}, 
 					},
 					instructCnt: {
@@ -448,36 +458,50 @@ getEqmOpr();
 				}
 
 					
-						const pi = piInsert.getModifiedRows().createdRows
-						const piDeAll = piDeInsert.getData();
-						let param = {...pi[0], pidvo: piDeAll} //생산지시1건(배열로 들어와서 펼침연산자로 풀어서), list<detailvo>의 필드명(여러건) 
-		
-						fetch('ajax/insertProdInstruct', {
-							method: 'post',
-							headers: jsonHeaders,
-							body : JSON.stringify(param)
-						})
-						.then(res => res.json())
-						.then(res => {
-							//console.log(res);
-							if(res.prodInstructCode != null) { //vo로 넘겨받음
-								//updateAfterInstruct();
-								alert('생산지시가 등록되었습니다.');
-								saveRes(res);
-							} else {
-								alert('등록 중 오류 발생');
-							}
-						});
+				const pi = piInsert.getModifiedRows().createdRows
+				const piDeAll = piDeInsert.getData();
+				let param = {...pi[0], pidvo: piDeAll} //생산지시1건(배열로 들어와서 펼침연산자로 풀어서), list<detailvo>의 필드명(여러건) 
+				
+				let result = '';
+				fetch('ajax/insertProdInstruct', {
+					method: 'post',
+					headers: jsonHeaders,
+					body : JSON.stringify(param)
+				})
+				.then(res => res.json())
+				.then(res => result = res.prodInstructCode) //vo로 넘겨받음
+				.then(res => {
+					window.setTimeout(() => location.href = '/process');
+					//console.log(res);
+					// if(res.prodInstructCode != null) { //vo로 넘겨받음
+					// 	//updateAfterInstruct();
+					// 	alert('생산지시가 등록되었습니다.');
+					// 	saveRes(res);
+					// } else {
+					// 	alert('등록 중 오류 발생');
+					// }
+				});
 
-			}
-
-			//등록응답 (그리드에 입력된 모든 정보 비우기)
-			function saveRes(res) {
-				console.log(res);
-
-				piInsert.setValue(0,"prodPlanCode",'');
-				piDeInsert.resetData([]);
-			}
+				// SweetAlert
+				if(result != null){ //vo로 넘겨받음
+					Swal.fire({
+						position: "center",
+						icon: "success",
+						title: "생산지시 등록 완료",
+						showConfirmButton: false,
+						timer: 2000
+					});
+				}
+				else {
+					Swal.fire({
+						position: "center",
+						icon: "error",
+						title: "생산지시 등록 실패",
+						showConfirmButton: false,
+						timer: 2000
+					});
+				};
+			};
 
 //=======================================================
 			// 설비상태
