@@ -51,9 +51,9 @@ const grid1 = new tui.Grid({
 });
 
 // 재고 조회(ajax)
-async function getMaterialsList() {
+function getMaterialsList() {
 	const matName = document.getElementById('matName').value;
-	await fetch("/ajax/materials?matName=" + matName)
+	fetch("/ajax/materials?matName=" + matName)
 		.then(res => res.json())
 		.then(res => {
 			// ajax로 불러온 데이터 그리드에 넣음
@@ -62,7 +62,7 @@ async function getMaterialsList() {
 		})
 };
 
-// 검색 관련 함수  
+// 검색 관련 함수
 document.getElementById('searchBtn').addEventListener('click', getMaterialsList);
 document.getElementById('matName').addEventListener('keyup', (e) => {
 	if (e.keyCode == 13) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.bom.BomVO;
+import com.example.demo.bom.InsertBomVO;
 import com.example.demo.bom.mapper.BomMapper;
 import com.example.demo.bom.service.BomService;
 
@@ -44,6 +45,28 @@ public class BomServiceImpl implements BomService {
 		return bomMapper.selectBom();
 	}
 
+	@Override
+	public List<BomVO> selectBom2() {
+		return bomMapper.selectBom2();
+	}
+
+	@Override
+	public int insertNewBom(InsertBomVO vo) {
+		int result = 0;
+		
+		bomMapper.insertNewBom(vo);
+		String bomCode = vo.getBomCode();
+		
+		List<BomVO> list = vo.getPick();
+		for(BomVO bvo : list) {
+			bvo.setBomCode(bomCode);
+			result += bomMapper.insertNewBom2(bvo);
+		}
+		
+		return result;
+	}
+
+	
 
 
 

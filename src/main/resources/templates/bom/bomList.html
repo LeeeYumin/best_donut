@@ -13,18 +13,18 @@
 <body>
 <div layout:fragment="content">
 		<h3 class="fw-bold py-1 mb-4">
-			<span class="text-muted fw-light">BOM / </span> BOM 목록
+			<span class="text-muted fw-light">BOM / </span> BOM 관리
 		</h3>
 		<div class="prodBList">
+			<form name="insertForm" method="post">
 			<button id="prod1" type="button">글레이즈드</button>
 			<button id="prod2" type="button">딸기</button>
 			<button id="prod3" type="button">초코</button>
 			<button id="prod4" type="button">녹차</button>
+			</form>
 		</div>
 
-
 		<div id="grid"></div>
-
 
 		<div class="prodBList2">
 			<select id="selectbox" name="selectbox" onchange="">

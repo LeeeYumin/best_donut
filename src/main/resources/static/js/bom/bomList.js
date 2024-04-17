@@ -39,16 +39,19 @@ const grid = new tui.Grid({
       header : 'BOM 코드',
       name : 'bomCode',
       align : "center",
+      sortable: true,
     },
     {
       header : '제품명',
       name : 'productName',
       align : "center",
+      sortable: true,
     },
     {
       header : '적용여부',
       name : 'applyStatus',
       align : "center",
+      sortable: true,
     },
     {
       header : '담당자코드',
@@ -59,6 +62,7 @@ const grid = new tui.Grid({
       header : '작성일자',
       name : 'writeDate',
       align : "center",
+      sortable: true,
     }
   ]
 });
