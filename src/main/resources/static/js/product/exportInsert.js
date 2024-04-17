@@ -221,7 +221,7 @@ async function insertProdOut() {
 		Swal.fire({
 			position: "center",
 			icon: "error",
-			title: "생산요청 등록 실패",
+			title: "출고 등록 실패",
 			text: "주문코드를 입력해주십시오.",
 			showConfirmButton: false,
 			timer: 1500
@@ -243,8 +243,8 @@ async function insertProdOut() {
 		Swal.fire({
 			position: "center",
 			icon: "success",
-			title: "생산요청 등록 완료!",
-			text: "생산요청 등록이 정상적으로 처리되었습니다.",
+			title: "출고 등록 완료!",
+			text: "출고 등록이 정상적으로 처리되었습니다.",
 			showConfirmButton: false,
 			timer: 1500
 		});
@@ -253,8 +253,8 @@ async function insertProdOut() {
 		Swal.fire({
 			position: "center",
 			icon: "error",
-			title: "생산요청 등록 실패",
-			text: "생산요청 등록이 정상적으로 처리되지 않았습니다.",
+			title: "출고 등록 실패",
+			text: "출고 등록이 정상적으로 처리되지 않았습니다.",
 			showConfirmButton: false,
 			timer: 1500
 		});
