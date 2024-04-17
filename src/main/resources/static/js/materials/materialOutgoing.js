@@ -280,10 +280,10 @@ const matStockList = new tui.Grid({
 });
 
 // 상세 로트 조회(ajax)
-async function getMaterialDetailsList() {
+function getMaterialDetailsList() {
     let matCode = BOMList.getValue(BOMList.getFocusedCell().rowKey, 'matCode');
 
-    await fetch("/ajax/materiallots?matCode=" + matCode)
+    fetch("/ajax/materiallots?matCode=" + matCode)
         .then(res => res.json())
         .then(res => {
             // ajax로 불러온 데이터 그리드에 넣음
@@ -407,13 +407,28 @@ function checkValidation() {
     for (let i = 0; i < matOutgoingListData.length; i++) {
         // 불출 수량이 빈값이거나 0인 자재 체크
         if (Number(matOutgoingListData[i].remainCnt) == 0) {
-            alert(matOutgoingListData[i].matName + ' 수량을 확인해주세요.');
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: matOutgoingListData[i].matName + ' 수량을 확인해주세요.',
+                text: ' ',
+                showConfirmButton: false,
+                timer: 1500
+            });
             matOutgoingList.focusAt(i, 3);
             result = 0;
             break;
+
             // 불출 수량이 숫자인지 체크
         } else if (isNaN(Number(matOutgoingListData[i].remainCnt))) {
-            alert(matOutgoingListData[i].matName + ' 수량을 숫자로 입력해주세요');
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: matOutgoingListData[i].matName + ' 수량을 숫자로 입력해주세요',
+                text: ' ',
+                showConfirmButton: false,
+                timer: 1500
+            });
             matOrderList.focusAt(i, 3);
             result = 0;
             break;
@@ -433,7 +448,14 @@ function checkValidation() {
         }
 
         if (insertOk == false) {
-            alert(BOMListData[i].matName + '을 추가해주세요.')
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: BOMListData[i].matName + '을 추가해주세요.',
+                text: ' ',
+                showConfirmButton: false,
+                timer: 1500
+            });
             result = 0;
             break;
         }

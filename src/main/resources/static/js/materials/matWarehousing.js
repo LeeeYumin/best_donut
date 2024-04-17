@@ -114,17 +114,38 @@ function checkValidation() {
     let validation = 1;
 
     if (warehousingData == '') {
-        alert('입고할 자재를 선택해 주세요.');
+        Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: '입고할 자재를 선택해 주세요.',
+            text: ' ',
+            showConfirmButton: false,
+            timer: 1500
+        });
         validation = 0;
     } else {
         for (let i = 0; i < warehousingData.length; i++) {
             if (warehousingData[i].ordersCnt == 0) {
-                alert('수량이 0인 자재는 입고할 수 없습니다.');
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    title: '수량이 0인 자재는 입고할 수 없습니다.',
+                    text: ' ',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 validation = 0;
                 matWarehousing.focusAt(i, 3)
                 break;
             } else if (warehousingData[i].matCode != 'MAT00009' && warehousingData[i].expDate == null) {
-                alert('유통기한을 입력해주세요.');
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    title: '유통기한을 입력해주세요.',
+                    text: ' ',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 validation = 0;
                 matWarehousing.focusAt(i, 4)
                 break;

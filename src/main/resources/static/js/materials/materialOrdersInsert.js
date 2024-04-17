@@ -477,13 +477,27 @@ function checkValidation() {
     for (let i = 0; i < matOrdersData.length; i++) {
         // 발주 수량이 빈값이거나 0인 자재 체크
         if (Number(matOrdersData[i].ordersCnt) == 0) {
-            alert(matOrdersData[i].matName + ' 수량을 확인해주세요.');
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: matOrdersData[i].matName + ' 수량을 확인해주세요.',
+                text: ' ',
+                showConfirmButton: false,
+                timer: 1500
+            });
             matOrderList.focusAt(i, 3);
             result = 0;
             break;
             // 발주 수량이 숫자인지 체크
         } else if (isNaN(Number(matOrdersData[i].ordersCnt))) {
-            alert(matOrdersData[i].matName + ' 수량을 숫자로 입력해주세요');
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: matOrdersData[i].matName + ' 수량을 숫자로 입력해주세요',
+                text: ' ',
+                showConfirmButton: false,
+                timer: 1500
+            });
             matOrderList.focusAt(i, 3);
             result = 0;
             break;

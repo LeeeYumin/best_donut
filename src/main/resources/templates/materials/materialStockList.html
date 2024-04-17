@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	layout:decorate="~{layout/index}">
 <head>
 <meta charset="UTF-8">
@@ -12,6 +13,7 @@
 		<h3 class="fw-bold py-1 mb-4">
 		<span class="text-muted fw-light">자재관리 / </span> 자재 재고 관리
 		</h3>
+		<div sec:authentication="principal.usersVO.perm3" class="user" id="auth" style="display: none;"></div>
 		
 		<!-- 검색 폼 -->
 		<div>
@@ -40,7 +42,7 @@
 				<!-- 자재 상세 목록 -->
 				<h5 class="card-header">LOT별 자재 재고 목록</h5>
 				<div class="card-body" style="padding-bottom: 5px" id="materialDetails"></div>
-				<div class="d-grid gap-2 d-md-flex justify-content-md-end mx-4 mb-4">
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end mx-4 mb-4" id="authCheck">
 					<button type="button" class="btn btn-primary" id="disposeBtn">폐기</button>
 				</div>
 			</div>

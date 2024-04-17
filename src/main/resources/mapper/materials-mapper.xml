@@ -248,17 +248,17 @@
    		SELECT d.mat_orders_code,
    			   d.mat_orders_detail_code,
    			   d.company_code,
-       		   c.company_name,
+       		   FIND_COMPANYNAME(d.company_code) company_name,
        		   d.mat_code,
        		   m.mat_name,
        		   m.unit_price,
        		   d.orders_cnt,
        		   o.orders_date,
-       		   o.orders_date + m.lead_time as due_date
+       		   o.orders_date + m.lead_time as due_date,
+       		   FIND_MAT_UNIT(d.mat_code) unit
   		  FROM mat_orders_detail d
-     		JOIN company c ON d.company_code=c.company_code
-    		JOIN mat m ON d.mat_code=m.mat_code
-    		JOIN mat_orders o ON d.mat_orders_code=o.mat_orders_code
+    		JOIN mat m ON d.mat_code = m.mat_code
+    		JOIN mat_orders o ON d.mat_orders_code = o.mat_orders_code
    		 <where>
    		 		d.orders_status IN ('OSN', 'OSP')
 				<if test="sDate != null">
@@ -309,11 +309,27 @@
        		   h.inout_sep
 		  FROM mat_inout_history h 
     	  	JOIN mat_detail m ON h.mat_lot_code = m.mat_lot_code
-		 WHERE inout_sep IN
-			<foreach collection="inoutSeps" item="inoutSep" open="(" close=");" separator=",">
-	         		#{inoutSep}
-       		</foreach>
-
+		 <where>
+		 		<if test="inoutSeps != null and inoutSeps.length > 0">
+	   		 		h.inout_sep IN
+					<foreach collection="inoutSeps" item="inoutSep" open="(" close=")" separator=",">
+			         		#{inoutSep}
+		       		</foreach>
+	       		</if>
+				<if test="sDate != null">
+					AND TRUNC(h.inout_date) <![CDATA[ >= ]]> TRUNC(#{sDate})
+				</if>
+				<if test="eDate != null">
+					AND TRUNC(h.inout_date) <![CDATA[ <= ]]> TRUNC(#{eDate})
+				</if>
+				<if test="matName != null and matName != ''">
+		   			AND FIND_MATNAME(m.mat_code) LIKE '%'||#{matName}||'%'         
+      			</if>
+      			<if test="matLotCode != null and matLotCode != ''">
+		   			AND h.mat_lot_code LIKE '%'||#{matLotCode}||'%'         
+      			</if>
+			</where>
+			ORDER BY h.inout_date DESC
    	</select>
    	
 </mapper>
