@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
- 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+ 		layout:decorate="~{layout/index}"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- {폴더명/파일명} -->
 <head>
 <meta charset="UTF-8">
 <title>adminProQuality.html</title>
@@ -11,6 +12,7 @@
 <link rel="stylesheet" href="/css/common.css" />
 </head>
 <body>
+	<div sec:authentication="principal.usersVO.perm4" class="user" id="auth" style="display: none;"></div>
 <div layout:fragment="content">
 	<h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">품질관리 / </span> 완제품 품질 관리

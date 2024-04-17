@@ -2,8 +2,14 @@ getMatInfo('','','');
 
 const grid = new tui.Grid({
   el : document.getElementById('grid'),
+  bodyHeight: 500,
   scrollX : false,
   scrollY : true,
+  pageOptions: {
+    useClient: true,
+    type: 'scroll',
+    perPage: 20
+  },
   rowHeaders: ['checkbox'],
   columns : [
     {
@@ -119,7 +125,7 @@ const grid = new tui.Grid({
       name : 'goodCnt',
       align : "center",
       editor: {
-				type: CustomNumberEditor,
+				//type: CustomNumberEditor,
 				options: {
           maxLength : 5
 				}

@@ -82,3 +82,7 @@ function findProd() {
 	//console.log(prodName,checkDate);
   adminProQual(prodName, checkDate);
 }
+
+if($('#auth').html() != '1'){
+	$('#updateBtn').attr('style', 'display : none;');
+	}

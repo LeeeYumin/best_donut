@@ -2,6 +2,7 @@ getMatAdmin('','');
 
 	const grid = new tui.Grid({
 		el : document.getElementById('grid'),
+		bodyHeight: 500,
 		scrollX : false,
 		scrollY : true,
 		rowHeaders: ['checkbox'],
@@ -65,6 +66,7 @@ getMatAdmin('','');
 
 	});
 
+
 	grid.on('beforeChange', ev => {
 	      console.log('before change:', ev);
 	    });
@@ -88,3 +90,7 @@ getMatAdmin('','');
 		console.log(matCode, inoutDate);
   	getMatAdmin(matCode, inoutDate);
 	}
+
+	if($('#auth').html() != '1'){
+		$('#selDelBtn','#updateBtn').attr('style', 'display : none;');
+		}
