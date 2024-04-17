@@ -34,11 +34,12 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((requests) -> requests
-				.antMatchers("/**", "/home").permitAll()
-//				.antMatchers("/login").permitAll()
+//				.antMatchers("/**", "/home").permitAll()
+				.antMatchers("/assets/**", "/css/**", "/fonts/**", "/js/**", "/scss/**").permitAll()
+				.antMatchers("/login").permitAll()
 				//.antMatchers("/empList").hasAnyRole("ADMIN")
 //				.antMatchers("/userslist").hasAnyRole("PER00001")
-//				.anyRequest().authenticated()
+				.anyRequest().authenticated()
 			)
 			// 람다식
 //			.formLogin((form) -> form

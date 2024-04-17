@@ -1,5 +1,10 @@
 getOrdersList({});
 
+if(document.querySelector('#auth').innerHTML != '1'){
+	console.log('삭제버튼 숨김');
+	document.querySelector('#delBtn').setAttribute('style', 'display : none;');
+}
+
 // ordGrid.  주문 조회
 
 // 1. grid 생성

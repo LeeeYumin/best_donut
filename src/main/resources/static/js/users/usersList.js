@@ -285,17 +285,6 @@ async function getUsersList() {
 			// }
 
 
-
-
-// 검색버튼
-document.getElementById('searchBtn').addEventListener('click', getUsersList);
-document.getElementById('keyword').addEventListener('keyup', (e) => {
-  if(e.keyCode == 13) {
-    getUsersList();
-  }
-})
-
-
 // 초기화버튼
 document.getElementById('resetBtn').addEventListener('click', () => {
 	document.getElementById('keyword').value = '';
@@ -307,6 +296,15 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('status0').checked = true;
 	getUsersList();
 });
+
+
+// 검색버튼
+document.getElementById('searchBtn').addEventListener('click', getUsersList);
+document.getElementById('keyword').addEventListener('keyup', (e) => {
+  if(e.keyCode == 13) {
+    getUsersList();
+  }
+})
 
 
 // 체크박스
