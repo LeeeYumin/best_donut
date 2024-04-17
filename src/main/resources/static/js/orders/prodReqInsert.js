@@ -240,23 +240,21 @@ async function getProductList(){
 	const dueStartDate = dateFormat(searchForm.dueStartDate.value);
 	const dueEndDate = dateFormat(searchForm.dueEndDate.value);
 
-  await fetch(`ajax/getReqProd?dueStartDate=${dueStartDate}&dueEndDate=${dueEndDate}`)
-	.then(res => res.json())
-	.then(res => {
-		// ajax로 불러온 데이터 그리드에 넣음
-    for(product of res){
-      // 납품 후 재고량 = 현재 재고량 + 기본 생산량 - 총주문수량
-      product.afterOutCnt = product.stockCnt + product.defaultProd - product.totalOrdersCnt;
-      // 생산요청수량 = 납품후재고량 - 안전재고량
-      if((product.afterOutCnt - product.safeStockCnt) >= 0){
-        product.reqCnt = 0;
-      }
-      else {
-        product.reqCnt = product.safeStockCnt - product.afterOutCnt;
-      }
-    }
-		prodGrid.resetData(res);
-	})
+  let res = await fetch(`ajax/getReqProd?dueStartDate=${dueStartDate}&dueEndDate=${dueEndDate}`)
+	let result = await res.json();
+	
+	for(product of result){
+		// 납품 후 재고량 = 현재 재고량 + 기본 생산량 - 총주문수량
+		product.afterOutCnt = product.stockCnt + product.defaultProd - product.totalOrdersCnt;
+		// 생산요청수량 = 납품후재고량 - 안전재고량
+		if((product.afterOutCnt - product.safeStockCnt) >= 0){
+			product.reqCnt = 0;
+		}
+		else {
+			product.reqCnt = product.safeStockCnt - product.afterOutCnt;
+		}
+	}
+	prodGrid.resetData(result);
 	// 생산요청 목록 함수 실행
 	getReqList();
 }
@@ -267,6 +265,7 @@ function getReqList() {
 	let reqCnt = prodGrid.getColumnValues('reqCnt');
 	for(let i = 0; i < prodGrid.getRowCount(); i++){
 		if(reqCnt[i] != 0) {
+			console.log(prodGrid.getRow(i));
 			prodReqlist.push(prodGrid.getRow(i));
 		}
 	}

@@ -10,25 +10,75 @@
  	      FROM common_code
  	     WHERE 1=1
  	     <if test="maincode != null and maincode != ''">
- 	     	AND maincode LIKE '%' || #{maincode} || '%'
+ 	     	AND maincode LIKE '%' || UPPER(#{maincode}) || '%'
  	     </if>
  	     <if test="maincodeName != null and maincodeName != ''">
  	     	AND maincode_name LIKE '%' || #{maincodeName} || '%'
  	     </if>
+ 	     ORDER BY 1
    	</select>
    	
    	<!-- 공통코드 상세 목록 SELECT -->
    	<select id="getComCodeDetList" resultType="ComCodeDetailVO">
-   		SELECT subcode
+   		SELECT maincode
+   		       , subcode
 			   , subcode_name
-			   , maincode
  	      FROM common_code_detail
- 	     WHERE maincode = #{maincode}
+ 	     WHERE 1=1
+ 	     <if test="maincode != null and maincode != ''">
+ 	     	AND maincode LIKE '%' || UPPER(#{maincode}) || '%'
+ 	     </if>
  	     <if test="subcode != null and subcode != ''">
- 	     	AND subcode LIKE '%' || #{subcode} || '%'
+ 	     	AND subcode LIKE '%' || UPPER(#{subcode}) || '%'
  	     </if>
  	     <if test="subcodeName != null and subcodeName != ''">
  	     	AND subcode_name LIKE '%' || #{subcodeName} || '%'
  	     </if>
+ 	     ORDER BY 1
    	</select>
+   	
+   	<!-- 주코드 중복검사 -->
+   	<select id="valComCode" resultType="int">
+   		SELECT COUNT(*) cnt
+		  FROM common_code
+		 WHERE maincode = UPPER(#{maincode})
+   	</select>
+
+   	<!-- 부코드 중복검사 -->
+   	<select id="valComCodeDet" resultType="int">
+   		SELECT COUNT(*) cnt
+		  FROM common_code_detail
+		 WHERE subcode = UPPER(#{subcode})
+   	</select>
+   	
+   	<!-- 주코드 등록 -->
+   	<insert id="insertComCode" parameterType="ComCodeVO">   	
+		INSERT INTO common_code
+			(
+				maincode
+ 			    , maincode_name
+			)
+		VALUES
+			(
+				UPPER(#{maincode})
+				, #{maincodeName}
+			)
+   	</insert>
+   	
+   	<!-- 부코드 등록 -->
+   	<insert id="insertComCodeDet" parameterType="ComCodeDetailVO">   	
+		INSERT INTO common_code_detail
+			(
+				maincode
+				, subcode
+ 			    , subcode_name
+			)
+		VALUES
+			(
+				UPPER(#{maincode})
+				, UPPER(#{subcode})
+				, #{subcodeName}
+			)
+   	</insert>
+   	
 </mapper>

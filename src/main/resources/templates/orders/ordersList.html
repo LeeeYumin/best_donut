@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	layout:decorate="~{layout/index}">
 <head>
 	<meta charset="UTF-8">
@@ -16,6 +17,8 @@
 		<h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">영업관리 / </span> 주문관리
 		</h3>
+
+		<div sec:authentication="principal.usersVO.perm1" class="user" id="auth" style="display: none;"></div>
 
 		<!-- 검색 폼 -->
 		<div class="search">
@@ -59,8 +62,8 @@
 						</div>
 
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchOrders()">검색</button>
-							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
+							<button type="button" class="btn btn-primary me-md-2" id="searchOrdBtn" onclick="searchOrders()">검색</button>
+							<button type="button" class="btn btn-primary" id="searchResetBtn" onclick="searchReset()">초기화</button>
 						</div>
 					</div>
 				</div>
@@ -77,8 +80,7 @@
 					<div id="ordGrid"></div>
 					<!-- 버튼 div -->
 					<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-						<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="deleteOrders()">선택삭제</button>
-						<!-- <button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button> -->
+						<button type="button" class="btn btn-primary me-md-2" id="delBtn" onclick="deleteOrders()">선택삭제</button>
 					</div>
 				</div>
 
@@ -89,7 +91,7 @@
 					<div id="detGrid"></div>
 					<!-- 버튼 div -->
 					<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-						<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchOrders()">수정</button>
+						<button type="button" class="btn btn-primary me-md-2" id="modBtn" onclick="searchOrders()">수정</button>
 						<button type="button" class="btn btn-primary me-md-2" id="resetBtn" onclick="searchReset()">취소</button>
 					</div>
 				</div>
