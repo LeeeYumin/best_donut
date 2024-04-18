@@ -23,13 +23,13 @@
 					<div class="row mb-3">
 						<div class="btnClass">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재 LOT 번호</label>
-							<input id="matLOT" class="form-control" type="text" name="matLOT"><br>
+							<input id="matLOT" class="form-control" type="text" name="matLOT" style="width: 500px;" placeholder="자재 LOT 번호를 압력해주세요"><br>
 							<label for="date" class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입고 날짜</label>
 								<div class="col-sm-6 input-group">
 									<input type="date" class="form-control" id="inDate" max="2100-12-31" min="1970-01-01">
 									<input type="date" class="form-control" id="inDate2" max="2100-12-31" min="1970-01-01">
 							</div>
-						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px;">
 							<button id="findBtn" type="button" class="btn btn-primary me-md-2" onclick="findMat()">검색</button>
 							<button id="saveBtn" type="button" class="btn btn-primary me-md-2" onclick="insertMat()">등록</button>
 					</div>
@@ -60,9 +60,5 @@
 		justify-content : flex-end;
  		margin-bottom : 20px;
  	}
-.btnClass {
-	/* text-align : right; */
-	margin-right : 10px;
-	padding : 10px;
-}
+
 </style>

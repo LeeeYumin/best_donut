@@ -16,21 +16,25 @@ const grid = new tui.Grid({
       header : '자재LOT코드',
       name : 'matLotCode',
       align : "center",
+      sortable: true,
     },
     {
       header : '자재코드',
       name : 'matCode',
       align : "center",
+      sortable: true,
     },
     {
       header : '자재명',
       name : 'matName',
       align : "center",
+      sortable: true,
     },
     {
       header : '입고날짜',
       name : 'inputDate',
       align : "center",
+      sortable: true,
       formatter: function(date) {
         let dateForm = new Date(date.value);
         let year = dateForm.getFullYear();

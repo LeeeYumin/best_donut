@@ -10,21 +10,25 @@ adminProQual('','');
 				header : '제품LOT코드',
 				name : 'productLotCode',
 				align : "center",
+				sortable: true,
 			},
 			{
 				header : '완제품 품질 검사 코드',
 				name : 'productQltyCheckCode',
 				align : "center",
+				sortable: true,
 			},
 			{
 				header : '제품명',
 				name : 'productName',
 				align : "center",
+				sortable: true,
 			},
 			{
 				header : '검사접수일자',
 				name : 'checkRecvDate',
 				align : "center",
+				sortable: true,
 				formatter: function(date) {
 					let dateForm = new Date(date.value);
 					let year = dateForm.getFullYear();
@@ -43,6 +47,7 @@ adminProQual('','');
 				header : '검사결과',
 				name : 'lastResult',
 				align : "center",
+				sortable: true,
 				formatter : 'listItemText',
 				// editingEvent : 'click',
 				editor: {
