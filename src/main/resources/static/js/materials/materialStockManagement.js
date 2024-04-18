@@ -215,6 +215,7 @@ document.getElementById('disposeBtn').addEventListener('click', () => {
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonText: "네, 폐기하겠습니다.",
+			cancelButtonText: "취소",
 			reverseButtons: true
 		}).then((result) => {
 			if (result.isConfirmed) {
@@ -253,5 +254,5 @@ function disposeMat(matLotCodes) {
 
 // 폐기 버튼 권한 체크
 if($('#auth').html() != '1'){
-	$('#disposeBtn').attr('style', 'display:none');
+	$('#disposeBtn').attr('style', 'display:none;');
 }

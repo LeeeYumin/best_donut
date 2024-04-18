@@ -113,6 +113,7 @@ function checkValidation() {
     let warehousingData = matWarehousing.getCheckedRows();
     let validation = 1;
 
+    // 자재 선택 유무 체크
     if (warehousingData == '') {
         Swal.fire({
             position: "center",
@@ -125,6 +126,7 @@ function checkValidation() {
         validation = 0;
     } else {
         for (let i = 0; i < warehousingData.length; i++) {
+            // 수량이 빈값이거나 0인 자재 체크
             if (warehousingData[i].ordersCnt == 0) {
                 Swal.fire({
                     position: "center",
@@ -137,6 +139,20 @@ function checkValidation() {
                 validation = 0;
                 matWarehousing.focusAt(i, 3)
                 break;
+                // 수량이 숫자인지 체크
+            } else if (isNaN(Number(warehousingData[i].ordersCnt))) {
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    title: warehousingData[i].matName + ' 수량을 숫자로 입력해주세요',
+                    text: ' ',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                matWarehousing.focusAt(i, 3);
+                validation = 0;
+                break;
+                // 유통기한이 빈 값이 아닌지 체크
             } else if (warehousingData[i].matCode != 'MAT00009' && warehousingData[i].expDate == null) {
                 Swal.fire({
                     position: "center",
@@ -151,10 +167,10 @@ function checkValidation() {
                 break;
             }
         }
-    }
 
-    if (validation) {
-        insertMatWarehousing()
+        if (validation) {
+            insertMatWarehousing()
+        }
     }
 }
 
