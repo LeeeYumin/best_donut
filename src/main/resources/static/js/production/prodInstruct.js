@@ -1,5 +1,5 @@
 getWeeklyPlan();
-beforeInsertInsCode();
+// beforeInsertInsCode();
 //getEqmCheck();
 getEqmOpr();
 
@@ -214,6 +214,8 @@ getEqmOpr();
 
 			wplan.resetData(res.weeklyPlan); //ServiceImpl에서 넘겨 준 변수명
 			wplanD.resetData(res.weeklyPlanDe);
+
+			beforeInsertInsCode();
 		})
 	};
 
