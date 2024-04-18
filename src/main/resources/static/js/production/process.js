@@ -163,7 +163,6 @@ const todayInsD = new tui.Grid({
 });
 
 // 당일 생산지시 조회
-  //let insnum = 0;
   function getTodayIns(){
   fetch("/ajax/todayProdIns")
   .then(res => res.json())
@@ -175,7 +174,41 @@ const todayInsD = new tui.Grid({
   })
 };
 
+// function getTodayIns(){
+//   fetch("/ajax/todayProdIns")
+//   .then(res => res.json())
+//   .then(res => {
+//     console.log(res);
 
+//     todayIns.resetData(res);
+//   })
+// };
+// function getTodayInsDetail(piCode){
+// 	fetch(`/ajax/todayProdInsDeStatus?prodInstructCode=${piCode}`)
+// 	.then(res => res.json())
+// 	.then(res => {
+// 		todayInsD.resetData(res);
+// 	})
+// };
+// // function getTodayInsDeStatus(pidCode){
+// // 	fetch(`/ajax/todayProdInsDeStatus?prodInstructDetailCode=${pidCode}`)
+// // 	.then(res => res.json())
+// // 	.then(res => {
+// // 		todayInsD.resetData(res);
+// // 	})
+// // };
+
+// todayIns.on('click', e => {
+// 	let piCode = todayIns.getValue(e.rowKey, "prodInstructCode");
+
+//   // for(let i = 0; i < todayInsD.length; i++) {
+//   //   let pidCode = todayInsD.getValue(i, "prodInstructDetailCode");
+//   //   getTodayInsDeStatus(pidCode);
+//   // }
+// 	//완료 상세목록
+// 	getTodayInsDetail(piCode);
+
+// });
 
 //==============================================================
 /* < 공정 > */
