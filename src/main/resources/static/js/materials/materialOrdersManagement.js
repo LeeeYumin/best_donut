@@ -27,7 +27,8 @@ class OrderStatusConverter {
 const grid1 = new tui.Grid({
 	el: document.getElementById('materialOrderList'),
 	scrollX: false,
-	scrollY: false,
+	scrollY: true,
+	bodyHeight: 240,
 	rowHeaders: ['checkbox'],
 	columns: [
 		{

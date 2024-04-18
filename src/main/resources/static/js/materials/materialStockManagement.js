@@ -215,6 +215,7 @@ document.getElementById('disposeBtn').addEventListener('click', () => {
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonText: "네, 폐기하겠습니다.",
+			cancelButtonText: "취소",
 			reverseButtons: true
 		}).then((result) => {
 			if (result.isConfirmed) {
