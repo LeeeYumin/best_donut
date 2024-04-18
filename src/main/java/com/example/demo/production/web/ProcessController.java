@@ -46,7 +46,22 @@ public class ProcessController {
 	public Map<String, Object> getTodayIns(){
 		return processService.getTodayIns();
 	}
-
+//	@GetMapping("/ajax/todayProdIns")
+//	@ResponseBody
+//	public List<ProdInsVO> getTodayIns(){
+//		return processService.getTodayIns();
+//	}
+//	//상세 데이터
+//	@GetMapping("/ajax/todayProdInsDe")
+//	@ResponseBody
+//	public List<ProdInsDeVO> getTodayInsDetail(String prodInstructCode){
+//		return processService.getTodayInsDetail(prodInstructCode);
+//	}
+//	@GetMapping("/ajax/todayProdInsDeStatus")
+//	@ResponseBody
+//	public String getInsDeStatus(String prodInsDetailCode){
+//		return processService.getInsDeStatus(prodInsDetailCode);
+//	}
 
 /* < 공정 > */
 	
@@ -95,7 +110,7 @@ public class ProcessController {
 /* < 공정실적 > */	
 	@PostMapping("/ajax/processResult")
 	@ResponseBody
-	public List<ProdInsVO> getProcResult(@RequestBody ProdInsVO vo){
+	public List<ProdInsVO> getProcResult(@RequestBody ProdInsVO vo){ //검색포함
 		return processService.getProcResultList(vo);
 	}
 	//상세 데이터

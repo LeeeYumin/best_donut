@@ -17,9 +17,9 @@ import com.example.demo.production.ProdPlanVO;
 public interface ProcessMapper {
 
 /* 1.당일 생산지시 */
-	public List<ProdInsVO> getTodayIns();
-	public List<ProdInsDeVO> getTodayInsDetail(String prodInstructCode);
-	public String getInsDeStatus(String prodInsDetailCode); //test
+	public List<ProdInsVO> getTodayIns(); //당일 생산지시
+	public List<ProdInsDeVO> getTodayInsDetail(String prodInstructCode); //당일 생산지시 상세
+	public String getInsDeStatus(String prodInsDetailCode); //생산지시 상세 진행정보(함수호출)
 
 /* 2.공정 */
 	//1)조회
@@ -34,7 +34,7 @@ public interface ProcessMapper {
 	
 	
 /* 3.공정실적 */
-	public List<ProdInsVO> getProcResultList(ProdInsVO vo); //완료된 생산지시 목록
+	public List<ProdInsVO> getProcResultList(ProdInsVO vo); //완료된 공정(생산지시) 목록
 	public List<ProdInsDeVO> getProcResultDeList(String prodInstructCode); //완료된 생산지시 상세
 	
 

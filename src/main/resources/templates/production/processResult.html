@@ -33,6 +33,7 @@
 	padding-bottom: 10px;
 	/* margin-left: 800px; */
 }
+
 </style>
 
 </head>
@@ -42,12 +43,11 @@
 	<div layout:fragment="content">
 
 <!-- TITLE -->
-		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 공정실적 조회</h3>
+		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 공정실적 목록</h3>
 
 
 <!-- 검색 FORM -->
 		<div class="search">
-			<!-- <form name="searchForm" method="post"> -->
 				<div class="card mgb-50">
 					<h5 class="card-header">검색조건</h5>
 					<div class="card-body demo-vertical-spacing demo-only-element">
@@ -73,20 +73,25 @@
 						</div>
 					</div>
 				</div>
-			<!-- </form> -->
 		</div>
 
 
 <!-- 생산지시목록 FORM -->
-		<div class="card">
-			<h4 class="card-header">생산지시 목록</h4>
-			<!-- <button type="button" class="btn btn-secondary btn-sm btn-delete" id="deleteBtn" onclick="deletePlan()">삭제</button> -->
-			<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
-				<div class="pdt-0 card-body" id="piList"></div>
-			<h5 class="card-header">상세 목록</h5>
-				<!-- <button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updatePlanDetail()">수정</button> -->
-				<div id="alertMsg2" class="warn-alert"><!-- 알림문구 --></div>
-			<div class="pdt-0 card-body" id="piAll"></div>
+		<div class="card mgb-50">
+			<div class="row">
+				<div class="col-sm-4">
+					<h4 class="card-header">공정완료 지시목록</h4>
+					<!-- <button type="button" class="btn btn-secondary btn-sm btn-delete" id="deleteBtn" onclick="deletePlan()">삭제</button> -->
+						<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
+						<div class="pdt-0 card-body" id="piList"></div>
+				</div>
+				<div class="col-sm-8">
+					<h5 class="card-header">상세 목록</h5>
+						<!-- <button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updatePlanDetail()">수정</button> -->
+						<div id="alertMsg2" class="warn-alert"><!-- 알림문구 --></div>
+						<div class="pdt-0 card-body" id="piAll"></div>
+				</div>
+			</div>
 		</div>
 
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->
