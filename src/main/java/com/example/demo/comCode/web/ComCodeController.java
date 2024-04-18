@@ -12,12 +12,15 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import com.example.demo.comCode.ComCodeDetailVO;
 import com.example.demo.comCode.ComCodeVO;
+import com.example.demo.comCode.CompanyVO;
 import com.example.demo.comCode.service.ComCodeService;
 
 @Controller
 public class ComCodeController {
 	
 	@Autowired ComCodeService comCodeService;
+	
+	/* I. 공통코드 */
 	
 	// 1. 페이지 이동
 	
@@ -88,5 +91,16 @@ public class ComCodeController {
 	public boolean valComCodeDet(String subcode) {
 		return comCodeService.valComCodeDet(subcode);
 	}
+	
+	
+	/* II. 거래처 */
+	
+	// 거래처 입력
+	@PostMapping("ajax/insertCompany")
+	@ResponseBody
+	public boolean insertCompany(@RequestBody CompanyVO vo) {
+		return comCodeService.insertCompany(vo);
+	}
+	
 	
 }

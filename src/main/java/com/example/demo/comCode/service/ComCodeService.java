@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.demo.comCode.ComCodeDetailVO;
 import com.example.demo.comCode.ComCodeVO;
+import com.example.demo.comCode.CompanyVO;
 
 public interface ComCodeService {
 	
@@ -15,4 +16,7 @@ public interface ComCodeService {
 	
 	public boolean insertComCode(ComCodeVO vo);
 	public boolean insertComCodeDet(ComCodeDetailVO vo);
+	
+	// 2. 거래처
+	public boolean insertCompany(CompanyVO vo);
 }

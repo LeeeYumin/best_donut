@@ -10,4 +10,6 @@ public class CompanyVO {
 	private String ownerName;
 	private String tel;
 	private String addr;
+	private String addrDetail;
+	private Integer postcode;
 }

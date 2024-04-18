@@ -4,63 +4,123 @@
 	layout:decorate="~{layout/index}">
 <head>
 	<meta charset="UTF-8">
-	<title>companyInsert.html</title>
+	<title>comCodeInsert.html</title>
 	<!-- Toast UI CDN -->
 	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+	<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
+
+		<!-- kakao address API -->
+		<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
-	<!-- Thymeleaf 레이아웃 div -->
+	<!--  레이아웃 div -->
 	<div layout:fragment="content">
-	
+		
+		<!-- title -->
 		<h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">공통관리 / </span> 거래처등록
 		</h3>
 
-		<!-- 검색 폼 -->
-		<div class="search">
-			<form name="searchForm" method="post">
+
+
+            <!-- <input type="text" class="form-control" id="sample4_postcode" name="orderPostcode">
+						<input type="button" class="form-control" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+						<input type="text" class="form-control" id="sample4_roadAddress" name="orderAddress">
+						<span id="guide" style="color:#999;display:none"></span>
+						<input type="text" class="form-control" id="sample4_detailAddress" name="orderAddressDetail">
+						
+						<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+						<input type="hidden" id="sample4_extraAddress" placeholder="참고항목"> -->
+
+
+
+		<!-- 입력 폼 -->
+		<div class="insertDiv">
+			<form name="insertForm" method="post">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 				<div class="card mb-4">
-					<h5 class="card-header">검색조건</h5>
+					<h5 class="card-header">주문정보 입력</h5>
 					<div class="card-body demo-vertical-spacing demo-only-element">
+            
+						<!-- 입력정보 -->
 
-						<div class="row mb-3">
-							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문코드</label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="ordersCode" name="ordersCode">
-							</div>
-						</div>
-
+						<!-- 거래처명 -->
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
 							<div class="col-sm-6">
-								<select class="form-select" id="companyName" aria-label="companyName">
-									<option value="" selected="">거래처명</option>
-								</select>
-							</div>
+								<input type="text" class="form-control" name="companyName">
+              </div>
 						</div>
 
+						<!-- 거래처 구분 -->
 						<div class="row mb-3">
-							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주문일자</label>
-							<div class="col-sm-6 input-group">
-								<input type="date" class="form-control" name="ordersStartDate" id="ordersStartDate">
-								<span class="input-group-text">~</span> 
-								<input type="date" class="form-control" name="ordersEndDate" id="ordersEndDate">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">구분</label>
+							<div class="col-sm-6">
+								<div class="form-check-inline">
+									<input class="form-check-input" type="radio" name="companySep" id="companySep1" value="CO1"> 
+									<label class="form-check-label" for="companySep1">원자재</label>
+								</div>
+								<div class="form-check-inline">
+									<input class="form-check-input" type="radio" name="companySep" id="companySep2" value="CO2"> 
+									<label class="form-check-label" for="companySep2">완제품</label>
+								</div>
 							</div>
 						</div>
 
+						<!-- 대표자명 -->
+            <div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">대표자명</label>
+							<div class="col-sm-6 input-group">
+								<input type="text" class="form-control" name="ownerName">
+							</div>
+						</div>
+
+						<!-- 연락처 -->
+           	<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">연락처</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" name="tel">
+							</div>
+						</div>
+
+						<!-- 카카오 주소 API -->
 						<div class="row mb-3">
-							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
-							<div class="col-sm-6 input-group">
-								<input type="date" class="form-control" name="dueStartDate" id="dueStartDate">
-								<span class="input-group-text">~</span> 
-								<input type="date" class="form-control" name="dueEndDate" id="dueEndDate">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주소</label>
+							<div class="col-sm-6">
+
+								<div class="row">
+									<div class="col-sm-3">
+										<input type="text" class="form-control" id="sample4_postcode" name="postcode" placeholder="우편번호">
+									</div>
+									<div class="col-sm-3">
+										<input type="button" class="form-control" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-6">
+										<input type="text" class="form-control" id="sample4_roadAddress" name="addr" placeholder="도로명주소">
+										<span id="guide" style="color:#999;display:none"></span>
+									</div>
+									<div class="col-sm-6">
+										<input type="text" class="form-control" id="sample4_detailAddress" name="addrDetail" placeholder="상세주소">
+									</div>
+								</div>
+
+								<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+								<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
+							
 							</div>
 						</div>
-
+						
+						<div id="defaultFormControlHelp" class="form-text"></div>
+            
+						<!-- 버튼 -->
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchOrders()">검색</button>
-							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="saveInsert()">등록</button>
+							<button type="button" class="btn btn-primary" id="resetOrdBtn" onclick="resetInsert()">초기화</button>
 						</div>
 
 					</div>
@@ -68,73 +128,10 @@
 			</form>
 		</div>
 
-		<!-- grid -->
-		<div class="ordersGrid">
-			<div class="card">
-
-				<!-- 주문 목록 -->
-				<h5 class="card-header">주문 목록</h5>
-				<!-- 그리드 div-->
-				<div class="card-body demo-vertical-spacing demo-only-element">
-					<div id="ordGrid"></div>
-				</div>
-
-				<!-- 주문 상세 목록 -->
-				<h5 class="card-header">주문상세 목록</h5>
-				<!-- 그리드 div-->
-				<div class="card-body demo-vertical-spacing demo-only-element row">
-					<div class="col-sm-6">
-						<div id="detGrid"></div>
-					</div>
-
-					<div class="card col-sm-6" style="margin-top: 0 !important;">
-						<div class="card-body">
-							<form name="prodOutForm">
-
-								<div class="row mb-3">
-									<label class="col-sm-2 col-form-label" for="ordersCodeInput">주문코드</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" id="ordersCodeInput" name="ordersCodeInput">
-									</div>
-								</div>
-
-								<div class="row mb-3">
-									<label class="col-sm-2 col-form-label" for="inoutDate">출고일자</label>
-									<div class="col-sm-10">
-										<input type="date" class="form-control" id="inoutDate" name="inoutDate">
-									</div>
-								</div>
-
-								<div class="row mb-3">
-									<label class="col-sm-2 col-form-label" for="userName">담당자명</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" id="userName" name="userName">
-									</div>
-								</div>
-
-								<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-									<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="insertProdOut()">출고등록</button>
-								</div>
-							</form>
-						</div>
-					</div>
-
-				</div>
-
-			</div>
-		</div>		
-		<!-- script -->
-		<script src="/js/product/exportInsert.js"></script>
+	
+		<!-- script import -->
+		<script src="/js/comCode/companyInsert.js"></script>
 	</div>
 </body>
-<script>
-	
-	// <!-- 완제품 LOT 목록 -->
-	// <h5 class="card-header">완제품 LOT 목록</h5>
-	// <!-- 그리드 div-->
-	// <div class="card-body demo-vertical-spacing demo-only-element">
-	// 	<div id="prodLotGrid"></div>
-	// </div>
-	
-</script>
+
 </html>
