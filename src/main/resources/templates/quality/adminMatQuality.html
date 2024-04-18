@@ -13,44 +13,52 @@
 </head>
 <body>
 	<div sec:authentication="principal.usersVO.perm4" class="user" id="auth" style="display: none;"></div>
-<div layout:fragment="content">
-	<h3 class="fw-bold py-1 mb-4">
+		<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">품질관리 / </span> 자재 품질 관리
 		</h3>
-		<div class="me-3 p-3" >
-			<label>자재 코드</label>
-				<input id="matCode" type="text" name="matCode"><br>
-			<label for="date">입고 날짜
-  			<input type="date"
-         		id="inDate"
-         		max="2100-12-31"
-         		min="1970-01-01"
-         		value=today>
-			</label>
+		<div>
+			<div class="card mb-3">
+				<div class="card-body">
+					<div class="row mb-3">
+						<div class="me-3 p-3" >
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재 코드</label>
+								<input id="matCode" class="form-control" type="text" name="matCode" style="width: 500px;" placeholder="자재 코드를 압력해주세요"><br>
+								<label for="date"  class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입고 날짜</label>
+  							<div class="col-sm-6 input-group">
+  								<input type="date" class="form-control" id="inDate" max="2100-12-31" min="1970-01-01">
+  							</div>
+			
+						</div>
+					<div class="py-0 mb-2 d-md-flex justify-content-md-center">
+						<button id="findBtn" type="button" class="btn btn-primary me-md-2" onclick="findMat()">검색</button>
+						<button id="selDelBtn" type="button" class="btn btn-primary me-md-2">선택삭제</button>
+						<button id="updateBtn" type="button" class="btn btn-primary me-md-2">수정</button>
+
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="py-1 mb-4 text-end">
-			<button id="findBtn" type="button" onclick="findMat()">검색</button>
-			<button id="selDelBtn" type="button">선택삭제</button>
-			<button id="updateBtn" type="button">수정</button>
+		
+<div>
+	<div class="card mb-3">
+		<div class="card-body">
+			<div class="row mb-3">
+				<div id="grid"></div>
+			</div>
+			<script src="/js/quality/adminMatQuality.js"></script>
+			</div>
 		</div>
-
-	<div id="grid"></div>
-
-
-<script src="/js/quality/adminMatQuality.js"></script>
-
+	</div>
 </div>
 </body>
 </html>
 
 <style>
-.btnClass {
-	/* text-align : right; */
-	margin-right : 10px;
-	padding : 10px;
+.selDelBtn {
+	text-align : right;
 }
-.downBtn {
-	/* text-align : right; */
-	margin-top : 10px;
+.updateBtn {
+	text-align : right;
 }
 </style>

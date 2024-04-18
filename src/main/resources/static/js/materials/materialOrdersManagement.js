@@ -27,7 +27,8 @@ class OrderStatusConverter {
 const grid1 = new tui.Grid({
 	el: document.getElementById('materialOrderList'),
 	scrollX: false,
-	scrollY: false,
+	scrollY: true,
+	bodyHeight: 240,
 	rowHeaders: ['checkbox'],
 	columns: [
 		{
@@ -338,5 +339,5 @@ function checkOrderStatus() {
 
 // 발주 취소 버튼 권한 체크
 if($('#auth').html() != '1'){
-	$('#cancelBtn').attr('style', 'display:none');
+	$('#cancelBtn').attr('style', 'display:none;');
 }
