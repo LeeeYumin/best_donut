@@ -37,22 +37,26 @@ const grid1 = new tui.Grid({
       header : '완제품Lot코드',
       name : 'productLotCode',
       align : "center",
+      sortable: true,
     },
     {
       header : '완제품코드',
       name : 'productCode',
       align : "center",
+      sortable: true,
     },
     {
       header : '완제품명',
       name : 'productName',
       align : "center",
+      sortable: true,
     },
 
     {
       header : '생산완료일자',
       name : 'allEndTime',
       align : "center",
+      sortable: true,
     },
     {
       header : '입고수량',

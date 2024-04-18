@@ -11,11 +11,13 @@ getMatAdmin('','');
 				header : '자재LOT코드',
 				name : 'MAT_LOT_CODE',
 				align : "center",
+				sortable: true,
 			},
 			{
 				header : '자재코드',
 				name : 'MAT_CODE',
 				align : "center",
+				sortable: true,
 			},
 			{
 				header : '자재명',
