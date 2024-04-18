@@ -95,13 +95,13 @@
    <!-- BOM작성화면 / bom grid -->
 	<select id="selectBom2" resultType="BomVO">	
 	SELECT DISTINCT m.MAT_CODE
-	    	, m.MAT_NAME
-			, d.NEED_CNT
-	   		, m.UNIT
-	   		, m.UNIT_PRICE
-			, d.PROC_CODE
+			    	, m.MAT_NAME
+					, d.NEED_CNT
+			   		, d.UNIT
+			   		, m.UNIT_PRICE
+					, d.PROC_CODE
 	FROM mat m JOIN bom_detail d
-	ON m.MAT_CODE = d.MAT_CODE
+		ON m.MAT_CODE = d.MAT_CODE
     order by mat_code
 	</select>  
 	

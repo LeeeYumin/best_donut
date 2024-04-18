@@ -13,19 +13,17 @@
 </head>
 <body>
 	<div sec:authentication="principal.usersVO.perm4" class="user" id="auth" style="display: none;"></div>
-<div layout:fragment="content">
-	<h3 class="fw-bold py-1 mb-4">
+		<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">품질관리 / </span> 자재 품질 관리
 		</h3>
-		<div class="me-3 p-3" >
+		<div class="card-body">
+			<div class="row mb-3">
+				<div class="me-3 p-3" >
 			<label>자재 코드</label>
 				<input id="matCode" type="text" name="matCode"><br>
 			<label for="date">입고 날짜
-  			<input type="date"
-         		id="inDate"
-         		max="2100-12-31"
-         		min="1970-01-01"
-         		value=today>
+  			<input type="date" id="inDate" max="2100-12-31" min="1970-01-01" value=today>
 			</label>
 		</div>
 		<div class="py-1 mb-4 text-end">
@@ -33,6 +31,9 @@
 			<button id="selDelBtn" type="button">선택삭제</button>
 			<button id="updateBtn" type="button">수정</button>
 		</div>
+		</div>
+		</div>
+
 
 	<div id="grid"></div>
 
