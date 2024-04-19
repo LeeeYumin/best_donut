@@ -36,19 +36,15 @@ public class WebSecurityConfig {
 			.authorizeHttpRequests((requests) -> requests
 //				.antMatchers("/**", "/home").permitAll()
 //				.antMatchers("/", "/login").permitAll()
-				.antMatchers("/assets/**", "/css/**", "/fonts/**", "/js/**", "/scss/**", "/login").permitAll()
-//				.antMatchers("/assets/**", "/css/**", "/fonts/**", "/js/**", "/scss/**", 
-//						"/", "/login", "/comCodeList", "/userslist", "/companyList", "/bomList", 
-//						"/ordersList", "/prodReqList", "/productList", "/exportList", "/prodPlanList", "/process", "/processResult", 
-//						"/materials/stockList", "/materials/ordersList", "/materials/inoutList", "/adminMatQuality", "/adminProQuality", 
-//						"/eqmlist", "/notoprlist").permitAll()
-				.antMatchers("/", "/comCodeList").hasAnyRole("PER00001", "PER00002", "PER00003", "PER00004", "PER00005")
-//				.antMatchers("/ordersInsert", "/prodReqInsert", "/exportInsert", "/companyInsert").hasAnyRole("PER00001")
-//				.antMatchers("/prodPlan", "/prodInstruct").hasAnyRole("PER00002")
-//				.antMatchers("/materials/orders", "/materials/warehousing", "/materials/outgoing", "/companyInsert").hasAnyRole("PER00003")
-//				.antMatchers("/insertMatQuality", "/insertProQuality").hasAnyRole("PER00004")
-//				.antMatchers("/inserteqm", "/eqminfo", "/insertnotopr", "/notoprinfo").hasAnyRole("PER00005")
-				.antMatchers("/**").hasAnyRole("ADMIN")
+				.antMatchers("/comCodeInsert", "/insertusers", "/usersinfo", "/insertBom2").hasAnyRole("ADMIN")
+				.antMatchers("/ordersInsert", "/prodReqInsert", "/exportInsert").hasAnyRole("PER00001", "ADMIN")
+				.antMatchers("/prodPlan", "/prodInstruct").hasAnyRole("PER00002", "ADMIN")
+				.antMatchers("/materials/orders", "/materials/warehousing", "/materials/outgoing").hasAnyRole("PER00003", "ADMIN")
+				.antMatchers("/insertMatQuality", "/insertProQuality").hasAnyRole("PER00004", "ADMIN")
+				.antMatchers("/inserteqm", "/eqminfo", "/insertnotopr", "/notoprinfo").hasAnyRole("PER00005", "ADMIN")
+				.antMatchers("/companyInsert").hasAnyRole("PER00001", "PER00003", "ADMIN")
+				.antMatchers("/").hasAnyRole("PER00001", "PER00002", "PER00003", "PER00004", "PER00005", "ADMIN")
+				.antMatchers("/assets/**", "/css/**", "/fonts/**", "/js/**", "/scss/**", "/login", "/accessError", "/ajax/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			// 람다식

@@ -79,4 +79,11 @@ public class UsersController {
     	return "login";
     }
     
+    
+    // 접근제한
+    @GetMapping("/accessError")
+    public String accessError() {
+    	return "accessError";
+    }
+    
 }
