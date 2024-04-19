@@ -21,6 +21,7 @@ public class ProdPlanVO {
 
 	private String prodPlanStatus;
 	private String usersCode;
+	private String usersName;
 	
 	//생산계획상세
 	List<ProdPlanDeVO> dvo;

@@ -62,7 +62,8 @@
 
 <!-- TITLE  -->
 		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 생산계획 등록</h3>
-
+<!-- 권한 -->
+<div sec:authentication="principal.usersVO.perm2" class="user" id="auth" style="display: none;"></div>
 
 <!-- 주간 생산요청 FORM  -->
 		<div class="card mgb-50 show-list">
@@ -155,6 +156,9 @@
       </div>
     </div>
 
+		<!-- 로그인 정보 읽기 -->
+		<input type="hidden" id="usersCode" th:value="${session.usersCode}">
+		<input type="hidden" id="usersName" th:value="${session.usersName}">
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->
 		<script src="/js/production/prodPlan.js"></script>
 	</div>

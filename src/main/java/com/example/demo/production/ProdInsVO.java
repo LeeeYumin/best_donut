@@ -15,6 +15,7 @@ public class ProdInsVO {
 	private String prodInstructCode;
 	private String prodPlanCode;
 	private String usersCode;
+	private String usersName;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date instructDate;

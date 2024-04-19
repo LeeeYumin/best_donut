@@ -33,8 +33,10 @@
      		 , prod_req_code
      		 , plan_date
      		 , prod_plan_status
-     		 , users_code
-		FROM prod_plan
+     		 , pl.users_code
+             , u.users_name
+		FROM prod_plan pl JOIN users u
+                           ON pl.users_code = u.users_code
 		<include refid="condition"></include>
 		ORDER BY prod_plan_code DESC
 	</select>
@@ -166,8 +168,10 @@
 		     , prod_req_code
 		     , plan_date
 		     , prod_plan_status
-		     , users_code
-		FROM prod_plan
+		     , pl.users_code
+		     , u.users_name
+		FROM prod_plan pl JOIN users u
+						   ON pl.users_code = u.users_code 
 		WHERE TRUNC(plan_date) + 3 <![CDATA[ <= ]]> TRUNC(SYSDATE)
 		AND TRUNC(plan_date) + 9 <![CDATA[ >= ]]> TRUNC(SYSDATE)
 		AND ROWNUM = 1

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.example.demo.users.CustomUsers;
+
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -25,11 +27,15 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 		List<String> roleNames = new ArrayList<>();
 		// Collection<Authority> ==> List<String>
 		auth.getAuthorities().forEach(authority -> { roleNames.add(authority.getAuthority()); });
+		String usersName = ((CustomUsers)auth.getPrincipal()).getUsersVO().getUsersName();
+		String usersCode = auth.getName();
+		request.getSession().setAttribute("usersCode", usersCode);
+		request.getSession().setAttribute("usersName", usersName);
 		
 		if(roleNames.contains("ROLE_ADMIN")) {
-			response.sendRedirect("/empList");
+			response.sendRedirect("/");
 		}else {
-			response.sendRedirect("/");						
+			response.sendRedirect("/");			
 		}
 	}
 

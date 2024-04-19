@@ -9,8 +9,10 @@
          , prod_instruct_code
          , prod_instruct_status
          , prod_plan_code
-         , users_code
-   		 FROM prod_instruct
+         , pi.users_code
+         , u.users_name
+   		 FROM prod_instruct pi JOIN users u
+   		 						ON pi.users_code = u.users_code
     	WHERE instruct_date = TRUNC(SYSDATE)
 	</select>
 	<select id="getTodayInsDetail" resultType="ProdInsDeVO" parameterType="String">
@@ -46,9 +48,12 @@
       , pd.end_time
       , pd.proc_status
       , pd.users_code
+      , u.users_name
       , pd.prod_instruct_detail_code
     FROM proc_detail pd JOIN proc pr
                          ON pd.proc_code = pr.proc_code
+                        LEFT JOIN users u
+                         ON u.users_code = pd.users_code
     WHERE pd.prod_instruct_detail_code = #{prodInstructDetailCode}
   </select>
 <!-- 공정자재 조회 -->  

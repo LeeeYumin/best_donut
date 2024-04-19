@@ -19,6 +19,7 @@ public class ProcessVO {
 	private Date endTime;
 	private String procStatus; //CS1 대기 / CS2 공정중 / CS3 공정완료
 	private String usersCode;
+	private String usersName;
 
 	private String prodInstructCode;
 	private String se; //시작종료 구분

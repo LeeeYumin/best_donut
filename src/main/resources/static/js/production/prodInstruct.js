@@ -1,6 +1,4 @@
 getWeeklyPlan();
-// beforeInsertInsCode();
-//getEqmCheck();
 getEqmOpr();
 
 	//생산요청코드 없으면 '-'로 표시
@@ -34,30 +32,30 @@ getEqmOpr();
 		}
 	};
 
-// 	class CustomNumberEditor {
-// 	constructor(props) {
-// 		const el = document.createElement('input');
-// 		const { maxLength } = props.columnInfo.editor.options;
+	class CustomNumberEditor {
+	constructor(props) {
+		const el = document.createElement('input');
+		const { maxLength } = props.columnInfo.editor.options;
 
-// 		el.type = 'number';
-// 		el.min = 0;
-// 		el.max = 1000;
-// 		el.step = 100;
-// 		this.el = el;
-// 	}
+		el.type = 'number';
+		el.min = 0;
+		el.max = 1000;
+		el.step = 100;
+		this.el = el;
+	}
 
-// 	getElement() {
-// 		return this.el;
-// 	}
+	getElement() {
+		return this.el;
+	}
 
-// 	getValue() {
-// 		return this.el.value;
-// 	}
+	getValue() {
+		return this.el.value;
+	}
 
-// 	mounted() {
-// 		this.el.select();
-// 	}
-// };
+	mounted() {
+		this.el.select();
+	}
+};
 
 	/* < 생산계획 > */
 	const wplan = new tui.Grid({
@@ -93,6 +91,12 @@ getEqmOpr();
 			{
 				header : '담당자',
 				name : 'usersCode',
+				align: 'center',
+				hidden: true
+			},
+			{
+				header : '담당자',
+				name : 'usersName',
 				align: 'center'
 			}
 		]
@@ -252,7 +256,12 @@ getEqmOpr();
 					header : '담당자',
 					name : 'usersCode',
 					align: 'center',
-					editor: 'text'
+					hidden: true
+				},
+				{
+					header : '담당자',
+					name : 'usersName',
+					align: 'center'
 				}
 			]
 		});
@@ -261,9 +270,12 @@ getEqmOpr();
 			let response = await fetch("/ajax/beforeInsertInsCode")
 			let res = await response.json();
 			let beforeInscode = res.prodInstructCode;
+			let ucode = document.querySelector('#usersCode').value;
+			let uname = document.querySelector('#usersName').value;
+
 				//화면로딩부터 기본 행 추가
 				//plCode = wplan.getData()[0].prodPlanCode;
-				piInsert.appendRow({prodInstructCode: beforeInscode, prodPlanCode: wplan.getData()[0].prodPlanCode, instructDate: dateFormat(new Date())});		
+				piInsert.appendRow({prodInstructCode: beforeInscode, prodPlanCode: wplan.getData()[0].prodPlanCode, instructDate: dateFormat(new Date()), usersCode: ucode, usersName: uname});		
 		};
 		
 		/* < 생산계획 상세 > */
@@ -296,15 +308,15 @@ getEqmOpr();
 					header : '지시수량',
 					name : 'instructCnt',
 					align: 'center',
-					// editor: {
-					// 	type: CustomNumberEditor,
-					// 	options: {
-					// 	}
-					// },
+					editor: {
+						type: CustomNumberEditor,
+						options: {
+						}
+					},
+					// editor: 'text',
 					formatter: function(price) {
 						return priceFormat(price.value);
-					},
-					editor: 'text'
+					}
 				},			
 			],
 			summary: {
@@ -428,11 +440,11 @@ getEqmOpr();
 					return false;
 				}
 
-				//담당자 ( 코드?있으면 확인 후 수정하기 )
-				if(piInsert.getData()[0].usersCode != 'USE00003') {
-					alert.innerHTML = '<span style="color:red">※</span> 생산관리자만 등록 가능';
-					return false;
-				}
+				// //담당자 ( 코드?있으면 확인 후 수정하기 )
+				// if(piInsert.getData()[0].usersCode != 'USE00003') {
+				// 	alert.innerHTML = '<span style="color:red">※</span> 생산관리자만 등록 가능';
+				// 	return false;
+				// }
 				//설비상태 체크
 				let procEqm = eqmOpr.getData();
 				for(let i = 0; i < procEqm.length; i++) {
@@ -726,5 +738,4 @@ getEqmOpr();
 							};
 					});
 			};
-
 

@@ -69,6 +69,12 @@ if(document.querySelector('#auth').innerHTML != '1'){
 				{
 					header : '담당자',
 					name : 'usersCode',
+					align: 'center',
+					hidden: true
+				},
+				{
+					header : '담당자',
+					name : 'usersName',
 					align: 'center'
 				}
 			]

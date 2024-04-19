@@ -101,8 +101,9 @@
 
 		</div>
 
-		 
-		
+		<!-- 로그인 정보 읽기  -->
+		<input type="hidden" id="usersCode" th:value="${session.usersCode}">
+		<input type="hidden" id="usersName" th:value="${session.usersName}">
 
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->
 		<script src="/js/production/process.js"></script>
