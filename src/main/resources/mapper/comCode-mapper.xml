@@ -102,7 +102,7 @@
 	<insert id="insertCompany" parameterType="CompanyVO">
 		INSERT INTO company
 			(
-				company_code
+			   company_code
 		       , company_name
 			   , company_sep
 			   , owner_name
@@ -111,9 +111,9 @@
 			   , addr_detail
 			   , postcode
 			)
-		VALUE
+		VALUES
 			(
-				seq_func('company')
+			   seq_func('company')
 		       , #{companyName}
 			   , #{companySep}
 			   , #{ownerName}
