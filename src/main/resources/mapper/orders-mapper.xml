@@ -50,16 +50,16 @@
 				AND o.company_code = #{companyCode}
 			</if>
 			<if test="dueStartDate != null">
-				AND o.due_date <![CDATA[ >= ]]> #{dueStartDate}
+				AND o.due_date <![CDATA[ >= ]]> TO_DATE(#{dueStartDate}, 'YYYY-MM-DD')
 			</if>
 			<if test="dueEndDate != null">
-				AND o.due_date <![CDATA[ <= ]]> #{dueEndDate}
+				AND o.due_date <![CDATA[ <= ]]> TO_DATE(#{dueEndDate}, 'YYYY-MM-DD')
 			</if>
 			<if test="ordersStartDate != null">
-				AND o.orders_date <![CDATA[ >= ]]> #{ordersStartDate}
+				AND o.orders_date <![CDATA[ >= ]]> TO_DATE(#{ordersStartDate}, 'YYYY-MM-DD')
 			</if>
 			<if test="ordersEndDate != null">
-				AND o.orders_date)<![CDATA[ <= ]]> #{ordersEndDate}
+				AND o.orders_date)<![CDATA[ <= ]]> TO_DATE(#{ordersEndDate}, 'YYYY-MM-DD')
 			</if>
 		 ORDER BY 1
 	</select>
@@ -98,10 +98,10 @@
 			AND u.users_name LIKE '%' || #{usersName} || '%'
 		</if>
 		<if test="prodReqStartDate != null">
-			AND p.req_date <![CDATA[ >= ]]> #{prodReqStartDate}
+			AND p.req_date <![CDATA[ >= ]]> TO_DATE(#{prodReqStartDate}, 'YYYY-MM-DD')
 		</if>
 		<if test="prodReqEndDate != null">
-			AND p.req_date <![CDATA[ <= ]]> #{prodReqEndDate}
+			AND p.req_date <![CDATA[ <= ]]> TO_DATE(#{prodReqEndDate}, 'YYYY-MM-DD')
 		</if>
 		 ORDER BY p.req_date DESC
 	</select>
@@ -221,8 +221,8 @@
 	<update id="updateOrdStat" parameterType="ProdReqVO">
 		UPDATE orders
 		   SET orders_status = 'OP3'
-		 WHERE due_date <![CDATA[ >= ]]> #{dueStartDate}
-		   AND due_date <![CDATA[ <= ]]> #{dueEndDate}
+		 WHERE due_date <![CDATA[ >= ]]> TO_DATE(#{dueStartDate}, 'YYYY-MM-DD')
+		   AND due_date <![CDATA[ <= ]]> TO_DATE(#{dueEndDate}, 'YYYY-MM-DD')
 	</update>
 	
 	
