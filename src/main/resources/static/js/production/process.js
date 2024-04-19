@@ -156,16 +156,11 @@ const todayInsD = new tui.Grid({
       name : 'instructCnt',
       align: 'center'
     },
-    // {
-    //   header : '미생산수량',
-    //   name : 'notProdCnt',
-    //   align: 'center'
-    // },
-    // {
-    //   header : '생산수량',
-    //   name : 'prodCnt',
-    //   align: 'center'
-    // },
+    {
+      header : '자재불출',
+      name : 'matOutgoingStatus',
+      align: 'center'
+    },
     {
       header : '진행상태', //수정하기
       name : 'insDeStatus',
@@ -353,7 +348,7 @@ function beforeStartCheck() {
   const btime = procInfo.getData()[row].beginTime;
   const etime = procInfo.getData()[row].endTime;
 
-  //설비확인
+  //설비 대기상태 확인
   const eqmCode = procInfo.getData()[row].eqmCode;
   const useEqm = eqmOpr.getData();
   for(let i = 0; i < useEqm.length; i++) {
@@ -361,13 +356,22 @@ function beforeStartCheck() {
     if(eqmCode == useEqm[i].eqmCode) {
       let status = useEqm[i].oprStatus;
       if(status == 'FO2') {
-        alert.innerHTML = '<span style="color:red">※</span> 다른 공정에서 사용 중입니다. 해당 설비가동현황이 대기일 시 다시 시작하세요.';
+        alert.innerHTML = '<span style="color:red">※</span> 다른 공정에서 사용 중입니다.\n해당 설비가동현황이 대기일 시 다시 시작하세요.';
         return false;
       }
     }
-  }
-  //투입자재 유무 확인하기
+  };
 
+  //투입자재 유무 확인하기
+  const insDrow = todayInsD.getFocusedCell().rowKey;
+  const matCheck = todayInsD.getValue(insDrow, 'matOutgoingStatus');
+  console.log(matCheck);
+  if(matCheck == 'X') {
+    alert.innerHTML = '<span style="color:red">※</span> 자재 미불출 상태로 공정을 시작할 수 없습니다.';
+    return false;
+  };
+
+  //공정순서
 
 
   //선택된 공정 없을 경우
