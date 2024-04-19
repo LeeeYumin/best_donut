@@ -17,6 +17,7 @@ public class ProdPlanBVO {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date reqDate;
 	private String usersCode;
+	private String usersName;
 	
 	//생산요청상세
 	List<ProdPlanBDeVO> prodReqDetail;

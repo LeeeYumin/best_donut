@@ -32,6 +32,7 @@ getEqmOpr();
 		}
 	};
 
+
 	class CustomNumberEditor {
 	constructor(props) {
 		const el = document.createElement('input');
@@ -41,6 +42,7 @@ getEqmOpr();
 		el.min = 0;
 		el.max = 1000;
 		el.step = 100;
+		el.style.width = '100%';
 		this.el = el;
 	}
 
@@ -150,28 +152,37 @@ getEqmOpr();
 				header : '계획수량',
 				name : 'planCnt',
 				align: 'center',
-				//editor: 'text',
-				_attributes: {
-					className: {
-						column: 'plan-cnt-color'
-					}
-				},
+				className: 'plan-cnt',
 				formatter: function(price) {
 					return priceFormat(price.value);
 				}
 			},
 			{
-				header : '지시완료수량',
-				name : 'instructDoneCnt',
+				header : '미지시수량',
+				name : 'notInstructCnt',
 				align: 'center',
 				formatter: function(price) {
 					return priceFormat(price.value);
 				},
+				// validation : {
+				// 	validatorFn : value => value == 0
+				// }
+				renderer: {
+					styles: {
+						backgroundColor: (props) => props.value > 0 ? '#FFE5E5' : ''
+					},
+				},
 			},
 			{
-				header : '미지시수량',
-				name : 'notInstructCnt',
+				header : '지시완료수량',
+				name : 'instructDoneCnt',
 				align: 'center',
+				//className: 'ins-done-cnt',
+				renderer: {
+					styles: {
+						backgroundColor: (props) => props.value > 0 ? 'rgba(191, 227, 243, 0.548)' : ''
+					},
+				},
 				formatter: function(price) {
 					return priceFormat(price.value);
 				},
@@ -274,7 +285,6 @@ getEqmOpr();
 			let uname = document.querySelector('#usersName').value;
 
 				//화면로딩부터 기본 행 추가
-				//plCode = wplan.getData()[0].prodPlanCode;
 				piInsert.appendRow({prodInstructCode: beforeInscode, prodPlanCode: wplan.getData()[0].prodPlanCode, instructDate: dateFormat(new Date()), usersCode: ucode, usersName: uname});		
 		};
 		
@@ -284,11 +294,6 @@ getEqmOpr();
 			scrollX : false,
 			scrollY : false,
 			columns : [
-				// {
-				// 	header : '생산지시상세코드',
-				// 	name : 'prodInstructDetailCode',
-				// 	align: 'center'
-				// },
 				{
 					header : '생산계획상세코드',
 					name : 'prodPlanDetailCode',

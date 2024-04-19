@@ -8,8 +8,10 @@
 		SELECT req_date 
 		     , prod_req_code
 		     , total_req_cnt
-		     , users_code
-		FROM prod_req
+		     , pr.users_code
+		     , u.users_name
+		FROM prod_req pr JOIN users u
+                           ON pr.users_code = u.users_code
 		WHERE req_date BETWEEN SYSDATE - 8 AND SYSDATE
 		AND prod_req_status = 'RS1'
 	</select>

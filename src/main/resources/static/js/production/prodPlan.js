@@ -1,6 +1,5 @@
 getProdReq();
 
-
 class CustomNumberEditor {
 	constructor(props) {
 		const el = document.createElement('input');
@@ -26,6 +25,38 @@ class CustomNumberEditor {
 	}
 }
 
+//test
+// //없음 '-'표시
+// class NullFormat {
+// 	constructor(props) {
+// 		const el = document.createElement('div');
+
+// 		this.el = el;
+// 		this.render(props);
+// 	}
+// 	render(props) {
+// 		this.el.innerText = props.formattedValue == '' ? '-' : props;
+// 	}
+// 	getElement() {
+// 		return this.el;
+// 	}
+// };
+//생산요청코드 없으면 '-'로 표시
+class ProdReqCode {
+	constructor(props) {
+		const el = document.createElement('div');
+
+		this.el = el;
+		this.render(props);
+	}
+	render(props) {
+		this.el.innerText = props.formattedValue == '' ? '-' : props.formattedValue;
+	}
+	getElement() {
+		return this.el;
+	}
+}
+
 /* < 생산요청 > */
 const plreq = new tui.Grid({
 	el : document.getElementById('plreq'),
@@ -42,7 +73,8 @@ const plreq = new tui.Grid({
 		{
 			header : '생산요청코드',
 			name : 'prodReqCode',
-			align: 'center'
+			align: 'center',
+			renderer: {type: ProdReqCode}
 		}, 
 		{
 			header : '총 요청수량',
@@ -55,8 +87,14 @@ const plreq = new tui.Grid({
 		{
 			header : '담당자',
 			name : 'usersCode',
+			align: 'center',
+			hidden: true
+		},
+		{
+			header : '담당자',
+			name : 'usersName',
 			align: 'center'
-		}
+		},
 	]
 });
 
@@ -70,7 +108,8 @@ const plreqD = new tui.Grid({
 		{
 			header : '생산요청상세코드',
 			name : 'prodReqDetailCode',
-			align: 'center'
+			align: 'center',
+			renderer: {type: ProdReqCode}
 		},
 		{
 			header : '제품코드',
@@ -235,10 +274,6 @@ const plInsert = new tui.Grid({
 		let uname = document.querySelector('#usersName').value;
 
 		//화면로딩부터 기본 행 추가
-		// let admin = null;
-		// if(document.querySelector('#auth').innerHTML != '1'){
-		// 	admin = document.querySelector('#auth')
-		// }
 		let reqCode = null;
 		if (plreq.getData().length != 0) {
 			reqCode = plreq.getData()[0].prodReqCode;
@@ -255,7 +290,8 @@ const plInsert = new tui.Grid({
 	//생산계획 상세 등록 행추가
 	let addRowBtn = document.getElementById('addRowBtn');
 			addRowBtn.addEventListener('click', function() {
-			plDeInsert.appendRow({prodReqDetailCode: '-', fixCnt: 1400, reqCnt: 0, planCnt: 1400});
+			// plDeInsert.appendRow({prodReqDetailCode: '-', fixCnt: 1400, reqCnt: 0, planCnt: 1400});
+			plDeInsert.appendRow({fixCnt: 1400, reqCnt: 0, planCnt: 1400});
 	});
 
 	//고정수량 변경 시 계획수량 자동계산
@@ -358,11 +394,6 @@ const plInsert = new tui.Grid({
 			}
 		}
 
-		// //담당자 ( 코드?있으면 확인 후 수정하기 )
-		// if(plInsert.getData()[0].usersCode != 'USE00003') {
-		// 	alert.innerHTML = '<span style="color:red">※</span> 생산관리자만 등록 가능';
-		// 	return false;
-		// }
 
 		alert.innerHTML = '';
 		return true;
