@@ -36,16 +36,16 @@ public class OrdersVO {
 	private String cntStr;	
 	
 	// 주문품목(~ 외 몇개)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
 	private Date dueStartDate;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")// 납기일검색시작일
 	private Date dueEndDate;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")// 납기일검색종료일
 	private Date ordersStartDate;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")// 주문일검색시작일
 	private Date ordersEndDate;									// 주문일검색종료일
 	
