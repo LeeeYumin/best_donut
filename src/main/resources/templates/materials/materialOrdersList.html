@@ -21,6 +21,12 @@
 				<h5 class="card-header">검색조건</h5>
 				<div class="card-body">
 					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
+						<div class="col-sm-6 input-group">
+							<input type="text" class="form-control" name="companyName" id="companyName" placeholder="검색하고자하는 거래처명을 입력하세요.">
+						</div>
+					</div>
+					<div class="row mb-3">
 						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">발주일자</label>
 						<div class="col-sm-6 input-group">
 							<input type="date" class="form-control" name="sDate" id="sDate">
@@ -36,12 +42,16 @@
 								<label class="form-check-label" for="ordersStatus1">전체</label>
 							</div>
 							<div class="form-check-inline">
-								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus2" value="OSN"> 
-								<label class="form-check-label" for="ordersStatus2">미입고</label>
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus2" value="OSP"> 
+								<label class="form-check-label" for="ordersStatus2">발주 진행 중</label>
 							</div>
 							<div class="form-check-inline">
-								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus3" value="OSY"> 
-								<label class="form-check-label" for="ordersStatus3">입고</label>
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus3" value="OSN"> 
+								<label class="form-check-label" for="ordersStatus3">미입고</label>
+							</div>
+							<div class="form-check-inline">
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus4" value="OSY"> 
+								<label class="form-check-label" for="ordersStatus4">입고</label>
 							</div>
 						</div>
 					</div>
