@@ -9,6 +9,7 @@ class CustomNumberEditor {
 		el.min = 0;
 		el.step = 1;
     el.width = 5;
+    el.style.width = '100%';
 		el.maxLength = maxLength;
 		this.el = el;
 
@@ -278,6 +279,7 @@ function addProQual(){
 				showConfirmButton: false,
 				timer: 2000,
 			});
+      resetForm();
 		}
 		else {
 			Swal.fire({

@@ -244,6 +244,7 @@ async function insertMat() {
           showConfirmButton: false,
           timer: 2000,
         });
+        resetForm();
       }
       else {
         Swal.fire({
