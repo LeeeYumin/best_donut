@@ -24,8 +24,17 @@ public class ProdReqVO {
 	// 추가 필드
 	private List<ProdReqDetailVO> prodReqDetList;	// 생산요청상세(리스트)
 	private String usersName;						// 담당자명
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
 	private Date dueStartDate;						// 납기검색시작일
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
 	private Date dueEndDate;						// 납기검색종료일
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
 	private Date prodReqStartDate; 					// 요청검색시작일
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
 	private Date prodReqEndDate;					// 요청검색종료일 
 }

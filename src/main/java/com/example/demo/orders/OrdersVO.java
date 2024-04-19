@@ -33,11 +33,20 @@ public class OrdersVO {
 	private List<OrdersDetailVO> ordDetList;					// 주문상세VO
 	private String usersName;									// 담당자명
 	private String companyName;									// 거래처명
-	private String cntStr;										// 주문품목(~ 외 몇개)
+	private String cntStr;	
 	
-	private Date dueStartDate;									// 납기일검색시작일
-	private Date dueEndDate;									// 납기일검색종료일
-	private Date ordersStartDate;								// 주문일검색시작일
+	// 주문품목(~ 외 몇개)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
+	private Date dueStartDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")// 납기일검색시작일
+	private Date dueEndDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")// 납기일검색종료일
+	private Date ordersStartDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")// 주문일검색시작일
 	private Date ordersEndDate;									// 주문일검색종료일
 	
 	private String result;										// 프로시저 결과값(0,1)
