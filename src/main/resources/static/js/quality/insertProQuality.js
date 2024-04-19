@@ -295,3 +295,7 @@ function addProQual(){
 }
 
 selectProQual();
+
+function resetForm() {
+	insertForm.reset();
+}

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.quality.AdminMatQualVO;
 import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.ProDetailVO;
 import com.example.demo.quality.ProQltyVO;
@@ -55,10 +56,10 @@ public class QualityController {
 	}
 	
 	//자재 품질 관리 - 정보 가져오기
-	@GetMapping("ajax/adminMat")
+	@PostMapping("ajax/adminMat")
 	@ResponseBody
-	public List<Map<String, Object>> adminMatQuality(String matCode, String inoutDate){
-		return qualityService.adminMatQuality(matCode, inoutDate);
+	public List<AdminMatQualVO> adminMatQuality(@RequestBody AdminMatQualVO vo){
+		return qualityService.adminMatQuality(vo);
 	}
 	
 	//완제품 품질 등록 페이지로 이동

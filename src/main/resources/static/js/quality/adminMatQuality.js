@@ -9,24 +9,24 @@ getMatAdmin('','');
 		columns : [
 			{
 				header : '자재LOT코드',
-				name : 'MAT_LOT_CODE',
+				name : 'matLotCode',
 				align : "center",
 				sortable: true,
 			},
 			{
 				header : '자재코드',
-				name : 'MAT_CODE',
+				name : 'matCode',
 				align : "center",
 				sortable: true,
 			},
 			{
 				header : '자재명',
-				name : 'MAT_NAME',
+				name : 'matName',
 				align : "center",
 			},
 			{
 				header : '적합여부',
-				name : 'LAST_RESULT',
+				name : 'lastResult',
 				align : "center",
 				formatter : 'listItemText',
 				editor: {
@@ -41,7 +41,7 @@ getMatAdmin('','');
 			},
 			{
 				header : '검사 종결여부',
-				name : 'QLTY_CHECK_STATUS',
+				name : 'qltyCheckStatus',
 				align : "center",
 				formatter : 'listItemText',
 				editor: {
@@ -56,12 +56,12 @@ getMatAdmin('','');
 			},
 			{
 				header : '입고수량',
-				name : 'WAREHOUSING_CNT',
+				name : 'warehousingCnt',
 				align : "center",
 			},
 			{
 				header : '적합수량',
-				name : 'CHECK_DONE_CNT',
+				name : 'checkDoneCnt',
 				align : "center",
 			}
 		]
@@ -77,8 +77,43 @@ getMatAdmin('','');
     })
 
 
-	async function getMatAdmin(matCode, inoutDate){
-		await fetch(`ajax/adminMat?matCode=${matCode}&inoutDate=${inoutDate}`)
+	async function getMatAdmin(){
+		let matCode = $('#matCode').val();
+		let searchStartDate = $('#searchStartDate').val();
+		let searchEndDate = $('#searchEndDate').val();
+
+		let param = {matCode, searchStartDate, searchEndDate};
+
+		const data = {
+			method: 'POST',
+			headers: jsonHeaders,
+			body : JSON.stringify(param)
+		};
+
+		await fetch(`ajax/adminMat`, data)
+		.then(res => res.json())
+		.then(res => {
+			console.log(res);
+			grid.resetData(res);
+		})
+	};
+
+
+
+	async function getMatAdminStart(){
+		let matCode = $('#matCode').val();
+		let searchStartDate = $('#searchStartDate').val();
+		let searchEndDate = $('#searchEndDate').val();
+
+		let param = {matCode, searchStartDate, searchEndDate};
+
+		const data = {
+			method: 'POST',
+			headers: jsonHeaders,
+			body : JSON.stringify(param)
+		};
+
+		await fetch(`ajax/adminMat`, data)
 		.then(res => res.json())
 		.then(res => {
 			console.log(res);

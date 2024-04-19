@@ -49,7 +49,7 @@
 <update id="addMatQual3" parameterType="MatQltyCheckVO">
 	UPDATE mat_detail
 	SET CHECK_DONE_CNT = #{goodCnt}
-		, REMAIN_CNT =  #{goodCnt}
+		, REMAIN_CNT = #{goodCnt}
 		, QLTY_CHECK_STATUS = 'MI2'
 	WHERE MAT_LOT_CODE = #{matLotCode}
 </update>
@@ -68,8 +68,8 @@
        , m.mat_code "matCode"
        , m.mat_name "matName"
 	  FROM MAT_DETAIL s JOIN MAT_INOUT_HISTORY h
-		ON s.MAT_LOT_CODE = h.MAT_LOT_CODE
-		JOIN mat m ON m.mat_code = s.mat_code
+						ON s.MAT_LOT_CODE = h.MAT_LOT_CODE
+						JOIN mat m ON m.mat_code = s.mat_code
 		<where>
 			s.qlty_check_status = 'MI1'
 			<if test="matLotCode != null and matLotCode != ''">
@@ -85,7 +85,7 @@
 
 
 <!--  자재품질관리 / if : 자재코드, 입고날짜 검색 -->
-<select id="adminMatQuality" resultType="Map">
+<select id="adminMatQuality" resultType="AdminMatQualVO">
 	SELECT d.MAT_LOT_CODE
 	        ,m.MAT_CODE
 	        ,d.WAREHOUSING_CNT
@@ -97,22 +97,27 @@
 	        ,c.last_result
 	   FROM MAT_DETAIL d JOIN MAT m
 			ON m.MAT_CODE = d.MAT_CODE
-	        LEFT OUTER JOIN MAT_INOUT_HISTORY h ON d.MAT_LOT_CODE = h.MAT_LOT_CODE
-	        LEFT OUTER JOIN MAT_QLTY_CHECK c ON c.MAT_LOT_CODE = d.MAT_LOT_CODE
+	        LEFT OUTER JOIN MAT_INOUT_HISTORY h
+	        			ON d.MAT_LOT_CODE = h.MAT_LOT_CODE
+	        LEFT OUTER JOIN MAT_QLTY_CHECK c
+	        			ON c.MAT_LOT_CODE = d.MAT_LOT_CODE
 			where	d.qlty_check_status != 'MI1'
 			and 	d.WAREHOUSING_CNT >= 1
 				<if test="matCode != null and matCode != ''">
 					AND m.MAT_CODE LIKE '%'||#{matCode}||'%'
 				</if>
-			 	<if test="inoutDate != null and inoutDate != ''">
-			 		AND trunc(h.INOUT_DATE) = to_Date(#{inoutDate},'yyyy-MM-dd')
+			 	<if test="searchStartDate != null and searchStartDate != ''">
+			 		AND h.INOUT_DATE <![CDATA[ >= ]]> #{searchStartDate} 
+				</if>
+				<if test="searchEndDate != null and searchEndDate != ''">
+			 		AND h.INOUT_DATE <![CDATA[ <= ]]> #{searchEndDate} 
 				</if>
 			ORDER BY 1
 </select>
 
 <!-- 완제품품질등록 / if : 생산완료일자 검색 -->
 <select id="selectProQuality" resultType="ProDetailVO">
-SELECT d.PRODUCT_CODE
+	SELECT d.PRODUCT_CODE
 			, p.PRODUCT_NAME
 			, d.PRODUCT_LOT_CODE
 			, c.ALL_END_TIME
