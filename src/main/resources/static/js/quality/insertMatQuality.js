@@ -1,5 +1,30 @@
 getMatInfo('','','');
 
+class CustomNumberEditor {
+	constructor(props) {
+		const el = document.createElement('input');
+		const { maxLength } = props.columnInfo.editor.options;
+
+		el.type = 'number';
+		el.min = 0;
+		el.step = 1;
+    el.style.width = '100%';
+    el.value = props.value;
+		this.el = el;
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	getValue() {
+		return this.el.value;
+	}
+
+	mounted() {
+		this.el.select();
+	}
+}
 const grid = new tui.Grid({
   el : document.getElementById('grid'),
   bodyHeight: 500,
@@ -129,9 +154,8 @@ const grid = new tui.Grid({
       name : 'goodCnt',
       align : "center",
       editor: {
-				//type: CustomNumberEditor,
+				type: CustomNumberEditor,
 				options: {
-          maxLength : 5
 				}
 			},
       formatter: function(price) {
@@ -202,7 +226,6 @@ grid.on('afterChange', event => {
 async function insertMat() {
   const checkedRows = grid.getCheckedRows()
   console.log(checkedRows);
-
     await fetch("ajax/insertMatQ",{
       method : 'post',
       headers : jsonHeaders,
@@ -212,6 +235,26 @@ async function insertMat() {
     .then (res => {
       console.log(res);
 
+      if(res){
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "자재 품질 등록 완료!",
+          text: "자재 품질이 정상적으로 등록되었습니다.",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+      else {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "자재 품질 등록 실패",
+          text: "품질 등록에 실패했습니다. 항목을 확인해주세요.",
+          showConfirmButton: false,
+          timer: 2000
+        });
+      }
     })
 }
 

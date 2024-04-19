@@ -99,36 +99,44 @@ function saveInsert(){
 	.then (res => res.json())
 	.then (res => {
 		console.log(res);
+
 		if(res > 0){
-			alert("BOM이 정상적으로 등록되었습니다.")
-		}else{
-			alert("등록에 실패했습니다.")
+			Swal.fire({
+				position: "center",
+				icon: "success",
+				title: "BOM 작성 완료!",
+				text: "BOM이 정상적으로 등록되었습니다.",
+				showConfirmButton: false,
+				timer: 2000,
+			});
+			resetForm();
 		}
+		else {
+			Swal.fire({
+				position: "center",
+				icon: "error",
+				title: "BOM 작성 실패",
+				text: "등록에 실패했습니다. 항목을 확인해주세요.",
+				showConfirmButton: false,
+				timer: 2000
+			});
+		}
+
+		// if(res > 0){
+		// 	alert("BOM이 정상적으로 등록되었습니다.")
+		// }else{
+		// 	alert("등록에 실패했습니다.")
+		// }
 	})
 }
 
 //bom 등록 후속처리
-if(result){
-	Swal.fire({
-		position: "center",
-		icon: "success",
-		title: "BOM 작성 완료!",
-		//text: "BOM이 정상적으로 등록되었습니다.",
-		showConfirmButton: false,
-		timer: 2000
-	});
-}
-else {
-	Swal.fire({
-		position: "center",
-		icon: "error",
-		title: "BOM 작성 실패",
-		//text: "등록에 실패했습니다. 항목을 확인해주세요.",
-		showConfirmButton: false,
-		timer: 2000
-	});
-}
 
-if($('#auth').html() != '1'){
-	$('#searchBtn').attr('style', 'display : none;');
-	}
+//시큐리티 확인(등록버튼 사라짐)
+// if($('#auth').html() != '1'){
+// 	$('#searchBtn').attr('style', 'display : none;');
+// 	}
+
+function resetForm() {
+	insertForm.reset();
+}
