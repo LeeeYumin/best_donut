@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.comCode.ComCodeDetailVO;
 import com.example.demo.comCode.ComCodeVO;
+import com.example.demo.comCode.CompanyVO;
 import com.example.demo.comCode.mapper.ComCodeMapper;
 import com.example.demo.comCode.service.ComCodeService;
 
@@ -15,6 +16,8 @@ public class ComCodeServiceImpl implements ComCodeService{
 	
 	@Autowired ComCodeMapper comCodeMapper;
 
+	// 1. 공통코드
+	
 	// 주코드 조회
 	@Override
 	public List<ComCodeVO> getComCodeList(ComCodeVO vo) {
@@ -50,5 +53,15 @@ public class ComCodeServiceImpl implements ComCodeService{
 	public boolean valComCodeDet(String subcode) {
 		return comCodeMapper.valComCodeDet(subcode) == 0 ? true : false;
 	}
+
+	
+	// 2. 거래처
+	
+	// 거래처 등록
+	@Override
+	public boolean insertCompany(CompanyVO vo) {
+		return comCodeMapper.insertCompany(vo) > 0 ? true : false;
+	}
+	
 
 }

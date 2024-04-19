@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.comCode.ComCodeDetailVO;
 import com.example.demo.comCode.ComCodeVO;
+import com.example.demo.comCode.CompanyVO;
 
 @Mapper
 public interface ComCodeMapper {
@@ -18,5 +19,8 @@ public interface ComCodeMapper {
 	
 	public int insertComCode(ComCodeVO vo);
 	public int insertComCodeDet(ComCodeDetailVO vo);
+	
+	// 2. 거래처
+	public int insertCompany(CompanyVO vo);
 	
 }
