@@ -20,21 +20,29 @@
 		<div>
 			<div class="card mb-3">
 				<div class="card-body">
-					<div class="row mb-3">
-						<div class="me-3 p-3" >
-							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재 코드</label>
-								<input id="matCode" class="form-control" type="text" name="matCode" style="width: 500px;" placeholder="자재 코드를 압력해주세요"><br>
-								<label for="date"  class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입고 날짜</label>
-  							<div class="col-sm-6 input-group">
-  								<input type="date" class="form-control" id="inDate" max="2100-12-31" min="1970-01-01">
-  							</div>
 
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재 코드</label>
+						<div class="col-sm-6" >
+							<input id="matCode" class="form-control" type="text" style="width: 500px;" placeholder="자재 코드를 압력해주세요"><br>
 						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입고일자</label>
+						<div class="col-sm-6 input-group">
+							<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
+							<span class="input-group-text">~</span>
+							<input type="date" class="form-control" name="searchEndDate" id="searchEndDate">
+						</div>
+					</div>
+
 					<div class="py-0 mb-2 d-md-flex justify-content-md-center">
 						<button id="findBtn" type="button" class="btn btn-primary me-md-2" onclick="findMat()">검색</button>
 						<!--<button id="selDelBtn" type="button" class="btn btn-primary me-md-2">선택삭제</button>
 						<button id="updateBtn" type="button" class="btn btn-primary me-md-2">수정</button>-->
 					</div>
+
 				</div>
 			</div>
 		</div>

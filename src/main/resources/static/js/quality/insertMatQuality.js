@@ -233,6 +233,7 @@ async function insertMat() {
     })
     .then (res => res.json())
     .then (res => {
+      grid.resetData(res);
       console.log(res);
 
       if(res){
@@ -262,3 +263,7 @@ async function insertMat() {
 //검색일자 초기화
 //document.getElementById("inDate2").value=today();
 //document.getElementById("inDate").value=addDate(0,0,-7);
+
+function resetForm() {
+	insertForm.reset();
+}
