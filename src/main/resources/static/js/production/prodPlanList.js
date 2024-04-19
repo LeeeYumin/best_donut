@@ -1,5 +1,10 @@
 getProdPlanList();
 
+// 생산관리자 권한 확인
+if(document.querySelector('#auth').innerHTML != '1'){
+	document.querySelector('#deleteBtn').setAttribute('style', 'display : none;');
+	document.querySelector('#updateBtn').setAttribute('style', 'display : none;');
+}
 		//생산계획 진행상태
 		class PlanStatus {
 			constructor(props) {

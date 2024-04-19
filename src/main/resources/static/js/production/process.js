@@ -1,6 +1,12 @@
 getTodayIns();
 getEqmOpr();
 
+// 마스터&생산관리자 권한 확인
+if(document.querySelector('#auth').innerHtml != '1'){
+	document.querySelector('#startProcBtn').setAttribute('style', 'display : none;');
+	document.querySelector('#endProcBtn').setAttribute('style', 'display : none;');
+}
+
 //생산지시 진행상태
   class InsStatus {
     constructor(props) {

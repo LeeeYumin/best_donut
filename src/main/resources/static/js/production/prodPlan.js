@@ -228,6 +228,10 @@ const plInsert = new tui.Grid({
 		let beforeplcode = res.prodPlanCode;
 
 		//화면로딩부터 기본 행 추가
+		// let admin = null;
+		// if(document.querySelector('#auth').innerHTML != '1'){
+		// 	admin = document.querySelector('#auth')
+		// }
 		let reqCode = null;
 		if (plreq.getData().length != 0) {
 			reqCode = plreq.getData()[0].prodReqCode;

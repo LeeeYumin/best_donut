@@ -2,7 +2,9 @@
 <!-- Thymeleaf 템플릿 주소 -->
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	layout:decorate="~{layout/index}">
+	
 <head>
 <meta charset="UTF-8">
 <title>prodPlanList</title>
@@ -43,7 +45,8 @@
 
 <!-- TITLE -->
 		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 생산계획 관리</h3>
-
+<!-- 권한 -->
+		<div sec:authentication="principal.usersVO.perm2" class="user" id="auth" style="display: none;"></div>
 
 <!-- 검색 FORM -->
 		<div class="search">
