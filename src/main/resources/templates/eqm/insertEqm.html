@@ -17,7 +17,7 @@
 			<span class="text-muted fw-light">설비관리 / </span> 설비 기기 정보
 		</h3>
 		
-		<form name="insertForm" method="post">
+		<form name="insertForm" method="post" enctype="multipart/form-data">
 			<div class="card card-body mb-4">
 				<h5>정보입력</h5>
 				<div class="row mb-3">
@@ -103,6 +103,12 @@
 					<label class="col-sm-1 col-form-label" style="font-size: 15px;">최근점검일</label>
 					<div class="col-sm-6">
 					<input type="Date" name="lastCheckDate" th:value="${{eqmVO.lastCheckDate}}" class="form-control">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비사진</label>
+					<div class="col-sm-6">
+					<input type="file" name="eqmImage" th:value="${{eqmVO.eqmImage}}" class="form-control">
 					</div>
 				</div>
 				<div class="row mb-3">
