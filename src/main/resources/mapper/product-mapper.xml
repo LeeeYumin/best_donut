@@ -89,16 +89,16 @@
 				AND o.company_code = #{companyCode}
 			</if>
 			<if test="dueStartDate != null">
-				AND TRUNC(o.due_date) <![CDATA[ >= ]]> TRUNC(#{dueStartDate})
+				AND o.due_date <![CDATA[ >= ]]> #{dueStartDate}
 			</if>
 			<if test="dueEndDate != null">
-				AND TRUNC(o.due_date) <![CDATA[ <= ]]> TRUNC(#{dueEndDate})
+				AND o.due_date <![CDATA[ <= ]]> #{dueEndDate}
 			</if>
 			<if test="ordersStartDate != null">
-				AND TRUNC(o.orders_date) <![CDATA[ >= ]]> TRUNC(#{ordersStartDate})
+				AND o.orders_date <![CDATA[ >= ]]> #{ordersStartDate}
 			</if>
 			<if test="ordersEndDate != null">
-				AND TRUNC(o.orders_date) <![CDATA[ <= ]]> TRUNC(#{ordersEndDate})
+				AND o.orders_date <![CDATA[ <= ]]> #{ordersEndDate}
 			</if>
 		 ORDER BY 1
 	</select>
@@ -129,10 +129,10 @@
 			AND p.product_name LIKE '%' || #{productName} || '%'
 		</if>
 		<if test="expStartDate != null">
-			AND TRUNC(exp_date) <![CDATA[ >= ]]> TRUNC(#{expStartDate})
+			AND exp_date <![CDATA[ >= ]]> #{expStartDate}
 		</if>
 		<if test="expEndDate != null">
-			AND TRUNC(exp_date) <![CDATA[ <= ]]> TRUNC(#{expEndDate})
+			AND exp_date <![CDATA[ <= ]]> #{expEndDate}
 		</if>
 	</select>
 	
@@ -236,10 +236,10 @@
 			AND h.inout_sep = #{inoutSep}
 		</if>
 		<if test="searchStartDate != null">
-			AND TRUNC(h.inout_date) <![CDATA[ >= ]]> TRUNC(#{searchStartDate})
+			AND h.inout_date <![CDATA[ >= ]]> #{searchStartDate}
 		</if>
 		<if test="searchEndDate != null">
-			AND TRUNC(h.inout_date) <![CDATA[ <= ]]> TRUNC(#{searchEndDate})
+			AND h.inout_date <![CDATA[ <= ]]> #{searchEndDate}
 		</if>
 		 ORDER BY 1
 	
