@@ -19,6 +19,8 @@ public class ProductDetailVO {
 	private Integer remainCnt;			// 잔고수량
 	private String qltyCheckStatus;		// 품질검사상태
 	private String productStatus;		// 완제품상태
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
 	private Date dumpDate;				// 폐기일자
 	private String productCode;			// 완제품코드
 	
