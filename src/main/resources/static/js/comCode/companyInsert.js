@@ -55,17 +55,50 @@ function sample4_execDaumPostcode() {
 
 async function saveInsert() {
 
-  let companyName = insertDiv.companyName.value;
-  let companySep = insertDiv.companySep.value;
-  let ownerName =insertDiv.ownerName.value;
-  let tel = insertDiv.tel.value;
-  let postcode = insertDiv.postcode.value;
-  let addr = insertDiv.addr.value;
-  let addrDetail = insertDiv.addrDetail.value;
+  let companyName = insertForm.companyName.value;
+  let companySep = insertForm.companySep.value;
+  let ownerName =insertForm.ownerName.value;
+  let tel = insertForm.tel.value;
+  let addr = insertForm.addr.value;
+  let addrDetail = insertForm.addrDetail.value;
+  let postcode = insertForm.postcode.value;
 
-  let param = {companyName, companySep, ownerName, tel, postcode, addr, addrDetail}
+  let param = {companyName, companySep, ownerName, tel, addr, addrDetail, postcode};
 
+  console.log(param);
+  let data = {
+    method: 'POST',
+		headers: jsonHeaders,
+		body : JSON.stringify(param)
+  };
 
-  let result = fetch('ajax/insertCompany')
+  let result = await fetch('ajax/insertCompany', data);
+  let res = await result.json();
+
+  console.log(res);
+  if(res){
+    Swal.fire({
+			position: "center",
+			icon: "success",
+			title: "거래처 등록 완료!",
+			text: "거래처 등록이 정상적으로 처리되었습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+		resetInsert();
+	}
+	else {
+		Swal.fire({
+			position: "center",
+			icon: "error",
+			title: "거래처 등록 실패",
+			text: "거래처 등록이 정상적으로 처리되지 않았습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+  }
 }
-// 이어서 마저하기!
+
+function resetInsert() {
+  insertForm.reset();
+}
