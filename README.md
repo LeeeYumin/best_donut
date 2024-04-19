@@ -89,11 +89,15 @@
 
 -
 
+>Ext.
+
+- <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white">
+
 #### 프로젝트 규칙
 
 > merge & branch
 
-- main
-- dev_daily
-- personal branch
+- main : 배포용
+- dev_daily : 개발용
+- personal branch : 개인 작업
 
