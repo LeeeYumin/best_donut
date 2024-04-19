@@ -369,11 +369,16 @@ function findPlanCnt(productCode) {
 // 자재 발주 테이블 행 추가
 matStockList.on('checkAll', function () {
     let checked = matStockList.getCheckedRows();
-    matOrderList.resetData(checked);
+    matOrderList.appendRows(checked);
 });
 matStockList.on('check', function (ev) {
     let checked = matStockList.getRow(ev.rowKey);
-    matOrderList.appendRow(checked);
+    const { matCode, matName, mainCompanyCode, unit, unitPrice } = checked;
+    matOrderList.appendRow({ matCode, matName, mainCompanyCode, unit, unitPrice });
+
+    // 추가된 행 체크
+    let appendRowKey = matOrderList.getData().length - 1;
+    matOrderList.check(appendRowKey);
 });
 matStockList.on('uncheckAll', function () {
     matOrderList.resetData([]);

@@ -103,8 +103,37 @@ async function getTodayIns() {
         })
 };
 
+// 생산 지시 클릭 시
 prodInsDetail.on('click', () => {
-    getBOMList();
+    let matOutgoingStatus = prodInsDetail.getValue(prodInsDetail.getFocusedCell().rowKey, 'matOutgoingStatus')
+
+    if (matOutgoingStatus == 'O') {
+        Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: '이미 불출한 생산 지시입니다.',
+            text: ' ',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        // 포커스 이동 
+
+
+    } else {
+        if (matOutgoingList.getData().length != 0) {
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: '이미 불출 목록에 재료들이 있습니다.',
+                text: ' ',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            getBOMList();
+        }
+    }
 });
 
 // BOM 테이블
@@ -333,13 +362,24 @@ matStockList.on('check', function (ev) {
     const { matLotCode, matCode, remainCnt, matName, matUnit } = checked;
 
     if (checked.remainCnt == null || checked.remainCnt == 0) {
-        alert('선택하신 자재의 현재 재고가 없습니다.')
+        Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: '선택하신 자재의 재고가 없습니다.',
+            text: ' ',
+            showConfirmButton: false,
+            timer: 1500
+        });
         matStockList.uncheck(ev.rowKey);
     } else if (checked.remainCnt < procNeedCnt) {
         matOutgoingList.appendRow({ matLotCode, matCode, matName, procNeedCnt: remainCnt, matUnit, prodInstructDetailCode });
     } else {
         matOutgoingList.appendRow({ matLotCode, matCode, matName, procNeedCnt, matUnit, prodInstructDetailCode })
     }
+
+    // 추가된 행 체크
+    let appendRowKey = matOutgoingList.getData().length - 1;
+    matOutgoingList.check(appendRowKey);
 });
 
 // 체크 해제한 자재 불출 테이블에서 삭제
@@ -407,7 +447,6 @@ const matOutgoingList = new tui.Grid({
 // 불출 버튼 클릭 이벤트 
 document.getElementById('outgoingBtn').addEventListener('click', checkValidation);
 
-// 불출 수량 체크
 function checkValidation() {
     matOutgoingList.blur();
 
@@ -415,6 +454,10 @@ function checkValidation() {
     let BOMListData = BOMList.getData();
     let result = 1;
 
+    // 불출 유무 체크
+
+
+    // 불출 수량 체크
     for (let i = 0; i < matOutgoingListData.length; i++) {
         // 불출 수량이 빈값이거나 0인 자재 체크
         if (Number(matOutgoingListData[i].procNeedCnt) == 0) {
