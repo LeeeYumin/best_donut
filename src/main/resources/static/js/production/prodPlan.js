@@ -142,8 +142,13 @@ const plInsert = new tui.Grid({
 				header : '담당자',
 				name : 'usersCode',
 				align: 'center',
-				editor: 'text'
-			}
+				hidden: true
+			},
+			{
+				header : '담당자',
+				name : 'usersName',
+				align: 'center'
+			},
 		]
 	});
 	
@@ -226,6 +231,8 @@ const plInsert = new tui.Grid({
 		let response = await fetch("/ajax/beforeInsertPlanCode")
 		let res = await response.json();
 		let beforeplcode = res.prodPlanCode;
+		let ucode = document.querySelector('#usersCode').value;
+		let uname = document.querySelector('#usersName').value;
 
 		//화면로딩부터 기본 행 추가
 		// let admin = null;
@@ -236,11 +243,12 @@ const plInsert = new tui.Grid({
 		if (plreq.getData().length != 0) {
 			reqCode = plreq.getData()[0].prodReqCode;
 		} else {
-			reqCode = '-';
-			plDeInsert.appendRow({prodReqDetailCode: '-', fixCnt: 1400, reqCnt: 0, planCnt: 1400});
+			// reqCode = '-';
+			// plDeInsert.appendRow({prodReqDetailCode: '-', fixCnt: 1400, reqCnt: 0, planCnt: 1400});
+			plDeInsert.appendRow({fixCnt: 1400, reqCnt: 0, planCnt: 1400});
 		}
 		
-		plInsert.appendRow({prodPlanCode: beforeplcode, prodReqCode: reqCode, planDate: dateFormat(new Date())});
+		plInsert.appendRow({prodPlanCode: beforeplcode, prodReqCode: reqCode, planDate: dateFormat(new Date()), usersCode: ucode, usersName: uname});
 	};
 
 
@@ -291,7 +299,6 @@ const plInsert = new tui.Grid({
 			let planCnt = checked[i].fixCnt + checked[i].reqCnt; //고정+요청 = 계획수량
 			checked[i].planCnt = planCnt;
 		}
-		//plDeInsert.appendRows(checked);
 		plDeInsert.resetData(checked);
 	});
 
@@ -351,11 +358,11 @@ const plInsert = new tui.Grid({
 			}
 		}
 
-		//담당자 ( 코드?있으면 확인 후 수정하기 )
-		if(plInsert.getData()[0].usersCode != 'USE00003') {
-			alert.innerHTML = '<span style="color:red">※</span> 생산관리자만 등록 가능';
-			return false;
-		}
+		// //담당자 ( 코드?있으면 확인 후 수정하기 )
+		// if(plInsert.getData()[0].usersCode != 'USE00003') {
+		// 	alert.innerHTML = '<span style="color:red">※</span> 생산관리자만 등록 가능';
+		// 	return false;
+		// }
 
 		alert.innerHTML = '';
 		return true;
@@ -387,9 +394,9 @@ const plInsert = new tui.Grid({
 		let res = await response.json();
 		let result = res.prodPlanCode; //값 있는 지 확인(vo로 넘겨받음)
 
-		window.setTimeout(function() {
-			location.href = '/prodPlanList'
-		}, 1000);
+		// window.setTimeout(function() {
+		// 	location.href = '/prodPlanList'
+		// }, 1000);
 
 		// SweetAlert
 		if(result != null){ //vo로 넘겨받음
@@ -400,6 +407,9 @@ const plInsert = new tui.Grid({
 				showConfirmButton: false,
 				timer: 2000
 			});
+			window.setTimeout(function() {
+				location.href = '/prodPlanList'
+			}, 1000);
 		}
 		else {
 			Swal.fire({

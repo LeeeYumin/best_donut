@@ -1,8 +1,8 @@
 getTodayIns();
 getEqmOpr();
 
-// 마스터&생산관리자 권한 확인
-if(document.querySelector('#auth').innerHtml != '1'){
+// 생산관리자 권한 확인
+if(document.querySelector('#auth').innerHTML != '1'){
 	document.querySelector('#startProcBtn').setAttribute('style', 'display : none;');
 	document.querySelector('#endProcBtn').setAttribute('style', 'display : none;');
 }
@@ -98,8 +98,8 @@ const todayIns = new tui.Grid({
   el : document.getElementById('todayIns'),
   scrollX : false,
   scrollY : false,
-  // bodyHeight: 40,
-  // minBodyHeight: 40,
+  bodyHeight: 40,
+  minBodyHeight: 40,
   columns : [
     {
       header : '생산지시일자',
@@ -118,8 +118,14 @@ const todayIns = new tui.Grid({
       renderer: {type: InsStatus}
     }, 
     {
-      header : '담당자',
+      header : '담당자코드',
       name : 'usersCode',
+      align: 'center',
+      hidden: true
+    },
+    {
+      header : '담당자',
+      name : 'usersName',
       align: 'center'
     }
   ]
@@ -258,7 +264,12 @@ const procInfo = new tui.Grid({
       header : '담당자',
       name : 'usersCode',
       align: 'center',
-      editor: 'text'
+      hidden: true
+    },
+    {
+      header : '담당자',
+      name : 'usersName',
+      align: 'center'
     },
     {
       header : '공정상태',
@@ -337,42 +348,48 @@ function beforeStartCheck() {
   const alert = document.getElementById('alertMsg');
   
   const row = procInfo.getFocusedCell().rowKey;
-  const ucode = procInfo.getData()[row].usersCode;
+  //const ucode = procInfo.getData()[row].usersCode;
 
   const btime = procInfo.getData()[row].beginTime;
   const etime = procInfo.getData()[row].endTime;
 
+  //설비확인
+  const eqmCode = procInfo.getData()[row].eqmCode;
+  const useEqm = eqmOpr.getData();
+  for(let i = 0; i < useEqm.length; i++) {
+    
+    if(eqmCode == useEqm[i].eqmCode) {
+      let status = useEqm[i].oprStatus;
+      if(status == 'FO2') {
+        alert.innerHTML = '<span style="color:red">※</span> 다른 공정에서 사용 중입니다. 해당 설비가동현황이 대기일 시 다시 시작하세요.';
+        return false;
+      }
+    }
+  }
+  //투입자재 유무 확인하기
+
+
+
+  //선택된 공정 없을 경우
     // if(row == null) {
     //   alert.innerHTML = '<span style="color:red">※</span> 시작할 공정을 선택하세요.';
     //   return false;
     // }
-  //담당자 정보
-    if (ucode == null || ucode == '') {
-      alert.innerHTML = '<span style="color:red">※</span> 담당자 정보를 입력하세요.';
-      return false;
-    }
     
-    if ( btime != null && etime != null ) {
+    if (btime != null && etime != null) {
       alert.innerHTML = '<span style="color:red">※</span> 이미 완료된 공정입니다.';
       return false;
-    } else  if ( btime != null ) {
+    } else  if (btime != null) {
       alert.innerHTML = '<span style="color:red">※</span> 이미 진행 중인 공정입니다.';
       return false;
     } 
-    // if(btime != null || btime != '') {
-    //   alert.innerHTML = '<span style="color:red">※</span> 이미 진행 중인 공정입니다.';
-    //   return false;
-    // }
 
-    // if(btime != null && etime != null) {
-    //   alert.innerHTML = '<span style="color:red">※</span> 이미 완료된 공정입니다.';
-    //   return false;
-    // }
 
 
   alert.innerHTML = '';
   return true;
 }
+//종료버튼 클릭 시 유효성 검사
 function beforeEndCheck() {
   const alert = document.getElementById('alertMsg');
   
@@ -423,6 +440,10 @@ function startProc() {
   param.se = 's';
   param.prodInstructCode = picode;
   param.prodInstructDetailCode = pdcode;
+  param.usersCode = document.querySelector('#usersCode').value;
+  console.log(param.usersCode)
+
+
   console.log(param);
 
   fetch('ajax/updateProc', {
