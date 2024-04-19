@@ -268,6 +268,27 @@ function addProQual(){
   .then(res => res.json())
 	.then(res => {
     console.log(res);
+
+    if(res){
+			Swal.fire({
+				position: "center",
+				icon: "success",
+				title: "완제품 품질 등록 완료!",
+				text: "완제품 품질이 정상적으로 등록되었습니다.",
+				showConfirmButton: false,
+				timer: 2000,
+			});
+		}
+		else {
+			Swal.fire({
+				position: "center",
+				icon: "error",
+				title: "완제품 품질 등록 실패",
+				text: "등록에 실패했습니다. 항목을 확인해주세요.",
+				showConfirmButton: false,
+				timer: 2000
+			});
+		}
 })
 }
 
