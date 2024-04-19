@@ -34,10 +34,10 @@
 		                           ON o.orders_code = d.orders_code
 		     WHERE o.orders_status = 'OP1' 
 		     <if test="dueStartDate != null">
-		     	AND o.due_date <![CDATA[ >= ]]> #{dueStartDate}
+		     	AND o.due_date <![CDATA[ >= ]]> TO_DATE(#{dueStartDate}, 'YYYY-MM-DD')
 		     </if>
 		     <if test="dueEndDate != null">
-			 	AND o.due_date <![CDATA[ <= ]]> #{dueEndDate}
+			 	AND o.due_date <![CDATA[ <= ]]> TO_DATE(#{dueEndDate}, 'YYYY-MM-DD')
 			 </if>
 		     GROUP BY d.product_code
 		    )
