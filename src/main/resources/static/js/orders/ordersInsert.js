@@ -323,17 +323,36 @@ function resetOrdDet(){
 	grid.setColumnValues('totalSupplyPrice',0)
 }
 
+
 // 거래처 목록 가져오기
+const companyGrid = new tui.Grid({
+	el : document.getElementById('companyGrid'),
+	scrollX : false,
+	scrollY : true,
+	header:[
+		align = 'center',
+	],
+	columns : [ 
+    {
+      header : '거래처코드',
+      name : 'companyCode',
+      align : 'center',
+			
+    }, 
+		{
+      header : '거래처명',
+      name : 'companyName',
+      align : 'center',
+    }, 
+	]
+})
+
 function getCompany() {
   fetch('ajax/getCompany')
   .then(res => res.json())
   .then(res => {
-
-		for(company of res){
-			let optionHtml = '<option value="' + company.companyCode + '">' + company.companyName + '</option>'
-			let companyName = document.querySelector("#companyName")
-			companyName.insertAdjacentHTML('beforeend', optionHtml);
-		}
+		console.log(res);
+		companyGrid.resetData(res);
 	})
 }
 getCompany();

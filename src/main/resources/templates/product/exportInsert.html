@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/index}">
 <head>
 	<meta charset="UTF-8">
-	<title>exportInsert.html</title>
+	<title>완제품출고등록</title>
 	<!-- Toast UI CDN -->
 	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
@@ -92,21 +92,21 @@
 							<form name="prodOutForm">
 
 								<div class="row mb-3">
-									<label class="col-sm-2 col-form-label" for="ordersCodeInput">주문코드</label>
+									<label class="col-sm-2 col-form-label" for="ordersCodeInput">주문코드 <span class="star">*</span></label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control" id="ordersCodeInput" name="ordersCodeInput">
 									</div>
 								</div>
 
 								<div class="row mb-3">
-									<label class="col-sm-2 col-form-label" for="inoutDate">출고일자</label>
+									<label class="col-sm-2 col-form-label" for="inoutDate">출고일자 <span class="star">*</span></label>
 									<div class="col-sm-10">
 										<input type="date" class="form-control" id="inoutDate" name="inoutDate">
 									</div>
 								</div>
 
 								<div class="row mb-3">
-									<label class="col-sm-2 col-form-label" for="userName">담당자명</label>
+									<label class="col-sm-2 col-form-label" for="userName">담당자명 <span class="star">*</span></label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control" id="userName" name="userName">
 									</div>
@@ -138,3 +138,8 @@
 	
 </script>
 </html>
+<style>
+	.star, .notice {
+		color: red;
+	}
+	</style>
