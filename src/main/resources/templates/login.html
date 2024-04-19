@@ -69,19 +69,21 @@
 
   <body>
     <!-- Content -->
-
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">
           <!-- Register -->
           <div class="card">
             <div class="card-body">
+		    <div th:if="${param.error}">
+		    	<h5>아이디 또는 비밀번호가 일치하지 않습니다.</h5>
+			</div>
               <!-- Logo -->
               <div class="app-brand justify-content-center">
                 <img src="/assets/img/logo_resize.png" width="300px">
               </div>
               <!-- /Logo -->
               <h3 class="mb-4" style="text-align: center;">생산관리시스템(MES)</h3>
-
+              
               <form id="formAuthentication" class="mb-3" th:action="@{/userlogin}" method="POST">
                 <div class="mb-3">
                   <label for="email">아이디</label>
