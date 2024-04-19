@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/index}">
 <head>
 	<meta charset="UTF-8">
-	<title>comCodeInsert.html</title>
+	<title>공통코드등록</title>
 	<!-- Toast UI CDN -->
 	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
@@ -31,14 +31,14 @@
 						<form name="codeSearchForm" method="post">
 							
 							<div class="row mb-3">
-								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드</label>
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드 <span class="star">*</span></label>
 								<div class="col-sm-9 input-group">
 									<input type="text" class="form-control" name="maincode" id="maincode">
 								</div>
 							</div>
 
 							<div class="row mb-3">
-								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드명</label>
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드명 <span class="star">*</span></label>
 								<div class="col-sm-9 input-group">
 									<input type="text" class="form-control" name="maincodeName" id="maincodeName">
 								</div>
@@ -64,7 +64,7 @@
 						<form name="detSearchForm" method="post">
 
               <div class="row mb-3">
-								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드</label>
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드 <span class="star">*</span></label>
 								<div class="col-sm-9">
                   <select class="form-select" id="maincodeSelect" aria-label="maincodeSelect">
                     <option value="" selected="">주코드</option>
@@ -73,14 +73,14 @@
 							</div>
 							
 							<div class="row mb-3">
-								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">부코드</label>
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">부코드 <span class="star">*</span></label>
 								<div class="col-sm-9 input-group">
 									<input type="text" class="form-control" name="subcode" id="subcode">
 								</div>
 							</div>
 
 							<div class="row mb-3">
-								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">부코드명</label>
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">부코드명 <span class="star">*</span></label>
 								<div class="col-sm-9 input-group">
 									<input type="text" class="form-control" name="subcodeName" id="subcodeName">
 								</div>
@@ -106,3 +106,8 @@
 </body>
 
 </html>
+<style>
+	.star, .notice {
+		color: red;
+	}
+	</style>

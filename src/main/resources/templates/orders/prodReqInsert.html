@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/index}">
 <head>
 	<meta charset="UTF-8">
-	<title>prodReqInsert.html</title>
+	<title>생산요청등록</title>
 	<!-- Toast UI CDN -->
 	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
@@ -83,14 +83,14 @@
 							<form name="reqForm">
 
 								<div class="row mb-3">
-									<label class="col-sm-2 col-form-label" for="totalReqCnt">총요청수량</label>
+									<label class="col-sm-2 col-form-label" for="totalReqCnt">총요청수량 <span class="star">*</span></label>
 									<div class="col-sm-10">
 										<input type="number" class="form-control" id="totalReqCnt" name="totalReqCnt">
 									</div>
 								</div>
 
 								<div class="row mb-3">
-									<label class="col-sm-2 col-form-label" for="reqDate">요청일자</label>
+									<label class="col-sm-2 col-form-label" for="reqDate">요청일자 <span class="star">*</span></label>
 									<div class="col-sm-10">
 										<input type="date" class="form-control" id="reqDate" name="reqDate">
 									</div>
@@ -115,3 +115,8 @@
 </body>
 
 </html>
+<style>
+	.star, .notice {
+		color: red;
+	}
+	</style>
