@@ -10,7 +10,7 @@
 		SELECT company_code   AS "companyCode"
 		       , company_name AS "companyName"
 		  FROM company
-		 WHERE company_sep = '완제품'	
+		 WHERE company_sep = 'CO2'	
 	</select>
 	
 	<!-- 주문조회 -->
