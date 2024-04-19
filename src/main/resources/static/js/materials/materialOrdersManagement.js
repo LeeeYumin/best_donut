@@ -313,14 +313,31 @@ function cancelOrder() {
 		});
 	} else if (checkOrderStatus()) {
 		let matOrderCodes = createparam();
-		console.log(matOrderCodes);
-		fetch("/ajax/matordercancel?" + matOrderCodes)
-			.then(res => res.json())
-			.then(res => {
-				// 발주 취소 후 발주 목록 업데이트
-				getMaterialOrdersList();
-				console.log(res);
-			})
+		Swal.fire({
+			title: "정말로 발주를 취소하시겠습니까?",
+			text: " ",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "네",
+			cancelButtonText: "취소",
+			reverseButtons: true
+		}).then((result) => {
+			if (result.isConfirmed) {
+				fetch("/ajax/matordercancel?" + matOrderCodes)
+					.then(res => res.json())
+					.then(res => {
+						// 발주 취소 후 발주 목록 업데이트
+						getMaterialOrdersList();
+					})
+				Swal.fire({
+					title: "발주 취소 완료",
+					text: " ",
+					icon: "success",
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		});
 	} else {
 		Swal.fire({
 			position: "center",
@@ -334,19 +351,19 @@ function cancelOrder() {
 }
 
 function checkOrderStatus() {
-	let able = true;
+	let tf = true;
 	let checkdata = grid1.getCheckedRows();
 
 	for (let i = 0; i < checkdata.length; i++) {
 		if (checkdata[i].totalOrdersStatus != 'OSP') {
 			grid1.uncheck(checkdata[i].rowKey);
-			able = false;
+			tf = false;
 		}
 	}
-	return able;
+	return tf;
 }
 
 // 발주 취소 버튼 권한 체크
-if($('#auth').html() != '1'){
+if ($('#auth').html() != '1') {
 	$('#cancelBtn').attr('style', 'display:none;');
 }
