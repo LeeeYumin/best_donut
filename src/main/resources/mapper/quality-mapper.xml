@@ -33,9 +33,18 @@
 
 <!-- 자재품질등록 / 등록 버튼 클릭시 목록에서 사라짐 + 재고수량 업데이트. -->
 <update id="addMatQual" parameterType="MatQltyCheckVO">
-	 UPDATE mat
-		SET STOCK_CNT = STOCK_CNT + round(#{goodCnt}/30,1)
-	  WHERE mat_code = #{matCode}
+	<choose>
+		<when test="matCode =='MAT00002'">
+		 UPDATE mat
+			SET STOCK_CNT = STOCK_CNT + round(#{goodCnt}/30,1)
+		  WHERE mat_code = #{matCode}
+		</when>
+		<otherwise>
+		 UPDATE mat
+			SET STOCK_CNT = STOCK_CNT + #{goodCnt}
+		  WHERE mat_code = #{matCode}
+		</otherwise>
+	</choose>
 </update>
 
 <!-- 자재품질등록 / 입출수량 업데이트 -->
