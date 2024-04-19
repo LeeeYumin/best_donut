@@ -73,6 +73,7 @@ const grid1 = new tui.Grid({
 
 // 발주 조회(ajax)
 function getMaterialOrdersList() {
+	const companyName = document.getElementById('companyName').value;
 	const sDate = document.getElementById('sDate').value;
 	const eDate = document.getElementById('eDate').value;
 	const ordersStatus = document.querySelector("[name=ordersStatus]:checked").value;
@@ -83,7 +84,7 @@ function getMaterialOrdersList() {
 			icon: "warning"
 		});
 	} else {
-		const searchreq = { sDate: sDate, eDate: eDate, ordersStatus: ordersStatus };
+		const searchreq = { sDate, eDate, ordersStatus, companyName };
 		const data = {
 			method: 'POST',
 			headers: jsonHeaders,
@@ -103,9 +104,17 @@ function getMaterialOrdersList() {
 
 // 검색 관련 함수  
 document.getElementById('searchBtn').addEventListener('click', getMaterialOrdersList);
+document.getElementById('companyName').addEventListener('keyup', (e) => {
+	if (e.keyCode == 13) {
+		getMaterialOrdersList();
+	}
+})
+
+// 초기화 버튼
 document.getElementById('resetBtn').addEventListener('click', () => {
 	document.getElementById('sDate').value = '';
 	document.getElementById('eDate').value = '';
+	document.getElementById('companyName').value = '';
 	$('input:radio[name=ordersStatus]:input[value=""]').prop("checked", true);
 
 	getMaterialOrdersList();

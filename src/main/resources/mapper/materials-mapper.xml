@@ -185,6 +185,9 @@
 					AND o.total_orders_status = #{ordersStatus}
 				</if>
 					AND o.total_orders_status != 'OSC'
+				<if test="companyName != null and companyName != ''">
+					AND c.company_name LIKE '%'||#{companyName}||'%'
+				</if>
 			</where>
      	  ORDER BY o.orders_date DESC
    	</select>		

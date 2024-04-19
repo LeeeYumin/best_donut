@@ -296,10 +296,12 @@ function getMaterialDetailsList() {
 matStockList.on('checkAll', function () {
     let prodInstructDetailCode = prodInsDetail.getValue(prodInsDetail.getFocusedCell().rowKey, 'prodInstructDetailCode');
     let checked = matStockList.getCheckedRows();
-    let appendData = []
+    let procNeedCnt = BOMList.getValue(BOMList.getFocusedCell().rowKey, 'procNeedCnt');
+    let appendData = [];
+
     for (let i = 0; i < checked.length; i++) {
-        const { matLotCode, matCode, matName, remainCnt, matUnit } = checked[i];
-        appendData.push({ matLotCode, matCode, matName, remainCnt, matUnit, prodInstructDetailCode });
+        const { matLotCode, matCode, matName, matUnit } = checked[i];
+        appendData.push({ matLotCode, matCode, matName, procNeedCnt, matUnit, prodInstructDetailCode });
     }
     matOutgoingList.appendRows(appendData);
 });
@@ -326,9 +328,18 @@ matStockList.on('uncheckAll', function () {
 // 체크한 자재 재고 테이블 데이터 불출 테이블에 추가
 matStockList.on('check', function (ev) {
     let checked = matStockList.getRow(ev.rowKey);
+    let procNeedCnt = BOMList.getValue(BOMList.getFocusedCell().rowKey, 'procNeedCnt');
     let prodInstructDetailCode = prodInsDetail.getValue(prodInsDetail.getFocusedCell().rowKey, 'prodInstructDetailCode');
-    const { matLotCode, matCode, matName, remainCnt, matUnit } = checked;
-    matOutgoingList.appendRow({ matLotCode, matCode, matName, remainCnt, matUnit, prodInstructDetailCode });
+    const { matLotCode, matCode, remainCnt, matName, matUnit } = checked;
+
+    if (checked.remainCnt == null || checked.remainCnt == 0) {
+        alert('선택하신 자재의 현재 재고가 없습니다.')
+        matStockList.uncheck(ev.rowKey);
+    } else if (checked.remainCnt < procNeedCnt) {
+        matOutgoingList.appendRow({ matLotCode, matCode, matName, procNeedCnt: remainCnt, matUnit, prodInstructDetailCode });
+    } else {
+        matOutgoingList.appendRow({ matLotCode, matCode, matName, procNeedCnt, matUnit, prodInstructDetailCode })
+    }
 });
 
 // 체크 해제한 자재 불출 테이블에서 삭제
@@ -373,7 +384,7 @@ const matOutgoingList = new tui.Grid({
         },
         {
             header: '불출수량',
-            name: 'remainCnt',
+            name: 'procNeedCnt',
             align: 'center',
             editor: {
                 type: 'text'
@@ -406,7 +417,7 @@ function checkValidation() {
 
     for (let i = 0; i < matOutgoingListData.length; i++) {
         // 불출 수량이 빈값이거나 0인 자재 체크
-        if (Number(matOutgoingListData[i].remainCnt) == 0) {
+        if (Number(matOutgoingListData[i].procNeedCnt) == 0) {
             Swal.fire({
                 position: "center",
                 icon: "warning",
@@ -420,7 +431,7 @@ function checkValidation() {
             break;
 
             // 불출 수량이 숫자인지 체크
-        } else if (isNaN(Number(matOutgoingListData[i].remainCnt))) {
+        } else if (isNaN(Number(matOutgoingListData[i].procNeedCnt))) {
             Swal.fire({
                 position: "center",
                 icon: "warning",

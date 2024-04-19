@@ -124,8 +124,8 @@ public class MaterialsServiceImpl implements MaterialsService {
 	public int insertMatOutgoing(List<MaterialOutgoingVO> list) {
 		int result = 0;
 		for(MaterialOutgoingVO vo : list) {
-			vo.setOutCnt(vo.getRemainCnt());
-			result += materialsMapper.insertMatOutgoing(vo);			
+			vo.setOutCnt(vo.getProcNeedCnt());
+			result += materialsMapper.insertMatOutgoing(vo);		
 		}
 		return result;
 	}

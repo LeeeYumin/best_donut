@@ -203,7 +203,6 @@ grid2.on('checkAll', (ev) => {
 // 폐기 버튼 기능
 document.getElementById('disposeBtn').addEventListener('click', () => {
 	if (grid2.getCheckedRowKeys() == '') {
-		// alert('선택한 자재가 없습니다.');
 		Swal.fire({
 			title: "선택된 자재가 없습니다.",
 			icon: "warning"

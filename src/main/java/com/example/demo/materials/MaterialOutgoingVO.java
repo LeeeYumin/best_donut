@@ -7,7 +7,7 @@ public class MaterialOutgoingVO {
 	private String prodInstructDetailCode;
 	private String matLotCode;
 	private Integer outCnt;
-	private Integer remainCnt;
+	private Integer procNeedCnt;
 	private String matCode;
 	private String result;
 }
