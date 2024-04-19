@@ -74,9 +74,6 @@
           <!-- Register -->
           <div class="card">
             <div class="card-body">
-		    <div th:if="${param.error}">
-		    	<h5>아이디 또는 비밀번호가 일치하지 않습니다.</h5>
-			</div>
               <!-- Logo -->
               <div class="app-brand justify-content-center">
                 <img src="/assets/img/logo_resize.png" width="300px">
@@ -112,6 +109,9 @@
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
                 </div>
+	   		    <div th:if="${param.error}">
+			    	<p class="form-text notice">아이디 또는 비밀번호가 일치하지 않습니다.</p>
+				</div>
                 <div class="mb-3">
                   <button class="btn btn-primary d-grid w-100" type="submit">로그인</button>
                 </div>
@@ -145,3 +145,9 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>
+
+<style>
+.star, .notice {
+	color: red;
+}
+</style>
