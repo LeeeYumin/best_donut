@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,8 @@ import com.example.demo.users.UsersVO;
 public class EqmController {
 	
 	@Autowired EqmService eqmService;
+	@Value("${uploadFolder}") 
+    private String uploadFolder;
 	
 	// 전체조회
 	@GetMapping("eqmlist")
@@ -47,7 +50,7 @@ public class EqmController {
 	@ResponseBody
 	public int insertEqm(EqmVO vo, FileVO fvo, MultipartFile uploadFile, Model model) throws IllegalStateException, IOException {
 		// 파일업로드
-		String uploadFolder = "C:/donutFile";
+		// String uploadFolder = "/donutFile";
 		
 		if(uploadFile != null && uploadFile.getSize() > 0) {
 			File saveFile = new File(uploadFolder, uploadFile.getOriginalFilename());
