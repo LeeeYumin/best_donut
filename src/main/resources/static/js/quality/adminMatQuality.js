@@ -1,4 +1,5 @@
-getMatAdmin('','');
+// getMatAdmin();
+getMatAdminStart();
 
 	const grid = new tui.Grid({
 		el : document.getElementById('grid'),
@@ -22,6 +23,11 @@ getMatAdmin('','');
 			{
 				header : '자재명',
 				name : 'matName',
+				align : "center",
+			},
+			{
+				header : '입고일자',
+				name : 'inoutDate',
 				align : "center",
 			},
 			{
@@ -58,11 +64,17 @@ getMatAdmin('','');
 				header : '입고수량',
 				name : 'warehousingCnt',
 				align : "center",
+				formatter : function(data){
+					return priceFormat(data.value);
+				}
 			},
 			{
 				header : '적합수량',
 				name : 'checkDoneCnt',
 				align : "center",
+				formatter : function(data){
+					return priceFormat(data.value);
+				}
 			}
 		]
 
@@ -83,6 +95,7 @@ getMatAdmin('','');
 		let searchEndDate = $('#searchEndDate').val();
 
 		let param = {matCode, searchStartDate, searchEndDate};
+		console.log(param)
 
 		const data = {
 			method: 'POST',
@@ -90,22 +103,19 @@ getMatAdmin('','');
 			body : JSON.stringify(param)
 		};
 
-		await fetch(`ajax/adminMat`, data)
-		.then(res => res.json())
-		.then(res => {
+		let result = await fetch(`ajax/adminMat`, data);
+		let res = await result.json();
+
 			console.log(res);
 			grid.resetData(res);
-		})
+
 	};
-
-
 
 	async function getMatAdminStart(){
-		let matCode = $('#matCode').val();
-		let searchStartDate = $('#searchStartDate').val();
-		let searchEndDate = $('#searchEndDate').val();
-
-		let param = {matCode, searchStartDate, searchEndDate};
+		let today = new Date();
+		let searchStartDate = dateFormat(new Date(today.setDate(today.getDate()-1)));
+		let searchEndDate = dateFormat(new Date());
+		let param = {searchStartDate, searchEndDate};
 
 		const data = {
 			method: 'POST',
@@ -121,13 +131,15 @@ getMatAdmin('','');
 		})
 	};
 
-	function findMat() {
-		let matCode = document.querySelector('#matCode').value;
-  	let inoutDate = document.querySelector('#inDate').value; //#id
-		console.log(matCode, inoutDate);
-  	getMatAdmin(matCode, inoutDate);
+	function reset(){
+		$('#searchStartDate').val('');
+		$('#searchEndDate').val('');
+		$('#matCode').val('');
+		getMatAdminStart();
 	}
 
 	if($('#auth').html() != '1'){
 		$('#selDelBtn','#updateBtn').attr('style', 'display : none;');
 		}
+
+
