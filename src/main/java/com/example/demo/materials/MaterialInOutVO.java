@@ -13,7 +13,7 @@ public class MaterialInOutVO {
 	private String matLotCode;
 	private String matName;
 	private String companyName;
-	private Integer inoutCnt;
+	private Double inoutCnt;
 	private String inoutSep;
 	
 	// 검색 조건용

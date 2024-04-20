@@ -363,6 +363,21 @@ function checkOrderStatus() {
 	return tf;
 }
 
+// EXCEL 버튼 이벤트
+$('#excelBtn').on('click', excelDownload);
+
+function excelDownload() {
+	const oDate = grid1.getCheckedRows()[0].ordersDate;
+	const cName = grid1.getCheckedRows()[0].companyName;
+
+	const options = {
+		fileName: oDate + ' ' + cName + ' 발주서',
+	};
+
+	grid2.export('xlsx', options);
+}
+
+
 // 발주 취소 버튼 권한 체크
 if ($('#auth').html() != '1') {
 	$('#cancelBtn').attr('style', 'display:none;');

@@ -34,7 +34,7 @@ public class ProcessVO {
 	private String procMatCode;
 	private String matName;
 	private String matLotCode;
-	private int matCnt;
+	private Double matCnt;
 	
 	//설비
 	private String oprStatus;
