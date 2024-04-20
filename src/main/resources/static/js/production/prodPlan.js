@@ -27,22 +27,7 @@ class CustomNumberEditor {
 
 //test
 // //없음 '-'표시
-// class NullFormat {
-// 	constructor(props) {
-// 		const el = document.createElement('div');
-
-// 		this.el = el;
-// 		this.render(props);
-// 	}
-// 	render(props) {
-// 		this.el.innerText = props.formattedValue == '' ? '-' : props;
-// 	}
-// 	getElement() {
-// 		return this.el;
-// 	}
-// };
-//생산요청코드 없으면 '-'로 표시
-class ProdReqCode {
+class NullFormat {
 	constructor(props) {
 		const el = document.createElement('div');
 
@@ -55,7 +40,22 @@ class ProdReqCode {
 	getElement() {
 		return this.el;
 	}
-}
+};
+//생산요청코드 없으면 '-'로 표시
+// class ProdReqCode {
+// 	constructor(props) {
+// 		const el = document.createElement('div');
+
+// 		this.el = el;
+// 		this.render(props);
+// 	}
+// 	render(props) {
+// 		this.el.innerText = props.formattedValue == '' ? '-' : props.formattedValue;
+// 	}
+// 	getElement() {
+// 		return this.el;
+// 	}
+// }
 
 /* < 생산요청 > */
 const plreq = new tui.Grid({
@@ -73,8 +73,7 @@ const plreq = new tui.Grid({
 		{
 			header : '생산요청코드',
 			name : 'prodReqCode',
-			align: 'center',
-			renderer: {type: ProdReqCode}
+			align: 'center'
 		}, 
 		{
 			header : '총 요청수량',
@@ -108,8 +107,7 @@ const plreqD = new tui.Grid({
 		{
 			header : '생산요청상세코드',
 			name : 'prodReqDetailCode',
-			align: 'center',
-			renderer: {type: ProdReqCode}
+			align: 'center'
 		},
 		{
 			header : '제품코드',
@@ -169,7 +167,8 @@ const plInsert = new tui.Grid({
 			{
 				header : '생산요청코드',
 				name : 'prodReqCode',
-				align: 'center'
+				align: 'center',
+				renderer: {type: NullFormat}
 			},
 			{
 				header : '생산계획일자',
@@ -205,7 +204,8 @@ const plInsert = new tui.Grid({
 			{
 				header : '생산요청상세코드',
 				name : 'prodReqDetailCode',
-				align: 'center'
+				align: 'center',
+				renderer: {type: NullFormat}
 			},
 			{
 				header : '제품코드',
@@ -278,9 +278,9 @@ const plInsert = new tui.Grid({
 		if (plreq.getData().length != 0) {
 			reqCode = plreq.getData()[0].prodReqCode;
 		} else {
-			// reqCode = '-';
+			reqCode = '';
 			// plDeInsert.appendRow({prodReqDetailCode: '-', fixCnt: 1400, reqCnt: 0, planCnt: 1400});
-			plDeInsert.appendRow({fixCnt: 1400, reqCnt: 0, planCnt: 1400});
+			plDeInsert.appendRow({prodReqDetailCode: '', fixCnt: 1400, reqCnt: 0, planCnt: 1400});
 		}
 		
 		plInsert.appendRow({prodPlanCode: beforeplcode, prodReqCode: reqCode, planDate: dateFormat(new Date()), usersCode: ucode, usersName: uname});
