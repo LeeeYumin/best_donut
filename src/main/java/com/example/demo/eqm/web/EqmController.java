@@ -1,5 +1,7 @@
 package com.example.demo.eqm.web;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.eqm.EqmVO;
+import com.example.demo.eqm.FileVO;
 import com.example.demo.eqm.service.EqmService;
 import com.example.demo.users.UsersVO;
 
@@ -41,7 +45,18 @@ public class EqmController {
 	
 	@PostMapping("/ajax/inserteqm")
 	@ResponseBody
-	public int insertEqm(EqmVO vo) {
+	public int insertEqm(EqmVO vo, FileVO fvo, MultipartFile uploadFile, Model model) throws IllegalStateException, IOException {
+		// 파일업로드
+		String uploadFolder = "C:/donutFile";
+		
+		if(uploadFile != null && uploadFile.getSize() > 0) {
+			File saveFile = new File(uploadFolder, uploadFile.getOriginalFilename());
+			uploadFile.transferTo(saveFile);
+			fvo.setSaveFileName(uploadFile.getOriginalFilename());
+			eqmService.insertImage(fvo);
+			vo.setImageCode(fvo.getImageCode());
+		}
+		
 		return eqmService.insertEqm(vo);
 	}
 	

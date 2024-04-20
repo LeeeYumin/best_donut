@@ -30,11 +30,9 @@ public class EqmVO {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date lastCheckDate;
+	private String imageCode;
 	
-	private MultipartFile eqmImage;
-//	private String uploadFileName;
-//	private String saveFileName;
-//	private int fileAttacherd;	// 파일 첨부 여부(첨부 1, 미첨부 0)
+	private String eCode;
 	
 	private String eqmStatus;
 	private String oprStatus;

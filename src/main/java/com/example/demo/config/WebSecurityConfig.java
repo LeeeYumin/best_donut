@@ -44,7 +44,7 @@ public class WebSecurityConfig {
 				.antMatchers("/inserteqm", "/eqminfo", "/insertnotopr", "/notoprinfo").hasAnyRole("PER00005", "ADMIN")
 				.antMatchers("/companyInsert").hasAnyRole("PER00001", "PER00003", "ADMIN")
 				.antMatchers("/").hasAnyRole("PER00001", "PER00002", "PER00003", "PER00004", "PER00005", "ADMIN")
-				.antMatchers("/assets/**", "/css/**", "/fonts/**", "/js/**", "/scss/**", "/login", "/accessError", "/ajax/**").permitAll()
+				.antMatchers("/assets/**", "/css/**", "/fonts/**", "/js/**", "/scss/**", "/login", "/accessError", "/ajax/**", "/download/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			// 람다식

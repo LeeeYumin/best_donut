@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.eqm.EqmVO;
+import com.example.demo.eqm.FileVO;
 import com.example.demo.eqm.mapper.EqmMapper;
 import com.example.demo.eqm.service.EqmService;
 
@@ -37,6 +38,11 @@ public class EqmServiceImpl implements EqmService{
 	@Override
 	public int deleteEqm(String eqmCode) {
 		return eqmMapper.deleteEqm(eqmCode);
+	}
+
+	@Override
+	public int insertImage(FileVO fvo) {
+		return eqmMapper.insertImage(fvo);
 	}
 	
 	
