@@ -13,9 +13,9 @@ public class ProcessVO {
 	private String prodInstructDetailCode;
 	private String procCode; //공정흐름(5단계)
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:SS", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private Date beginTime;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:SS", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private Date endTime;
 	private String procStatus; //CS1 대기 / CS2 공정중 / CS3 공정완료
 	private String usersCode;
