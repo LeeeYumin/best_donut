@@ -39,7 +39,7 @@
     </td>
     <td>
         <a href="https://github.com/shinhw91">
-            <img src="">
+            <img src="https://github.com/LeeeYumin/best_donut/assets/152114081/3e103998-062c-4855-b6de-853389299b52.png" width="100" height="100">
         </a>
     </td>
     <td>
