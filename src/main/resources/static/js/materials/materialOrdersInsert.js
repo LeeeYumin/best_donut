@@ -348,7 +348,7 @@ function requireMatCal() {
 
         // 현재고량과 예상 소요량 차이
         let diffStockReq = matStockList.getColumnValues('stockCnt')[i] + matStockList.getColumnValues('orderedMat')[i] - matStockList.getColumnValues('requireMat')[i];
-        matStockList.setValue(i, 'differenceStockReq', diffStockReq)
+        matStockList.setValue(i, 'differenceStockReq', Math.round(diffStockReq * 10) / 10)
     }
 }
 
