@@ -31,7 +31,7 @@
 				)
 </insert>
 
-<!-- 자재품질등록 / 등록 버튼 클릭시 목록에서 사라짐 + 재고수량 업데이트. -->
+<!-- 자재품질등록 / 등록 버튼 클릭시 목록에서 사라짐 + 재고수량 업데이트. 계란만/30 -->
 <update id="addMatQual" parameterType="MatQltyCheckVO">
 	<choose>
 		<when test="matCode =='MAT00002'">
@@ -115,13 +115,13 @@
 				<if test="matCode != null and matCode != ''">
 					AND m.MAT_CODE LIKE '%'||#{matCode}||'%'
 				</if>
-			 	<if test="searchStartDate != null and searchStartDate != ''">
-			 		AND h.INOUT_DATE <![CDATA[ >= ]]> #{searchStartDate} 
+			 	<if test="searchStartDate != null">
+			 		AND trunc(h.INOUT_DATE) <![CDATA[ >= ]]> #{searchStartDate}
 				</if>
-				<if test="searchEndDate != null and searchEndDate != ''">
-			 		AND h.INOUT_DATE <![CDATA[ <= ]]> #{searchEndDate} 
+				<if test="searchEndDate != null">
+			 		AND trunc(h.INOUT_DATE) <![CDATA[ <= ]]> #{searchEndDate}
 				</if>
-			ORDER BY 1
+			ORDER BY h.INOUT_DATE desc
 </select>
 
 <!-- 완제품품질등록 / if : 생산완료일자 검색 -->
@@ -156,6 +156,7 @@
 	        , warehousing_cnt "warehousingCnt"
 	FROM product_detail
 	WHERE qlty_check_status = 'PQ1'
+	Order By 1
 </select>
 
 <!-- 완제품품질등록 grid2 / +등록버튼 클릭하면 적합수량에 포함. addProQual이랑 같이.-->
@@ -194,6 +195,28 @@
 	   		, qlty_check_status = 'PQ2'
 	 WHERE PRODUCT_LOT_CODE = #{productLotCode}
 </update>
+
+<!-- 완제품 품질 등록 / inout_history 입출고내역 등록-->
+<insert id="insertProdInout" parameterType="ProQltyVO">
+	INSERT INTO product_inout_history
+		    (
+		        product_inout_code
+		        , inout_sep
+		        , inout_cnt
+		        , inout_date
+		        , product_lot_code
+		        , users_code
+		    )
+		VALUES
+		    (
+				seq_func('product_inout_history')
+				, 'IO1'
+				, #{goodCnt}
+				, sysdate
+				, #{productLotCode}
+				, 'USE00005'
+		    )
+</insert>
 
 <!-- 완제품 품질등록 (코드리뷰 추가) -->
 <update id="addProQual2">
@@ -250,7 +273,7 @@
 			 		AND trunc(c.check_recv_date) = to_Date(#{checkRecvDate},'yyyy-MM-dd')
 				</if>
 			</where>
-			ORDER BY 1
+			ORDER BY c.check_recv_date desc
 </select>
 
 </mapper>

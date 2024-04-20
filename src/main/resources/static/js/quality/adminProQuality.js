@@ -2,6 +2,7 @@ adminProQual('','');
 
 	const grid = new tui.Grid({
 		el : document.getElementById('grid'),
+		bodyHeight: 500,
 		scrollX : false,
 		scrollY : true,
 		rowHeaders: ['checkbox'],
@@ -91,3 +92,9 @@ function findProd() {
 if($('#auth').html() != '1'){
 	$('#updateBtn').attr('style', 'display : none;');
 	}
+
+function reset() {
+	document.querySelector('#prodName').value = '';
+	document.querySelector('#inDate').value = '';
+	adminProQual('','');
+}

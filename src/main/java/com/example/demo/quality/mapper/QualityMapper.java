@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.demo.product.ProductInoutVO;
 import com.example.demo.quality.AdminMatQualVO;
 import com.example.demo.quality.MatQltyCheckVO;
 import com.example.demo.quality.ProDetailVO;
@@ -28,4 +29,5 @@ public interface QualityMapper {
 	public List<ProQltyVO> adminProQuality(String productName, String checkRecvDate); //완제품품질관리
 	public List<QualityUnfitVO> getUnfitProd(); //완제품 불량등록
 	public int addProQual2(String productCode);
+	public int insertProdInout(ProQltyVO vo); //inout history 입출고내역 등록
 }

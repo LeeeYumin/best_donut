@@ -44,7 +44,7 @@ public class QualityServiceImpl implements QualityService {
 	public List<AdminMatQualVO> adminMatQuality(AdminMatQualVO vo) {
 		return qualityMapper.adminMatQuality(vo); //자재품질관리
 	}
-
+	
 	@Override
 	public List<ProDetailVO> selectProQuality(String allEndTime){
 		return qualityMapper.selectProQuality(allEndTime); //grid1 완제품품질등록 
@@ -58,6 +58,7 @@ public class QualityServiceImpl implements QualityService {
 			result += qualityMapper.insertProQual(vo);
 			result += qualityMapper.addProQual(vo);
 			result += qualityMapper.addProQual2(vo.getProductCode());
+			result += qualityMapper.insertProdInout(vo);
 		}
 		return result > 0 ? true : false; //grid2 완제품품질입력
 	}
@@ -76,6 +77,7 @@ public class QualityServiceImpl implements QualityService {
 	public List<QualityUnfitVO> getUnfitProd() {
 		return qualityMapper.getUnfitProd();
 	}
+
 
 //	@Override
 //	public boolean addProQual(int goodCnt, String productLotCode) {

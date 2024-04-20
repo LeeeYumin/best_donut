@@ -4,7 +4,7 @@
  		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
 <head>
 <meta charset="UTF-8">
-<title>insertMatQuality.html</title>
+<title>자재 품질 등록</title>
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.css">
@@ -23,10 +23,11 @@
 					<div class="row mb-3">
 						<div class="btnClass">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재 LOT 번호</label>
-							<input id="matLOT" class="form-control" type="text" name="matLOT" style="width: 500px;" placeholder="자재 LOT 번호를 압력해주세요"><br>
+							<input id="matLOT" class="form-control" type="text" name="matLOT" style="width: 500px;" placeholder="자재 LOT 번호를 입력해주세요"><br>
 							<label for="date" class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입고 날짜</label>
 								<div class="col-sm-6 input-group">
 									<input type="date" class="form-control" id="inDate" max="2100-12-31" min="1970-01-01">
+									<span class="input-group-text">~</span>
 									<input type="date" class="form-control" id="inDate2" max="2100-12-31" min="1970-01-01">
 							</div>
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px;">

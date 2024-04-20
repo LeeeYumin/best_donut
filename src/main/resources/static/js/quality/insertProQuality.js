@@ -32,10 +32,9 @@ const grid1 = new tui.Grid({
   el : document.getElementById('grid1'),
   scrollX : false,
   scrollY : true,
-  rowHeaders: ['checkbox'],
   columns : [
     {
-      header : '완제품Lot코드',
+      header : '완제품LOT코드',
       name : 'productLotCode',
       align : "center",
       sortable: true,
@@ -90,7 +89,6 @@ async function getProDetail(endDate){
     console.log(result);
     grid1.resetData(result);
     //grid2.resetData(res);
-
 };
 
 //grid1 생산완료일자 검색
@@ -100,7 +98,6 @@ function findProd() {
   getProDetail(endDate);
 }
 
-
 const grid2 = new tui.Grid({
   el : document.getElementById('grid2'),
   scrollX : false,
@@ -108,7 +105,7 @@ const grid2 = new tui.Grid({
   rowHeaders: ['checkbox'],
   columns : [
     {
-      header : '완제품Lot코드',
+      header : '완제품LOT코드',
       name : 'productLotCode',
       align : "center",
     },
@@ -210,10 +207,9 @@ const grid2 = new tui.Grid({
                 ],
               }
             }
-    }
-  ]
+      }
+    ]
 });
-
 
 async function selectProQual(){
   await fetch(`ajax/selectProQual`)
@@ -224,7 +220,6 @@ async function selectProQual(){
     grid2.resetData(res);
   })
 };
-
 
 //grid2 입력값
 grid2.on('afterChange', event => {
@@ -256,15 +251,15 @@ grid2.on('afterChange', event => {
   }
 })
 
+//체크하고 버튼누르면 적합수량->적합 수량에 insert & 입고 수량에 update
 
-//버튼누르면 적합수량->적합 수량에 insert & 입고 수량에 update
 function addProQual(){
-  const data = grid2.getData();
-  console.log(JSON.stringify(data));
+  const checkedRows = grid2.getCheckedRows();
+  console.log(checkedRows);
   fetch(`ajax/insertProQual`,{
     method : 'post',
    	headers: jsonHeaders,
-		body : JSON.stringify(data)
+		body : JSON.stringify(checkedRows),
   })
   .then(res => res.json())
 	.then(res => {
@@ -279,7 +274,11 @@ function addProQual(){
 				showConfirmButton: false,
 				timer: 2000,
 			});
-      resetForm();
+      //버튼클릭하고 리셋
+      selectProQual();
+      grid2.refreshLayout();
+      getProDetail('');
+      grid1.refreshLayout();
 		}
 		else {
 			Swal.fire({
@@ -294,8 +293,5 @@ function addProQual(){
 })
 }
 
+//grid2 출력
 selectProQual();
-
-function resetForm() {
-	insertForm.reset();
-}

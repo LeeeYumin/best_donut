@@ -5,7 +5,7 @@
 		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- {폴더명/파일명} -->
 <head>
 <meta charset="UTF-8">
-<title>adminProQuality.html</title>
+<title>완제품 품질 관리</title>
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <link rel="stylesheet" href="/fonts/common.css" />
@@ -30,12 +30,14 @@
 					</div>
 						<div class="py-0 mb-2 d-md-flex justify-content-md-center" style="margin-top: 10px;">
 						<button id="findBtn" type="button" class="btn btn-primary me-md-2" onclick="findProd()">검색</button>
+						<button id="resetBtn" type="button" class="btn btn-primary me-md-2" onclick="reset()">초기화</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		</div>
+
 
 <div>
 	<div class="card mb-3">
@@ -47,6 +49,7 @@
 			</div>
 			<script src="/js/quality/adminProQuality.js"></script>
 			<div class="downBtn"  style="text-align: center;">
+			<button id="selDelBtn" type="button" class="btn btn-primary me-md-2">선택삭제</button>
 			<button id="updateBtn" type="button" class="btn btn-primary me-md-2">수정</button>
 			</div>
 		</div>

@@ -30,5 +30,7 @@ public class ProQltyVO {
 	private String productCode; 
 	
 	//PRODUCT (완제품 품질 관리)
-	private String productName; 
+	private String productName;
+	
+	private String usersCode;
 }
