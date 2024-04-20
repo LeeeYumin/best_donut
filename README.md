@@ -34,7 +34,7 @@
     </td>
     <td>
         <a href="https://github.com/qpqp12121">
-            <img src="">
+            <img src="https://github.com/LeeeYumin/best_donut/assets/152114081/d769ef7c-60f4-4105-b0da-fa2d040b46e9.png" width="100" height="100">
         </a>
     </td>
     <td>
