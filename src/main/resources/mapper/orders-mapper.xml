@@ -10,7 +10,13 @@
 		SELECT company_code   AS "companyCode"
 		       , company_name AS "companyName"
 		  FROM company
-		 WHERE company_sep = 'CO2'	
+		 WHERE company_sep = 'CO2'
+		 ORDER BY 1	
+	</select>
+	
+	<!-- 사용자 조회 -->
+	<select id="getUsers" resultType="UsersVO">
+
 	</select>
 	
 	<!-- 주문조회 -->
@@ -46,20 +52,23 @@
 			<if test="ordersCode != null and ordersCode != ''">
 				AND o.orders_code LIKE '%' || #{ordersCode} || '%'
 			</if>
-			<if test="companyCode != null and companyCode != ''">
-				AND o.company_code = #{companyCode}
+			<if test="companyName != null and companyName != ''">
+				AND c.company_name LIKE '%' || #{companyName} || '%'
+			</if>
+			<if test="usersName != null and usersName != ''">
+				AND u.users_name LIKE '%' || #{usersName} || '%'
 			</if>
 			<if test="dueStartDate != null">
-				AND o.due_date <![CDATA[ >= ]]> #{dueStartDate}
+				AND TRUNC(o.due_date) <![CDATA[ >= ]]> #{dueStartDate}
 			</if>
 			<if test="dueEndDate != null">
-				AND o.due_date <![CDATA[ <= ]]> #{dueEndDate}
+				AND TRUNC(o.due_date) <![CDATA[ <= ]]> #{dueEndDate}
 			</if>
 			<if test="ordersStartDate != null">
-				AND o.orders_date <![CDATA[ >= ]]> #{ordersStartDate}
+				AND TRUNC(o.orders_date) <![CDATA[ >= ]]> #{ordersStartDate}
 			</if>
 			<if test="ordersEndDate != null">
-				AND o.orders_date <![CDATA[ <= ]]> #{ordersEndDate}
+				AND TRUNC(o.orders_date) <![CDATA[ <= ]]> #{ordersEndDate}
 			</if>
 		 ORDER BY 1
 	</select>
@@ -98,10 +107,10 @@
 			AND u.users_name LIKE '%' || #{usersName} || '%'
 		</if>
 		<if test="prodReqStartDate != null">
-			AND p.req_date <![CDATA[ >= ]]> #{prodReqStartDate}
+			AND TRUNC(p.req_date) <![CDATA[ >= ]]> #{prodReqStartDate}
 		</if>
 		<if test="prodReqEndDate != null">
-			AND p.req_date <![CDATA[ <= ]]> #{prodReqEndDate}
+			AND TRUNC(p.req_date) <![CDATA[ <= ]]> #{prodReqEndDate}
 		</if>
 		 ORDER BY p.req_date DESC
 	</select>
@@ -147,7 +156,7 @@
 				, #{dueDate}
 				, #{totalOrdersPrice}
 				, 'OP1'
-				, 'USE00002'
+				, #{usersCode}
 				, #{companyCode}
 			)
 	</insert>
@@ -221,8 +230,8 @@
 	<update id="updateOrdStat" parameterType="ProdReqVO">
 		UPDATE orders
 		   SET orders_status = 'OP3'
-		 WHERE due_date <![CDATA[ >= ]]> #{dueStartDate}
-		   AND due_date <![CDATA[ <= ]]> #{dueEndDate}
+		 WHERE TRUNC(due_date) <![CDATA[ >= ]]> #{dueStartDate}
+		   AND TRUNC(due_date) <![CDATA[ <= ]]> #{dueEndDate}
 	</update>
 	
 	

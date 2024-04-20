@@ -26,6 +26,8 @@ public class ProductInoutVO {
 	// 추가 필드
 	private String productName;			// 제품명
 	private String companyName;			// 거래처명
+	private String companyCode;			// 거래처코드
+	private String usersName;			// 담당자명
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")

@@ -1,4 +1,18 @@
 getProductList();
+getCompany();
+
+const uName = $('#uName').html();
+const uCode = $('#uCode').html();
+$('#usersName').val(uName);
+
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
 
 // 1. 화면 세팅
 
@@ -89,7 +103,8 @@ async function saveInsert() {
 	const ordersDate = insertForm.ordersDate.value;
 	const dueDate = insertForm.dueDate.value;
 	const totalOrdersPrice = insertForm.totalOrdersPrice.value;
-	const companyCode = insertForm.companyName.value;
+	const companyCode = insertForm.companyCode.value;
+	const usersCode = uCode;
 
 	// 주문상세정보 : 주문량 0 아닌 제품 주문만 list에 저장
 	let ordDetlist = [];
@@ -106,26 +121,22 @@ async function saveInsert() {
 	}
 
 	// parameter
-	let param = {ordersDate, dueDate, totalOrdersPrice, companyCode, ordDetList:ordDetlist}
+	let param = {ordersDate, dueDate, totalOrdersPrice, companyCode, usersCode, ordDetList:ordDetlist}
 	console.log(param);
 
 	
 	// (3) 등록 fetch
-	let result = '';
 
-  await fetch('ajax/insertOrders',{
+  let result = await fetch('ajax/insertOrders',{
 		method : 'post',
    	headers: jsonHeaders,
 		body : JSON.stringify(param)
-	})
-	.then(res => res.json())
-	.then(res => {
-    result = res;
-  })
-
-
+	});
+	let res = await result.json();
+	console.log(res);
+	
 	// (4) 등록 후속처리
-	if(result){
+	if(res){
 		Swal.fire({
 			position: "center",
 			icon: "success",
@@ -161,31 +172,37 @@ function inputValidation() {
 
 	// 주문일자 검사
 	if(insertForm.ordersDate.value == '' || insertForm.ordersDate.value == null) {
-		valid.innerHTML = '주문일자를 입력해주세요.';
+		valid.innerHTML = '<i class="bx bx-error-circle"></i> 주문일자를 입력해주세요.';
 		return false;
 	}
 
 	// 납기일자 검사
 	if(insertForm.dueDate.value == '' || insertForm.dueDate.value == null) {
-		valid.innerHTML = '납기일자를 입력해주세요.';
+		valid.innerHTML = '<i class="bx bx-error-circle"></i> 납기일자를 입력해주세요.';
 		return false;
 	}
 
 	// 리드타임 검사(2주)
 	if(diffDate < 14) {
-		valid.innerHTML = '납기일자는 주문일자로부터 최소 2주 후 입니다.';
+		valid.innerHTML = '<i class="bx bx-error-circle"></i> 납기일자는 주문일자로부터 최소 2주 후 입니다.';
 		return false;
 	}
 
 	// 2. 거래처코드 검사
 	if(insertForm.companyName.value == '' || insertForm.companyName.value == null) {
-		valid.innerHTML = '거래처 코드를 입력해주세요.';
+		valid.innerHTML = '<i class="bx bx-error-circle"></i> 거래처를 입력해주세요.';
 		return false;
 	}
 
-	// 3. 주문금액 검사
+	// 3. 담당자 검사
+	if(insertForm.usersName.value == '' || insertForm.usersName.value == null) {
+		valid.innerHTML = '<i class="bx bx-error-circle"></i> 담당자를 입력해주세요.';
+		return false;
+	}
+
+	// 4. 주문금액 검사
 	if(insertForm.totalOrdersPrice.value == 0) {
-		valid.innerHTML = '주문상세 정보를 입력해주세요.';
+		valid.innerHTML = '<i class="bx bx-error-circle"></i> 주문상세 정보를 입력해주세요.';
 		return false;
 	}
 
@@ -197,6 +214,7 @@ function inputValidation() {
 function resetInsert(){
 	insertForm.reset();
 	getProductList();
+	$('#usersName').val(uName);
 }
 
 // grid 생성
@@ -325,6 +343,7 @@ function resetOrdDet(){
 
 
 // 거래처 목록 가져오기
+// 그리드 생성
 const companyGrid = new tui.Grid({
 	el : document.getElementById('companyGrid'),
 	scrollX : false,
@@ -347,12 +366,30 @@ const companyGrid = new tui.Grid({
 	]
 })
 
+// 데이터 생성
 function getCompany() {
-  fetch('ajax/getCompany')
-  .then(res => res.json())
-  .then(res => {
-		console.log(res);
-		companyGrid.resetData(res);
+ fetch('ajax/getCompany')
+ .then(res => res.json())
+ .then(res => {
+	 console.log(res);
+
+	// 모달창 다 띄워지고 나서 그리드 데이터 가져오기
+	$(document).ready(function(){
+    $('#modalCenter').on('shown.bs.modal', function(e) {
+			companyGrid.resetData(res);
+			// 그리드 refresh
+			companyGrid.refreshLayout()
+			})
+    })
 	})
 }
-getCompany();
+
+// 거래처 그리드 클릭시 거래처코드, 거래처명 가져옴
+companyGrid.on('click', (event) => {
+	// input에 거래처명 입력
+	insertForm.companyCode.value = companyGrid.getValue(event.rowKey, 'companyCode');
+	insertForm.companyName.value = companyGrid.getValue(event.rowKey, 'companyName');
+	// 닫기버튼 클릭
+	document.getElementById('closeBtn').click();
+})
+

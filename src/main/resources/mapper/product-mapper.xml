@@ -34,10 +34,10 @@
 		                           ON o.orders_code = d.orders_code
 		     WHERE o.orders_status = 'OP1' 
 		     <if test="dueStartDate != null">
-		     	AND o.due_date <![CDATA[ >= ]]> TO_DATE(#{dueStartDate}, 'YYYY-MM-DD')
+		     	AND TRUNC(o.due_date) <![CDATA[ >= ]]> TO_DATE(#{dueStartDate}, 'YYYY-MM-DD')
 		     </if>
 		     <if test="dueEndDate != null">
-			 	AND o.due_date <![CDATA[ <= ]]> TO_DATE(#{dueEndDate}, 'YYYY-MM-DD')
+			 	AND TRUNC(o.due_date) <![CDATA[ <= ]]> TO_DATE(#{dueEndDate}, 'YYYY-MM-DD')
 			 </if>
 		     GROUP BY d.product_code
 		    )
@@ -89,16 +89,16 @@
 				AND o.company_code = #{companyCode}
 			</if>
 			<if test="dueStartDate != null">
-				AND o.due_date <![CDATA[ >= ]]> #{dueStartDate}
+				AND TRUNC(o.due_date) <![CDATA[ >= ]]> #{dueStartDate}
 			</if>
 			<if test="dueEndDate != null">
-				AND o.due_date <![CDATA[ <= ]]> #{dueEndDate}
+				AND TRUNC(o.due_date) <![CDATA[ <= ]]> #{dueEndDate}
 			</if>
 			<if test="ordersStartDate != null">
-				AND o.orders_date <![CDATA[ >= ]]> #{ordersStartDate}
+				AND TRUNC(o.orders_date) <![CDATA[ >= ]]> #{ordersStartDate}
 			</if>
 			<if test="ordersEndDate != null">
-				AND o.orders_date <![CDATA[ <= ]]> #{ordersEndDate}
+				AND TRUNC(o.orders_date) <![CDATA[ <= ]]> #{ordersEndDate}
 			</if>
 		 ORDER BY 1
 	</select>
@@ -129,10 +129,10 @@
 			AND p.product_name LIKE '%' || #{productName} || '%'
 		</if>
 		<if test="expStartDate != null">
-			AND exp_date <![CDATA[ >= ]]> #{expStartDate}
+			AND TRUNC(exp_date) <![CDATA[ >= ]]> #{expStartDate}
 		</if>
 		<if test="expEndDate != null">
-			AND exp_date <![CDATA[ <= ]]> #{expEndDate}
+			AND TRUNC(exp_date) <![CDATA[ <= ]]> #{expEndDate}
 		</if>
 	</select>
 	
@@ -166,7 +166,7 @@
 		    )
 		VALUES
 		    (
-				seq_func(' product_inout_history')
+				seq_func('product_inout_history')
 				, 'IO2'
 				, #{inoutCnt}
 				, #{inoutDate}
@@ -209,16 +209,21 @@
 		       , h.product_lot_code
 		       , h.orders_detail_code
 		       , h.prod_req_detail_code
+		       , u.users_name
 		       , p.product_name
 		       , c.company_name
-		  FROM product_inout_history h LEFT OUTER JOIN orders_detail d
-		                                 ON h.orders_detail_code = d.orders_detail_code
-		                               LEFT OUTER JOIN orders o
-		                                 ON d.orders_code = o.orders_code
-		                               LEFT OUTER JOIN company c
-		                                 ON o.company_code = c.company_code
+		  FROM product_inout_history h LEFT OUTER JOIN product_detail d
+		                                            ON h.product_lot_code = d.product_lot_code
 		                               LEFT OUTER JOIN product p
-		                                 ON d.product_code = p.product_code
+		                                            ON d.product_code = p.product_code
+		                               LEFT OUTER JOIN orders_detail o
+		                                            ON d.product_code = o.product_code
+		                               LEFT OUTER JOIN orders s
+		                                            ON s.orders_code = o.orders_code
+		                               LEFT OUTER JOIN company c
+		                                            ON s.company_code = c.company_code
+		                               LEFT OUTER JOIN users u
+		                                            ON h.users_code = u.users_code
 		 WHERE 1=1
 		<if test="productInoutCode != null and productInoutCode != ''">
 			AND h.product_inout_code LIKE '%' || #{productInoutCode} || '%'
@@ -236,12 +241,12 @@
 			AND h.inout_sep = #{inoutSep}
 		</if>
 		<if test="searchStartDate != null">
-			AND h.inout_date <![CDATA[ >= ]]> #{searchStartDate}
+			AND TRUNC(h.inout_date) <![CDATA[ >= ]]> #{searchStartDate}
 		</if>
 		<if test="searchEndDate != null">
-			AND h.inout_date <![CDATA[ <= ]]> #{searchEndDate}
+			AND TRUNC(h.inout_date) <![CDATA[ <= ]]> #{searchEndDate}
 		</if>
-		 ORDER BY 1
+		 ORDER BY h.inout_date DESC
 	
 	</select>
 

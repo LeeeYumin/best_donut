@@ -1,5 +1,14 @@
 getProdReq({});
 
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
+
 // prodReqGrid.  주문 조회
 
 // 1. grid 생성
@@ -64,6 +73,13 @@ const prodReqGrid = new tui.Grid({
 	],
 })
 
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
 
 // 2. gridData 생성
 

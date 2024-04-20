@@ -13,6 +13,9 @@
 	<!-- Thymeleaf 레이아웃 div -->
 	<div layout:fragment="content">
 	
+	<div sec:authentication="principal.usersVO.perm1" class="user" id="auth" style="display: none;"></div>
+	
+	
 		<h3 class="fw-bold py-1 mb-4">
 			<span class="text-muted fw-light">영업관리 / </span> 완제품출고등록
 		</h3>
@@ -113,7 +116,7 @@
 								</div>
 
 								<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-									<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="insertProdOut()">출고등록</button>
+									<button type="button" class="btn btn-primary me-md-2" id="insertBtn" onclick="insertProdOut()">출고등록</button>
 								</div>
 							</form>
 						</div>

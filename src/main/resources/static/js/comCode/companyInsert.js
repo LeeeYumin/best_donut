@@ -1,3 +1,12 @@
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
+
 function sample4_execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function(data) {

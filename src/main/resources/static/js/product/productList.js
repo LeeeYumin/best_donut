@@ -1,3 +1,12 @@
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
+
 // I. productGrid 제품조회
 
 // 1. grid 생성
