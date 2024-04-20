@@ -1,5 +1,14 @@
 getOrdersList({});
 
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
+
 // ordGrid.  주문 조회
 
 // 1. grid 생성
@@ -265,3 +274,7 @@ async function insertProdOut() {
 // 등록입력창 세팅
 document.querySelector('#inoutDate').value = dateFormat(new Date());
 document.querySelector('#userName').value = '김현준';
+
+if($('#auth').html() != '1'){
+$('#insertBtn').attr('style', 'display : none;');
+}

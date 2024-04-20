@@ -1,3 +1,12 @@
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
+
 // 주코드 그리드
 const comCodeGrid = new tui.Grid({
 	el : document.getElementById('comCodeGrid'),

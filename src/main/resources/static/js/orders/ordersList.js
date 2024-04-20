@@ -1,4 +1,14 @@
 getOrdersList({});
+getCompany();
+
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
 
 if(document.querySelector('#auth').innerHTML != '1'){
 	console.log('삭제버튼 숨김');
@@ -89,7 +99,6 @@ const ordGrid = new tui.Grid({
 	],
 })
 
-
 // 2. gridData 생성
 
 // 주문 조회(ajax)
@@ -111,31 +120,17 @@ function getOrdersList(param){
 
 // 3. 이벤트
 
-// 거래처 목록 가져오기
-function getCompany() {
-  fetch('ajax/getCompany')
-  .then(res => res.json())
-  .then(res => {
-
-		for(company of res){
-			let optionHtml = '<option value="' + company.companyCode + '">' + company.companyName + '</option>'
-			let companyName = document.querySelector("#companyName")
-			companyName.insertAdjacentHTML('beforeend', optionHtml);
-		}
-	})
-}
-getCompany();
-
 // 주문 검색버튼 클릭 이벤트
 async function searchOrders(){
 	let ordersCode = searchForm.ordersCode.value;
-	let companyCode = searchForm.companyName.value;
+	let companyName = searchForm.companyName.value;
 	let ordersStartDate = searchForm.ordersStartDate.value;
 	let ordersEndDate = searchForm.ordersEndDate.value;
 	let dueStartDate = searchForm.dueStartDate.value;
 	let dueEndDate = searchForm.dueEndDate.value;
+	let usersName = searchForm.usersName.value;
 
-	let param = {ordersCode, companyCode, ordersStartDate, ordersEndDate, dueStartDate, dueEndDate};
+	let param = {ordersCode, companyName, ordersStartDate, ordersEndDate, dueStartDate, dueEndDate, usersName};
 	getOrdersList(param);
 }
 
@@ -227,6 +222,8 @@ function getOrdersDetail(ordersCode){
 };
 
 // 3. 이벤트
+
+// 주문 삭제
 function deleteOrders(){
 
 	let checkedList = ordGrid.getCheckedRows();
@@ -251,6 +248,7 @@ function deleteOrders(){
 				showConfirmButton: false,
 				timer: 1500
 			});
+			detGrid.clear();
 			searchReset();
 		}
 		else {
@@ -265,3 +263,53 @@ function deleteOrders(){
 		}
 	})
 }
+
+// 거래처 목록 가져오기
+// 그리드 생성
+const companyGrid = new tui.Grid({
+	el : document.getElementById('companyGrid'),
+	scrollX : false,
+	scrollY : true,
+	header:[
+		align = 'center',
+	],
+	columns : [ 
+    {
+      header : '거래처코드',
+      name : 'companyCode',
+      align : 'center',
+			
+    }, 
+		{
+      header : '거래처명',
+      name : 'companyName',
+      align : 'center',
+    }, 
+	]
+})
+
+// 데이터 생성
+function getCompany() {
+ fetch('ajax/getCompany')
+ .then(res => res.json())
+ .then(res => {
+	 console.log(res);
+
+	// 모달창 다 띄워지고 나서 그리드 데이터 가져오기
+	$(document).ready(function(){
+    $('#modalCenter').on('shown.bs.modal', function(e) {
+			companyGrid.resetData(res);
+			// 그리드 refresh
+			companyGrid.refreshLayout()
+			})
+    })
+	})
+}
+
+// 거래처 그리드 클릭시 거래처명 가져옴
+companyGrid.on('click', (event) => {
+	// input에 거래처명 입력
+	searchForm.companyName.value = companyGrid.getValue(event.rowKey, 'companyName');
+	// 닫기버튼 클릭
+	document.getElementById('closeBtn').click();
+})

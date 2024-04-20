@@ -1,3 +1,12 @@
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
+
 // 주코드 목록 가져오기
 function getComCodeSelect() {
   let param = {};

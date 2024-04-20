@@ -38,22 +38,98 @@
 							</div>
 						</div>
 
+						<!-- 제품명 -->
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">제품명</label>
-							<div class="col-sm-6">
-								<select class="form-select" id="productName" aria-label="productName">
-									<option value="" selected="">제품명</option>
-								</select>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="productName" id="productName"></option>
 							</div>
+
+							<!-- Button trigger modal -->
+							<div class="col-sm-2">
+								<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalCenter1">
+									제품 선택
+								</button>
+							</div>
+
+							<!-- Modal -->
+							<div class="modal fade" id="modalCenter1" tabindex="-1" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h5 class="modal-title" id="modalCenterTitle1">제품 선택</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+
+										<!-- Modal Body -->
+										<div class="modal-body">
+											<div class="row">
+												<div class="col mb-0">
+													<div id="productGrid"></div>
+												</div>
+											</div>
+										</div>
+
+										<!-- Modal Footer -->
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="closeBtn1">
+												닫기
+											</button>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
 						</div>
 
+						<!-- 거래처명 -->
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
-							<div class="col-sm-6">
-								<select class="form-select" id="companyName" aria-label="companyName">
-									<option value="" selected="">거래처명</option>
-								</select>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="companyName" id="companyName"></option>
 							</div>
+
+							<!-- Button trigger modal -->
+							<div class="col-sm-2">
+								<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalCenter">
+									거래처 선택
+								</button>
+							</div>
+
+							<!-- Modal -->
+							<div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h5 class="modal-title" id="modalCenterTitle">거래처 선택</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+
+										<!-- Modal Body -->
+										<div class="modal-body">
+											<div class="row">
+												<div class="col mb-0">
+													<div id="companyGrid"></div>
+												</div>
+											</div>
+										</div>
+
+										<!-- Modal Footer -->
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="closeBtn">
+												닫기
+											</button>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
 						</div>
 
 						<div class="row mb-3">
@@ -65,19 +141,23 @@
 							</div>
 						</div>
 
+						<!-- 거래처 구분 -->
 						<div class="row mb-3">
 							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입출고구분</label>
 							<div class="col-sm-6">
-								<select class="form-select" id="inoutSep" aria-label="inoutSep">
-									<option value="" selected="">입출고구분</option>
-									<option value="IO1">입고</option>
-									<option value="IO2">출고</option>
-								</select>
+								<div class="form-check-inline">
+									<input class="form-check-input" type="radio" name="inoutSep" id="companySep1" value="IO1"> 
+									<label class="form-check-label" for="companySep1">입고</label>
+								</div>
+								<div class="form-check-inline">
+									<input class="form-check-input" type="radio" name="inoutSep" id="companySep2" value="IO2"> 
+									<label class="form-check-label" for="companySep2">출고</label>
+								</div>
 							</div>
 						</div>
 
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="getProdInout()">검색</button>
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="getSearchParam()">검색</button>
 							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
 						</div>
 					</div>

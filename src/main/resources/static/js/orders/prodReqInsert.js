@@ -1,3 +1,12 @@
+// 그리드 행 호버
+tui.Grid.applyTheme('default', {
+	row:{
+			hover:{
+					background:'#ccc'
+			}
+	}
+})
+
 // 0. 기본값 세팅
 setToday();
 
