@@ -6,8 +6,8 @@ import lombok.Data;
 public class MaterialOutgoingVO {
 	private String prodInstructDetailCode;
 	private String matLotCode;
-	private Integer outCnt;
-	private Integer procNeedCnt;
+	private Double outCnt;
+	private Double procNeedCnt;
 	private String matCode;
 	private String result;
 }

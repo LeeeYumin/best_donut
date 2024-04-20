@@ -16,8 +16,8 @@ public class MaterialReadVO {
 	private String matLotCode;
 	private Integer warehousingCnt;
 	private Integer checkDoneCnt;
-	private Integer outCnt;
-	private Integer remainCnt;
+	private Double outCnt;
+	private Double remainCnt;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date expDate;
 	private String qltyCheckStatus;

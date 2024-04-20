@@ -41,6 +41,7 @@
   	      JOIN mat m ON d.mat_code = m.mat_code
 	     WHERE d.mat_code = #{matCode} 
 	       AND d.mat_status = 'MSY'
+	  ORDER BY d.exp_date, d.mat_lot_code
    	</select>
    
    <!-- 폐기 처리 -> 재고도 업데이트 -->
@@ -69,10 +70,16 @@
         	</foreach>
         	
    		<!-- 자재 자재 재고 업데이트 -->
-   		UPDATE mat
-   		   SET stock_cnt = stock_cnt - v_remain_cnt
-   		 WHERE mat_code = v_mat_code;
-   		
+   		IF v_mat_code = 'MAT00002' THEN
+			UPDATE mat
+	   		   SET stock_cnt = stock_cnt - ROUND(v_remain_cnt / 30, 1)
+	   		 WHERE mat_code = v_mat_code;
+		ELSE
+	   		UPDATE mat
+	   		   SET stock_cnt = stock_cnt - v_remain_cnt
+	   		 WHERE mat_code = v_mat_code;
+		END IF;
+		   		
    		<!-- 자재 폐기 배출 기록 insert -->
         OPEN lot_cursor;
         LOOP

@@ -103,7 +103,7 @@ async function getTodayIns() {
         })
 };
 
-// 생산 지시 클릭 시
+// 생산 지시 클릭 시 자재 불출 유무 체크
 prodInsDetail.on('click', () => {
     let matOutgoingStatus = prodInsDetail.getValue(prodInsDetail.getFocusedCell().rowKey, 'matOutgoingStatus')
 
@@ -117,22 +117,32 @@ prodInsDetail.on('click', () => {
             timer: 1500
         });
 
-        // 포커스 이동 
+        BOMList.resetData([]);
+        matStockList.resetData([]);
+        matOutgoingList.resetData([]);
+    } else if (matOutgoingList.getData().length != 0) {
+        let productCode = BOMList.getData()[0].productCode;
+        let prodInsDetailData = prodInsDetail.getData();
 
+        Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: '불출 목록에 자재들이 담겨있습니다.',
+            text: '불출 먼저 해주세요.',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        for (let i = 0; i < prodInsDetailData.length; i++) {
+            if (prodInsDetailData[i].productCode == productCode) {
+                prodInsDetail.focusAt(i, 2);
+                break;
+            }
+        }
 
     } else {
-        if (matOutgoingList.getData().length != 0) {
-            Swal.fire({
-                position: "center",
-                icon: "warning",
-                title: '이미 불출 목록에 재료들이 있습니다.',
-                text: ' ',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        } else {
-            getBOMList();
-        }
+        getBOMList();
+        matStockList.resetData([]);
     }
 });
 
