@@ -42,6 +42,26 @@
 	
 	
 	<!-- 등록 -->
+	<insert id="insertImage" parameterType="FileVO">
+	<selectKey keyProperty="imageCode" resultType="String" order="BEFORE">
+		SELECT seq_func('image') FROM dual
+	</selectKey>
+		INSERT INTO IMAGE(
+				IMAGE_CODE
+				, UPLOAD_FILE_NAME
+				, SAVE_FILE_NAME
+				, FILE_SIZE
+				, EXTEN
+				, PATH)
+		VALUES(
+				#{imageCode}
+				, #{uploadFileName}
+				, #{saveFileName}
+				, #{fileSize}
+				, #{exten}
+				, #{path})
+	</insert>
+	
 	<insert id="insertEqm" parameterType="EqmVO">
 		INSERT INTO EQM(
 					EQM_CODE
@@ -57,7 +77,8 @@
 					, CHECK_CYCLE
 					, LAST_CHECK_DATE
 					, EQM_STATUS
-					, OPR_STATUS)
+					, OPR_STATUS
+					, IMAGE_CODE)
 		VALUES(
 			seq_func('eqm')
 			, #{eqmName}
@@ -72,8 +93,11 @@
 			, #{checkCycle}
 			, #{lastCheckDate}
 			, #{eqmStatus}
-			, #{oprStatus})
+			, #{oprStatus}
+			, #{imageCode})
 	</insert>
+	
+
 	
 	
 	<!-- 단건조회 -->
@@ -92,6 +116,9 @@
 				, LAST_CHECK_DATE
 				, EQM_STATUS
 				, OPR_STATUS
+				, (SELECT SAVE_FILE_NAME
+					FROM IMAGE
+					WHERE IMAGE_CODE = EQM.IMAGE_CODE) IMAGE_CODE
 		FROM EQM
 		WHERE EQM_CODE = #{eqmCode}
 	</select>
