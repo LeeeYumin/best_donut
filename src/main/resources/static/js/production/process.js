@@ -497,7 +497,13 @@ function endProc() {
     getTodayIns();
   });
 }
+//새로고침
+function refreshProc() {
+  const row = todayInsD.getFocusedCell().rowKey;
+  const insDecode = todayInsD.getValue(row, 'prodInstructDetailCode');
 
+  getProcessInfo(insDecode);
+}
 
 
 //=======================================================

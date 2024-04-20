@@ -23,6 +23,16 @@
 	margin-bottom: 10px;
 	/* margin-left: auto; display:flex 적용되어 있어 float: right X */
 }
+.btn-refresh {
+	width: 30px;
+	height: 20px;
+	font-size: large;
+	font-weight: bolder;
+	float: right;
+	margin-right: 14px;
+	margin-top: 35px;
+	/* margin-left: auto; display:flex 적용되어 있어 float: right X */
+}
 .btn-addrow,
 .btn-delrow {
 	width: 60px;
@@ -82,6 +92,7 @@
 				<span>
 					<button type="button" class="btn btn-secondary btn-sm btn-end" id="endProcBtn" onclick="endProc()">종료</button>
 					<button type="button" class="btn btn-primary btn-sm btn-start" id="startProcBtn" onclick="startProc()">시작</button>
+					<button type="button" class="btn btn-light btn-refresh" onclick="refreshProc()"><i class="bi bi-arrow-clockwise"></i></button>
 				</span>
 				<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
 				<div class="pdt-0 mgb-20 card-body" id="procInfo"></div>
