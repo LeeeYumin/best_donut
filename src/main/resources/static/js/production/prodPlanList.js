@@ -1,5 +1,22 @@
 getProdPlanList();
 
+//목록출력 기본날짜 (한달)
+
+const d = new Date();
+const month = d.getMonth();
+//const date = d.getDate();
+
+// 한달 전 구하기
+document.getElementById('searchStartDate').value = new Date(new Date().setMonth(month - 1)).toISOString().substring(0, 10);
+document.getElementById('searchEndDate').value = new Date().toISOString().substring(0, 10);
+
+//로딩시 바로 실행
+window.onload = function() {
+	getProdPlanList();
+};  
+
+//=================================================================
+
 // 생산관리자 권한 확인
 if(document.querySelector('#auth').innerHTML != '1'){
 	document.querySelector('#deleteBtn').setAttribute('style', 'display : none;');
@@ -86,8 +103,9 @@ if(document.querySelector('#auth').innerHTML != '1'){
 			const searchStartDate = document.getElementById('searchStartDate').value;
 			const searchEndDate = document.getElementById('searchEndDate').value;
 			const prodPlanCode = document.getElementById('prodPlanCode').value;
+			const prodPlanStatus = document.querySelector("[name=prodPlanStatus]:checked").value;
 
-			const obj = {searchStartDate, searchEndDate, prodPlanCode};
+			const obj = {searchStartDate, searchEndDate, prodPlanCode, prodPlanStatus};
 			console.log(obj);
 			
 			const data = {
@@ -111,12 +129,29 @@ if(document.querySelector('#auth').innerHTML != '1'){
 				getProdPlanList();
 			}
 		})
+		document.getElementById('prodPlanStatus0').addEventListener('keyup', (e) => {
+			if (e.keyCode == 13) {
+				getProdPlanList();
+			}
+		})
+		document.getElementById('prodPlanStatus1').addEventListener('keyup', (e) => {
+			if (e.keyCode == 13) {
+				getProdPlanList();
+			}
+		})
+		document.getElementById('prodPlanStatus2').addEventListener('keyup', (e) => {
+			if (e.keyCode == 13) {
+				getProdPlanList();
+			}
+		})
 
 		//초기화버튼
 		document.getElementById('resetBtn').addEventListener('click', function() {
 			document.getElementById('searchStartDate').value = '';
 			document.getElementById('searchEndDate').value = '';
 			document.getElementById('prodPlanCode').value = '';
+			document.getElementById('prodPlanStatus0').checked = true;
+
 			plList.resetData([]);
 			getProdPlanList();
 		});

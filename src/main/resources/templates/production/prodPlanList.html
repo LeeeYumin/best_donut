@@ -59,7 +59,7 @@
 								<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">계획일자</label>
 								<div class="col-sm-6 input-group">
 									<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
-									<span style="margin: 0 10px; padding-top: 10px;">-</span>
+									<span class="input-group-text">~</span>
 									<input type="date" class="form-control" name="searchEndDate" id="searchEndDate">
 								</div>
 							</div>
@@ -68,6 +68,16 @@
 							<div class="col-sm-6">
 								<input class="form-control" type="text" name="prodPlanCode" id="prodPlanCode" placeholder="생산계획코드 입력">
 							</div>
+						</div>
+
+						<div>
+							<label class="col-sm-1 mb-5" style="font-size: 0.8rem;">진행상태</label>
+							<input type="radio" name="prodPlanStatus" id="prodPlanStatus0" value="" checked class="form-check-input">
+							<label for="productCode0" class="form-check-inline">전체</label>
+							<input type="radio" name="prodPlanStatus" id="prodPlanStatus1" value="LS1" class="form-check-input">
+							<label for="productCode1" class="form-check-inline">미지시</label>
+							<input type="radio" name="prodPlanStatus" id="prodPlanStatus2" value="LS2" class="form-check-input">
+							<label for="productCode2" class="form-check-inline">지시등록</label>
 						</div>
 
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">

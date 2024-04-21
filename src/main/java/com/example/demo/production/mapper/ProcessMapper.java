@@ -34,8 +34,8 @@ public interface ProcessMapper {
 	
 	
 /* 3.공정실적 */
-	public List<ProdInsVO> getProcResultList(ProdInsVO vo); //완료된 공정(생산지시) 목록
-	public List<ProdInsDeVO> getProcResultDeList(String prodInstructCode); //완료된 생산지시 상세
+	//public List<ProdInsVO> getProcResultList(ProdInsVO vo); //완료된 공정(생산지시) 목록
+	public List<ProdInsDeVO> getProcResultDeList(ProdInsDeVO dvo); //완료된 생산지시 상세 (검색포함)
 	
 
 }

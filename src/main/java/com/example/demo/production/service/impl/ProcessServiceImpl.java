@@ -93,14 +93,16 @@ public class ProcessServiceImpl implements ProcessService {
 
 
 
+
 /* 3.공정실적 */
+//@Override
+//	public List<ProdInsVO> getProcResultList(ProdInsVO vo) { //완료된 생산지시
+//		return processMapper.getProcResultList(vo);
+//	}
 	@Override
-	public List<ProdInsVO> getProcResultList(ProdInsVO vo) { //완료된 생산지시
-		return processMapper.getProcResultList(vo);
+	public List<ProdInsDeVO> getProcResultDeList(ProdInsDeVO dvo) {
+		return processMapper.getProcResultDeList(dvo);
 	}
-	@Override
-	public List<ProdInsDeVO> getProcResultDeList(String prodInstructCode) { //완료된 생산지시 상세
-		return processMapper.getProcResultDeList(prodInstructCode);
-	}
+
 
 }

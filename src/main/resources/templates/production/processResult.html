@@ -23,6 +23,9 @@
 .mgb-50 {
 	margin-bottom: 50px;
 }
+.mgb-20 {
+	margin-bottom: 20px;
+}
 .pdt-0 {
 	padding-top: 0px;
 }
@@ -56,7 +59,7 @@
 								<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">지시일자</label>
 								<div class="col-sm-6 input-group">
 									<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
-									<span style="margin: 0 10px; padding-top: 10px;">-</span>
+									<span class="input-group-text">~</span>
 									<input type="date" class="form-control" name="searchEndDate" id="searchEndDate">
 								</div>
 							</div>
@@ -65,6 +68,32 @@
 							<div class="col-sm-6">
 								<input class="form-control" type="text" name="prodInstructCode" id="prodInstructCode" placeholder="생산지시코드 입력">
 							</div>
+						</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">완제품LOT코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" name="productLotCode" id="productLotCode" placeholder="완제품LOT코드 입력">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재LOT코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" name="matLotCode" id="matLotCode" placeholder="자재LOT코드 입력">
+							</div>
+						</div>
+
+						<div>
+							<label class="col-sm-1 mb-5" style="font-size: 0.8rem;">제품명</label>
+							<input type="radio" name="productCode" id="productCode0" value="" checked class="form-check-input">
+							<label for="productCode0" class="form-check-inline">전체</label>
+							<input type="radio" name="productCode" id="productCode1" value="PRO00001" class="form-check-input">
+							<label for="productCode1" class="form-check-inline">글레이즈드</label>
+							<input type="radio" name="productCode" id="productCode2" value="PRO00002" class="form-check-input">
+							<label for="productCode2" class="form-check-inline">초코</label>
+							<input type="radio" name="productCode" id="productCode3" value="PRO00003" class="form-check-input">
+							<label for="productCode3" class="form-check-inline">딸기</label>
+							<input type="radio" name="productCode" id="productCode4" value="PRO00004" class="form-check-input">
+							<label for="productCode4" class="form-check-inline">녹차</label>
 						</div>
 
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
@@ -78,20 +107,19 @@
 
 <!-- 생산지시목록 FORM -->
 		<div class="card mgb-50">
-			<div class="row">
-				<div class="col-sm-4">
-					<h4 class="card-header">공정완료 지시목록</h4>
-					<!-- <button type="button" class="btn btn-secondary btn-sm btn-delete" id="deleteBtn" onclick="deletePlan()">삭제</button> -->
-						<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
-						<div class="pdt-0 card-body" id="piList"></div>
-				</div>
-				<div class="col-sm-8">
-					<h5 class="card-header">상세 목록</h5>
-						<!-- <button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updatePlanDetail()">수정</button> -->
-						<div id="alertMsg2" class="warn-alert"><!-- 알림문구 --></div>
-						<div class="pdt-0 card-body" id="piAll"></div>
-				</div>
-			</div>
+			<!-- <div class="row"> -->
+				<!-- <div class="col-sm-4"> -->
+					<h4 class="card-header">완료공정 목록</h4>
+						<div class="pdt-0 card-body" id="resultList"></div>
+				<!-- </div> -->
+				<!-- <div class="col-sm-8"> -->
+					<!-- <h5 class="card-header">상세 목록</h5>
+						<div id="alertMsg2" class="warn-alert"></div>
+						<div class="pdt-0 card-body" id="piAll"></div> -->
+				<!-- </div> -->
+			<!-- </div> -->
+			<h5 class="card-header">완료공정 상세</h5>
+			<div class="pdt-0 mgb-20 card-body" id="procInfo"></div>
 		</div>
 
 		<!-- script 태그 => 타임리프 div 안에서 작성 -->

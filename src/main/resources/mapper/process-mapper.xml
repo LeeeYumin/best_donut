@@ -59,9 +59,9 @@
 <!-- 공정자재 조회 -->  
   <select id="getProcMatInfo" resultType="ProcessVO" parameterType="String">
 	 SELECT pm.proc_mat_code
-          , pm.proc_detail_code
-          , pm.mat_lot_code
-          , m.mat_name
+        , pm.proc_detail_code
+        , pm.mat_lot_code
+        , m.mat_name
 	      , pm.mat_cnt
 	 FROM proc_mat pm JOIN proc_detail pcd
 	                   ON pm.proc_detail_code = pcd.proc_detail_code
@@ -114,15 +114,38 @@
 
 
 <!--==== 공정실적 =============================== -->
-
-<!-- 공정완료 목록 조회 -->
-	<select id="getProcResultList" resultType="ProdInsVO">
-		SELECT instruct_date
-					, prod_instruct_code
-					, prod_instruct_status
-					, users_code
-		FROM prod_instruct
-   		<where>
+	<select id="getProcResultDeList" resultType="ProdInsDeVO">
+		SELECT DISTINCT pi.prod_instruct_code
+				, pi.instruct_date
+				, u.users_name
+				, pid.prod_instruct_detail_code
+				, pld.product_code
+				, p.product_name
+				, instruct_cnt
+				, not_prod_cnt
+				, prod_cnt
+				, all_begin_time
+				, all_end_time
+				, pd.product_lot_code
+				, pd.warehousing_cnt - pd.check_done_cnt as fail_cnt
+				<!-- , pm.mat_lot_code -->
+		FROM prod_instruct pi JOIN prod_instruct_detail pid 
+														ON pi.prod_instruct_code = pid.prod_instruct_code
+													JOIN users u
+														ON pi.users_code = u.users_code
+													JOIN prod_plan_detail pld
+														ON pid.prod_plan_detail_code = pld.prod_plan_detail_code
+													JOIN product p
+														ON pld.product_code = p.product_code
+													JOIN proc_result pr
+														ON pr.prod_instruct_detail_code = pid.prod_instruct_detail_code
+													RIGHT JOIN product_detail pd
+														ON pd.proc_result_code = pr.proc_result_code
+													JOIN proc_detail pcd
+														ON pr.prod_instruct_detail_code = pcd.prod_instruct_detail_code
+													JOIN proc_mat pm
+														ON pcd.proc_detail_code = pm.proc_detail_code
+		<where>
 			<if test="searchStartDate != null">
 				TRUNC(instruct_date) <![CDATA[ >= ]]> TRUNC(#{searchStartDate}) 
 			</if>
@@ -132,32 +155,20 @@
 			<if test="prodInstructCode != null and prodInstructCode != ''">
 				AND prod_instruct_code LIKE '%' || UPPER(#{prodInstructCode}) || '%'
 			</if>
-				AND prod_instruct_status = 'IS3'
-    	</where>
-    	ORDER BY prod_instruct_code DESC
+			<if test="productLotCode != null and productLotCode != ''">
+				AND product_lot_code LIKE '%' || UPPER(#{productLotCode}) || '%'
+			</if>
+			<if test="productCode != null and productCode != ''">
+				AND product_code = #{productCode}
+			</if>
+			<if test="matLotCode != null and matLotCode != ''">
+				AND mat_lot_code LIKE '%' || UPPER(#{matLotCode}) || '%'
+			</if>
+				<!-- AND prod_instruct_status = 'IS3' -->
+				AND TRUNC(pi.instruct_date) <![CDATA[ >= ]]> TRUNC(ADD_MONTHS(SYSDATE,-6)) <!--6개월전까지데이터-->
+		</where>
+		ORDER BY prod_instruct_detail_code DESC
 	</select>
 
-	
-	<select id="getProcResultDeList" resultType="ProdInsDeVO" parameterType="String">
-		SELECT pid.prod_instruct_detail_code
-		     , pld.product_code
-		     , p.product_name
-		     , instruct_cnt
-		     , not_prod_cnt
-		     , prod_cnt
-		     , pd.product_lot_code --완제품lot코드
-		     , pd.warehousing_cnt - pd.check_done_cnt as fail_cnt --불량수량
-		     , prod_instruct_code
-		FROM prod_instruct_detail pid JOIN prod_plan_detail pld
-		                               ON pid.prod_plan_detail_code = pld.prod_plan_detail_code
-		                              JOIN product p
-		                               ON pld.product_code = p.product_code
-		                              JOIN proc_result pr
-		                               ON pr.prod_instruct_detail_code = pid.prod_instruct_detail_code
-		                              JOIN product_detail pd
-		                               ON pd.proc_result_code = pr.proc_result_code
-		WHERE prod_instruct_code = #{prodInstructCode}
-		ORDER BY prod_instruct_detail_code
-	</select>
 
 </mapper>
