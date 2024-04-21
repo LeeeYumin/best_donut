@@ -55,6 +55,10 @@
 			<if test="prodPlanCode != null and prodPlanCode != ''">
 				AND prod_plan_code LIKE '%' || UPPER(#{prodPlanCode}) || '%'
 			</if>
+			<if test="prodPlanStatus != null and prodPlanStatus != ''">
+				AND prod_plan_status = #{prodPlanStatus}
+			</if>
+			AND TRUNC(plan_date) <![CDATA[ >= ]]> TRUNC(ADD_MONTHS(SYSDATE,-6))
     </where>
 	</sql>
 

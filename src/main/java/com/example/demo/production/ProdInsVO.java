@@ -19,8 +19,8 @@ public class ProdInsVO {
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date instructDate;
-	private Date searchStartDate;
-	private Date searchEndDate;
+	// private Date searchStartDate;
+	// private Date searchEndDate;
 
 	private String prodInstructStatus;
 		

@@ -274,6 +274,7 @@ const procInfo = new tui.Grid({
     },
   ]
 });
+//공정자재
 const procMat = new tui.Grid({
   el : document.getElementById('procMat'),
   scrollX : false,

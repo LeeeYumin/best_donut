@@ -108,16 +108,21 @@ public class ProcessController {
 
 	
 /* < 공정실적 > */	
+//	@PostMapping("/ajax/processResult")
+//	@ResponseBody
+//	public List<ProdInsVO> getProcResult(@RequestBody ProdInsVO vo){ //검색포함
+//		return processService.getProcResultList(vo);
+//	}
+//	//상세 데이터
+//	@GetMapping("/ajax/processResultDe")
+//	@ResponseBody
+//	public List<ProdInsDeVO> getProcResultDe(String prodInstructCode){
+//		return processService.getProcResultDeList(prodInstructCode);
+//	}
 	@PostMapping("/ajax/processResult")
 	@ResponseBody
-	public List<ProdInsVO> getProcResult(@RequestBody ProdInsVO vo){ //검색포함
-		return processService.getProcResultList(vo);
-	}
-	//상세 데이터
-	@GetMapping("/ajax/processResultDe")
-	@ResponseBody
-	public List<ProdInsDeVO> getProcResultDe(String prodInstructCode){
-		return processService.getProcResultDeList(prodInstructCode);
+	public List<ProdInsDeVO> getProcResultDe(@RequestBody ProdInsDeVO dvo){ //검색포함
+		return processService.getProcResultDeList(dvo);
 	}
 	
 	

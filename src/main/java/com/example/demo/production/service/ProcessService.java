@@ -29,7 +29,7 @@ public interface ProcessService {
 	public int updateProcEqm(ProcessVO vo); //공정사용 설비 변경
 	
 /* 3.공정실적 */
-	public List<ProdInsVO> getProcResultList(ProdInsVO vo); //완료된 생산지시 목록
-	public List<ProdInsDeVO> getProcResultDeList(String prodInstructCode); //완료된 생산지시 상세
+	//public List<ProdInsVO> getProcResultList(ProdInsVO vo); //완료된 생산지시 목록
+	public List<ProdInsDeVO> getProcResultDeList(ProdInsDeVO dvo); //완료된 생산지시 상세
 	
 }
