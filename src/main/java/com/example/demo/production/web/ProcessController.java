@@ -24,7 +24,7 @@ public class ProcessController {
 	
 	@Autowired ProcessService processService;
 
-	/* 페이지 이동 */
+/* 페이지 이동 */
 	
 	//공정진행
 	@GetMapping("process")
@@ -46,53 +46,37 @@ public class ProcessController {
 	public Map<String, Object> getTodayIns(){
 		return processService.getTodayIns();
 	}
-//	@GetMapping("/ajax/todayProdIns")
-//	@ResponseBody
-//	public List<ProdInsVO> getTodayIns(){
-//		return processService.getTodayIns();
-//	}
-//	//상세 데이터
-//	@GetMapping("/ajax/todayProdInsDe")
-//	@ResponseBody
-//	public List<ProdInsDeVO> getTodayInsDetail(String prodInstructCode){
-//		return processService.getTodayInsDetail(prodInstructCode);
-//	}
-//	@GetMapping("/ajax/todayProdInsDeStatus")
-//	@ResponseBody
-//	public String getInsDeStatus(String prodInsDetailCode){
-//		return processService.getInsDeStatus(prodInsDetailCode);
-//	}
+
 
 /* < 공정 > */
 	
-//1)조회
-	//공정진행
-	@GetMapping("/ajax/processInfo")	// fetch 함수에 들어가는 uri
+	//1)조회
+	@GetMapping("/ajax/processInfo") //공정진행
 	@ResponseBody
 	public List<ProcessVO> getProcessInfo(String prodInsDetailCode){
 		return processService.getProcessInfo(prodInsDetailCode);
 	}
-	//공정 투입자재
-	@GetMapping("/ajax/procMatInfo")
+	
+	@GetMapping("/ajax/procMatInfo") //공정 투입자재
 	@ResponseBody
 	public List<ProcessVO> getProcMatInfo(String procDetailCode){
 		return processService.getProcMatInfo(procDetailCode);
 	}
-	//공정 설비가동상태
-	@GetMapping("/ajax/procEqmInfo")
+	
+	@GetMapping("/ajax/procEqmInfo") //공정 설비가동상태
 	@ResponseBody
 	public List<ProcessVO> getProcEqmInfo(String procDetailCode){
 		return processService.getProcEqmInfo();
 	}
-	//공정별 모든 설비
-	@GetMapping("/ajax/eqmAllInfo")
+	
+	@GetMapping("/ajax/eqmAllInfo") //공정별 모든 설비
 	@ResponseBody
 	public List<ProcessVO> getEqmAllInfo(String eqmName){
 		return processService.getEqmAllInfo(eqmName);
 	}
 	
-
-//2)수정
+	
+	//2)수정
 	@RequestMapping("/ajax/updateProc") //공정update 프로시저 결과
 	@ResponseBody
 	public String modifyProc(@RequestBody ProcessVO vo) {
@@ -100,28 +84,18 @@ public class ProcessController {
 		return vo.getResult();
 	}
 	
-	@PostMapping("/ajax/updateProcEqm")
+	@PostMapping("/ajax/updateProcEqm") //공정사용 설비 변경
 	@ResponseBody
-	public int modifyProcEqm(@RequestBody ProcessVO vo) { //공정사용 설비 변경
+	public int modifyProcEqm(@RequestBody ProcessVO vo) { 
 		return processService.updateProcEqm(vo);	
 	}
 
+
 	
 /* < 공정실적 > */	
-//	@PostMapping("/ajax/processResult")
-//	@ResponseBody
-//	public List<ProdInsVO> getProcResult(@RequestBody ProdInsVO vo){ //검색포함
-//		return processService.getProcResultList(vo);
-//	}
-//	//상세 데이터
-//	@GetMapping("/ajax/processResultDe")
-//	@ResponseBody
-//	public List<ProdInsDeVO> getProcResultDe(String prodInstructCode){
-//		return processService.getProcResultDeList(prodInstructCode);
-//	}
-	@PostMapping("/ajax/processResult")
+	@PostMapping("/ajax/processResult") //검색포함
 	@ResponseBody
-	public List<ProdInsDeVO> getProcResultDe(@RequestBody ProdInsDeVO dvo){ //검색포함
+	public List<ProdInsDeVO> getProcResultDe(@RequestBody ProdInsDeVO dvo){ 
 		return processService.getProcResultDeList(dvo);
 	}
 	

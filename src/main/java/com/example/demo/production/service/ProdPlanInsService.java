@@ -8,7 +8,7 @@ import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.ProdPlanDeVO;
 import com.example.demo.production.ProdPlanVO;
 
-public interface ProdPlanService {
+public interface ProdPlanInsService {
 
 /* 1.생산요청&상세 */
 	public Map<String,Object> getProdReq();
@@ -41,8 +41,6 @@ public interface ProdPlanService {
 	
 	//2)등록
 	public int insertProdInstruct(ProdInsVO vo);
-	//+계획의 미지시&지시수량 수정
-	//public int updateAfterInstruct(List<ProdPlanDeVO> dvo); //updatedRows 배열
 	
 	
 }

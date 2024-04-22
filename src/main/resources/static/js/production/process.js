@@ -8,32 +8,32 @@ if(document.querySelector('#auth').innerHTML != '1'){
 }
 
 //생산지시 진행상태
-  class InsStatus {
-    constructor(props) {
-        const el = document.createElement('div');
+class InsStatus {
+  constructor(props) {
+      const el = document.createElement('div');
 
-        this.el = el;
-        this.render(props);
-    }
-    render(props) {
-        this.el.innerText = instructStatus(props.formattedValue);
-    }
-    getElement() {
-        return this.el;
-    }
+      this.el = el;
+      this.render(props);
   }
+  render(props) {
+      this.el.innerText = instructStatus(props.formattedValue);
+  }
+  getElement() {
+      return this.el;
+  }
+}
 
-  function instructStatus(value){
-    let result;
-    if(value == "IS1") {
-        result = "지시완료";
-    } else if(value == "IS2") {
-        result = "생산중";
-    } else if(value == "IS3") {
-        result = "생산완료";
-    }
-    return result;
+function instructStatus(value){
+  let result;
+  if(value == "IS1") {
+      result = "지시완료";
+  } else if(value == "IS2") {
+      result = "생산중";
+  } else if(value == "IS3") {
+      result = "생산완료";
   }
+  return result;
+}
 
 //생산지시 진행상태
 class ProcStatus {
@@ -130,6 +130,7 @@ const todayIns = new tui.Grid({
     }
   ]
 });
+
 /* < 당일 생산지시 상세 > */
 const todayInsD = new tui.Grid({
   el : document.getElementById('todayInsD'),
@@ -162,7 +163,7 @@ const todayInsD = new tui.Grid({
       align: 'center'
     },
     {
-      header : '진행상태', //수정하기
+      header : '진행상태',
       name : 'insDeStatus',
       align: 'center'
     },
@@ -170,56 +171,17 @@ const todayInsD = new tui.Grid({
 });
 
 // 당일 생산지시 조회
-  function getTodayIns(){
-  fetch("/ajax/todayProdIns")
-  .then(res => res.json())
-  .then(res => {
-    console.log(res);
+async function getTodayIns(){
+  let response = await fetch("/ajax/todayProdIns");
+  let res = await response.json();
 
-    todayIns.resetData(res.prodIns); //ServiceImpl에서 넘겨 준 변수명
-    todayInsD.resetData(res.prodInsDe);
-  })
+  todayIns.resetData(res.prodIns); //ServiceImpl에서 넘겨 준 변수명
+  todayInsD.resetData(res.prodInsDe);
 };
 
-// function getTodayIns(){
-//   fetch("/ajax/todayProdIns")
-//   .then(res => res.json())
-//   .then(res => {
-//     console.log(res);
-
-//     todayIns.resetData(res);
-//   })
-// };
-// function getTodayInsDetail(piCode){
-// 	fetch(`/ajax/todayProdInsDeStatus?prodInstructCode=${piCode}`)
-// 	.then(res => res.json())
-// 	.then(res => {
-// 		todayInsD.resetData(res);
-// 	})
-// };
-// // function getTodayInsDeStatus(pidCode){
-// // 	fetch(`/ajax/todayProdInsDeStatus?prodInstructDetailCode=${pidCode}`)
-// // 	.then(res => res.json())
-// // 	.then(res => {
-// // 		todayInsD.resetData(res);
-// // 	})
-// // };
-
-// todayIns.on('click', e => {
-// 	let piCode = todayIns.getValue(e.rowKey, "prodInstructCode");
-
-//   // for(let i = 0; i < todayInsD.length; i++) {
-//   //   let pidCode = todayInsD.getValue(i, "prodInstructDetailCode");
-//   //   getTodayInsDeStatus(pidCode);
-//   // }
-// 	//완료 상세목록
-// 	getTodayInsDetail(piCode);
-
-// });
-
 //==============================================================
-/* < 공정 > */
 
+/* < 공정 > */
 const procInfo = new tui.Grid({
   el : document.getElementById('procInfo'),
   scrollX : false,
@@ -274,7 +236,8 @@ const procInfo = new tui.Grid({
     },
   ]
 });
-//공정자재
+
+/* < 공정자재 > */
 const procMat = new tui.Grid({
   el : document.getElementById('procMat'),
   scrollX : false,
@@ -302,22 +265,19 @@ const procMat = new tui.Grid({
     }
   ]
 });
+
 //공정진행 정보 조회
 //생산지시 상세 클릭 시 아래에 출력
 todayInsD.on('click', e => {
   let pidCode = todayInsD.getValue(e.rowKey, "prodInstructDetailCode");
-
   getProcessInfo(pidCode);
-
-})
+});
 
 async function getProcessInfo(pidCode){
-  await fetch(`/ajax/processInfo?prodInsDetailCode=${pidCode}`)
-  .then(res => res.json())
-  .then(res => {
-    //console.log(res);
-    procInfo.resetData(res);
-  })
+  let response = await fetch(`/ajax/processInfo?prodInsDetailCode=${pidCode}`);
+  let res = response.json();
+
+  procInfo.resetData(res);
 };
 
 //공정자재 정보 조회
@@ -325,15 +285,13 @@ async function getProcessInfo(pidCode){
 procInfo.on('click', e => {
   let prdCode = procInfo.getValue(e.rowKey, "procDetailCode");
   getProcMatInfo(prdCode);
-})
+});
 
 async function getProcMatInfo(prdCode){
-  await fetch(`/ajax/procMatInfo?procDetailCode=${prdCode}`)
-  .then(res => res.json())
-  .then(res => {
-    //console.log(res);
-    procMat.resetData(res);
-  })
+  let response = await fetch(`/ajax/procMatInfo?procDetailCode=${prdCode}`);
+  let res = await response.json();
+  
+  procMat.resetData(res);
 };
 
 //==================================================================
@@ -344,10 +302,17 @@ function beforeStartCheck() {
   const alert = document.getElementById('alertMsg');
   
   const row = procInfo.getFocusedCell().rowKey;
-  //const ucode = procInfo.getData()[row].usersCode;
+
+  //선택된 공정 없을 경우
+  console.log(row)
+  if(row == null) {
+    alert.innerHTML = '<span style="color:red">※</span> 시작할 공정을 선택하세요.';
+    return false;
+  }
 
   const btime = procInfo.getData()[row].beginTime;
   const etime = procInfo.getData()[row].endTime;
+
 
   //설비 대기상태 확인
   const eqmCode = procInfo.getData()[row].eqmCode;
@@ -372,41 +337,32 @@ function beforeStartCheck() {
     return false;
   };
 
-  //공정순서
-
-
-  //선택된 공정 없을 경우
-    // if(row == null) {
-    //   alert.innerHTML = '<span style="color:red">※</span> 시작할 공정을 선택하세요.';
-    //   return false;
-    // }
-    
-    if (btime != null && etime != null) {
-      alert.innerHTML = '<span style="color:red">※</span> 이미 완료된 공정입니다.';
-      return false;
-    } else  if (btime != null) {
-      alert.innerHTML = '<span style="color:red">※</span> 이미 진행 중인 공정입니다.';
-      return false;
-    } 
-
-
+  //공정순서    
+  if (btime != null && etime != null) {
+    alert.innerHTML = '<span style="color:red">※</span> 이미 완료된 공정입니다.';
+    return false;
+  } else  if (btime != null) {
+    alert.innerHTML = '<span style="color:red">※</span> 이미 진행 중인 공정입니다.';
+    return false;
+  } 
 
   alert.innerHTML = '';
   return true;
-}
+};
+
 //종료버튼 클릭 시 유효성 검사
 function beforeEndCheck() {
   const alert = document.getElementById('alertMsg');
   
   const row = procInfo.getFocusedCell().rowKey;
 
+  if(row == null) {
+    alert.innerHTML = '<span style="color:red">※</span> 종료할 공정을 선택하세요.';
+    return false;
+  }
   const btime = procInfo.getData()[row].beginTime;
   const etime = procInfo.getData()[row].endTime;
 
-  // if(row == null) {
-  //   alert.innerHTML = '<span style="color:red">※</span> 종료할 공정을 선택하세요.';
-  //   return false;
-  // }
 
   if ( btime == null ) {
     alert.innerHTML = '<span style="color:red">※</span> 아직 시작되지 않은 공정입니다.';
@@ -415,30 +371,20 @@ function beforeEndCheck() {
     alert.innerHTML = '<span style="color:red">※</span> 이미 종료된 공정입니다.';
     return false;
   }
-  // if(etime != null || etime != '') {
-  //   alert.innerHTML = '<span style="color:red">※</span> 이미 종료된 공정입니다.';
-  //   return false;
-  // }
 
   alert.innerHTML = '';
   return true;
 }
 
 //공정 시작하기
-function startProc() {
-  //procInfo.blur();
-
+async function startProc() {
+  
   if(!beforeStartCheck()) {
     return;
   }
-
+  
   const row = procInfo.getFocusedCell().rowKey;
-
-  // const pcode = procInfo.getValue(row, "procDetailCode");
   const pdcode = procInfo.getValue(row, "prodInstructDetailCode");
-  // const ecode = procInfo.getValue(row, "row].eqmCode;
-  // const ucode = procInfo.getData()[row].usersCode;
-
   const picode = todayIns.getValue(0, 'prodInstructCode');
   
   let param = procInfo.getRow(row);
@@ -446,35 +392,31 @@ function startProc() {
   param.prodInstructCode = picode;
   param.prodInstructDetailCode = pdcode;
   param.usersCode = document.querySelector('#usersCode').value;
-  console.log(param.usersCode)
+  
+  //console.log(param);
+  //console.log(param.usersCode)
 
-
-  console.log(param);
-
-  fetch('ajax/updateProc', {
+  let response = await fetch('ajax/updateProc', {
     method: 'post',
     headers: jsonHeaders,
     body : JSON.stringify(param)
-  })
-  .then(res => res.json())
-  .then(res => {
-    console.log(res);
-
-    getProcessInfo(pdcode);
-    getEqmOpr();
-    getTodayIns();
   });
-}
+  await response.json();
+
+  getProcessInfo(pdcode);
+  getEqmOpr();
+  getTodayIns();
+};
+
 //공정 종료하기
-function endProc() {
+async function endProc() {
 
   if(!beforeEndCheck()) {
     return;
   }
 
   const row = procInfo.getFocusedCell().rowKey;
-  // const pcode = procInfo.getData()[row].procDetailCode;
-  // const ecode = procInfo.getData()[row].eqmCode;
+
   const picode = todayIns.getValue(0, 'prodInstructCode');
   const pdcode = procInfo.getValue(row, "prodInstructDetailCode");
 
@@ -484,20 +426,19 @@ function endProc() {
   param.prodInstructCode = picode;
   param.prodInstructDetailCode = pdcode;
 
-  fetch('ajax/updateProc', {
+  let response = await fetch('ajax/updateProc', {
     method: 'post',
     headers: jsonHeaders,
     body : JSON.stringify(param)
-  })
-  .then(res => res.json())
-  .then(res => {
-    console.log(res);
-    
-    getProcessInfo(pdcode);
-    getEqmOpr();
-    getTodayIns();
   });
-}
+  let res = await response.json();
+  //console.log(res);
+    
+  getProcessInfo(pdcode);
+  getEqmOpr();
+  getTodayIns();
+};
+
 //새로고침
 function refreshProc() {
   const row = todayInsD.getFocusedCell().rowKey;
@@ -507,45 +448,44 @@ function refreshProc() {
 }
 
 
-//=======================================================
-		/* 공정에 사용되는 설비 가동현황*/
-			const eqmOpr = new tui.Grid({
-				el: document.getElementById('eqmOpr'),
-				scrollX: false,
-				scrollY: true,
-				bodyHeight: 200,
-				//rowHeaders: ['rowNum'],
-				columns: [
-          {
-            header : 'NO',
-            name : 'serialNum',
-            align: 'center'
-          }, 
-          {
-          header : '설비코드',
-          name : 'eqmCode',
-          align: 'center'
-          },
-          {
-            header : '설비명',
-            name : 'eqmName',
-            align: 'center'
-          },
-					{
-						header: '가동현황',
-						name: 'oprStatus',
-						align: 'center',
-						renderer: {type: EqmOprStatus}
-					}
-				]
-			});
+//==========================================================
 
-			// 설비조회(ajax)
-			async function getEqmOpr(){
-				await fetch("/ajax/procEqmInfo")
-				.then(res => res.json())
-				.then(res => {
-					//console.log(res);
-					eqmOpr.resetData(res);
-				})
-			};
+/* < 공정에 사용되는 설비 가동현황 > */
+const eqmOpr = new tui.Grid({
+  el: document.getElementById('eqmOpr'),
+  scrollX: false,
+  scrollY: true,
+  bodyHeight: 200,
+  //rowHeaders: ['rowNum'],
+  columns: [
+    {
+      header : 'NO',
+      name : 'serialNum',
+      align: 'center'
+    }, 
+    {
+    header : '설비코드',
+    name : 'eqmCode',
+    align: 'center'
+    },
+    {
+      header : '설비명',
+      name : 'eqmName',
+      align: 'center'
+    },
+    {
+      header: '가동현황',
+      name: 'oprStatus',
+      align: 'center',
+      renderer: {type: EqmOprStatus}
+    }
+  ]
+});
+
+// 설비조회(ajax)
+async function getEqmOpr(){
+  let response = await fetch("/ajax/procEqmInfo");
+  let res = await response.json();
+  
+  eqmOpr.resetData(res);
+};

@@ -15,28 +15,28 @@ import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.ProdPlanBVO;
 import com.example.demo.production.ProdPlanDeVO;
 import com.example.demo.production.ProdPlanVO;
-import com.example.demo.production.mapper.ProdPlanMapper;
-import com.example.demo.production.service.ProdPlanService;
+import com.example.demo.production.mapper.ProdPlanInsMapper;
+import com.example.demo.production.service.ProdPlanInsService;
 
 
 @Service
-public class ProdPlanServiceImpl implements ProdPlanService {
+public class ProdPlanInsServiceImpl implements ProdPlanInsService {
 	
-	@Autowired ProdPlanMapper prodPlanMapper;
+	@Autowired ProdPlanInsMapper prodPlanInsMapper;
 
 	
 /* < 생산요청 > */
 	@Override
 	public Map<String,Object> getProdReq() {
 		Map<String,Object> map = new HashMap<>();
-		List<ProdPlanBVO> list = prodPlanMapper.getProdReq();
+		List<ProdPlanBVO> list = prodPlanInsMapper.getProdReq();
 		
 		//요청
 		map.put("prodReq", list);
 		
 		//요청상세
 		if(list != null && list.size() > 0) {
-			map.put("prodReqDe", prodPlanMapper.getProdReqDetail(list.get(0).getProdReqCode()));
+			map.put("prodReqDe", prodPlanInsMapper.getProdReqDetail(list.get(0).getProdReqCode()));
 		}
 		return map;
 	}
@@ -46,16 +46,16 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	//1)조회
 	@Override
 	public ProdPlanVO beforeInsertPlanCode() { //계획코드 미리보기
-		return prodPlanMapper.beforeInsertPlanCode();
+		return prodPlanInsMapper.beforeInsertPlanCode();
 	}
 
 	@Override
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo) { //계획
-		return prodPlanMapper.getProdPlan(vo);
+		return prodPlanInsMapper.getProdPlan(vo);
 	}
 	@Override
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode) { //상세
-		return prodPlanMapper.getProdPlanAll(prodPlanCode);
+		return prodPlanInsMapper.getProdPlanAll(prodPlanCode);
 	}
 	
 	//2)등록
@@ -63,9 +63,9 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	@Transactional
 	public int insertProdPlan(ProdPlanVO vo) {
 		//생산계획
-		prodPlanMapper.insertProdPlan(vo);
+		prodPlanInsMapper.insertProdPlan(vo);
 		//생산요청 상태 update
-		prodPlanMapper.updateProdReqStatus(vo);
+		prodPlanInsMapper.updateProdReqStatus(vo);
 		
 		//생산계획 상세
 		int result = 0;
@@ -73,7 +73,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 			ProdPlanDeVO devo = vo.getDvo().get(i);
 			
 			devo.setProdPlanCode(vo.getProdPlanCode()); //생산계획코드
-			result = prodPlanMapper.insertProdPlanDetail(devo);
+			result = prodPlanInsMapper.insertProdPlanDetail(devo);
 		}
 		return result;
 	}
@@ -84,7 +84,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 		int result = 0;
 		
 		for(int i=0; i < dvo.size(); i++) {
-			result = prodPlanMapper.updateProdPlanDetail(dvo.get(i));
+			result = prodPlanInsMapper.updateProdPlanDetail(dvo.get(i));
 		}
 		
 		return result;
@@ -97,12 +97,12 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 
 		//생산계획 상세
 		int result = 0;
-		prodPlanMapper.deleteProdPlanDetail(vo.getProdPlanCode());
+		prodPlanInsMapper.deleteProdPlanDetail(vo.getProdPlanCode());
 		
 		//생산계획 (상세 삭제 후)
-		prodPlanMapper.deleteProdPlan(vo);
+		prodPlanInsMapper.deleteProdPlan(vo);
 		//생산요청 상태 수정
-		result = prodPlanMapper.cancelProdReqStatus(vo);
+		result = prodPlanInsMapper.cancelProdReqStatus(vo);
 		
 		return result;
 	}
@@ -114,14 +114,14 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	@Override
 	public Map<String,Object> getWeeklyPlan() {
 		Map<String,Object> map = new HashMap<>();
-		List<ProdPlanVO> list = prodPlanMapper.getWeeklyPlan();
+		List<ProdPlanVO> list = prodPlanInsMapper.getWeeklyPlan();
 		
 		//계획
 		map.put("weeklyPlan", list);
 		
 		//계획상세
 		if(list != null && list.size() > 0) {
-			map.put("weeklyPlanDe", prodPlanMapper.getWeeklyPlanDetail(list.get(0).getProdPlanCode()));
+			map.put("weeklyPlanDe", prodPlanInsMapper.getWeeklyPlanDetail(list.get(0).getProdPlanCode()));
 		}
 		return map;
 	}
@@ -129,12 +129,12 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	//+지시 전 설비상태 확인
 	@Override
 	public List<ProdInsVO> getEqm() {
-		return prodPlanMapper.getEqm();
+		return prodPlanInsMapper.getEqm();
 	}
 	
 	@Override
 	public ProdInsVO beforeInsertInsCode() { //지시코드 미리보기
-		return prodPlanMapper.beforeInsertInsCode();
+		return prodPlanInsMapper.beforeInsertInsCode();
 	}
 	
 	
@@ -143,9 +143,9 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 	@Transactional
 	public int insertProdInstruct(ProdInsVO vo) {
 		//생산지시
-		prodPlanMapper.insertProdInstruct(vo);
+		prodPlanInsMapper.insertProdInstruct(vo);
 		//생산계획 상태 update
-		prodPlanMapper.updateProdPlanStatus(vo);
+		prodPlanInsMapper.updateProdPlanStatus(vo);
 		
 		//생산지시 상세
 		int result = 0;
@@ -154,26 +154,15 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 			System.out.println(dvo);
 			
 			dvo.setProdInstructCode(vo.getProdInstructCode()); //생산지시코드
-			result = prodPlanMapper.insertProdInstructDetail(dvo);
+			result = prodPlanInsMapper.insertProdInstructDetail(dvo);
 		}
 		//공정생성
 		ProcessVO pvo = new ProcessVO();
 		pvo.setProdInstructCode(vo.getProdInstructCode()); //생산지시코드
-		prodPlanMapper.insertProcDetail(pvo);
+		prodPlanInsMapper.insertProcDetail(pvo);
 		
 		return result;
 	}
-	
-	//+지시 등록하면서 => 계획의 미지시&지시수량 변경
-//	@Override
-//	public int updateAfterInstruct(List<ProdPlanDeVO> dvo) {
-//		int result = 0;
-//		for(int i = 0; i < dvo.size(); i++) {
-//			result = prodPlanMapper.updateAfterInstruct(dvo.get(i));
-//		}
-//		return result;
-//	}
-
 
 
 

@@ -45,21 +45,6 @@ public class ProcessServiceImpl implements ProcessService {
 		return map;
 	}
 	
-//	@Override
-//	public List<ProdInsVO> getTodayIns() { //완료된 생산지시
-//		return processMapper.getTodayIns();
-//	}
-//	@Override
-//	public List<ProdInsDeVO> getTodayInsDetail(String prodInstructCode) { //완료된 생산지시 상세
-//		return processMapper.getTodayInsDetail(prodInstructCode);
-//	}
-//	public String getInsDeStatus(String prodInsDetailCode) { //지시상세 상태(함수호출)
-//		return processMapper.getInsDeStatus(prodInsDetailCode);
-//	}
-
-
-	
-
 
 /* 2.공정 */
 	//1)조회
@@ -92,13 +77,8 @@ public class ProcessServiceImpl implements ProcessService {
 	}
 
 
-
-
 /* 3.공정실적 */
-//@Override
-//	public List<ProdInsVO> getProcResultList(ProdInsVO vo) { //완료된 생산지시
-//		return processMapper.getProcResultList(vo);
-//	}
+
 	@Override
 	public List<ProdInsDeVO> getProcResultDeList(ProdInsDeVO dvo) {
 		return processMapper.getProcResultDeList(dvo);
