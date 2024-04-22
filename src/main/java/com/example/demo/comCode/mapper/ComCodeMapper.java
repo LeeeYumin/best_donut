@@ -22,5 +22,6 @@ public interface ComCodeMapper {
 	
 	// 2. 거래처
 	public int insertCompany(CompanyVO vo);
+	public List<CompanyVO> getCompanySearchList(CompanyVO vo);
 	
 }

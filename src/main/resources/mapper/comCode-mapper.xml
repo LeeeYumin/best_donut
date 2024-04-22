@@ -93,9 +93,32 @@
 			   , owner_name
 			   , tel
 			   , addr
-			   , addr_detail
-			   , postcode
+		  FROM company;
+		 ORDER BY 1	 
+	</select>
+	
+	<!-- 거래처 목록 검색 -->
+	<select id="getCompanySearchList" resultType="CompanyVO">
+		SELECT company_code
+		       , company_name
+			   , company_sep
+			   , owner_name
+			   , tel
+			   , addr || ' ' || addr_detail AS addr
 		  FROM company
+		 WHERE 1=1
+ 	     <if test="companyCode != null and companyCode != ''">
+ 	     	AND UPPER(company_code) LIKE '%' || UPPER(#{companyCode}) || '%'
+ 	     </if>
+ 	     <if test="companyName != null and companyName != ''">
+ 	     	AND company_name LIKE '%' || #{companyName} || '%'
+ 	     </if>
+ 	     <if test="ownerName != null and ownerName != ''">
+ 	     	AND owner_name LIKE '%' || #{ownerName} || '%'
+ 	     </if>
+ 	     <if test="addr != null and addr != ''">
+ 	     	AND addr || ' ' || addr_detail LIKE '%' || #{addr} || '%'
+ 	     </if>
 		 ORDER BY 1	 
 	</select>
 	
