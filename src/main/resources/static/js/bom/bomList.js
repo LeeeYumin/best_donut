@@ -64,7 +64,8 @@ const grid = new tui.Grid({
       align : "center",
       sortable: true,
     }
-  ]
+  ],
+  draggable: true
 });
 
 const grid2 = new tui.Grid({
