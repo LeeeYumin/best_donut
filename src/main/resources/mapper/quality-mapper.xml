@@ -65,27 +65,27 @@
 
 <!-- 자재품질등록 / if : 자재LOT번호, 입고날짜 검색 -->
 <select id="getMatInfo" resultType="Map">
-	SELECT s.MAT_LOT_CODE "matLotCode"
-		, s.MAT_CODE "matCode"
-       , h.INOUT_DATE "inputDate"
-       , h.INOUT_CNT "inoutCnt"
-       , 'IV1' "warehousingVehiclesCheck"
-       , 'PFN' "foreignExist"
-       , 'PSY' "packStatus"
-       , 'MCY' "lastResult"
-       , h.INOUT_CNT "goodCnt"
-       , m.mat_code "matCode"
-       , m.mat_name "matName"
-	  FROM MAT_DETAIL s JOIN MAT_INOUT_HISTORY h
-						ON s.MAT_LOT_CODE = h.MAT_LOT_CODE
-						JOIN mat m ON m.mat_code = s.mat_code
+	SELECT s.mat_lot_code "matLotCode"
+		 , s.mat_code "matCode"
+         , h.inout_date "inputDate"
+         , h.inout_cnt "inoutCnt"
+         , 'IV1' "warehousingVehiclesCheck"
+         , 'PFN' "foreignExist"
+         , 'PSY' "packStatus"
+         , 'MCY' "lastResult"
+         , h.inout_cnt "goodCnt"
+         , m.mat_code "matCode"
+         , m.mat_name "matName"
+	  FROM mat_detail s 
+	  	JOIN mat_inout_history h ON s.mat_lot_code = h.mat_lot_code
+	  	JOIN mat m ON m.mat_code = s.mat_code
 		<where>
 			s.qlty_check_status = 'MI1'
 			<if test="matLotCode != null and matLotCode != ''">
-				AND s.MAT_LOT_CODE LIKE '%'||#{matLotCode}||'%'
+				AND s.mat_lot_code LIKE '%'||#{matLotCode}||'%'
 			</if>
 		 	<if test="inoutDate != null">
-		 		AND trunc(h.INOUT_DATE) >= #{inoutDate} and  trunc(h.INOUT_DATE) <![CDATA[<=]]> #{inoutDate2}
+		 		AND TRUNC(h.inout_date) >= #{inoutDate} and  TRUNC(h.inout_date) <![CDATA[<=]]> #{inoutDate2}
 			</if>
 	   		AND h.inout_sep = 'IN'
 		</where>

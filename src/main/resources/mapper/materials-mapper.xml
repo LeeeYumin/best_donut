@@ -209,7 +209,7 @@
                m.unit_price,
                d.mat_orders_price,
                o.orders_date + m.lead_time due_date,
-               (SELECT FIND_USERSNAME(o.users_code) FROM dual) users_name
+               (SELECT FIND_USERS_NAME(o.users_code) FROM dual) users_name
                         
    		  FROM mat_orders_detail d
 	      	JOIN mat_orders o  ON o.mat_orders_code = d.mat_orders_code
@@ -258,7 +258,7 @@
    		SELECT d.mat_orders_code,
    			   d.mat_orders_detail_code,
    			   d.company_code,
-       		   FIND_COMPANYNAME(d.company_code) company_name,
+       		   FIND_COMPANY_NAME(d.company_code) company_name,
        		   d.mat_code,
        		   m.mat_name,
        		   m.unit_price,
@@ -314,7 +314,7 @@
    		SELECT h.inout_date,
        		   h.mat_lot_code,
        		   FIND_MAT_NAME(m.mat_code) mat_name,
-       		   FIND_COMPANYNAME(m.company_code) company_name,
+       		   FIND_COMPANY_NAME(m.company_code) company_name,
        		   h.inout_cnt,
        		   h.inout_sep
 		  FROM mat_inout_history h 
