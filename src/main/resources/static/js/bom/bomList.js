@@ -1,13 +1,12 @@
 class CustomNumberEditor {
 	constructor(props) {
 		const el = document.createElement('input');
-		const { maxLength } = props.columnInfo.editor.options;
 
 		el.type = 'number';
 		el.min = 0;
 		el.step = 1;
     el.width = 5;
-		el.maxLength = maxLength;
+
 		this.el = el;
 
 	}
@@ -52,6 +51,16 @@ const grid = new tui.Grid({
       name : 'applyStatus',
       align : "center",
       sortable: true,
+      formatter : 'listItemText',
+      editor: {
+        type : 'text',
+        options : {
+          listItems: [
+            { text: '적용', value: 'BAY' },
+            { text: '미적용', value: 'BAN' }
+          ],
+        }
+      }
     },
     {
       header : '담당자코드',
