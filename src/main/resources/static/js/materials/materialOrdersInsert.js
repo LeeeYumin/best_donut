@@ -333,9 +333,9 @@ function requireMatCal() {
                 needCnt = BOMListData[j].needCnt;
                 // 계획수량 찾기
                 let planCnt = findPlanCnt(BOMListData[j].productCode);
-                if (matCode == 'MAT00002') {
+                if (matCode == 'MAT00002') { // 계란일 경우
                     requireMat = Math.ceil(planCnt * needCnt / 60 / 30);
-                } else if (matCode == 'MAT00009') {
+                } else if (matCode == 'MAT00009') { // 포장지일 경우
                     requireMat = Math.ceil(planCnt * needCnt);
                 } else {
                     requireMat = Math.ceil(planCnt * needCnt / 1000);
@@ -373,8 +373,24 @@ matStockList.on('checkAll', function () {
 });
 matStockList.on('check', function (ev) {
     let checked = matStockList.getRow(ev.rowKey);
+    let ordersCnt = 0;
+    let checkData = matStockList.getData()[ev.rowKey];
+
+    // 주문 수량 자동 입력
+    if (checkData.differenceStockReq == null) {
+        ordersCnt = Math.ceil(checkData.safeStockCnt - checkData.plusStockOrders);
+    } else {
+        ordersCnt = Math.ceil(checkData.safeStockCnt - checkData.differenceStockReq);
+    }
+
+    // 자동 입력한 값이 음수 일 때
+    if (ordersCnt < 0) {
+        ordersCnt = checkData.safeStockCnt;
+    }
+    
+    console.log('ordersCnt: ', ordersCnt);
     const { matCode, matName, mainCompanyCode, unit, unitPrice } = checked;
-    matOrderList.appendRow({ matCode, matName, mainCompanyCode, unit, unitPrice });
+    matOrderList.appendRow({ matCode, matName, mainCompanyCode, unit, unitPrice, ordersCnt });
 
     // 추가된 행 체크
     let appendRowKey = matOrderList.getData().length - 1;
