@@ -369,9 +369,10 @@ $('#excelBtn').on('click', excelDownload);
 function excelDownload() {
 	const oDate = grid1.getCheckedRows()[0].ordersDate;
 	const cName = grid1.getCheckedRows()[0].companyName;
+	const oCnt = grid1.getCheckedRows().length - 1;
 
 	const options = {
-		fileName: oDate + ' ' + cName + ' 발주서',
+		fileName: oDate + ' ' + cName + ' 외 ' + oCnt + '건 발주서',
 	};
 
 	grid2.export('xlsx', options);

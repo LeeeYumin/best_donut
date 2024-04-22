@@ -184,7 +184,6 @@ grid1.on('click', (ev) => {
 function checkMatStatus() {
 	for (i = 0; i < grid2.getCheckedRows().length; i++) {
 		if (grid2.getCheckedRows()[i].matStatus == 'MSN') {
-			// alert('이미 폐기된 자재가 선택되었습니다.')
 			Swal.fire({
 				title: "이미 폐기된 자재가 선택되었습니다.",
 				icon: "warning"
