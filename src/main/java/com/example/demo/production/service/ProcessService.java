@@ -13,9 +13,7 @@ public interface ProcessService {
 
 /* 1.당일 생산지시&상세 */
 	public Map<String,Object> getTodayIns();
-//	public List<ProdInsVO> getTodayIns(); //완료된 생산지시 목록
-//	public List<ProdInsDeVO> getTodayInsDetail(String prodInstructCode); //완료된 생산지시 상세
-	//public String getInsDeStatus(String prodInsDetailCode); //생산지시 상세 진행정보(함수호출)
+
 
 /* 2.공정 */
 	//1)조회
@@ -28,8 +26,8 @@ public interface ProcessService {
 	public int updateProc(ProcessVO vo);
 	public int updateProcEqm(ProcessVO vo); //공정사용 설비 변경
 	
+	
 /* 3.공정실적 */
-	//public List<ProdInsVO> getProcResultList(ProdInsVO vo); //완료된 생산지시 목록
 	public List<ProdInsDeVO> getProcResultDeList(ProdInsDeVO dvo); //완료된 생산지시 상세
 	
 }

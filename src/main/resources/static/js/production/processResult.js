@@ -4,16 +4,35 @@ const d = new Date();
 //const month = d.getMonth();
 const date = d.getDate();
 
-// 일주일 전 구하기
+// 일주일 전
 document.getElementById('searchStartDate').value = new Date(new Date().setDate(date - 7)).toISOString().substring(0, 10);
 document.getElementById('searchEndDate').value = new Date().toISOString().substring(0, 10);
 
 //로딩시 바로 실행
 window.onload = function() {
 	getProcResultList();
-};  
+};
 
 //=================================================================
+//생산계획 진행상태
+class qltyStatus {
+	constructor(props) {
+		const el = document.createElement('div');
+
+		this.el = el;
+		this.render(props);
+	}
+	render(props) {
+		this.el.innerText = props.formattedValue == 'PQ1' ? '미검사' : '검사완료';
+	}
+	getElement() {
+		return this.el;
+	}
+};
+
+
+//=================================================================
+
 /* < 공정완료 목록 > */
 const resultList = new tui.Grid({
 	el : document.getElementById('resultList'),
@@ -37,17 +56,7 @@ const resultList = new tui.Grid({
 			header : '담당자',
 			name : 'usersName',
 			align: 'center'
-		},
-		// {
-		// 	header : '전체시작시간',
-		// 	name : 'allBeginTime',
-		// 	align: 'center'
-		// }, 
-		// {
-		// 	header : '전체종료시간',
-		// 	name : 'allEndTime',
-		// 	align: 'center'
-		// }, 
+		}, 
 		{
 			header : '생산지시상세코드',
 			name : 'prodInstructDetailCode',
@@ -95,17 +104,39 @@ const resultList = new tui.Grid({
 			align: 'center'
 		},
 		{
+			header : '품질검사상태',
+			name : 'qltyCheckStatus',
+			align: 'center',
+			renderer: {type: qltyStatus}
+		},
+		{
 			header : '불량수량',
 			name : 'failCnt',
 			align: 'center',
 			formatter: function(price) {
 				return priceFormat(price.value);
 			},
-			validation : {
-        validatorFn : value => value == 0
-      }
+			// validation : {
+      //   validatorFn : value => value == 0
+      // }
+			renderer: {
+				styles: {
+					backgroundColor: (props) => props.value > 0 ? '#FFE5E5' : ''
+				},
+			},
 		},
 	]
+});
+
+//품질검사 미검사(PQ1)일 시 불량수량 '-'표시
+resultList.on('onGridUpdated', function() {
+	let qltyData = resultList.getData();
+	for(let i = 0; i < qltyData.length; i++) {
+		let status = qltyData[i].qltyCheckStatus;
+		if(status == 'PQ1') {
+			resultList.setValue(i, 'failCnt', '-');
+		}
+	}; 
 });
 
 // 공정완료 생산지시 목록 조회(ajax) -검색포함
@@ -191,7 +222,7 @@ document.getElementById('resetBtn').addEventListener('click', function() {
 });
 
 
-//===================================================
+//=================================================================
 //생산지시 진행상태
 class ProcStatus {
   constructor(props) {
@@ -220,6 +251,7 @@ function procStatus(value){
   return result;
 };
 
+/* < 공정 > */
 const procInfo = new tui.Grid({
   el : document.getElementById('procInfo'),
   scrollX : false,
@@ -291,8 +323,3 @@ async function getProcessInfo(pidCode){
     procInfo.resetData(res);
   })
 };
-
-
-
-
-

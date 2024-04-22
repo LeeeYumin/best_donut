@@ -53,7 +53,7 @@ public class EqmController {
 		// String uploadFolder = "/donutFile";
 		
 		if(uploadFile != null && uploadFile.getSize() > 0) {
-			File saveFile = new File(uploadFolder, uploadFile.getOriginalFilename());
+			File saveFile = new File("/"+uploadFolder, uploadFile.getOriginalFilename());
 			uploadFile.transferTo(saveFile);
 			fvo.setSaveFileName(uploadFile.getOriginalFilename());
 			eqmService.insertImage(fvo);

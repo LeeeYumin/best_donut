@@ -18,11 +18,11 @@ async function saveEqm() {
     console.log(res);
     result = res;
   })
-  .then(res => {
-    window.setTimeout(function() {
-      location.href = '/eqmlist';
-    }, 1000);
-  })
+  // .then(res => {
+  //   window.setTimeout(function() {
+  //     location.href = '/eqmlist';
+  //   }, 1000);
+  // })
 
   
   // SweetAlert

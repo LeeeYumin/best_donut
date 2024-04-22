@@ -36,7 +36,7 @@
  	     <if test="subcodeName != null and subcodeName != ''">
  	     	AND subcode_name LIKE '%' || #{subcodeName} || '%'
  	     </if>
- 	     ORDER BY 1
+ 	     ORDER BY subcode
    	</select>
    	
    	<!-- 주코드 중복검사 -->
@@ -95,7 +95,8 @@
 			   , addr
 			   , addr_detail
 			   , postcode
-		  FROM company		 
+		  FROM company
+		 ORDER BY 1	 
 	</select>
 	
 	<!-- 거래처 등록 -->

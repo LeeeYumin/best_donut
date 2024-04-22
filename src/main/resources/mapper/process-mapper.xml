@@ -113,7 +113,7 @@
 
 
 
-<!--==== 공정실적 =============================== -->
+<!--======== 공정실적 ======================================================= -->
 	<select id="getProcResultDeList" resultType="ProdInsDeVO">
 		SELECT DISTINCT pi.prod_instruct_code
 				, pi.instruct_date
@@ -128,23 +128,24 @@
 				, all_end_time
 				, pd.product_lot_code
 				, pd.warehousing_cnt - pd.check_done_cnt as fail_cnt
+				, pd.qlty_check_status <!--PQ1 미검사 / PQ2 검사완료-->
 				<!-- , pm.mat_lot_code -->
 		FROM prod_instruct pi JOIN prod_instruct_detail pid 
-														ON pi.prod_instruct_code = pid.prod_instruct_code
-													JOIN users u
-														ON pi.users_code = u.users_code
-													JOIN prod_plan_detail pld
-														ON pid.prod_plan_detail_code = pld.prod_plan_detail_code
-													JOIN product p
-														ON pld.product_code = p.product_code
-													JOIN proc_result pr
-														ON pr.prod_instruct_detail_code = pid.prod_instruct_detail_code
-													RIGHT JOIN product_detail pd
-														ON pd.proc_result_code = pr.proc_result_code
-													JOIN proc_detail pcd
-														ON pr.prod_instruct_detail_code = pcd.prod_instruct_detail_code
-													JOIN proc_mat pm
-														ON pcd.proc_detail_code = pm.proc_detail_code
+							   ON pi.prod_instruct_code = pid.prod_instruct_code
+							  JOIN users u
+							   ON pi.users_code = u.users_code
+							  JOIN prod_plan_detail pld
+							   ON pid.prod_plan_detail_code = pld.prod_plan_detail_code
+							  JOIN product p
+							   ON pld.product_code = p.product_code
+							  JOIN proc_result pr
+							   ON pr.prod_instruct_detail_code = pid.prod_instruct_detail_code
+							  JOIN product_detail pd
+							   ON pd.proc_result_code = pr.proc_result_code
+							  JOIN proc_detail pcd
+							   ON pr.prod_instruct_detail_code = pcd.prod_instruct_detail_code
+							  JOIN proc_mat pm
+							   ON pcd.proc_detail_code = pm.proc_detail_code
 		<where>
 			<if test="searchStartDate != null">
 				TRUNC(instruct_date) <![CDATA[ >= ]]> TRUNC(#{searchStartDate}) 

@@ -16,19 +16,19 @@ import com.example.demo.production.ProdInsVO;
 import com.example.demo.production.ProdPlanAllVO;
 import com.example.demo.production.ProdPlanDeVO;
 import com.example.demo.production.ProdPlanVO;
-import com.example.demo.production.service.ProdPlanService;
+import com.example.demo.production.service.ProdPlanInsService;
 
 @Controller
-public class ProdPlanController {
+public class ProdPlanInsController {
 	
-	@Autowired ProdPlanService prodPlanService;
+	@Autowired ProdPlanInsService prodPlanInsService;
 
 /* 페이지 이동 */
 	
 	//생산계획 등록
-	@GetMapping("prodPlan") // 페이지 uri
+	@GetMapping("prodPlan")
 	public String prodPlan() {
-		return "production/prodPlan"; // html 파일 위치
+		return "production/prodPlan";
 	}
 	
 	//생산계획 관리
@@ -46,51 +46,51 @@ public class ProdPlanController {
 //============================================================================	
 	
 /* < 생산요청&상세 > 데이터 */
-	@GetMapping("/ajax/prodReq")	// fetch 함수에 들어가는 uri
+	@GetMapping("/ajax/prodReq")
 	@ResponseBody
 	public Map<String, Object> getProdeReq(){
-		return prodPlanService.getProdReq();
+		return prodPlanInsService.getProdReq();
 	}
 
 	
 /* < 생산계획 > */
 	
 	//1)조회
-	@GetMapping("/ajax/beforeInsertPlanCode")	// fetch 함수에 들어가는 uri
+	@GetMapping("/ajax/beforeInsertPlanCode") //생산계획코드 미리 읽어오기
 	@ResponseBody
 	public ProdPlanVO beforeInsertPlanCode(){
-		return prodPlanService.beforeInsertPlanCode();
+		return prodPlanInsService.beforeInsertPlanCode();
 	}
 	
-	@PostMapping("/ajax/prodPlanList")
+	@PostMapping("/ajax/prodPlanList") //생산계획목록
 	@ResponseBody
 	public List<ProdPlanVO> getProdPlanList(@RequestBody ProdPlanVO vo){
-		return prodPlanService.getProdPlan(vo);
-	}
-	//상세 데이터
-	@GetMapping("/ajax/prodPlanAll")
-	@ResponseBody
-	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode){
-		return prodPlanService.getProdPlanAll(prodPlanCode);
+		return prodPlanInsService.getProdPlan(vo);
 	}
 	
+	@GetMapping("/ajax/prodPlanAll") //생산계획상세 데이터
+	@ResponseBody
+	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode){
+		return prodPlanInsService.getProdPlanAll(prodPlanCode);
+	}
+	
+	
 	//2)등록
-	//JSON
 	@PostMapping("/ajax/insertProdPlan")
 	@ResponseBody
 	public ProdPlanVO save(@RequestBody ProdPlanVO vo) { 
 		System.out.println(vo);
-		prodPlanService.insertProdPlan(vo);
+		prodPlanInsService.insertProdPlan(vo);
 		return vo;
 	}
 
+	
 	//3)수정
-	//JSON
 	@PostMapping("/ajax/updateProdPlanDetail")
 	@ResponseBody
 	public int modify(@RequestBody List<ProdPlanDeVO> dvo) { 
 		System.out.println(dvo);
-		return prodPlanService.updateProdPlanDetail(dvo);	
+		return prodPlanInsService.updateProdPlanDetail(dvo);	
 	}
 	
 	//4)삭제
@@ -98,51 +98,44 @@ public class ProdPlanController {
 	@ResponseBody
 	public Map<String,Object> remove(@RequestBody ProdPlanVO vo) { 
 		System.out.println(vo);
-		prodPlanService.deleteProdPlan(vo);
+		prodPlanInsService.deleteProdPlan(vo);
 		
 		return Collections.singletonMap("result", 1);
 	}
 	
 	
+	
 /* < 생산지시 > */
 	
 	//1)조회
-	//+지시 전 주간계획&상세 데이터
-	@GetMapping("/ajax/weeklyPlan")	// fetch 함수에 들어가는 uri
+	@GetMapping("/ajax/weeklyPlan") //+지시 전 주간계획&상세 데이터
 	@ResponseBody
 	public Map<String, Object> getWeeklyPlan(){
-		return prodPlanService.getWeeklyPlan();
+		return prodPlanInsService.getWeeklyPlan();
 	}
 	
-	//+지시 전 설비상태 데이터
-	@GetMapping("/ajax/eqmCheck")	// fetch 함수에 들어가는 uri
+	
+	@GetMapping("/ajax/eqmCheck") //+지시 전 설비상태 데이터
 	@ResponseBody
 	public List<ProdInsVO> getEqm(){
-		return prodPlanService.getEqm();
+		return prodPlanInsService.getEqm();
 	}
-	//지시코드
-	@GetMapping("/ajax/beforeInsertInsCode")	// fetch 함수에 들어가는 uri
+	
+	@GetMapping("/ajax/beforeInsertInsCode") //생산지시코드 미리 읽어오기
 	@ResponseBody
 	public ProdInsVO beforeInsertInsCode(){
-		return prodPlanService.beforeInsertInsCode();
+		return prodPlanInsService.beforeInsertInsCode();
 	}
+	
 	
 	//2)등록
 	@PostMapping("/ajax/insertProdInstruct")
 	@ResponseBody
 	public ProdInsVO saveIns(@RequestBody ProdInsVO vo) { 
 		System.out.println(vo);
-		prodPlanService.insertProdInstruct(vo);
+		prodPlanInsService.insertProdInstruct(vo);
 		return vo;
 	}
-//	//+지시 등록하면서 => 계획의 미지시&지시수량 변경
-//	@PostMapping("/ajax/updateAfterInstruct")
-//	@ResponseBody
-//	public int modifyAfterIns(@RequestBody List<ProdPlanDeVO> dvo) { 
-//		System.out.println(dvo);
-//		return prodPlanService.updateAfterInstruct(dvo);	
-//	}
-	
 	
 	
 	
