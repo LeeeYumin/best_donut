@@ -369,6 +369,10 @@ function findPlanCnt(productCode) {
 // 자재 발주 테이블 행 추가
 matStockList.on('checkAll', function () {
     let checked = matStockList.getCheckedRows();
+
+    // 주문수량 자동입력
+
+
     matOrderList.appendRows(checked);
 });
 matStockList.on('check', function (ev) {
@@ -384,13 +388,15 @@ matStockList.on('check', function (ev) {
     }
 
     // 자동 입력한 값이 음수 일 때
-    if (ordersCnt < 0) {
+    if (ordersCnt <= 0) {
         ordersCnt = checkData.safeStockCnt;
     }
-    
+
+    let matOrdersPrice = ordersCnt * checked.unitPrice;
+
     console.log('ordersCnt: ', ordersCnt);
     const { matCode, matName, mainCompanyCode, unit, unitPrice } = checked;
-    matOrderList.appendRow({ matCode, matName, mainCompanyCode, unit, unitPrice, ordersCnt });
+    matOrderList.appendRow({ matCode, matName, mainCompanyCode, unit, unitPrice, ordersCnt, matOrdersPrice });
 
     // 추가된 행 체크
     let appendRowKey = matOrderList.getData().length - 1;
