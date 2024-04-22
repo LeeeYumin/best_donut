@@ -14,7 +14,7 @@ import com.example.demo.production.ProdPlanVO;
 
 
 @Mapper
-public interface ProdPlanMapper {
+public interface ProdPlanInsMapper {
 
 /* 1.생산요청 */
 	public List<ProdPlanBVO> getProdReq();
@@ -59,9 +59,6 @@ public interface ProdPlanMapper {
 	public int insertProcDetail(ProcessVO pvo); //공정상세 테이블 일부 등록
 	//+ 생산계획상태 수정
 	public int updateProdPlanStatus(ProdInsVO vo);
-	
-	//+미지시&지시수량 수정
-	//public int updateAfterInstruct(ProdPlanDeVO dvo); 
 	
 
 }

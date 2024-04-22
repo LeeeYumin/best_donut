@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.production.mapper.ProdPlanMapper">
+<mapper namespace="com.example.demo.production.mapper.ProdPlanInsMapper">
 
 <!--생산요청 조회-->
 	<select id="getProdReq" resultType="ProdPlanBVO">
@@ -26,6 +26,7 @@
 		FROM prod_req_detail prd JOIN product p
                               	  ON prd.product_code = p.product_code
 		WHERE prod_req_code = #{prodReqCode}
+		ORDER BY prd.prod_req_detail_code 
 	</select>
 	
 	

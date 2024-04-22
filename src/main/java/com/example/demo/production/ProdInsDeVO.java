@@ -26,7 +26,8 @@ public class ProdInsDeVO {
 	
 	//공정실적
 	private String productLotCode; //완제품lot코드
-	private int failCnt; //불량수량
+	private String qltyCheckStatus; //품질검사 상태 (PQ1 미검사 / PQ2 검사완료)
+	private Integer failCnt; //불량수량
 	private String usersName;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date instructDate; //지시일자
