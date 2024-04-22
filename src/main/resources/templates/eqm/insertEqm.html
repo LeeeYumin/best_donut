@@ -18,7 +18,7 @@
 		</h3>
 		
 		<form name="insertForm" method="post" enctype="multipart/form-data">
-			<div class="card card-body mb-4">
+			<div class="card card-body mb-4 row">
 				<h5>정보입력</h5>
 				<div class="row mb-3">
 					<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비코드<span class="star">*</span></label>
@@ -139,10 +139,13 @@
 						<div id="notice6" class="form-text notice"></div>
 					</div>
 				</div>
+				<div th:if="${eqmVO.eqmCode} != null">
+					<label class="col-sm-1"><span class="star"></span></label>
+					<img th:src="'/download/'+${eqmVO.imageCode}" width="400">
+				</div>
 			</div>
 		</form>
-		[[${eqmVO.imageCode}]]
-		<img th:src="'/download/'+${eqmVO.imageCode}">
+<!-- 		[[${eqmVO.imageCode}]] -->
 		
 		<div class="mb-5 d-md-flex justify-content-md-center">	
 			<div class="mb-4" th:if = "${eqmVO.eqmCode} == null">
