@@ -82,7 +82,7 @@
 
 >front
 
--
+-[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858153721?alt=media&token=93b1c345-0974-4c72-8f26-0cd1343a3925)](https://github.com/msdio/stackticon)
 
 >back
 
