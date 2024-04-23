@@ -48,7 +48,7 @@
 		                   ON o.users_code = u.users_code
 		                 JOIN t
 		                   ON o.orders_code = t.ocode
-		 WHERE o.orders_status = 'OP1'
+		 WHERE o.orders_status IN ( 'OP1', 'OP2' )
 			<if test="ordersCode != null and ordersCode != ''">
 				AND o.orders_code LIKE '%' || #{ordersCode} || '%'
 			</if>
@@ -240,6 +240,14 @@
 			   , company_code = #{companyCode}
 		 WHERE orders_code = #{ordersCode}
 		   AND orders_status = 'OP1'
+	</update>
+	
+		
+	<!-- 주문 상태 확인/미확인 변경 -->
+	<update id="updateOrdCheck" parameterType="OrdersVO">
+		UPDATE orders
+		   SET orders_status = #{ordersStatus}
+		 WHERE orders_code = #{ordersCode}
 	</update>
 	
 	<!-- 주문 상태 변경 -->

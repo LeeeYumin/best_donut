@@ -26,7 +26,8 @@ public interface OrdersMapper {
 	public int updateOrdStat(ProdReqVO VO);								// 주문상태변경
 	
 	// 3. 수정
-	public int updateOrders(OrdersVO vo);
+	public int updateOrders(OrdersVO vo);								// 주문 수정
+	public int updateOrdCheck(OrdersVO vo);								// 주문 상태 변경(확인/미확인)
 	
 	// 4. 삭제
 	public int deleteOrders(String ordersCode);							// 주문삭제

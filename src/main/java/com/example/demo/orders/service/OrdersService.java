@@ -22,6 +22,7 @@ public interface OrdersService {
 	
 	// 3. 수정
 	public boolean updateOrders(OrdersVO vo);
+	public boolean updateOrdCheck(List<OrdersVO> list);
 	
 	// 4. 삭제
 	public int deleteOrders(String ordersCode);							// 주문삭제

@@ -95,6 +95,13 @@ public class OrdersController {
 		return ordersService.updateOrders(vo);
 	}
 	
+	// 주문상태 수정(확인/미확인)
+	@PostMapping("ajax/updateOrdCheck")
+	@ResponseBody
+	public boolean updateOrdCheck(@RequestBody List<OrdersVO> list) {
+		return ordersService.updateOrdCheck(list);
+	}
+	
 	// 4. 삭제
 	
 	// 주문삭제

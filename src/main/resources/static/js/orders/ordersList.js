@@ -75,13 +75,11 @@ const ordGrid = new tui.Grid({
 			sortable: true,
 			formatter: 'listItemText',
 			editor: {
-				type: 'text',
+				type: 'select',
 				options: {
 					listItems: [
 						{ text: '미확인', value: 'OP1' },
 						{ text: '확인', value: 'OP2' },
-						{ text: '생산요청', value: 'OP3' },
-						{ text: '납품완료', value: 'OP4' },
 					],
 				}
 			}
@@ -325,3 +323,54 @@ companyGrid.on('click', (event) => {
 	// 닫기버튼 클릭
 	document.getElementById('closeBtn').click();
 })
+
+// 주문 상태 변경(확인/미확인)
+function modifyOrdStat() {
+
+	let checkedList = ordGrid.getCheckedRows();
+	console.log(checkedList)
+
+	Swal.fire({
+		title: "해당 주문의 주문상태를 변경하시겠습니까?",
+		icon: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#3085d6",
+		cancelButtonColor: "#d33",
+		confirmButtonText: "변경",
+		cancelButtonText: '취소'
+	}).then((result) => {
+		if (result.isConfirmed) {
+
+			fetch('ajax/updateOrdCheck', {
+				method: 'POST',
+				headers: jsonHeaders,
+				body: JSON.stringify(checkedList)
+			})
+			.then(res => res.json())
+			.then(res => {
+				if (res > 0) {
+					Swal.fire({
+						position: "center",
+						icon: "success",
+						title: "주문상태 변경 완료!",
+						text: "주문상태 변경이 정상적으로 처리되었습니다.",
+						showConfirmButton: false,
+						timer: 1500
+					});
+					detGrid.clear();
+					searchReset();
+				}
+				else {
+					Swal.fire({
+						position: "center",
+						icon: "error",
+						title: "주문상태 변경 실패",
+						text: "주문상태 변경이 정상적으로 처리되지 않았습니다.",
+						showConfirmButton: false,
+						timer: 1500
+					});
+				}
+			})
+		}
+	});
+}
