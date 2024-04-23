@@ -28,7 +28,14 @@
 		WHERE prod_req_code = #{prodReqCode}
 		ORDER BY prd.prod_req_detail_code 
 	</select>
-	
+
+<!-- 제품정보 -->
+  <select id="getProductInfo" resultType="ProdPlanDeVO">
+		SELECT product_code
+				, product_name
+		FROM product
+		ORDER BY product_code	
+	</select>
 	
 <!-- 생산계획 조회-->
 	<select id="getProdPlan" resultType="ProdPlanVO">
@@ -259,6 +266,5 @@
 	<insert id="insertProcDetail" parameterType="ProcessVO" statementType="CALLABLE">
 		{ CALL proc_de_insert(#{prodInstructCode}) }
 	</insert>
-	
 
 </mapper>

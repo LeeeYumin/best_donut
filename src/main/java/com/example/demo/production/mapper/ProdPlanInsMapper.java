@@ -26,6 +26,7 @@ public interface ProdPlanInsMapper {
 	public ProdPlanVO beforeInsertPlanCode();	//계획코드 미리 보기	
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo);
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode);
+//	public List<ProdPlanDeVO> getProductInfo();
 	
 	//2)등록
 	public int insertProdPlan(ProdPlanVO vo); //1건에
