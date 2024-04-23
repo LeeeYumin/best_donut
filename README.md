@@ -1,7 +1,7 @@
-### Best Donut / Final Project _ 2 
 
 <img src="https://github.com/LeeeYumin/best_donut/assets/152114081/bcb9f7f5-ac1b-4f4c-99a4-7f610ac530d8.png" width="300" height="200">
 
+### Best Donut / Final Project _ 2 
 ---
 
 
