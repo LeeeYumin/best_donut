@@ -116,13 +116,13 @@ const grid2 = new tui.Grid({
       formatter : 'listItemText',
       // editingEvent : 'click',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '유', value: 'PFY' },
-                  { text: '무', value: 'PFN' }
-                ],
-              }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '유', value: 'PFY' },
+            { text: '무', value: 'PFN' }
+          ],
+        }
             }
     },
     {
@@ -132,13 +132,13 @@ const grid2 = new tui.Grid({
       formatter : 'listItemText',
       // editingEvent : 'click',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '양호', value: 'PSY' },
-                  { text: '불량', value: 'PSN' }
-                ],
-              }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '양호', value: 'PSY' },
+            { text: '불량', value: 'PSN' }
+          ],
+        }
             }
     },
     {
@@ -148,14 +148,14 @@ const grid2 = new tui.Grid({
       formatter : 'listItemText',
       // editingEvent : 'click',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '불량', value: 'ACN' },
-                  { text: '양호', value: 'ACY' }
-                ],
-              }
-            }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '불량', value: 'ACN' },
+            { text: '양호', value: 'ACY' }
+          ],
+        }
+      }
     },
     {
       header : '제품중량',
@@ -164,14 +164,14 @@ const grid2 = new tui.Grid({
       formatter : 'listItemText',
       // editingEvent : 'click',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '불량', value: 'PWN' },
-                  { text: '양호', value: 'PWY' }
-                ],
-              }
-            }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '불량', value: 'PWN' },
+            { text: '양호', value: 'PWY' }
+          ],
+        }
+      }
     },
     {
       header : '입고수량',
@@ -199,14 +199,14 @@ const grid2 = new tui.Grid({
       formatter : 'listItemText',
       // editingEvent : 'click',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '판매가능', value: 'PRY' },
-                  { text: '판매불가(폐기)', value: 'PRN' }
-                ],
-              }
-            }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '판매가능', value: 'PRY' },
+            { text: '판매불가(폐기)', value: 'PRN' }
+          ],
+        }
+      }
       }
     ]
 });
@@ -237,6 +237,7 @@ grid2.on('afterChange', event => {
   let addSt = grid2.getRow(ev.rowKey).addStand;
   let weight = grid2.getRow(ev.rowKey).productWeight;
 
+  //항목 입력값이 다 정상인 경우 결과값 출력
   if (foreign == 'PFN' && pack == 'PSY' && addSt == 'ACY' && weight == 'PWY' && goodPd > 0){
     grid2.setValue(ev.rowKey,'lastResult','PRY');
   }
@@ -252,7 +253,6 @@ grid2.on('afterChange', event => {
 })
 
 //체크하고 버튼누르면 적합수량->적합 수량에 insert & 입고 수량에 update
-
 function addProQual(){
   const checkedRows = grid2.getCheckedRows();
   console.log(checkedRows);
