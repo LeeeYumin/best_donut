@@ -90,7 +90,7 @@
 
 >IDE & Tools
 
--
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858303814?alt=media&token=d1df8508-fbe4-402f-8021-35d7e728f97f)](https://github.com/msdio/stackticon)
 
 >CI/CD & DataBase
 
@@ -98,7 +98,7 @@
 
 >Ext.
 
--
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858476632?alt=media&token=80d43f86-cba8-4c5c-9d12-110d3d33f37f)](https://github.com/msdio/stackticon)
 
 #### 프로젝트 규칙
 
