@@ -570,7 +570,7 @@ async function insertMatOrders() {
             title: "발주 완료!",
             text: "발주가 정상적으로 처리되었습니다.",
             showConfirmButton: false,
-            timer: 1500
+            timer: 2000
         });
 
     } else {
@@ -580,7 +580,7 @@ async function insertMatOrders() {
             title: "발주 실패",
             text: "발주가 정상적으로 처리되지 않았습니다.",
             showConfirmButton: false,
-            timer: 1500
+            timer: 2000
         });
     }
 }

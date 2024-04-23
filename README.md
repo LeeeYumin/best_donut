@@ -1,6 +1,9 @@
-### Final Project _ 2 
+<p align="center">
+<img src="https://github.com/LeeeYumin/best_donut/assets/152114081/bcb9f7f5-ac1b-4f4c-99a4-7f610ac530d8.png" width="300" height="200">
+</p>
 
 
+### Best Donut / Final Project _ 2 
 ---
 
 
@@ -9,16 +12,20 @@
 
 >개요
 
-- 고객이 요구하는 품질의 제품을 최소 비용으로 공급하기 위한 합리적인 생산계획을 설정하고 생산체제를 효율화함.
-- 도넛 생산 공정의 전 과정을 추적하고 제어하는 생산관리시스템(MES) 개발로 생산성을 높이고 자원을 효율적으로 사용함.
+- 최소 비용으로 요구되는 품질을 공급하기 위한 합리적인 생산계획을 설정, 생산체제 효율화.
+- 도넛 생산 공정의 전 과정을 추적·제어하는 생산관리시스템(MES) 개발로 생산성을 높임.
 
-기대효과
+>기대효과
 
 - 생산, 품질 등 공정 프로세스 표준화를 통한 실시간 오더 및 프로세스 확인으로 오작업 조기 예방 및 생산 품질 향상
 - 실시간 인터페이스를 통한 시스템 운영의 최적화로 조직 내 비효율적 낭비 요소 개선 및 제거
 - 제조현장의 디지털화 지원으로 paperless 현장 구현
 - 생산 주기 전체에서 제조 데이터를 수집함으로써 제품 추적 및 이력 관리 능력 향상
 
+>개발기간
+
+- 2024.03.26 ~ 2024.04.29
+  
 >구현
 
 -
@@ -75,23 +82,23 @@
 
 >front
 
--
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858153721?alt=media&token=93b1c345-0974-4c72-8f26-0cd1343a3925)](https://github.com/msdio/stackticon)
 
 >back
 
--
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858255818?alt=media&token=872d0293-4e1e-4f06-b930-e29bdea30f06)](https://github.com/msdio/stackticon)
 
 >IDE & Tools
 
--
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858303814?alt=media&token=d1df8508-fbe4-402f-8021-35d7e728f97f)](https://github.com/msdio/stackticon)
 
 >CI/CD & DataBase
 
--
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858509036?alt=media&token=513edb99-4706-40e5-8091-8be4e033d76f)](https://github.com/msdio/stackticon)
 
 >Ext.
 
--
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858476632?alt=media&token=80d43f86-cba8-4c5c-9d12-110d3d33f37f)](https://github.com/msdio/stackticon)
 
 #### 프로젝트 규칙
 

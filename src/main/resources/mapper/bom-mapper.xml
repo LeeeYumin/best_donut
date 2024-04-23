@@ -116,12 +116,15 @@
 	        SET APPLY_STATUS = 'BAN'
 	        WHERE PRODUCT_CODE = #{productCode};
 		
-		insert into BOM (BOM_CODE
+		insert into BOM (
+						BOM_CODE
 						, APPLY_DATE
 						, APPLY_STATUS
 						, PRODUCT_CODE
-						, USERS_CODE)
-				values ( #{bomCode}
+						, USERS_CODE
+						)
+				values (
+						#{bomCode}
 						, sysdate
 						,'BAY'
 						, #{productCode}
