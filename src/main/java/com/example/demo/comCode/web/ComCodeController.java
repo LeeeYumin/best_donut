@@ -102,5 +102,11 @@ public class ComCodeController {
 		return comCodeService.insertCompany(vo);
 	}
 	
+	// 거래처 검색
+	@PostMapping("ajax/getCompanySearchList")
+	@ResponseBody
+	public List<CompanyVO> getCompanySearchList(@RequestBody CompanyVO vo) {
+		return comCodeService.getCompanySearchList(vo);
+	}
 	
 }

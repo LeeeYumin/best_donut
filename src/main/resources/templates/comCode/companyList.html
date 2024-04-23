@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout/index}">
+<head>
+	<meta charset="UTF-8">
+	<title>거래처관리</title>
+	<!-- Toast UI CDN -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+</head>
+<body>
+	<!-- Thymeleaf 레이아웃 div -->
+	<div layout:fragment="content">
+	
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">공통관리 / </span> 거래처관리
+		</h3>
+
+		<div sec:authentication="principal.usersVO.perm1" class="user" id="auth" style="display: none;"></div>
+		<div sec:authentication="principal.usersVO.usersCode" class="user" id="usersCode" style="display: none;"></div>
+		<!-- 검색 폼 -->
+		<div class="search">
+			<form name="searchForm" method="post">
+				<div class="card mb-4">
+					<h5 class="card-header">검색조건</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+
+						<!-- 거래처코드 -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="companyCode" name="companyCode">
+							</div>
+						</div>
+
+						<!-- 거래처명 -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="companyName" name="companyName">
+							</div>
+						</div>
+
+                        <!-- 대표자명 -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">대표자명</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="ownerName" name="ownerName">
+							</div>
+						</div>
+
+                        <!-- 주소 -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주소</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="addr" name="addr">
+							</div>
+						</div>
+
+						<!-- 버튼 -->
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchOrdBtn" onclick="searchCompany()">검색</button>
+							<button type="button" class="btn btn-primary" id="searchResetBtn" onclick="searchReset()">초기화</button>
+						</div>
+
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- grid -->
+		<div class="ordersGrid">
+			<div class="card">
+				<!-- 주문 목록 -->
+				<h5 class="card-header">주문 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<!-- 그리드 div-->
+					<div id="companyGrid"></div>
+					<!-- 버튼 div -->
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+						<button type="button" class="btn btn-primary me-md-2" id="delBtn">선택삭제</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- script -->
+		<script src="/js/comCode/companyList.js"></script>
+	</div>
+</body>
+
+</html>
+<style>
+	.star, .notice {
+		color: red;
+	}
+</style>

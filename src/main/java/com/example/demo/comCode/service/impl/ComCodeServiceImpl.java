@@ -62,6 +62,11 @@ public class ComCodeServiceImpl implements ComCodeService{
 	public boolean insertCompany(CompanyVO vo) {
 		return comCodeMapper.insertCompany(vo) > 0 ? true : false;
 	}
+
+	@Override
+	public List<CompanyVO> getCompanySearchList(CompanyVO vo) {
+		return comCodeMapper.getCompanySearchList(vo);
+	}
 	
 
 }
