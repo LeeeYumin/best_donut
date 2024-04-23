@@ -134,6 +134,7 @@
 		<if test="expEndDate != null">
 			AND TRUNC(exp_date) <![CDATA[ <= ]]> #{expEndDate}
 		</if>
+		ORDER BY exp_date
 	</select>
 	
 	<!-- 완제품LOT조회 -->

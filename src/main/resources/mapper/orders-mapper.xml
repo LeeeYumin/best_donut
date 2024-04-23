@@ -226,6 +226,22 @@
 			)
 	</insert>
 	
+
+<!-- 3. 수정 -->
+
+	<!-- 주문 수정 -->
+	<update id="updateOrders" parameterType="OrdersVO">
+		UPDATE orders
+		   SET orders_date = #{ordersDate}
+			   , due_date = #{dueDate}
+			   , total_orders_price = #{totalOrdersPrice}
+			   , orders_status = #{ordersStatus}
+			   , users_code = #{usersCode}
+			   , company_code = #{companyCode}
+		 WHERE orders_code = #{ordersCode}
+		   AND orders_status = 'OP1'
+	</update>
+	
 	<!-- 주문 상태 변경 -->
 	<update id="updateOrdStat" parameterType="ProdReqVO">
 		UPDATE orders
@@ -235,7 +251,7 @@
 	</update>
 	
 	
-<!-- 3. 삭제 -->
+<!-- 4. 삭제 -->
 	
 	<!-- 주문삭제 -->
 	<delete id="deleteOrders" parameterType="String">

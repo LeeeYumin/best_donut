@@ -110,6 +110,11 @@ public class OrdersServiceImpl implements OrdersService {
 		
 		return result >= 1 ? true : false;
 	}
+
+	@Override
+	public boolean updateOrders(OrdersVO vo) {
+		return ordersMapper.updateOrders(vo) >= 1 ? true : false;
+	}
 	
 		
 }

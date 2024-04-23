@@ -25,7 +25,10 @@ public interface OrdersMapper {
 	public int insertProdReqDet(ProdReqDetailVO vo);					// 생산요청상세등록
 	public int updateOrdStat(ProdReqVO VO);								// 주문상태변경
 	
-	// 3. 삭제
+	// 3. 수정
+	public int updateOrders(OrdersVO vo);
+	
+	// 4. 삭제
 	public int deleteOrders(String ordersCode);							// 주문삭제
 	public int deleteOrdDet(String ordersCode);							// 주문상세삭제
 	
