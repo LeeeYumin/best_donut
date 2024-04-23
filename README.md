@@ -94,7 +94,7 @@
 
 >CI/CD & DataBase
 
--
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1713858509036?alt=media&token=513edb99-4706-40e5-8091-8be4e033d76f)](https://github.com/msdio/stackticon)
 
 >Ext.
 
