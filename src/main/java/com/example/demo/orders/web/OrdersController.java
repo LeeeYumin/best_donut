@@ -27,7 +27,7 @@ public class OrdersController {
 	
 // I. 주문
 	
-	// 1. 페이지 이동
+	// 0. 페이지 이동
 	
 	// 테스트 페이지
 	@GetMapping("ordersTest")
@@ -54,7 +54,7 @@ public class OrdersController {
 		return "orders/ordersInsert";
 	}
 
-	// 2. 조회
+	// 1. 조회
 	
 	// 거래처조회
 	@GetMapping("ajax/getCompany")
@@ -77,13 +77,29 @@ public class OrdersController {
 		return ordersService.getOrdersDetail(ordersCode);
 	}
 		
-	// 3. 등록
+	// 2. 등록
 	
 	// 주문등록
 	@PostMapping("ajax/insertOrders")
 	@ResponseBody
 	public boolean insertOrders(@RequestBody OrdersVO vo) {
 		return ordersService.insertOrders(vo);
+	}
+
+	// 3. 수정
+	
+	// 주문 수정
+	@PostMapping("ajax/updateOrders")
+	@ResponseBody
+	public boolean updateOrders(@RequestBody OrdersVO vo) {
+		return ordersService.updateOrders(vo);
+	}
+	
+	// 주문상태 수정(확인/미확인)
+	@PostMapping("ajax/updateOrdCheck")
+	@ResponseBody
+	public boolean updateOrdCheck(@RequestBody List<OrdersVO> list) {
+		return ordersService.updateOrdCheck(list);
 	}
 	
 	// 4. 삭제

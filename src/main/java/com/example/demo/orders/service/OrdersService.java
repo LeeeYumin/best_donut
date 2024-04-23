@@ -20,7 +20,11 @@ public interface OrdersService {
 	// 2. 등록
 	public boolean insertOrders(OrdersVO vo);							// 주문등록
 	
-	// 3. 삭제
+	// 3. 수정
+	public boolean updateOrders(OrdersVO vo);
+	public boolean updateOrdCheck(List<OrdersVO> list);
+	
+	// 4. 삭제
 	public int deleteOrders(String ordersCode);							// 주문삭제
 	public int deleteOrdDet(String ordersCode);							// 주문상세삭제
 	
