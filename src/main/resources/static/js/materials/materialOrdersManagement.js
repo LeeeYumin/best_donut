@@ -342,8 +342,8 @@ function cancelOrder() {
 		Swal.fire({
 			position: "center",
 			icon: "warning",
-			title: '취소할 수 없는 상태의 주문이 선택되었습니다.',
-			text: ' ',
+			title: '발주 취소 실패',
+			text: '취소할 수 없는 상태의 주문이 선택되었습니다.',
 			showConfirmButton: false,
 			timer: 1500
 		});
@@ -370,10 +370,17 @@ function excelDownload() {
 	const oDate = grid1.getCheckedRows()[0].ordersDate;
 	const cName = grid1.getCheckedRows()[0].companyName;
 	const oCnt = grid1.getCheckedRows().length - 1;
+	let options = {};
 
-	const options = {
-		fileName: oDate + ' ' + cName + ' 외 ' + oCnt + '건 발주서',
-	};
+	if (oCnt == 0) {
+		options = {
+			fileName: oDate + ' ' + cName + ' 발주서',
+		};
+	} else {
+		options = {
+			fileName: oDate + ' ' + cName + ' 외 ' + oCnt + '건 발주서',
+		};
+	}
 
 	grid2.export('xlsx', options);
 }
