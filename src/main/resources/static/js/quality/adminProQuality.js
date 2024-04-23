@@ -89,6 +89,7 @@ function findProd() {
   adminProQual(prodName, checkDate);
 }
 
+//시큐리티 관련 버튼 가림
 if($('#auth').html() != '1'){
 	$('#updateBtn').attr('style', 'display : none;');
 	}
