@@ -65,7 +65,7 @@
     </td>
   </tr>
   <tr>
-    <td><b><center>김현준</center></b></td>
+    <td><b>:김현준:<</b></td>
     <td><b>박정언</b></td>
     <td><b>신혜원</b></td>
     <td><b>이효진</b></td>
