@@ -14,6 +14,7 @@ public interface OrdersService {
 	
 	// 1. 조회
 	public List<OrdersVO> getOrders(OrdersVO vo);						// 주문조회
+	public List<OrdersVO> getProdReqOrders(OrdersVO vo);				// 생산요청 대상 주문조회	
 	public List<OrdersDetailVO> getOrdersDetail(String ordersCode);		// 주문상세조회
 	public List<Map<String, Object>> getCompany();						// 거래처 조회
 	

@@ -311,7 +311,7 @@ const grid = new tui.Grid({
 			},
 			totalSupplyPrice: {
 				template: function(value) {
-					document.querySelector('#totalOrdersPrice').value = priceFormat(value.sum);
+					document.querySelector('#totalOrdersPrice').value = value.sum;
 					return priceFormat(value.sum);
 				}
 			}

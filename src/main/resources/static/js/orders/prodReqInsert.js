@@ -235,10 +235,11 @@ function getOrdersList(param){
 		body : JSON.stringify(param)
 	};
 
-	fetch('ajax/ordersList', data)
+	fetch('ajax/prodReqOrdersList', data)
 	.then(res => res.json())
 	.then(res => {
 		// ajax로 불러온 데이터 그리드에 넣음
+		console.log(res)
 		ordGrid.resetData(res);
 	})
 	getProductList();
@@ -378,6 +379,7 @@ function searchOrders() {
 	const dueEndDate = weekData.weekEnd;
 
 	let param = {dueStartDate, dueEndDate};
+	console.log(param);
 	getOrdersList(param);
 }
 

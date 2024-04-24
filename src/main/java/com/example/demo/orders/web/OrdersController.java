@@ -70,6 +70,12 @@ public class OrdersController {
 		return ordersService.getOrders(vo);
 	}
 	
+	@PostMapping("ajax/prodReqOrdersList")	// fetch 함수에 들어가는 uri
+	@ResponseBody
+	public List<OrdersVO> getProdReqOrders(OrdersVO vo){
+		return ordersService.getProdReqOrders(vo);
+	}
+	
 	// 주문상세조회
 	@GetMapping("ajax/ordersDetail")
 	@ResponseBody
