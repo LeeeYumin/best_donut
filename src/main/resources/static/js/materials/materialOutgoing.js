@@ -351,7 +351,20 @@ matStockList.on('checkAll', function () {
             break;
         }
     }
+
     matOutgoingList.appendRows(appendData);
+
+    // 추가된 자재만 체크 표시
+    let matOutgoingListData = matOutgoingList.getData();
+    for (let i = 0; i < matOutgoingListData.length; i++) {
+        for (let j = 0; j < checked.length; j++) {
+            if (matOutgoingListData[i].matLotCode == checked[j].matLotCode) {
+                matStockList.check(j)
+            }else{
+                matStockList.uncheck(j)
+            }
+        }
+    }
 });
 // 자재 재고 테이블 모두 선택 해제 시 불출 테이블에서도 데이터 삭제
 matStockList.on('uncheckAll', function () {
@@ -379,10 +392,10 @@ matStockList.on('check', function (ev) {
     let procNeedCnt = BOMList.getValue(BOMList.getFocusedCell().rowKey, 'procNeedCnt');
     let matOutgoingListData = matOutgoingList.getData();
     let alreadyCnt = 0;
-    
+
     // 이미 추가된 자재 수량 구하기
     for (let i = 0; i < matOutgoingListData.length; i++) {
-        if(matOutgoingListData[i].matCode == checked.matCode){
+        if (matOutgoingListData[i].matCode == checked.matCode) {
             alreadyCnt += matOutgoingListData[i].procNeedCnt
         }
     }

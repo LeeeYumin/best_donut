@@ -335,7 +335,7 @@ function requireMatCal() {
                 needCnt = BOMListData[j].needCnt;
                 // 계획수량 찾기
                 let planCnt = findPlanCnt(BOMListData[j].productCode);  // 계획수량 찾는 함수 호출
-                // 소요량 단위 맞춰주기
+                // 제품별 자재 소요량 계산 -> 소요량 단위 맞춰주기
                 if (matCode == 'MAT00002') {        // 계란(MAT00002)일 경우 ( 60g = 1알 / 30알 = 1판 )
                     requireMat = Math.ceil(planCnt * needCnt / 60 / 30);
                 } else if (matCode == 'MAT00009') { // 포장지(MAT00009)일 경우 ( 단위 동일 )
@@ -343,7 +343,7 @@ function requireMatCal() {
                 } else {                            // 나머지 ( g-> kg / mL -> L )
                     requireMat = Math.ceil(planCnt * needCnt / 1000);
                 }
-                requireMatSum += requireMat;        // 자재 총 소요량에 자재 소요량 더하기
+                requireMatSum += requireMat;        // 자재 총 소요량에 제품별 자재 소요량 더하기
             }
         }
 
