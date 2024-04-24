@@ -228,6 +228,7 @@ getOrdersList(param);
 // (1) 주문 조회
 function getOrdersList(param){
 	getWeekDate();
+	console.log(param)
 	
 	const data = {
 		method: 'POST',

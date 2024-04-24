@@ -58,7 +58,10 @@ const companyGrid = new tui.Grid({
             name : 'addr',
             align : 'center',
         }, 
-	]
+	],
+	columnOptions: {
+        resizable: true
+	}
 })
 
 // 주문 검색버튼 클릭 이벤트
