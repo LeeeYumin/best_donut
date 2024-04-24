@@ -343,7 +343,7 @@ function requireMatCal() {
                 } else {                            // 나머지 ( g-> kg / mL -> L )
                     requireMat = Math.ceil(planCnt * needCnt / 1000);
                 }
-                requireMatSum += requireMat;        // 자재 총 소요량에 제품별 자재 소요량 더하기
+                requireMatSum += requireMat;        // 제품별 자재 소요량 더하여 자재별 총 소요량 구하기
             }
         }
 
