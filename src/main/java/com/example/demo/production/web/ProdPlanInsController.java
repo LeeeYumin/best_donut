@@ -74,6 +74,12 @@ public class ProdPlanInsController {
 		return prodPlanInsService.getProdPlanAll(prodPlanCode);
 	}
 	
+//	@GetMapping("/ajax/productInfo") //제품정보
+//	@ResponseBody
+//	public List<ProdPlanDeVO> getProductInfo(){
+//		return prodPlanInsService.getProductInfo();
+//	}
+	
 	
 	//2)등록
 	@PostMapping("/ajax/insertProdPlan")
