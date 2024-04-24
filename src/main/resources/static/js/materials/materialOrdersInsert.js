@@ -2,6 +2,8 @@ getProdPlanList();
 getMaterialsList();
 getBOMList();
 
+const usersCode = $('#usersCode').html();
+
 //생산계획 진행상태
 class PlanStatus {
     constructor(props) {
@@ -372,9 +374,31 @@ matStockList.on('checkAll', function () {
     let checked = matStockList.getCheckedRows();
 
     // 주문수량 자동입력
+    for (i = 0; i < checked.length; i++) {
+        let ordersCnt = 0;
+        let checkRowData = checked[i];
 
+        // 주문수량 설정
+        if (checkRowData.differenceStockReq == null) {
+            ordersCnt = Math.ceil(checkRowData.safeStockCnt - checkRowData.plusStockOrders);
+        } else {
+            ordersCnt = Math.ceil(checkRowData.safeStockCnt - checkRowData.differenceStockReq);
+        }
 
-    matOrderList.appendRows(checked);
+        // 주문수량이 음수일 경우
+        if (ordersCnt <= 0) {
+            ordersCnt = checkRowData.safeStockCnt;
+        }
+
+        // 주문 금액 계산
+        let matOrdersPrice = ordersCnt * checkRowData.unitPrice;
+
+        // 발주 테이블에 추가
+        const { matCode, matName, mainCompanyCode, unit, unitPrice } = checkRowData;
+        matOrderList.appendRow({ matCode, matName, mainCompanyCode, unit, unitPrice, ordersCnt, matOrdersPrice });
+    }
+    // 발주 테이블 체크박스 모두 체크
+    matOrderList.checkAll();
 });
 matStockList.on('check', function (ev) {
     let checked = matStockList.getRow(ev.rowKey);
@@ -545,7 +569,7 @@ async function insertMatOrders() {
     console.log('prodPlanCode : ', prodPlanCode);
     console.log('matOrderDetail : ', matOrderDetailVO);
 
-    const param = { prodPlanCode, matOrderDetailVO }
+    const param = { prodPlanCode, usersCode, matOrderDetailVO }
 
     console.log(param);
 
