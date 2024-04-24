@@ -107,7 +107,7 @@
 
 #### 프로젝트 사이트
 
-베스트 도넛 <http://bestdonut.store>
+> 베스트 도넛 <http://bestdonut.store>
 
 
 #### 프로젝트 규칙
