@@ -139,10 +139,13 @@
 						<div id="notice6" class="form-text notice"></div>
 					</div>
 				</div>
-				<div th:if="${eqmVO.eqmCode} != null">
-					<label class="col-sm-1"><span class="star"></span></label>
+				<div th:if="${eqmVO.imageCode} == null">
+				</div>
+				<div th:if="${eqmVO.imageCode} != null">
+					<label class="col-sm-1">업로드<br>설비사진<span class="star"></span></label>
 					<img th:src="'/download/'+${eqmVO.imageCode}" width="400">
 				</div>
+			<div style="text-align: right;">Desingned by Freepik</div>
 			</div>
 		</form>
 <!-- 		[[${eqmVO.imageCode}]] -->
