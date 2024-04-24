@@ -32,7 +32,7 @@
 		           , SUM(d.orders_cnt) cnt
 		      FROM orders_detail d JOIN orders o
 		                           ON o.orders_code = d.orders_code
-		     WHERE o.orders_status = 'OP1' 
+		     WHERE o.orders_status = 'OP2' 
 		     <if test="dueStartDate != null">
 		     	AND TRUNC(o.due_date) <![CDATA[ >= ]]> TO_DATE(#{dueStartDate}, 'YYYY-MM-DD')
 		     </if>
@@ -203,7 +203,7 @@
 	
 	<!-- 완제품입출고 조회 -->
 	<select id="getProdInout" resultType="ProductInoutVO">
-		SELECT h.product_inout_code
+		SELECT  h.product_inout_code
 		       , h.inout_sep
 		       , h.inout_cnt
 		       , h.inout_date
@@ -213,18 +213,18 @@
 		       , u.users_name
 		       , p.product_name
 		       , c.company_name
-		  FROM product_inout_history h LEFT OUTER JOIN product_detail d
-		                                            ON h.product_lot_code = d.product_lot_code
-		                               LEFT OUTER JOIN product p
-		                                            ON d.product_code = p.product_code
-		                               LEFT OUTER JOIN orders_detail o
-		                                            ON d.product_code = o.product_code
-		                               LEFT OUTER JOIN orders s
-		                                            ON s.orders_code = o.orders_code
-		                               LEFT OUTER JOIN company c
-		                                            ON s.company_code = c.company_code
-		                               LEFT OUTER JOIN users u
-		                                            ON h.users_code = u.users_code
+		  FROM product_inout_history h JOIN product_detail d
+		                                 ON h.product_lot_code = d.product_lot_code
+		                               JOIN users u
+		                                 ON h.users_code = u.users_code
+		                               JOIN product p
+		                                 ON d.product_code = p.product_code
+		                    LEFT OUTER JOIN orders_detail o
+		                                 ON h.orders_detail_code = o.orders_detail_code
+		                    LEFT OUTER JOIN orders s
+		                                 ON s.orders_code = o.orders_code
+		                    LEFT OUTER JOIN company c
+		                                 ON s.company_code = c.company_code
 		 WHERE 1=1
 		<if test="productInoutCode != null and productInoutCode != ''">
 			AND h.product_inout_code LIKE '%' || #{productInoutCode} || '%'
