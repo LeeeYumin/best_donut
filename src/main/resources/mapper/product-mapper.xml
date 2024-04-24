@@ -32,7 +32,7 @@
 		           , SUM(d.orders_cnt) cnt
 		      FROM orders_detail d JOIN orders o
 		                           ON o.orders_code = d.orders_code
-		     WHERE o.orders_status = 'OP1' 
+		     WHERE o.orders_status = 'OP2' 
 		     <if test="dueStartDate != null">
 		     	AND TRUNC(o.due_date) <![CDATA[ >= ]]> TO_DATE(#{dueStartDate}, 'YYYY-MM-DD')
 		     </if>
