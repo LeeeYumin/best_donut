@@ -127,6 +127,12 @@ public class OrdersServiceImpl implements OrdersService {
 		
 		return result >= 1 ? true : false;
 	}
+
+	// 생산요청 대상 주문조회	
+	@Override
+	public List<OrdersVO> getProdReqOrders(OrdersVO vo) {
+		return ordersMapper.getProdReqOrders(vo);
+	}
 	
 		
 }
