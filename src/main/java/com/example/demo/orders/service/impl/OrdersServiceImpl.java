@@ -110,6 +110,29 @@ public class OrdersServiceImpl implements OrdersService {
 		
 		return result >= 1 ? true : false;
 	}
+
+	@Override
+	public boolean updateOrders(OrdersVO vo) {
+		return ordersMapper.updateOrders(vo) >= 1 ? true : false;
+	}
+
+	@Override
+	public boolean updateOrdCheck(List<OrdersVO> list) {
+		
+		int result = 0;
+		
+		for(OrdersVO vo : list) {
+			result += ordersMapper.updateOrdCheck(vo);
+		}
+		
+		return result >= 1 ? true : false;
+	}
+
+	// 생산요청 대상 주문조회	
+	@Override
+	public List<OrdersVO> getProdReqOrders(OrdersVO vo) {
+		return ordersMapper.getProdReqOrders(vo);
+	}
 	
 		
 }

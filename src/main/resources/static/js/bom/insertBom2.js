@@ -100,6 +100,7 @@ function saveInsert(){
 	.then (res => {
 		console.log(res);
 
+		//등록버튼 클릭 시 alert창 알림
 		if(res > 0){
 			Swal.fire({
 				position: "center",

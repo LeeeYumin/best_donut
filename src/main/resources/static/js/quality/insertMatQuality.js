@@ -189,7 +189,7 @@ async function getMatInfo(matLotCode, inoutDate, inoutDate2){
   })
 };
 
-//검색
+//자재lot, 날짜 범위로 검색
 function findMat() {
   let matLotCode = document.querySelector('#matLOT').value;
   let inoutDate = document.querySelector('#inDate').value; //#id

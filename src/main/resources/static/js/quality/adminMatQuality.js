@@ -51,14 +51,14 @@ getMatAdminStart();
 				align : "center",
 				formatter : 'listItemText',
 				editor: {
-		            type: 'select',
-		            options: {
-		              listItems: [
-		                { text: '미검사', value: 'MI1' },
-		                { text: '검사완료', value: 'MI2' }
-		              ]
-		            }
-		          }
+					type: 'select',
+					options: {
+						listItems: [
+							{ text: '미검사', value: 'MI1' },
+							{ text: '검사완료', value: 'MI2' }
+						]
+					}
+				}
 			},
 			{
 				header : '입고수량',
@@ -88,7 +88,7 @@ getMatAdminStart();
       console.log('after change:', ev);
     })
 
-
+	//자재코드, 날짜 범위로 검색
 	async function getMatAdmin(){
 		let matCode = $('#matCode').val();
 		let searchStartDate = $('#searchStartDate').val();
@@ -111,6 +111,7 @@ getMatAdminStart();
 
 	};
 
+	//날짜 검색
 	async function getMatAdminStart(){
 		let today = new Date();
 		let searchStartDate = dateFormat(new Date(today.setDate(today.getDate()-1)));
@@ -131,6 +132,7 @@ getMatAdminStart();
 		})
 	};
 
+	//검색하고 나서 칸 리셋
 	function reset(){
 		$('#searchStartDate').val('');
 		$('#searchEndDate').val('');
@@ -138,6 +140,7 @@ getMatAdminStart();
 		getMatAdminStart();
 	}
 
+	//시큐리티 버튼 가림
 	if($('#auth').html() != '1'){
 		$('#selDelBtn','#updateBtn').attr('style', 'display : none;');
 		}

@@ -12,4 +12,6 @@ public class CompanyVO {
 	private String addr;
 	private String addrDetail;
 	private Integer postcode;
+	
+	private Integer address;
 }

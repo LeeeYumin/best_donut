@@ -17,6 +17,7 @@ public interface OrdersMapper {
 	
 	// 1. 조회
 	public List<OrdersVO> getOrders(OrdersVO vo);						// 주문조회
+	public List<OrdersVO> getProdReqOrders(OrdersVO vo);				// 생산요청 대상 주문조회	
 	public List<OrdersDetailVO> getOrdersDetail(String ordersCode);		// 주문상세조회
 	public List<Map<String, Object>> getCompany();						// 거래처조회
 	
@@ -25,7 +26,11 @@ public interface OrdersMapper {
 	public int insertProdReqDet(ProdReqDetailVO vo);					// 생산요청상세등록
 	public int updateOrdStat(ProdReqVO VO);								// 주문상태변경
 	
-	// 3. 삭제
+	// 3. 수정
+	public int updateOrders(OrdersVO vo);								// 주문 수정
+	public int updateOrdCheck(OrdersVO vo);								// 주문 상태 변경(확인/미확인)
+	
+	// 4. 삭제
 	public int deleteOrders(String ordersCode);							// 주문삭제
 	public int deleteOrdDet(String ordersCode);							// 주문상세삭제
 	

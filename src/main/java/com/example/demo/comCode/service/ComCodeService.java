@@ -19,4 +19,6 @@ public interface ComCodeService {
 	
 	// 2. 거래처
 	public boolean insertCompany(CompanyVO vo);
+	public List<CompanyVO> getCompanySearchList(CompanyVO vo);
+	
 }

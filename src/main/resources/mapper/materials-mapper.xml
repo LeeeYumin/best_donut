@@ -226,7 +226,7 @@
    	
    	<!-- 발주 취소 못하는 상태로 스케줄러 & 프로시저로 업데이트 발주테이블 -->
    	<select id="updateMatOrderStatus" statementType="CALLABLE">
-		CALL update_orders_status()
+		CALL UPDATE_ORDERS_STATUS()
    	</select>
    	
    	<!-- 발주 취소 상태 변경 -->

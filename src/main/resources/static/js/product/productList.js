@@ -86,6 +86,7 @@ const prodLotGrid = new tui.Grid({
 	el : document.getElementById('prodLotGrid'),
 	scrollX : false,
 	scrollY : true,
+	bodyHeight: 300,
 	header:[
 		align = 'center',
 	],
@@ -165,6 +166,7 @@ const prodLotGrid = new tui.Grid({
 			header : '폐기일자',
 			name : 'dumpDate',
 			align : 'center',
+			defaultValue: '-',
 			sortingType: 'desc',
 			sortable: true,			
 		}, 
