@@ -2,6 +2,8 @@ getProdPlanList();
 getMaterialsList();
 getBOMList();
 
+const usersCode = $('#usersCode').html();
+
 //생산계획 진행상태
 class PlanStatus {
     constructor(props) {
@@ -315,36 +317,37 @@ function getMaterialsList() {
 
 // 재고 소요량 계산
 function requireMatCal() {
-    let BOMListData = BOMList.getData();
-    let matStockListData = matStockList.getData();
+    let BOMListData = BOMList.getData();            // BOM 테이블 데이터
+    let matStockListData = matStockList.getData();  // 자재 재고 테이블 데이터
 
-    let needCnt = 0;
-    let requireMat = 0;
-    let requireMatSum = 0;
+    let needCnt = 0;        // BOM 기준 소요량
+    let requireMat = 0;     // 제품 별 자재 소요량
+    let requireMatSum = 0;  // 자재별 총 소요량
 
     // 자재
-    for (let i = 0; i < matStockListData.length; i++) {
-        requireMatSum = 0;
-        let matCode = matStockListData[i].matCode
+    for (let i = 0; i < matStockListData.length; i++) { // 자재 재고 테이블 데이터 갯수만큼 for 루프
+        requireMatSum = 0;                              // 제품 소요량 초기화
+        let matCode = matStockListData[i].matCode;      // 자재 코드
         // BOM
-        for (let j = 0; j < BOMListData.length; j++) {
-            needCnt = 0;
-            if (matCode == BOMListData[j].matCode) {
+        for (let j = 0; j < BOMListData.length; j++) {  // BOM 테이블 데이터 갯수만큼 for 루프
+            needCnt = 0;                                // BOM 소요량 초기화
+            if (matCode == BOMListData[j].matCode) {    // BOM 소요량 찾기
                 needCnt = BOMListData[j].needCnt;
                 // 계획수량 찾기
-                let planCnt = findPlanCnt(BOMListData[j].productCode);
-                if (matCode == 'MAT00002') { // 계란일 경우
+                let planCnt = findPlanCnt(BOMListData[j].productCode);  // 계획수량 찾는 함수 호출
+                // 제품별 자재 소요량 계산 -> 소요량 단위 맞춰주기
+                if (matCode == 'MAT00002') {        // 계란(MAT00002)일 경우 ( 60g = 1알 / 30알 = 1판 )
                     requireMat = Math.ceil(planCnt * needCnt / 60 / 30);
-                } else if (matCode == 'MAT00009') { // 포장지일 경우
+                } else if (matCode == 'MAT00009') { // 포장지(MAT00009)일 경우 ( 단위 동일 )
                     requireMat = Math.ceil(planCnt * needCnt);
-                } else {
+                } else {                            // 나머지 ( g-> kg / mL -> L )
                     requireMat = Math.ceil(planCnt * needCnt / 1000);
                 }
-                requireMatSum += requireMat;
+                requireMatSum += requireMat;        // 제품별 자재 소요량 더하여 자재별 총 소요량 구하기
             }
         }
 
-        matStockList.setValue(i, 'requireMat', requireMatSum)
+        matStockList.setValue(i, 'requireMat', requireMatSum)   // 재고 테이블 소요량에 자재 총 소요량 값 넣어주기
 
         // 현재고량과 예상 소요량 차이
         let diffStockReq = matStockList.getColumnValues('stockCnt')[i] + matStockList.getColumnValues('orderedMat')[i] - matStockList.getColumnValues('requireMat')[i];
@@ -353,17 +356,17 @@ function requireMatCal() {
 }
 
 // 제품별 계획 수량 찾기
-function findPlanCnt(productCode) {
+function findPlanCnt(productCode) { // 제품 코드 매개변수로 받아옴.
     let prodPlanDetailData = prodPlanDetail.getData();
     let planCnt = 0
 
-    for (let k = 0; k < prodPlanDetailData.length; k++) {
+    for (let k = 0; k < prodPlanDetailData.length; k++) { // 생산 계획 상세 테이블 데이터 갯수만큼 for 루프
         if (productCode == prodPlanDetailData[k].productCode) {
             planCnt = prodPlanDetailData[k].planCnt;
             break;
         }
     }
-    return planCnt;
+    return planCnt; // 계획 수량 리턴
 }
 
 // 자재 발주 테이블 행 추가
@@ -371,9 +374,31 @@ matStockList.on('checkAll', function () {
     let checked = matStockList.getCheckedRows();
 
     // 주문수량 자동입력
+    for (i = 0; i < checked.length; i++) {
+        let ordersCnt = 0;
+        let checkRowData = checked[i];
 
+        // 주문수량 설정
+        if (checkRowData.differenceStockReq == null) {
+            ordersCnt = Math.ceil(checkRowData.safeStockCnt - checkRowData.plusStockOrders);
+        } else {
+            ordersCnt = Math.ceil(checkRowData.safeStockCnt - checkRowData.differenceStockReq);
+        }
 
-    matOrderList.appendRows(checked);
+        // 주문수량이 음수일 경우
+        if (ordersCnt <= 0) {
+            ordersCnt = checkRowData.safeStockCnt;
+        }
+
+        // 주문 금액 계산
+        let matOrdersPrice = ordersCnt * checkRowData.unitPrice;
+
+        // 발주 테이블에 추가
+        const { matCode, matName, mainCompanyCode, unit, unitPrice } = checkRowData;
+        matOrderList.appendRow({ matCode, matName, mainCompanyCode, unit, unitPrice, ordersCnt, matOrdersPrice });
+    }
+    // 발주 테이블 체크박스 모두 체크
+    matOrderList.checkAll();
 });
 matStockList.on('check', function (ev) {
     let checked = matStockList.getRow(ev.rowKey);
@@ -544,7 +569,7 @@ async function insertMatOrders() {
     console.log('prodPlanCode : ', prodPlanCode);
     console.log('matOrderDetail : ', matOrderDetailVO);
 
-    const param = { prodPlanCode, matOrderDetailVO }
+    const param = { prodPlanCode, usersCode, matOrderDetailVO }
 
     console.log(param);
 

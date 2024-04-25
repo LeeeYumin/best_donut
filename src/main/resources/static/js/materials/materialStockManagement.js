@@ -27,18 +27,21 @@ const grid1 = new tui.Grid({
 			name: 'stockCnt',
 			align: 'end',
 			sortable: true,
+			formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            },
 			validation: {
 				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
 			}
 		},
 		{
-            header: '단위',
-            name: 'unit',
+			header: '단위',
+			name: 'unit',
 			width: 50,
 			validation: {
 				validatorFn: (value, row, columnName) => Number(row['stockCnt']) > Number(row['safeStockCnt'])
 			}
-        },
+		},
 		{
 			header: '안전재고량',
 			name: 'safeStockCnt',
@@ -125,30 +128,39 @@ const grid2 = new tui.Grid({
 		{
 			header: '입고수량',
 			name: 'warehousingCnt',
-			align: 'end'
+			align: 'end',
+			formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            },
 		},
 		{
-            header: '단위',
-            name: 'matUnit',
+			header: '단위',
+			name: 'matUnit',
 			width: 50,
-        },
+		},
 		{
 			header: '불출수량',
 			name: 'outCnt',
 			align: 'center',
-			defaultValue: 0
+			defaultValue: 0,
+			formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            },
 		},
 		{
 			header: '현재고량',
 			name: 'remainCnt',
 			align: 'end',
+			formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            },
 			defaultValue: 0
 		},
 		{
-            header: '단위',
-            name: 'matUnit',
+			header: '단위',
+			name: 'matUnit',
 			width: 50,
-        },
+		},
 		{
 			header: '유통기한',
 			name: 'expDate',
@@ -160,7 +172,7 @@ const grid2 = new tui.Grid({
 			align: 'center',
 			renderer: { type: MatStatusConverter }
 		}
-	]
+	],
 });
 
 // 상세 로트 조회(ajax)
@@ -251,6 +263,6 @@ function disposeMat(matLotCodes) {
 };
 
 // 폐기 버튼 권한 체크
-if($('#auth').html() != '1'){
+if ($('#auth').html() != '1') {
 	$('#disposeBtn').attr('style', 'display:none;');
 }
