@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>자재 입고 등록</title>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">자재관리 / </span> 자재 입고 등록
+		</h3>
+
+		<!-- 검색 폼 -->
+		<div>
+			<div class="card mb-3">
+				<h5 class="card-header">검색조건</h5>
+				<div class="card-body">
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">발주일자</label>
+						<div class="col-sm-6 input-group">
+							<input type="date" class="form-control" name="sDate" id="sDate">
+							<span class="input-group-text">~</span>
+							<input type="date" class="form-control" name="eDate" id="eDate">
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재명</label>
+						<div class="col-sm-6 input-group">
+							<input type="text" class="form-control" name="matName" id="matName" placeholder="검색하고자하는 자재명을 입력하세요.">
+						</div>
+					</div>
+					<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+						<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
+						<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<div class="card">
+				<!-- 입고 등록 테이블 -->
+				<h5 class="card-header">입고 등록</h5>
+				<div class="card-body" id="matWarehousing"></div>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3 mx-4">
+					<button type="button" class="btn btn-primary" id="insertBtn">입고</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- materialOrdersInsert.js -->
+		<script src="/js/materials/matWarehousing.js"></script>
+	</div>
+</body>
+
+</html>

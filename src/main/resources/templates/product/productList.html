@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+	<meta charset="UTF-8">
+	<title>완제품재고관리</title>
+	<!-- Toast UI CDN -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+</head>
+<body>
+	<!-- Thymeleaf 레이아웃 div -->
+	<div layout:fragment="content">
+	
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">영업관리 / </span> 완제품재고관리
+		</h3>
+
+		<!-- 검색 폼 -->
+		<div class="search">
+			<form name="searchForm" method="post">
+				<div class="card mb-4">
+					<h5 class="card-header">검색조건</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">완제품LOT코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="prodLotCode" name="prodLotCode">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">제품명</label>
+							<div class="col-sm-6">
+								<select class="form-select" id="prodName" aria-label="prodName">
+									<option value="" selected="">제품명</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">생산요청일자</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="expStartDate" id="expStartDate">
+								<span class="input-group-text">~</span> 
+								<input type="date" class="form-control" name="expEndDate" id="expEndDate">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">담당자명</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="usersName" name="usersName">
+							</div>
+						</div>
+
+						<!-- <div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="dueStartDate" id="dueStartDate">
+								<span class="input-group-text">~</span> 
+								<input type="date" class="form-control" name="dueEndDate" id="dueEndDate">
+							</div>
+						</div> -->
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchProd()">검색</button>
+							<button type="button" class="btn btn-primary" id="resetBtn" onclick="searchReset()">초기화</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- grid -->
+		<div class="ordersGrid">
+			<div class="card">
+
+				<!-- 주문 목록 -->
+				<h5 class="card-header">제품 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="productGrid"></div>
+				</div>
+
+				<!-- 주문 목록 -->
+				<h5 class="card-header">완제품 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="prodLotGrid"></div>
+				</div>
+
+				<!-- 주문 상세 목록 -->
+				<h5 class="card-header">자재 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="matLotGrid"></div>
+				</div>
+
+			</div>
+		</div>
+		
+		<!-- script -->
+		<script src="/js/product/productList.js"></script>
+	</div>
+</body>
+
+</html>

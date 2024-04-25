@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.materials.mapper.MaterialsMapper">
+   	<select id="getMaterials" resultType="MaterialVO" parameterType="String">   
+		SELECT mat_code, 
+               mat_name,
+               stock_cnt,
+               safe_stock_cnt,
+               main_company_code,
+               unit_price,
+               unit,
+               NVL((SELECT FIND_ORDERED_MAT_CNT(mat_code) FROM dual),0) ordered_mat
+          FROM mat
+         WHERE 1=1
+         
+      <!-- 검색 조건 -->
+      <if test="matName != null and matName != ''">
+		   AND mat_name LIKE '%'||#{matName}||'%'         
+      </if>
+      ORDER BY mat_code
+   	</select>
+
+   	<select id="getMaterialDetails" resultType="MaterialReadVO" parameterType="String">
+		SELECT d.mat_lot_code,
+               d.warehousing_cnt,
+               d.check_done_cnt,
+               d.out_cnt,
+               d.remain_cnt,
+               d.exp_date,
+               d.qlty_check_status,
+               d.mat_status,
+               d.dump_date,
+               d.unit_price,
+               d.mat_code,
+               d.company_code,
+               m.mat_name,
+               d.unit mat_unit,
+               m.unit
+  	      FROM mat_detail d 
+  	      JOIN mat m ON d.mat_code = m.mat_code
+	     WHERE d.mat_code = #{matCode} 
+	       AND d.mat_status = 'MSY'
+	  ORDER BY d.exp_date, d.mat_lot_code
+   	</select>
+   
+   <!-- 폐기 처리 -> 재고도 업데이트 -->
+   	<update id="updateMatStatus">
+   		DECLARE
+   			v_remain_cnt NUMBER;
+   			v_mat_code VARCHAR2(100);
+   			
+   			CURSOR lot_cursor IS
+   				SELECT remain_cnt, mat_lot_code
+   		  		  FROM mat_detail
+   		 		 WHERE mat_lot_code IN
+        			<foreach collection="matLotCodes" item="matLotCode" open="(" close=");" separator=",">
+         				#{matLotCode}
+        			</foreach>
+        			
+        	lot_record lot_cursor%ROWTYPE;
+   		BEGIN 
+   		<!-- 자재 폐기 수량 조회 -->
+   		SELECT sum(remain_cnt), min(mat_code)
+   		  INTO v_remain_cnt, v_mat_code
+   		  FROM mat_detail
+   		 WHERE mat_lot_code IN
+        	<foreach collection="matLotCodes" item="matLotCode" open="(" close=");" separator=",">
+         		#{matLotCode}
+        	</foreach>
+        	
+   		<!-- 자재 자재 재고 업데이트 -->
+   		IF v_mat_code = 'MAT00002' THEN
+			UPDATE mat
+	   		   SET stock_cnt = stock_cnt - NVL(ROUND(v_remain_cnt / 30, 1), 0)
+	   		 WHERE mat_code = v_mat_code;
+		ELSE
+	   		UPDATE mat
+	   		   SET stock_cnt = stock_cnt - NVL(v_remain_cnt, 0)
+	   		 WHERE mat_code = v_mat_code;
+		END IF;
+		   		
+   		<!-- 자재 폐기 배출 기록 insert -->
+        OPEN lot_cursor;
+        LOOP
+        	FETCH lot_cursor INTO lot_record;
+        	EXIT WHEN lot_cursor%NOTFOUND;
+         	INSERT INTO mat_inout_history(mat_inout_code,
+   									  	  mat_lot_code,
+   									 	  inout_sep,
+   									  	  inout_cnt)
+   			 	VALUES (seq_func('mat_inout_history'),
+   			 		 	lot_record.mat_lot_code,
+   			 		 	'DIS',
+   			 		 	lot_record.remain_cnt);
+   			 
+   			 UPDATE mat_detail
+   			 	SET remain_cnt = 0
+   			  WHERE mat_lot_code = lot_record.mat_lot_code;
+   		END LOOP;
+   		COMMIT;
+   		CLOSE lot_cursor;
+   		
+   		<!-- 자재 폐기 상태 업데이트 -->
+   		UPDATE mat_detail
+		   SET mat_status = 'MSN'
+         WHERE mat_lot_code IN
+        	<foreach collection="matLotCodes" item="matLotCode" open="(" close=");" separator=",">
+         		#{matLotCode}
+        	</foreach>
+      	END;
+   	</update>
+   	
+   	<!-- 자재 발주 등록 -->
+   	<insert id="insertMatOrders" parameterType="MaterialOrderVO">
+	   	<selectKey keyProperty="matOrdersCode" order="BEFORE" resultType="String">
+			SELECT seq_func('mat_orders') FROM dual
+		</selectKey>
+		INSERT INTO mat_orders
+			(
+				mat_orders_code,
+			    prod_plan_code,
+			    mat_total_orders_price,
+			    company_code,
+			    users_code
+			)
+		VALUES 
+			(
+				 #{matOrdersCode},
+			     #{prodPlanCode},
+			     #{matTotalOrdersPrice},
+			     #{companyCode},
+			     #{usersCode}			     
+			)	
+   	</insert>
+	
+	<!-- 자재 발주 상세 등록 -->
+	<insert id="insertMatOrdersDetail" parameterType="MaterialOrderDetailVO">
+		DECLARE
+			v_mat_total_orders_price NUMBER;
+		BEGIN
+			<!-- 자재 발주 상세 등록 -->
+			INSERT INTO mat_orders_detail
+				(
+					mat_orders_detail_code,
+				    orders_cnt,
+				    mat_orders_code,
+				    mat_code,
+				    company_code,
+				    mat_orders_price
+				)
+			VALUES
+				(
+					seq_func('mat_orders_detail'),
+				    #{ordersCnt},
+				    #{matOrdersCode},
+				    #{matCode},
+				    #{mainCompanyCode},
+				    #{matOrdersPrice}
+				);
+				
+			<!-- 발주 상세 등록 후 발주 총 금액 찾기 -->
+			SELECT SUM(mat_orders_price)
+			  INTO v_mat_total_orders_price
+			  FROM mat_orders_detail
+			 WHERE mat_orders_code = #{matOrdersCode};
+			 
+			<!--  발주 총 금액을 발주 테이블에 업데이트 -->
+			UPDATE mat_orders
+			   SET mat_total_orders_price = v_mat_total_orders_price
+			 WHERE mat_orders_code = #{matOrdersCode};
+		END;
+	</insert>
+	
+   	<!-- 자재 발주 관리 -->
+   	<select id="getMaterialOrders" resultType="MaterialOrderVO">
+		SELECT o.orders_date,
+               o.mat_orders_code,
+               u.users_name,
+               o.mat_total_orders_price,
+               o.total_orders_status,
+               c.company_name
+   		  FROM mat_orders o
+     	  JOIN users u ON o.users_code = u.users_code
+     	  JOIN company c ON o.company_code = c.company_code
+     	  	<where>
+				<if test="sDate != null">
+					TRUNC(o.orders_date) <![CDATA[ >= ]]> TRUNC(#{sDate})
+				</if>
+				<if test="eDate != null">
+					AND TRUNC(o.orders_date) <![CDATA[ <= ]]> TRUNC(#{eDate})
+				</if>
+				<if test="ordersStatus != null and ordersStatus != ''">
+					AND o.total_orders_status = #{ordersStatus}
+				</if>
+					AND o.total_orders_status != 'OSC'
+				<if test="companyName != null and companyName != ''">
+					AND c.company_name LIKE '%'||#{companyName}||'%'
+				</if>
+			</where>
+     	  ORDER BY o.orders_date DESC
+   	</select>		
+		
+	<!-- 발주 상세 목록 -->
+   	<select id="getMaterialOrderDetail" resultType="MaterialOrderDetailVO" parameterType="String">
+		SELECT o.orders_date,
+               c.company_name,
+               c.owner_name,
+               m.mat_name,
+               d.orders_cnt,
+               m.unit_price,
+               d.mat_orders_price,
+               o.orders_date + m.lead_time due_date,
+               (SELECT FIND_USERS_NAME(o.users_code) FROM dual) users_name
+                        
+   		  FROM mat_orders_detail d
+	      	JOIN mat_orders o  ON o.mat_orders_code = d.mat_orders_code
+	        JOIN mat m ON m.mat_code = d.mat_code
+	        JOIN company c ON c.company_code = d.company_code
+			  	   
+        <if	test="matOrderCodes != null and matOrderCodes.length > 0">
+		 WHERE d.mat_orders_code IN
+			<foreach collection="matOrderCodes" item="matOrdersCode" open="(" close=")" separator=",">
+				#{matOrdersCode}
+			</foreach>
+		</if>
+  	</select>
+   	
+   	<!-- 발주 취소 못하는 상태로 스케줄러 & 프로시저로 업데이트 발주테이블 -->
+   	<select id="updateMatOrderStatus" statementType="CALLABLE">
+		CALL UPDATE_ORDERS_STATUS()
+   	</select>
+   	
+   	<!-- 발주 취소 상태 변경 -->
+   	<update id="updateMatOrderCancel" parameterType="String">
+   		BEGIN
+   			UPDATE mat_orders_detail
+   			SET orders_status = 'OSC'
+   			<if test="matOrderCodes != null and matOrderCodes.length > 0">
+	         WHERE mat_orders_code IN
+	        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=");" separator=",">
+	         		#{matOrderCode}
+	        	</foreach>
+	        </if>
+   		
+	   		UPDATE mat_orders
+			   SET total_orders_status = 'OSC'
+			
+			<if test="matOrderCodes != null and matOrderCodes.length > 0">
+	         WHERE mat_orders_code IN
+	        	<foreach collection="matOrderCodes" item="matOrderCode" open="(" close=");" separator=",">
+	         		#{matOrderCode}
+	        	</foreach>
+	      	</if>    	
+        END;
+   	</update>
+   	
+   	<!-- 입고 예정 목록 테이블 출력 -->
+   	<select id="getWarehousingList" resultType="MaterialWarehousingVO">
+   		SELECT d.mat_orders_code,
+   			   d.mat_orders_detail_code,
+   			   d.company_code,
+       		   FIND_COMPANY_NAME(d.company_code) company_name,
+       		   d.mat_code,
+       		   m.mat_name,
+       		   m.unit_price,
+       		   d.orders_cnt,
+       		   o.orders_date,
+       		   o.orders_date + m.lead_time as due_date,
+       		   FIND_MAT_UNIT(d.mat_code) unit
+  		  FROM mat_orders_detail d
+    		JOIN mat m ON d.mat_code = m.mat_code
+    		JOIN mat_orders o ON d.mat_orders_code = o.mat_orders_code
+   		 <where>
+   		 		d.orders_status IN ('OSN', 'OSP')
+				<if test="sDate != null">
+					AND TRUNC(o.orders_date) <![CDATA[ >= ]]> TRUNC(#{sDate})
+				</if>
+				<if test="eDate != null">
+					AND TRUNC(o.orders_date) <![CDATA[ <= ]]> TRUNC(#{eDate})
+				</if>
+				<if test="matName != null and matName != ''">
+		   			AND mat_name LIKE '%'||#{matName}||'%'         
+      			</if>
+			</where>
+	  ORDER BY d.mat_orders_code
+   	</select>
+   	
+   	<!-- 입고 등록 프로시저 호출 -->
+   	<insert id="insertMatWarehousing" statementType="CALLABLE" parameterType="MaterialWarehousingVO">
+   		CALL MAT_WAREHOUSING_INSERT(
+   			#{warehousingCnt, mode=IN, jdbcType=INTEGER},
+   			#{expDate, mode=IN, jdbcType=DATE},
+   			#{unitPrice, mode=IN, jdbcType=INTEGER},
+   			#{matCode, mode=IN, jdbcType=VARCHAR},
+   			#{companyCode, mode=IN, jdbcType=VARCHAR},
+   			#{matOrdersCode, mode=IN, jdbcType=VARCHAR},
+   			#{unit, mode=IN, jdbcType=VARCHAR},
+   			#{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
+   		)
+   	</insert>   	
+   	
+   	<!-- 불출 등록 프로시저 호출 -->
+   	<insert id="insertMatOutgoing" statementType="CALLABLE" parameterType="MaterialWarehousingVO">
+   		CALL MAT_OUTGOING_INSERT( 
+   			#{prodInstructDetailCode, mode=IN, jdbcType=VARCHAR},
+   			#{matLotCode, mode=IN, jdbcType=VARCHAR},
+   			#{outCnt, mode=IN, jdbcType=INTEGER},
+   			#{matCode, mode=IN, jdbcType=VARCHAR},
+   			#{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
+   		)
+   	</insert>
+   	
+   	<!-- 입출고 내역 목록 출력 -->
+   	<select id="getMatInOutList" resultType="MaterialInOutVO">
+   		SELECT h.inout_date,
+       		   h.mat_lot_code,
+       		   FIND_MAT_NAME(m.mat_code) mat_name,
+       		   FIND_COMPANY_NAME(m.company_code) company_name,
+       		   h.inout_cnt,
+       		   h.inout_sep
+		  FROM mat_inout_history h 
+    	  	JOIN mat_detail m ON h.mat_lot_code = m.mat_lot_code
+		 <where>
+		 		<if test="inoutSeps != null and inoutSeps.length > 0">
+	   		 		h.inout_sep IN
+					<foreach collection="inoutSeps" item="inoutSep" open="(" close=")" separator=",">
+			         		#{inoutSep}
+		       		</foreach>
+	       		</if>
+				<if test="sDate != null">
+					AND TRUNC(h.inout_date) <![CDATA[ >= ]]> TRUNC(#{sDate})
+				</if>
+				<if test="eDate != null">
+					AND TRUNC(h.inout_date) <![CDATA[ <= ]]> TRUNC(#{eDate})
+				</if>
+				<if test="matName != null and matName != ''">
+		   			AND FIND_MAT_NAME(m.mat_code) LIKE '%'||#{matName}||'%'         
+      			</if>
+      			<if test="matLotCode != null and matLotCode != ''">
+		   			AND h.mat_lot_code LIKE '%'||#{matLotCode}||'%'         
+      			</if>
+			</where>
+			ORDER BY h.inout_date DESC
+   	</select>
+   	
+</mapper>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.product.mapper.ProductMapper">
+	
+	<!-- 제품조회(주문등록 페이지) -->
+	<select id="getProduct" resultType="ProductVO">
+		WITH t AS 
+			(
+		    SELECT p.product_code
+		           , NVL(SUM(d.orders_cnt), 0) total_orders_cnt
+		    FROM   product p LEFT OUTER JOIN orders_detail d
+		                     ON p.product_code = d.product_code
+		    GROUP BY p.product_code
+			)
+		SELECT p.product_code
+		       , p.product_name
+		       , p.unit_price
+		       , p.stock_cnt
+		       , p.safe_stock_cnt
+		       , t.total_orders_cnt
+		  FROM t JOIN product p
+		           ON t.product_code = p.product_code       
+		 ORDER BY 1
+	</select>
+	
+	<!-- 제품조회(생산요청 페이지)-->
+	<select id="getReqProd" resultType="ProductVO">
+		WITH t AS 
+		    (
+		    SELECT d.product_code
+		           , SUM(d.orders_cnt) cnt
+		      FROM orders_detail d JOIN orders o
+		                           ON o.orders_code = d.orders_code
+		     WHERE o.orders_status = 'OP2' 
+		     <if test="dueStartDate != null">
+		     	AND TRUNC(o.due_date) <![CDATA[ >= ]]> TO_DATE(#{dueStartDate}, 'YYYY-MM-DD')
+		     </if>
+		     <if test="dueEndDate != null">
+			 	AND TRUNC(o.due_date) <![CDATA[ <= ]]> TO_DATE(#{dueEndDate}, 'YYYY-MM-DD')
+			 </if>
+		     GROUP BY d.product_code
+		    )
+		SELECT p.product_code
+		       , p.product_name
+		       , p.unit_price
+		       , p.stock_cnt
+		       , p.safe_stock_cnt
+		       , NVL(t.cnt, '0') total_orders_cnt
+		  FROM t RIGHT OUTER JOIN product p
+		           ON t.product_code = p.product_code
+		 ORDER BY 1
+	</select>
+	
+	<!-- 주문조회 -->
+	<select id="getOrders" resultType="OrdersVO">
+		WITH t AS 
+		    (
+		    SELECT o.orders_code         AS ocode
+		           , MAX(p.product_name) AS prod
+		           , COUNT(*)            AS cnt
+		      FROM orders o JOIN orders_detail d
+		                      ON o.orders_code = d.orders_code
+		                    JOIN product p
+		                      ON d.product_code = p.product_code
+		     GROUP BY o.orders_code
+		    )
+		SELECT o.orders_code
+		       , o.orders_date
+		       , o.due_date
+		       , o.total_orders_price
+		       , o.orders_status
+		       , c.company_name
+		       , u.users_name
+		       , CASE WHEN t.cnt = 1 THEN t.prod
+		              ELSE t.prod || ' 외 ' || CAST(t.cnt - 1 AS VARCHAR(20)) || '건' 
+		         END AS cnt_str
+		  FROM orders o  JOIN company c
+		                   ON o.company_code = c.company_code
+		                 JOIN users u
+		                   ON o.users_code = u.users_code
+		                 JOIN t
+		                   ON o.orders_code = t.ocode
+		 WHERE o.orders_status != 'OP4'
+			<if test="ordersCode != null and ordersCode != ''">
+				AND o.orders_code LIKE '%' || #{ordersCode} || '%'
+			</if>
+			<if test="companyCode != null and companyCode != ''">
+				AND o.company_code = #{companyCode}
+			</if>
+			<if test="dueStartDate != null">
+				AND TRUNC(o.due_date) <![CDATA[ >= ]]> #{dueStartDate}
+			</if>
+			<if test="dueEndDate != null">
+				AND TRUNC(o.due_date) <![CDATA[ <= ]]> #{dueEndDate}
+			</if>
+			<if test="ordersStartDate != null">
+				AND TRUNC(o.orders_date) <![CDATA[ >= ]]> #{ordersStartDate}
+			</if>
+			<if test="ordersEndDate != null">
+				AND TRUNC(o.orders_date) <![CDATA[ <= ]]> #{ordersEndDate}
+			</if>
+		 ORDER BY 1
+	</select>
+	
+	<!-- 완제품조회 -->
+	<select id="getProdDet" resultType="ProductDetailVO">
+		SELECT d.product_lot_code
+		       , d.warehousing_cnt
+		       , d.check_done_cnt
+		       , d.delivery_cnt
+		       , d.remain_cnt
+		       , d.qlty_check_status
+		       , d.product_status
+		       , d.dump_date
+		       , d.product_code
+		       , d.proc_result_code
+		       , p.product_name
+		       , ADD_MONTHS( r.all_end_time, 1) exp_date
+		  FROM product_detail d JOIN product p
+		                          ON d.product_code = p.product_code
+		                        JOIN proc_result r
+		                          ON d.proc_result_code = r.proc_result_code
+		 WHERE d.remain_cnt <![CDATA[ > ]]> 0
+        <if test="productLotCode != null and productLotCode != ''">
+			AND d.product_lot_code LIKE '%' || #{productLotCode} || '%'
+		</if>
+        <if test="productName != null and productName != ''">
+			AND p.product_name LIKE '%' || #{productName} || '%'
+		</if>
+		<if test="expStartDate != null">
+			AND TRUNC(exp_date) <![CDATA[ >= ]]> #{expStartDate}
+		</if>
+		<if test="expEndDate != null">
+			AND TRUNC(exp_date) <![CDATA[ <= ]]> #{expEndDate}
+		</if>
+		ORDER BY exp_date
+	</select>
+	
+	<!-- 완제품LOT조회 -->
+	<select id="getProdLot" resultType="ProductDetailVO">
+		SELECT d.product_lot_code
+			   , d.product_code
+		       , d.check_done_cnt
+		       , d.delivery_cnt
+		       , d.remain_cnt
+		       , d.qlty_check_status
+		       , d.proc_result_code
+		       , r.all_end_time
+		  FROM product_detail d JOIN proc_result r
+		                          ON d.proc_result_code = r.proc_result_code
+		 WHERE d.product_code = #{productCode}
+		   AND d.qlty_check_status = 'PQ2'
+	</select>
+	
+	<!-- 완제품출고등록 테이블 insert -->
+	<insert id="insertInout" parameterType="ProductInoutVO">
+		INSERT INTO product_inout_history
+		    (
+		        product_inout_code
+		        , inout_sep
+		        , inout_cnt
+		        , inout_date
+		        , product_lot_code
+		        , orders_detail_code
+		        , users_code
+		    )
+		VALUES
+		    (
+				seq_func('product_inout_history')
+				, 'IO2'
+				, #{inoutCnt}
+				, #{inoutDate}
+				, #{productLotCode}
+				, #{ordersDetailCode}
+				, #{usersCode}
+		    )
+	</insert>
+	
+	<!-- 완제품출고 insert + 재고 update 프로시저 -->
+	<update id="prodInoutProcess" parameterType="OrdersVO" statementType="CALLABLE">
+		CALL prod_out_process
+			(
+				#{ordersCode}
+			    , #{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
+		    )
+	</update>
+	
+	<!-- 완제품 LOT 별 자재 LOT 조회 -->
+	<select id="getProdMat" resultType="Map">
+		SELECT p.product_lot_code "productLotCode"
+		       , p.mat_lot_code "matLotCode"
+		       , d.mat_code "matCode"
+		       , m.mat_name "matName"
+		       , p.mat_cnt "matCnt"
+		       , d.exp_date "expDate"
+		  FROM product_lot_mng p JOIN mat_detail d
+		                           ON p.mat_lot_code = d.mat_lot_code
+		                         JOIN mat m
+		                           ON d.mat_code = m.mat_code
+		 WHERE product_lot_code = #{productLotCode}
+	</select>
+	
+	<!-- 완제품입출고 조회 -->
+	<select id="getProdInout" resultType="ProductInoutVO">
+		SELECT  h.product_inout_code
+		       , h.inout_sep
+		       , h.inout_cnt
+		       , h.inout_date
+		       , h.product_lot_code
+		       , h.orders_detail_code
+		       , h.prod_req_detail_code
+		       , u.users_name
+		       , p.product_name
+		       , c.company_name
+		  FROM product_inout_history h JOIN product_detail d
+		                                 ON h.product_lot_code = d.product_lot_code
+		                               JOIN users u
+		                                 ON h.users_code = u.users_code
+		                               JOIN product p
+		                                 ON d.product_code = p.product_code
+		                    LEFT OUTER JOIN orders_detail o
+		                                 ON h.orders_detail_code = o.orders_detail_code
+		                    LEFT OUTER JOIN orders s
+		                                 ON s.orders_code = o.orders_code
+		                    LEFT OUTER JOIN company c
+		                                 ON s.company_code = c.company_code
+		 WHERE 1=1
+		<if test="productInoutCode != null and productInoutCode != ''">
+			AND h.product_inout_code LIKE '%' || #{productInoutCode} || '%'
+		</if>
+		<if test="productLotCode != null and productLotCode != ''">
+			AND h.product_lot_code LIKE '%' || #{productLotCode} || '%'
+		</if>
+        <if test="productName != null and productName != ''">
+			AND p.product_name LIKE '%' || #{productName} || '%'
+		</if>
+		<if test="companyName != null and companyName != ''">
+			AND c.company_name LIKE '%' || #{companyName} || '%'
+		</if>
+		<if test="inoutSep != null and inoutSep != ''">
+			AND h.inout_sep = #{inoutSep}
+		</if>
+		<if test="searchStartDate != null">
+			AND TRUNC(h.inout_date) <![CDATA[ >= ]]> #{searchStartDate}
+		</if>
+		<if test="searchEndDate != null">
+			AND TRUNC(h.inout_date) <![CDATA[ <= ]]> #{searchEndDate}
+		</if>
+		 ORDER BY h.inout_date DESC
+	
+	</select>
+
+</mapper>

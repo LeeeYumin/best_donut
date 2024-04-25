@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+	<meta charset="UTF-8">
+	<title>거래처등록</title>
+	<!-- Toast UI CDN -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+	<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
+
+		<!-- kakao address API -->
+		<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+	<!--  레이아웃 div -->
+	<div layout:fragment="content">
+		
+		<!-- title -->
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">공통관리 / </span> 거래처등록
+		</h3>
+
+		<!-- 입력 폼 -->
+		<div class="insertDiv">
+			<form name="insertForm" method="post">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+				<div class="card mb-4">
+					<h5 class="card-header">거래처 정보 입력</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+            
+						<!-- 입력정보 -->
+
+						<!-- 거래처명 -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명 <span class="star">*</span></label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" name="companyName">
+              </div>
+						</div>
+
+						<!-- 거래처 구분 -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">구분 <span class="star">*</span></label>
+							<div class="col-sm-6">
+								<div class="form-check-inline">
+									<input class="form-check-input" type="radio" name="companySep" id="companySep1" value="CO1"> 
+									<label class="form-check-label" for="companySep1">원자재</label>
+								</div>
+								<div class="form-check-inline">
+									<input class="form-check-input" type="radio" name="companySep" id="companySep2" value="CO2"> 
+									<label class="form-check-label" for="companySep2">완제품</label>
+								</div>
+							</div>
+						</div>
+
+						<!-- 대표자명 -->
+            <div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">대표자명 <span class="star">*</span></label>
+							<div class="col-sm-6 input-group">
+								<input type="text" class="form-control" name="ownerName">
+							</div>
+						</div>
+
+						<!-- 연락처 -->
+           	<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">연락처 <span class="star">*</span></label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" name="tel">
+							</div>
+						</div>
+
+						<!-- 카카오 주소 API -->
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">주소 <span class="star">*</span></label>
+							<div class="col-sm-6">
+
+								<div class="row">
+									<div class="col-sm-3">
+										<input type="text" class="form-control" id="sample4_postcode" name="postcode" placeholder="우편번호">
+									</div>
+									<div class="col-sm-3">
+										<input type="button" class="form-control" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-6">
+										<input type="text" class="form-control" id="sample4_roadAddress" name="addr" placeholder="도로명주소">
+										<span id="guide" style="color:#999;display:none"></span>
+									</div>
+									<div class="col-sm-6">
+										<input type="text" class="form-control" id="sample4_detailAddress" name="addrDetail" placeholder="상세주소">
+									</div>
+								</div>
+
+								<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+								<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
+							
+							</div>
+						</div>
+						
+						<div id="defaultFormControlHelp" class="form-text"></div>
+            
+						<!-- 버튼 -->
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="saveInsert()">등록</button>
+							<button type="button" class="btn btn-primary" id="resetOrdBtn" onclick="resetInsert()">초기화</button>
+						</div>
+
+					</div>
+				</div>
+			</form>
+		</div>
+
+	
+		<!-- script import -->
+		<script src="/js/comCode/companyInsert.js"></script>
+	</div>
+</body>
+
+</html>
+<style>
+	.star, .notice {
+		color: red;
+	}
+	</style>

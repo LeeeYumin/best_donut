@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+	<meta charset="UTF-8">
+	<title>공통코드등록</title>
+	<!-- Toast UI CDN -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+	<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
+</head>
+<body>
+	<!--  레이아웃 div -->
+	<div layout:fragment="content">
+		
+		<!-- title -->
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">공통관리 / </span> 공통코드등록
+		</h3>
+
+		<!-- 검색조건 -->
+		<div class="search row">
+			<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"> -->
+
+			<!-- 주코드 등록 -->
+			<div class="col-sm-6">
+				<div class="card mb-4">
+					<h5 class="card-header">주코드 등록</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+						<form name="codeSearchForm" method="post">
+							
+							<div class="row mb-3">
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드 <span class="star">*</span></label>
+								<div class="col-sm-9 input-group">
+									<input type="text" class="form-control" name="maincode" id="maincode">
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드명 <span class="star">*</span></label>
+								<div class="col-sm-9 input-group">
+									<input type="text" class="form-control" name="maincodeName" id="maincodeName">
+								</div>
+							</div>
+
+              <div id="defaultFormControlHelp1" class="form-text"></div>
+
+							<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+								<button type="button" class="btn btn-primary me-md-2" id="searchBtn1" onclick="insertComCode()">등록</button>
+								<button type="button" class="btn btn-primary me-md-2" id="resetBtn1" onclick="codeReset()">초기화</button>
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<!-- 부코드 등록 -->
+			<div class="col-sm-6">
+				<div class="card mb-4">
+					<h5 class="card-header">부코드 등록</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+						<form name="detSearchForm" method="post">
+
+              <div class="row mb-3">
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">주코드 <span class="star">*</span></label>
+								<div class="col-sm-9">
+                  <select class="form-select" id="maincodeSelect" aria-label="maincodeSelect">
+                    <option value="" selected="">주코드</option>
+                  </select>
+                </div>
+							</div>
+							
+							<div class="row mb-3">
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">부코드 <span class="star">*</span></label>
+								<div class="col-sm-9 input-group">
+									<input type="text" class="form-control" name="subcode" id="subcode">
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<label class="col-sm-3 col-form-label" style="font-size: 0.8rem;">부코드명 <span class="star">*</span></label>
+								<div class="col-sm-9 input-group">
+									<input type="text" class="form-control" name="subcodeName" id="subcodeName">
+								</div>
+							</div>
+
+              <div id="defaultFormControlHelp2" class="form-text"></div>
+
+							<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+								<button type="button" class="btn btn-primary me-md-2" id="searchBtn2" onclick="insertComCodeDet()">등록</button>
+								<button type="button" class="btn btn-primary me-md-2" id="resetBtn2" onclick="detReset()">초기화</button>
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	
+		<!-- script import -->
+		<script src="/js/comCode/comCodeInsert.js"></script>
+	</div>
+</body>
+
+</html>
+<style>
+	.star, .notice {
+		color: red;
+	}
+	</style>

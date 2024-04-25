@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.searchBox {
+	width: 500px;
+}
+
+.star, .notice {
+	color: red;
+}

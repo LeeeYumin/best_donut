@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 템플릿 주소 -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>processResult</title>
+<!-- Toast UI CDN -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<style>
+.btn-update,
+.btn-delete {
+	width: 80px;
+	height: 38px;
+	font-size: 16px;
+	margin-left: auto;
+	/* display:flex 적용되어 있어 float: right X */
+	margin-right: 25px;
+}
+.mgb-50 {
+	margin-bottom: 50px;
+}
+.mgb-20 {
+	margin-bottom: 20px;
+}
+.pdt-0 {
+	padding-top: 0px;
+}
+.warn-alert {
+	font-weight: bold;
+	font-size: 16px;
+	padding-left: 20.8px;
+	padding-bottom: 10px;
+	/* margin-left: 800px; */
+}
+
+</style>
+
+</head>
+
+<body>
+<!-- Thymeleaf 레이아웃 div -->
+	<div layout:fragment="content">
+
+<!-- TITLE -->
+		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 공정실적 목록</h3>
+
+
+<!-- 검색 FORM -->
+		<div class="search">
+				<div class="card mgb-50">
+					<h5 class="card-header">검색조건</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+						<div class="row mb-3">
+							<div class="row mb-3">
+								<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">지시일자</label>
+								<div class="col-sm-6 input-group">
+									<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
+									<span class="input-group-text">~</span>
+									<input type="date" class="form-control" name="searchEndDate" id="searchEndDate">
+								</div>
+							</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">지시코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" name="prodInstructCode" id="prodInstructCode" placeholder="생산지시코드 입력">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">완제품LOT코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" name="productLotCode" id="productLotCode" placeholder="완제품LOT코드 입력">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재LOT코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" name="matLotCode" id="matLotCode" placeholder="자재LOT코드 입력">
+							</div>
+						</div>
+
+						<div>
+							<label class="col-sm-1 mb-5" style="font-size: 0.8rem;">제품명</label>
+							<input type="radio" name="productCode" id="productCode0" value="" checked class="form-check-input">
+							<label for="productCode0" class="form-check-inline">전체</label>
+							<input type="radio" name="productCode" id="productCode1" value="PRO00001" class="form-check-input">
+							<label for="productCode1" class="form-check-inline">글레이즈드</label>
+							<input type="radio" name="productCode" id="productCode2" value="PRO00002" class="form-check-input">
+							<label for="productCode2" class="form-check-inline">초코</label>
+							<input type="radio" name="productCode" id="productCode3" value="PRO00003" class="form-check-input">
+							<label for="productCode3" class="form-check-inline">딸기</label>
+							<input type="radio" name="productCode" id="productCode4" value="PRO00004" class="form-check-input">
+							<label for="productCode4" class="form-check-inline">녹차</label>
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
+							<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
+						</div>
+					</div>
+				</div>
+		</div>
+
+
+<!-- 생산지시목록 FORM -->
+		<div class="card mgb-50">
+			<!-- <div class="row"> -->
+				<!-- <div class="col-sm-4"> -->
+					<h4 class="card-header">완료공정 목록</h4>
+						<div class="pdt-0 card-body" id="resultList"></div>
+				<!-- </div> -->
+				<!-- <div class="col-sm-8"> -->
+					<!-- <h5 class="card-header">상세 목록</h5>
+						<div id="alertMsg2" class="warn-alert"></div>
+						<div class="pdt-0 card-body" id="piAll"></div> -->
+				<!-- </div> -->
+			<!-- </div> -->
+			<h5 class="card-header">완료공정 상세</h5>
+			<div class="pdt-0 mgb-20 card-body" id="procInfo"></div>
+		</div>
+
+		<!-- script 태그 => 타임리프 div 안에서 작성 -->
+		<script src="/js/production/processResult.js"></script>
+
+	</div>
+
+</body>
+</html>

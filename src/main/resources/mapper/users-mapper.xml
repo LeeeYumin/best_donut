@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.users.mapper.UsersMapper">
+
+	<!-- 전체조회 -->
+	<select id="getUsers" resultType="UsersVO">
+		SELECT u.USERS_CODE
+	          , u.USERS_NAME
+	          , u.POSITION
+	          , u.LOCAL_TEL
+	          , u.USERS_STATUS
+	          , SUM(DECODE(p.PERM_CODE, 'PER00001', 1)) AS PERM1
+	          , SUM(DECODE(p.PERM_CODE, 'PER00002', 1)) AS PERM2
+	          , SUM(DECODE(p.PERM_CODE, 'PER00003', 1)) AS PERM3
+	          , SUM(DECODE(p.PERM_CODE, 'PER00004', 1)) AS PERM4
+	          , SUM(DECODE(p.PERM_CODE, 'PER00005', 1)) AS PERM5
+		FROM USERS u JOIN USERS_PERM p
+		ON u.USERS_CODE = p.USERS_CODE
+		<include refid="condition"></include>
+		GROUP BY u.USERS_CODE
+		        , u.USERS_NAME
+		        , u.POSITION
+		        , u.LOCAL_TEL
+		        , u.USERS_STATUS
+		ORDER BY 1
+	</select>
+	
+	<sql id="condition">
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(u.USERS_CODE LIKE '%' || UPPER(#{keyword}) || '%'			
+				OR u.USERS_NAME LIKE '%' ||  UPPER(#{keyword}) || '%')
+			</if>
+ 			<if test="permList != null and permList.size() > 0">
+				AND PERM_CODE IN
+					<foreach collection="permList" item="perm" open="(" close=")" separator=",">
+						#{perm}
+					</foreach>
+			</if>
+			<if test="usersStatus != null and usersStatus != ''">
+				AND USERS_STATUS = #{usersStatus}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<!-- 등록 -->
+	<insert id="insertUsers" parameterType="UsersVO">
+		<selectKey keyProperty="uCode" resultType="String" order="BEFORE">
+			SELECT seq_func('users') FROM dual
+		</selectKey>
+		INSERT ALL INTO USERS(
+							USERS_CODE
+							, USERS_NAME
+							, POSITION
+							, LOCAL_TEL
+							, USERS_STATUS)
+					VALUES(
+						#{uCode}
+						, #{usersName}
+						, #{position}
+						, #{localTel}
+						, #{usersStatus})
+					<foreach collection="perm" item="permCode">
+					INTO USERS_PERM(
+								USERS_PERM_CODE
+								, USERS_CODE
+								, PERM_CODE)
+					VALUES(
+						SEQ_FUNC('USERS_PERM')
+						, #{uCode}
+						, #{permCode})
+					</foreach>
+		SELECT * FROM DUAL
+	</insert>
+	
+	
+	<!-- 단건조회 -->
+	<select id="getUsersInfo" resultType="UsersVO">
+		SELECT u.USERS_CODE
+	          , u.USERS_NAME
+	          , u.POSITION
+	          , u.LOCAL_TEL
+	          , u.USERS_STATUS
+	          , SUM(DECODE(p.PERM_CODE, 'PER00001', 1)) AS PERM1
+	          , SUM(DECODE(p.PERM_CODE, 'PER00002', 1)) AS PERM2
+	          , SUM(DECODE(p.PERM_CODE, 'PER00003', 1)) AS PERM3
+	          , SUM(DECODE(p.PERM_CODE, 'PER00004', 1)) AS PERM4
+	          , SUM(DECODE(p.PERM_CODE, 'PER00005', 1)) AS PERM5
+		FROM USERS u JOIN USERS_PERM p
+		ON u.USERS_CODE = p.USERS_CODE
+		WHERE u.USERS_CODE = #{usersCode}
+		GROUP BY u.USERS_CODE
+		        , u.USERS_NAME
+		        , u.POSITION
+		        , u.LOCAL_TEL
+		        , u.USERS_STATUS
+	</select>
+	
+	
+	<!-- 수정 -->
+	<update id="updateUsers" parameterType="UsersVO">
+		UPDATE USERS
+		SET USERS_NAME = #{usersName}
+			, POSITION = #{position}
+			, LOCAL_TEL = #{localTel}
+			, USERS_STATUS = #{usersStatus}
+		WHERE USERS_CODE = #{usersCode}
+	</update>
+	
+<!-- 	<insert id="updateUsersPerm" parameterType="UsersVO">
+		MERGE INTO USERS_PERM
+		USING DUAL
+		ON (USERS_CODE = #{usersCode})
+		WHEN MATCHED THEN
+		DELETE WHERE USERS_CODE = #{usersCode}
+		<foreach collection="perm" item="permCode">
+		INSERT (
+				USERS_PERM_CODE
+				, USERS_CODE
+				, PERM_CODE)
+		VALUES(
+				SEQ_FUNC('USERS_PERM')
+				, #{usersCode}
+				, #{permCode})
+		</foreach>
+	</insert> -->
+	
+	<insert id="insertPerm" parameterType="UsersVO">
+		INSERT ALL
+			<foreach collection="perm" item="permCode">
+			INTO USERS_PERM(
+						USERS_PERM_CODE
+						, USERS_CODE
+						, PERM_CODE)
+			VALUES(
+				SEQ_FUNC('USERS_PERM')
+				, #{usersCode}
+				, #{permCode})
+			</foreach>
+		SELECT * FROM DUAL
+	</insert>
+	
+
+	<!-- 삭제 -->
+	<delete id="deleteUsers" parameterType="String">
+		DELETE FROM USERS
+		WHERE USERS_CODE = #{usersCode}
+	</delete>
+	
+	<delete id="deletePerm" parameterType="String">
+		DELETE FROM USERS_PERM
+		WHERE USERS_CODE = #{usersCode}
+	</delete>
+	
+	
+	<!-- 로그인 -->
+	<select id="getPerm" parameterType="String" resultType="String">
+		SELECT 'ROLE_' || PERM_CODE
+		FROM USERS_PERM
+		WHERE USERS_CODE = #{usersCode}
+	</select>
+	
+</mapper>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.production.mapper.ProdPlanInsMapper">
+
+<!--생산요청 조회-->
+	<select id="getProdReq" resultType="ProdPlanBVO">
+		SELECT req_date 
+		     , prod_req_code
+		     , total_req_cnt
+		     , pr.users_code
+		     , u.users_name
+		FROM prod_req pr JOIN users u
+                           ON pr.users_code = u.users_code
+		WHERE req_date BETWEEN SYSDATE - 8 AND SYSDATE
+		AND prod_req_status = 'RS1'
+	</select>
+
+<!--생산요청상세 조회-->	
+	<select id="getProdReqDetail" resultType="ProdPlanBDeVO">
+		SELECT prod_req_code
+		     , prd.prod_req_detail_code
+		     , prd.product_code
+         	 , p.product_name
+		     , prd.req_cnt
+		FROM prod_req_detail prd JOIN product p
+                              	  ON prd.product_code = p.product_code
+		WHERE prod_req_code = #{prodReqCode}
+		ORDER BY prd.prod_req_detail_code 
+	</select>
+
+<!-- 제품정보 -->
+  <select id="getProductInfo" resultType="ProdPlanDeVO">
+		SELECT product_code
+				, product_name
+		FROM product
+		ORDER BY product_code	
+	</select>
+	
+<!-- 생산계획 조회-->
+	<select id="getProdPlan" resultType="ProdPlanVO">
+		SELECT prod_plan_code
+     		 , prod_req_code
+     		 , plan_date
+     		 , prod_plan_status
+     		 , pl.users_code
+             , u.users_name
+		FROM prod_plan pl JOIN users u
+                           ON pl.users_code = u.users_code
+		<include refid="condition"></include>
+		ORDER BY prod_plan_code DESC
+	</select>
+
+<!-- 동적쿼리(검색) -->
+	<sql id="condition">
+	<where>
+			<if test="searchStartDate != null">
+				TRUNC(plan_date) <![CDATA[ >= ]]> TRUNC(#{searchStartDate}) 
+			</if>
+			<if test="searchEndDate != null">
+				AND TRUNC(plan_date) <![CDATA[ <= ]]> TRUNC(#{searchEndDate}) 
+			</if>
+			<if test="prodPlanCode != null and prodPlanCode != ''">
+				AND prod_plan_code LIKE '%' || UPPER(#{prodPlanCode}) || '%'
+			</if>
+			<if test="prodPlanStatus != null and prodPlanStatus != ''">
+				AND prod_plan_status = #{prodPlanStatus}
+			</if>
+			AND TRUNC(plan_date) <![CDATA[ >= ]]> TRUNC(ADD_MONTHS(SYSDATE,-6))
+    </where>
+	</sql>
+
+
+<!-- 생산계획상세 조회 -->
+	<select id="getProdPlanAll" resultType="ProdPlanAllVO" parameterType="String">
+		SELECT d.prod_plan_detail_code
+		     , p.prod_plan_code
+		     , d.prod_req_detail_code
+		     , d.product_code
+             , pn.product_name
+		     , d.fix_cnt
+		     , d.req_cnt
+		     , d.plan_cnt
+		     , d.not_instruct_cnt
+		     , d.instruct_done_cnt
+		FROM prod_plan p JOIN prod_plan_detail d
+		                  ON p.prod_plan_code = d.prod_plan_code
+                      	 JOIN product pn
+                          ON d.product_code = pn.product_code
+		WHERE p.prod_plan_code = #{prodPlanCode}
+		ORDER BY 1
+	</select>
+	
+<!-- 생산계획 등록 전 계획,상세 코드 조회 -->
+	<select id="beforeInsertPlanCode"  resultType="ProdPlanVO">
+		SELECT (SUBSTR(MAX(prod_plan_code),0,3)) || LPAD((TO_NUMBER(SUBSTR(MAX(prod_plan_code),4,8))+1), 5, '0') as prod_plan_code
+		FROM prod_plan
+	</select>
+<!-- 생산계획 등록(1건) -->
+	<insert id="insertProdPlan" parameterType="ProdPlanVO">
+		<selectKey keyProperty="prodPlanCode"
+				   order="BEFORE"
+				   resultType="String">
+		 SELECT seq_func('prod_plan') FROM dual
+		</selectKey>
+		INSERT INTO prod_plan
+			( prod_plan_code
+     		 , prod_req_code
+     		 , plan_date
+     		 , prod_plan_status
+     		 , users_code 
+     		 )
+		VALUES 
+			( #{prodPlanCode}
+			, #{prodReqCode}
+			, #{planDate}
+			, 'LS1'
+			, #{usersCode}
+			)
+	</insert>
+	<!--생산계획상세 등록(여러 건)  -->
+	<insert id="insertProdPlanDetail" parameterType="ProdPlanDeVO">
+		INSERT INTO prod_plan_detail
+			( PROD_PLAN_DETAIL_CODE
+     		 , PROD_PLAN_CODE
+     		 , PROD_REQ_DETAIL_CODE
+     		 , PRODUCT_CODE
+     		 , FIX_CNT
+     		 , REQ_CNT
+     		 , PLAN_CNT
+     		 , NOT_INSTRUCT_CNT
+     		 , INSTRUCT_DONE_CNT 
+     		 )
+		VALUES 
+			( seq_func('prod_plan_detail')
+			, #{prodPlanCode}
+			, #{prodReqDetailCode}
+			, #{productCode}
+			, #{fixCnt}
+			, #{reqCnt}
+			, #{planCnt}
+			, #{fixCnt} + #{reqCnt}
+			, 0
+			)
+	</insert>
+	<!-- 생산계획 등록 시 => 생산요청상태 수정 -->
+	<update id="updateProdReqStatus" parameterType="ProdPlanVO">
+		UPDATE prod_req
+		SET prod_req_status = 'RS2'
+		WHERE prod_req_code = #{prodReqCode}
+	</update>
+
+<!-- 생산계획 상세 (수량) 수정 -->
+	<update id="updateProdPlanDetail" parameterType="ProdPlanDeVO">
+		UPDATE prod_plan_detail
+		SET fix_cnt = #{fixCnt}
+		  , plan_cnt = #{planCnt}
+		  , not_instruct_cnt = #{notInstructCnt}
+		WHERE prod_plan_detail_code = #{prodPlanDetailCode}
+	</update>
+
+<!-- 생산계획 삭제 -->  	
+	<delete id="deleteProdPlan" parameterType="ProdPlanVO">
+		DELETE FROM prod_plan
+		WHERE prod_plan_code = #{prodPlanCode}
+	</delete>
+	<delete id="deleteProdPlanDetail" parameterType="String">
+		DELETE FROM prod_plan_detail
+		WHERE prod_plan_code = #{prodPlanCode}
+	</delete>
+	<!-- 생산계획 삭제 시 => 생산요청상태 수정 -->
+	<update id="cancelProdReqStatus" parameterType="ProdPlanVO">
+		UPDATE prod_req
+		SET prod_req_status = 'RS1'
+		WHERE prod_req_code = #{prodReqCode}
+	</update>
+	
+
+<!-- 생산지시 전 주간 생산계획 -->
+	<select id="getWeeklyPlan" resultType="ProdPlanVO">
+		SELECT prod_plan_code
+		     , prod_req_code
+		     , plan_date
+		     , prod_plan_status
+		     , pl.users_code
+		     , u.users_name
+		FROM prod_plan pl JOIN users u
+						   ON pl.users_code = u.users_code 
+		WHERE TRUNC(plan_date) + 3 <![CDATA[ <= ]]> TRUNC(SYSDATE)
+		AND TRUNC(plan_date) + 9 <![CDATA[ >= ]]> TRUNC(SYSDATE)
+		AND ROWNUM = 1
+		ORDER BY prod_plan_code
+	</select>
+	<select id="getWeeklyPlanDetail" resultType="ProdPlanDeVO">
+		SELECT prod_plan_detail_code
+	     	 , prod_plan_code
+	     	 , prod_req_detail_code
+	     	 , prd.product_code
+		     , p.product_name
+		     , fix_cnt
+		     , req_cnt
+		     , plan_cnt
+		     , not_instruct_cnt
+		     , instruct_done_cnt
+		FROM prod_plan_detail prd JOIN product p
+		                           ON prd.product_code = p.product_code
+		WHERE prod_plan_code = #{prodPlanCode}
+		ORDER BY prod_plan_detail_code
+	</select>
+	
+	
+<!-- 생산지시 등록 전 생산지시코드 조회 -->
+	<select id="beforeInsertInsCode"  resultType="ProdInsVO">
+		SELECT (SUBSTR(MAX(prod_instruct_code),0,3)) || LPAD((TO_NUMBER(SUBSTR(MAX(prod_instruct_code),4,8))+1), 5, '0') as prod_instruct_code 
+		FROM prod_instruct
+	</select>
+<!-- 생산지시 등록(1건) -->
+	<insert id="insertProdInstruct" parameterType="ProdInsVO">
+		<selectKey keyProperty="prodInstructCode"
+				   order="BEFORE"
+				   resultType="String">
+		 SELECT seq_func('prod_instruct') FROM dual
+		</selectKey>
+		INSERT INTO prod_instruct
+			( PROD_INSTRUCT_CODE
+			, PROD_PLAN_CODE
+			, INSTRUCT_DATE
+			, PROD_INSTRUCT_STATUS
+			, USERS_CODE
+     		 )
+		VALUES 
+			( #{prodInstructCode}
+			, #{prodPlanCode}
+			, #{instructDate}
+			, 'IS1'
+			, #{usersCode}
+			)
+	</insert>
+	<!--생산지시상세 등록(여러 건)  -->
+	<insert id="insertProdInstructDetail" parameterType="ProdInsDeVO">
+		INSERT INTO prod_instruct_detail
+			( PROD_INSTRUCT_DETAIL_CODE
+			, PROD_PLAN_DETAIL_CODE
+			, PROD_INSTRUCT_CODE
+			, INSTRUCT_CNT
+			, NOT_PROD_CNT
+			, PROD_CNT
+     	)
+		VALUES 
+			( seq_func('prod_instruct_detail')
+			, #{prodPlanDetailCode}
+			, #{prodInstructCode}
+			, #{instructCnt}
+			, 0
+			, 0
+			)
+	</insert>
+	<!-- 생산지시 등록 시 => 생산계획상태 수정 -->
+	<update id="updateProdPlanStatus" parameterType="ProdInsVO">
+		UPDATE prod_plan
+		SET prod_plan_status = 'LS2'
+		WHERE prod_plan_code = #{prodPlanCode}
+	</update>
+	
+	<!-- 공정상세 일부 등록  (프로시저사용) -->
+	<insert id="insertProcDetail" parameterType="ProcessVO" statementType="CALLABLE">
+		{ CALL proc_de_insert(#{prodInstructCode}) }
+	</insert>
+
+</mapper>

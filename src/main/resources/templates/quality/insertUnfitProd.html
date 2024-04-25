@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+<head>
+<meta charset="UTF-8">
+<title>insertUnfitQuality.html</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.css">
+<script src="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+<div layout:fragment="content">
+	<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">품질관리 / </span> 불량품 등록
+		</h3>
+	<div class="btnClass">
+	<label>완제품 LOT 번호</label>
+		<input id="prodLOT" type="text" name="prodLOT"><br>
+	<label for="date">검사접수일자
+  		<input type="date"
+         		id="inDate"
+         		max="2100-12-31"
+         		min="1970-01-01">
+		</label><br>
+		<button id="findBtn" type="button" onclick="findUnfit()">검색</button>
+	</div>
+	<div id="grid"></div>
+
+	<script src="/js/quality/insertUnfitProd.js"></script>
+
+		<button id="saveBtn" type="button" style="width:60px;">등록</button>
+</div>
+
+</body>
+</html>
+
+<style>
+.saveBtn {
+ 		display : flex;
+		justify-content : flex-end;
+ 		margin-top : 20px;
+ 		padding : 10px;
+ 	}
+
+</style>

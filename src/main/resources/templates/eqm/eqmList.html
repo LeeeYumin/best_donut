@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>설비 기기 관리</title>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">설비관리 / </span> 설비 기기 관리
+		</h3>
+		
+		<div>
+			<div class="card card-body mb-4">
+				<h5>검색조건</h5>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">키워드검색</label>
+					<div class="col-sm-6">
+					<input type="text" id="keyword" placeholder="설비코드 / 설비명 / 모델명 입력" class="form-control">
+					</div>
+				</div>
+				<div class="mb-3">
+					<label class="col-sm-1">설비상태</label>
+					<input type="radio" name="status" id="status0" value="" checked class="form-check-input">
+					<label for="status0" class="form-check-inline">전체</label>
+					<input type="radio" name="status" id="status1" value="ES1" class="form-check-input">
+					<label for="status1" class="form-check-inline">정상</label>
+					<input type="radio" name="status" id="status2" value="ES2" class="form-check-input">
+					<label for="status2" class="form-check-inline">설비고장</label>
+					<input type="radio" name="status" id="status3" value="ES3" class="form-check-input">
+					<label for="status3" class="form-check-inline">설비점검</label>
+					<input type="radio" name="status" id="status4" value="ES4" class="form-check-input">
+					<label for="status4" class="form-check-inline">설비수리</label>
+					<input type="radio" name="status" id="status5" value="ES5" class="form-check-input">
+					<label for="status5" class="form-check-inline">폐기</label>
+				</div>
+				<div>
+					<label class="col-sm-1 mb-5">가동현황</label>
+					<input type="radio" name="work" id="work0" value="" checked class="form-check-input">
+					<label for="work0" class="form-check-inline">전체</label>
+					<input type="radio" name="work" id="work1" value="FO1" class="form-check-input">
+					<label for="work1" class="form-check-inline">대기</label>
+					<input type="radio" name="work" id="work2" value="FO2" class="form-check-input">
+					<label for="work2" class="form-check-inline">가동중</label>
+					<input type="radio" name="work" id="work3" value="FO3" class="form-check-input">
+					<label for="work3" class="form-check-inline">전원꺼짐</label>
+				</div>
+				<div class="d-md-flex justify-content-md-center">
+					<button type="reset" id="resetBtn" class="btn btn-secondary me-sm-2 me-1">초기화</button>
+					<button type="button" id="searchBtn" class="btn btn-primary">검색</button>	
+				</div>
+			</div>
+		</div>
+		
+
+		<div>
+			<div class="card card-body">
+				<h5>설비 목록</h5>
+				<div id="eqmList"></div>
+			</div>
+		</div>
+
+		<script src="/js/eqm/eqmList.js"></script>
+		
+	</div>
+</body>
+</html>

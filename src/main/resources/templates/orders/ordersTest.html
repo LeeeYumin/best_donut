@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 템플릿 주소 -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>ordersTest.html</title>
+<!-- Toast UI CDN -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>\
+<link rel="stylesheet" href="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.css">
+<script src="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.js"></script>
+</head>
+<body>
+	<!-- Thymeleaf 레이아웃 div -->
+	<div layout:fragment="content">
+		<h2>테스트 페이지</h2>
+
+		<div sec:authentication="principal.usersVO.perm1" class="user" id="auth" style="display: none;"></div>
+		<div sec:authentication="principal.usersVO.usersCode" class="user" id="usersCode" ></div>
+
+		<!-- ToastUI 그리드 띄우는 div -->
+		<div id="grid"></div>
+		<div id="select-box" style="width: 200px"></div>
+		<!-- script 태그 => 타임리프 div 안에서 작성 -->
+		<script src="/js/orders/ordersTest.js"></script>
+	</div>
+</body>
+
+</html>

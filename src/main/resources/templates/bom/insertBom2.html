@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <title>BOM 등록</title>
+  <!-- Toast UI CDN -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+  <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+</head>
+<body>
+	<div sec:authentication="principal.usersVO.perm4" class="user" id="auth" style="display: none;"></div>
+  <!-- thymeleaf -->
+  <div layout:fragment="content">
+
+		<!-- 페이지 제목 안내 -->
+    <h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">BOM 관리 / </span> BOM 등록
+		</h3>
+
+		<!-- 입력 폼 -->
+		<div class="insertDiv">
+			<form name="insertForm" method="post">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+				<div class="card mb-4">
+					<h5 class="card-header">BOM 정보입력</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+
+						<!-- 입력정보 -->
+
+						<!-- 완제품 코드 -->
+            <div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">완제품 코드</label>
+							<div class="col-sm-6 input-group">
+								<input type="text" class="form-control" name="productCode" id="productCode" placeholder="ex.PRO00001">
+							</div>
+						</div>
+
+           	<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">담당자 코드</label>
+							<div class="col-sm-6 input-group">
+								<input type="text" class="form-control" name="usersCode" id="usersCode">
+							</div>
+						</div>
+
+						<div id="defaultFormControlHelp" class="form-text"></div>
+
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- grid -->
+		<div class="Grid">
+			<div class="card">
+				<!-- bom 상세보기 그리드-->
+				<h5 class="card-header col-sm-6">BOM 상세 정보 입력</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="bomGrid"></div>
+
+					<!-- 버튼 -->
+					<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+						<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="saveInsert()">등록</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+    <!-- js -->
+    <script src="/js/bom/insertBom2.js"></script>
+  </div>
+</body>
+</html>

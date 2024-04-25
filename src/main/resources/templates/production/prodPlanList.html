@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 템플릿 주소 -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout/index}">
+	
+<head>
+<meta charset="UTF-8">
+<title>prodPlanList</title>
+<!-- Toast UI CDN -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<style>
+.btn-update,
+.btn-delete {
+	width: 80px;
+	height: 38px;
+	font-size: 16px;
+	margin-left: auto;
+	/* display:flex 적용되어 있어 float: right X */
+	margin-right: 25px;
+}
+.mgb-50 {
+	margin-bottom: 50px;
+}
+.pdt-0 {
+	padding-top: 0px;
+}
+.warn-alert {
+	font-weight: bold;
+	font-size: 16px;
+	padding-left: 20.8px;
+	padding-bottom: 10px;
+	/* margin-left: 800px; */
+}
+</style>
+
+</head>
+
+<body>
+<!-- Thymeleaf 레이아웃 div -->
+	<div layout:fragment="content">
+
+<!-- TITLE -->
+		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 생산계획 관리</h3>
+<!-- 권한 -->
+		<div sec:authentication="principal.usersVO.perm2" class="user" id="auth" style="display: none;"></div>
+
+<!-- 검색 FORM -->
+		<div class="search">
+			<!-- <form name="searchForm" method="post"> -->
+				<div class="card mgb-50">
+					<h5 class="card-header">검색조건</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+						<div class="row mb-3">
+							<div class="row mb-3">
+								<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">계획일자</label>
+								<div class="col-sm-6 input-group">
+									<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
+									<span class="input-group-text">~</span>
+									<input type="date" class="form-control" name="searchEndDate" id="searchEndDate">
+								</div>
+							</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">계획코드</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" name="prodPlanCode" id="prodPlanCode" placeholder="생산계획코드 입력">
+							</div>
+						</div>
+
+						<div>
+							<label class="col-sm-1 mb-5" style="font-size: 0.8rem;">진행상태</label>
+							<input type="radio" name="prodPlanStatus" id="prodPlanStatus0" value="" checked class="form-check-input">
+							<label for="productCode0" class="form-check-inline">전체</label>
+							<input type="radio" name="prodPlanStatus" id="prodPlanStatus1" value="LS1" class="form-check-input">
+							<label for="productCode1" class="form-check-inline">미지시</label>
+							<input type="radio" name="prodPlanStatus" id="prodPlanStatus2" value="LS2" class="form-check-input">
+							<label for="productCode2" class="form-check-inline">지시등록</label>
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
+							<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
+						</div>
+					</div>
+				</div>
+			<!-- </form> -->
+		</div>
+
+
+<!-- 생산계획목록 FORM -->
+		<div class="card">
+			<h4 class="card-header">생산계획 목록</h4>
+			<button type="button" class="btn btn-secondary btn-sm btn-delete" id="deleteBtn" onclick="deletePlan()">삭제</button>
+			<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
+				<div class="pdt-0 card-body" id="plList"></div>
+			<h5 class="card-header">상세 목록</h5>
+				<button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updatePlanDetail()">수정</button>
+				<div id="alertMsg2" class="warn-alert"><!-- 알림문구 --></div>
+			<div class="pdt-0 card-body" id="plAll"></div>
+		</div>
+
+		
+		<!-- 로그인 정보 읽기 -->
+		<input type="hidden" id="usersCode" th:value="${session.usersCode}">
+		<input type="hidden" id="usersName" th:value="${session.usersName}">
+
+		<!-- script 태그 => 타임리프 div 안에서 작성 -->
+		<script src="/js/production/prodPlanList.js"></script>
+
+	</div>
+
+</body>
+</html>

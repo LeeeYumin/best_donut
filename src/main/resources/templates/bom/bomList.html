@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+<head>
+<meta charset="UTF-8">
+<title>BOM 관리</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">BOM / </span> BOM 관리
+		</h3>
+		<div class="tab-pane fade show active" id="inList" role="tabpanel" aria-labelledby="inList-tab">
+			<div class="card mb-3" style="border-radius: 0; border: 0; box-shadow: none;">
+				<div class="card-body">
+					<div class="row mb-3">
+						<div class="prodBList">
+							<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<form name="insertForm" method="post">
+							<button id="prod1" type="button" class="btn btn-primary me-md-2">글레이즈드</button>
+							<button id="prod2" type="button" class="btn btn-primary me-md-2">딸기</button>
+							<button id="prod3" type="button" class="btn btn-primary me-md-2">초코</button>
+							<button id="prod4" type="button" class="btn btn-primary me-md-2">녹차</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane fade show active" id="inList" role="tabpanel" aria-labelledby="inList-tab">
+			<div class="card mb-3" style="border-radius: 0; border: 0; box-shadow: none;">
+				<div class="card-body">
+					<div class="row mb-3">
+
+		<div id="grid"></div>
+
+		<div class="prodBList2">
+			<select id="selectbox" name="selectbox" onchange="">
+				<option value="" selected disabled>이전 버전 확인</option>
+				<option value="prod2">글레이즈드_ver.2</option>
+				<option value="prod1">글레이즈드_ver.1</option>
+				<option value="prod3">딸기_ver.1</option>
+				<option value="prod4">초코_ver.1</option>
+				<option value="prod5">녹차_ver.1</option>
+			</select>
+		</div>
+		</div>
+
+		<div id="grid2"></div>
+		</div>
+	</div>
+</div>
+
+		<script src="/js/bom/bomList.js"></script>
+
+</body>
+</html>
+
+<style>
+.prodBList {
+	padding: 10px;
+}
+.prodBList2 {
+	text-align: right;
+	padding: 10px;
+}
+
+</style>

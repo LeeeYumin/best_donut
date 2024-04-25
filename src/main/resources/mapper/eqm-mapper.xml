@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.eqm.mapper.EqmMapper">
+
+	<!-- 전체조회 -->
+	<select id="getEqm" resultType="EqmVO">
+		SELECT EQM_CODE
+				, EQM_NAME
+				, MODEL_NAME
+				, MAKER
+				, PURPOSE
+				, INSTALL_PLACE
+				, BUY_COMPANY
+				, BUY_PRICE
+				, BUY_DATE
+				, DUMP_DATE
+				, CHECK_CYCLE
+				, LAST_CHECK_DATE
+				, EQM_STATUS
+				, OPR_STATUS
+		FROM EQM
+		<include refid="condition"></include>
+		ORDER BY 1
+	</select>
+	
+	<sql id="condition">
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(EQM_CODE LIKE '%' || UPPER(#{keyword}) || '%'			
+				OR EQM_NAME LIKE '%' ||  UPPER(#{keyword}) || '%'
+				OR MODEL_NAME LIKE '%' ||  UPPER(#{keyword}) || '%')
+			</if>
+			<if test="status != null and status != ''">
+				AND EQM_STATUS = #{status}
+			</if>
+			<if test="work != null and work != ''">
+				AND OPR_STATUS = #{work}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<!-- 등록 -->
+	<insert id="insertImage" parameterType="FileVO">
+	<selectKey keyProperty="imageCode" resultType="String" order="BEFORE">
+		SELECT seq_func('image') FROM dual
+	</selectKey>
+		INSERT INTO IMAGE(
+				IMAGE_CODE
+				, UPLOAD_FILE_NAME
+				, SAVE_FILE_NAME
+				, FILE_SIZE
+				, EXTEN
+				, PATH)
+		VALUES(
+				#{imageCode}
+				, #{uploadFileName}
+				, #{saveFileName}
+				, #{fileSize}
+				, #{exten}
+				, #{path})
+	</insert>
+	
+	<insert id="insertEqm" parameterType="EqmVO">
+		INSERT INTO EQM(
+					EQM_CODE
+					, EQM_NAME
+					, MODEL_NAME
+					, MAKER
+					, PURPOSE
+					, INSTALL_PLACE
+					, BUY_COMPANY
+					, BUY_PRICE
+					, BUY_DATE
+					, DUMP_DATE
+					, CHECK_CYCLE
+					, LAST_CHECK_DATE
+					, EQM_STATUS
+					, OPR_STATUS
+					, IMAGE_CODE)
+		VALUES(
+			seq_func('eqm')
+			, #{eqmName}
+			, #{modelName}
+			, #{maker}
+			, #{purpose}
+			, #{installPlace}
+			, #{buyCompany}
+			, #{buyPrice}
+			, #{buyDate}
+			, #{dumpDate}
+			, #{checkCycle}
+			, #{lastCheckDate}
+			, #{eqmStatus}
+			, #{oprStatus}
+			, #{imageCode})
+	</insert>
+	
+
+	
+	
+	<!-- 단건조회 -->
+	<select id="getEqmInfo" resultType="EqmVO">
+		SELECT EQM_CODE
+				, EQM_NAME
+				, MODEL_NAME
+				, MAKER
+				, PURPOSE
+				, INSTALL_PLACE
+				, BUY_COMPANY
+				, BUY_PRICE
+				, BUY_DATE
+				, DUMP_DATE
+				, CHECK_CYCLE
+				, LAST_CHECK_DATE
+				, EQM_STATUS
+				, OPR_STATUS
+				, (SELECT SAVE_FILE_NAME
+					FROM IMAGE
+					WHERE IMAGE_CODE = EQM.IMAGE_CODE) IMAGE_CODE
+		FROM EQM
+		WHERE EQM_CODE = #{eqmCode}
+	</select>
+	
+	
+	<!-- 수정 -->
+	<update id="updateEqm" parameterType="EqmVO">
+		UPDATE EQM
+		SET EQM_NAME = #{eqmName}
+			, MODEL_NAME = #{modelName}
+			, MAKER = #{maker}
+			, PURPOSE = #{purpose}
+			, INSTALL_PLACE = #{installPlace}
+			, BUY_COMPANY = #{buyCompany}
+			, BUY_PRICE = #{buyPrice}
+			, BUY_DATE = #{buyDate}
+			, DUMP_DATE = #{dumpDate}
+			, CHECK_CYCLE = #{checkCycle}
+			, LAST_CHECK_DATE = #{lastCheckDate}
+			, EQM_STATUS = #{eqmStatus}
+			, OPR_STATUS = #{oprStatus}
+		WHERE EQM_CODE = #{eqmCode}
+	</update>
+	
+	
+	<!-- 삭제 -->
+	<delete id="deleteEqm" parameterType="String">
+		DELETE FROM EQM
+		WHERE EQM_CODE = #{eqmCode}
+	</delete>
+
+</mapper>

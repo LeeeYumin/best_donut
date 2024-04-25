@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.bom.mapper.BomMapper">
+   	<select id="getMatOrdersBom" resultType="BomVO">
+   		SELECT b.bom_code,
+   		       b.product_code,
+               p.product_name,
+               d.mat_code,
+               m.mat_name,
+               d.need_cnt,
+               d.unit,
+               m.unit_price
+     	  FROM bom b
+       		JOIN bom_detail d ON b.bom_code = d.bom_code
+      		JOIN mat m ON m.mat_code = d.mat_code
+      		JOIN product p ON p.product_code=b.product_code
+      	 WHERE b.apply_status = 'BAY'
+	 ORDER BY  b.bom_code,d.mat_code
+   	</select>
+   	
+   	<!-- 자재 불출용 BOM 조회 -->
+   	<select id="getMatOutBom">
+   		SELECT DISTINCT d.bom_code,
+               			b.product_code,
+               			p.product_name,
+               			d.mat_code, 
+               			m.mat_name,
+   	           			d.need_cnt, 
+   	           			d.unit, 
+   	          			d.proc_code,
+               			md.unit mat_unit
+          FROM bom_detail d 
+          	JOIN mat m ON d.mat_code = m.mat_code
+          	JOIN mat_detail md ON d.mat_code = md.mat_code
+    		JOIN bom b ON d.bom_code = b.bom_code
+    		JOIN product p ON p.product_code = b.product_code
+		 WHERE d.bom_code = (SELECT bom_code
+                               FROM bom
+                              WHERE product_code= #{productCode}
+                                AND apply_status='BAY')
+      ORDER BY mat_code
+   	</select>
+   	
+   	<!-- BOM관리 품목확인 -->
+   	<select id="getProdBom" resultType="BomVO">
+		SELECT b.bom_code
+				, p.product_code
+		        , p.product_name
+		        , b.apply_status
+		        , b.users_code
+		        , b.write_date
+		    FROM bom b JOIN product p
+		      ON b.product_code = p.product_code
+   	</select>
+   	
+   	<!-- BOM목록 -->
+   	<select id="getListBom" resultType="BomVO">
+		SELECT b.bom_code
+				, p.product_code
+		        , p.product_name
+		        , b.apply_status
+		        , b.users_code
+		        , b.write_date
+		    FROM bom b JOIN product p
+		      ON b.product_code = p.product_code
+   	</select>
+   	
+   	<!-- BOM목록 / grid2 공정보기  -->
+   <select id="bomselList" resultType="BomVO">
+	SELECT m.mat_name
+			    , d.mat_code
+			    , m.unit_price
+			    , d.unit
+			    , d.need_cnt
+			    , d.proc_code
+			FROM mat m JOIN bom_detail d
+			  ON m.mat_code = d.mat_code
+	        WHERE d.bom_code = #{bomCode}
+   </select>
+   
+   <!-- BOM작성화면 / 조회 -->
+   <select id="selectBom" resultType="BomVO">
+		SELECT b.bom_code
+		       , b.mat_code
+		       , m.mat_name
+		       , b.need_cnt
+		       , b.unit
+		       , m.unit_price
+		       , b.proc_code
+		  FROM bom_detail b JOIN mat m
+		                      ON b.mat_code = m.mat_code
+   </select>
+   
+   <!-- BOM작성화면 / bom grid -->
+	<select id="selectBom2" resultType="BomVO">	
+	SELECT DISTINCT m.MAT_CODE
+			    	, m.MAT_NAME
+					, d.NEED_CNT
+			   		, d.UNIT
+			   		, m.UNIT_PRICE
+					, d.PROC_CODE
+	FROM mat m JOIN bom_detail d
+		ON m.MAT_CODE = d.MAT_CODE
+    order by mat_code
+	</select>  
+	
+	<!-- BOM작성화면 / bom 작성 --> 
+	<insert id="insertNewBom" parameterType="InsertBomVO">
+		   	<selectKey keyProperty="bomCode" order="BEFORE" resultType="String">
+			SELECT seq_func('bom') FROM dual
+		</selectKey>
+		DECLARE
+		BEGIN
+			UPDATE BOM 
+	        SET APPLY_STATUS = 'BAN'
+	        WHERE PRODUCT_CODE = #{productCode};
+		
+		insert into BOM (
+						BOM_CODE
+						, APPLY_DATE
+						, APPLY_STATUS
+						, PRODUCT_CODE
+						, USERS_CODE
+						)
+				values (
+						#{bomCode}
+						, sysdate
+						,'BAY'
+						, #{productCode}
+						, #{usersCode}
+						); 
+		END;
+	</insert>
+	
+	<!-- BOM작성화면 / bom_detail 등록 -->
+	<insert id="insertNewBom2" parameterType="BomVO">	
+		INSERT INTO bom_detail
+				(bom_detail_code
+				, need_cnt
+				, unit
+				, bom_code
+				, mat_code
+				, proc_code)
+			VALUES (seq_func('bom_detail')
+					, #{needCnt}
+					, #{unit}
+					, #{bomCode}
+					, #{matCode}
+					, #{procCode})
+	</insert>
+</mapper>

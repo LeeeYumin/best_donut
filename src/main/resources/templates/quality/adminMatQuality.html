@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorate="~{layout/index}"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- {폴더명/파일명} -->
+<head>
+<meta charset="UTF-8">
+<title>자재 품질 관리</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+	<div sec:authentication="principal.usersVO.perm4" class="user" id="auth" style="display: none;"></div>
+		<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">품질관리 / </span> 자재 품질 관리
+		</h3>
+		<div>
+			<div class="card mb-3">
+				<div class="card-body">
+
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">자재 코드</label>
+						<div class="col-sm-6" >
+							<input id="matCode" class="form-control" type="text" style="width: 500px;" placeholder="자재 코드를 입력해주세요"><br>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">입고일자</label>
+						<div class="col-sm-6 input-group">
+							<input type="date" class="form-control" name="searchStartDate" id="searchStartDate">
+							<span class="input-group-text">~</span>
+							<input type="date" class="form-control" name="searchEndDate" id="searchEndDate">
+						</div>
+					</div>
+
+					<div class="py-0 mb-2 d-md-flex justify-content-md-center">
+						<button id="findBtn" type="button" class="btn btn-primary me-md-2" onclick="getMatAdmin()">검색</button>
+						<button id="resetBtn" type="button" class="btn btn-primary me-md-2" onclick="reset()">초기화</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+<div>
+	<div class="card mb-3">
+		<div class="card-body">
+			<div class="row mb-3">
+				<div id="grid"></div>
+			</div>
+			<script src="/js/quality/adminMatQuality.js"></script>
+			<div class="downBtn"  style="text-align: center;">
+				<button id="updateBtn" type="button" class="btn btn-primary me-md-2">수정</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>
+
+<style>
+
+</style>

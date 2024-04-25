@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>자재 발주 등록</title>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div sec:authentication="principal.usersVO.usersCode" class="user" id="usersCode" style="display: none;"></div>
+
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">자재관리 / </span> 자재 발주 등록
+		</h3>
+
+		<div>
+			<div class="card mb-3">
+				<!-- 생산 계획 목록 -->
+				<div class="row">
+					<div class="col-sm-6">
+						<h5 class="card-header">생산 계획 목록</h5>
+						<div class="card-body" id="prodPlanList"></div>
+					</div>
+					<div class="col-sm-6">
+						<h5 class="card-header">생산 계획 상세</h5>
+						<div class="card-body" id="prodPlanDetail"></div>
+					</div>
+					<!-- BOM 목록 -->
+					<div class="col-sm-12">
+						<h5 class="card-header">BOM</h5>
+						<div class="card-body" id="BOMList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="card mb-3">
+				<!-- 자재 재고 목록 -->
+				<h5 class="card-header">자재 재고 목록</h5>
+				<div class="card-body" id="matStockList"></div>
+			</div>
+		</div>
+		<div>
+			<div class="card">
+				<h5 class="card-header">발주 등록</h5>
+				<div class="card-body" id="matOrderList"></div>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3 mx-4">
+					<button type="button" class="btn btn-primary" id="orderBtn">발주</button>
+				</div>
+			</div>
+		</div>
+		<!-- materialOrdersInsert.js -->
+		<script src="/js/materials/materialOrdersInsert.js"></script>
+	</div>
+</body>
+
+</html>

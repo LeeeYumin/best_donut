@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>비가동 등록/정보</title>
+</head>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+<body>
+	<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4" th:if = "${notOprVO.notOprCode} == null">
+			<span class="text-muted fw-light">설비관리 / </span> 비가동 등록
+		</h3>
+		<h3 class="fw-bold py-1 mb-4" th:if = "${notOprVO.notOprCode} != null">
+			<span class="text-muted fw-light">설비관리 / </span> 비가동 정보
+		</h3>
+		
+		<form name="insertForm" method="post">
+			<div class="card card-body mb-4">
+				<h5>정보입력</h5>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">비가동코드<span class="star">*</span></label>
+					<div class="col-sm-6">
+					<input type="text" name="notOprCode" placeholder="자동생성" readonly th:value="${notOprVO.notOprCode}" class="form-control">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">담당자코드<span class="star">*</span></label>
+					<div class="row col">
+						<div class="col-sm-2">
+						<select name="usersCode" onchange="changeOption1()" class="form-select">
+							<option value="" th:if = "${notOprVO.notOprCode} == null">담당자코드 선택</option>
+							<option th:value="${notOprVO.usersCode}" th:text="${notOprVO.usersCode}" th:if = "${notOprVO.notOprCode} != null">담당자코드 선택</option>
+							<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersCode}">
+						</select>
+						</div>
+						<label class="col-sm-1 col-form-label" style="font-size: 15px;">담당자명<span class="star">*</span></label>
+						<div class="col-sm-2">
+						<select name="usersName" class="req form-select" onchange="changeOption2()">
+							<option value="" th:if = "${notOprVO.notOprCode} == null">담당자명 선택</option>
+							<option th:value="${notOprVO.usersCode}" th:text="${notOprVO.usersName}" th:if = "${notOprVO.notOprCode} != null">담당자명 선택</option>
+							<option th:each="user : ${usersList}" th:value="${user.usersCode}" th:text="${user.usersName}">
+						</select>
+						</div>
+						<div id="notice1" class="form-text notice"></div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비코드<span class="star">*</span></label>
+					<div class="row col">
+						<div class="col-sm-2">
+						<select name="eqmCode" onchange="changeOption3()" class="form-select">
+							<option value="" th:if = "${notOprVO.notOprCode} == null">설비코드 선택</option>
+							<option th:value="${notOprVO.eqmCode}" th:text="${notOprVO.eqmCode}" th:if = "${notOprVO.notOprCode} != null">설비코드 선택</option>
+							<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmCode}">
+						</select>
+						</div>
+						<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비명<span class="star">*</span></label>
+						<div class="col-sm-2">
+						<select name="eqmName" class="req form-select" onchange="changeOption4()">
+							<option value="" th:if = "${notOprVO.notOprCode} == null">설비명 선택</option>
+							<option th:value="${notOprVO.eqmCode}" th:text="${notOprVO.eqmName}" th:if = "${notOprVO.notOprCode} != null">설비명 선택</option>
+							<option th:each="eqm : ${eqmList}" th:value="${eqm.eqmCode}" th:text="${eqm.eqmName}">
+						</select>
+						</div>
+						<div id="notice2" class="form-text notice"></div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">비가동구분<span class="star">*</span></label>
+					<div class="col-sm-6">
+					<input type="radio" name="notOprSep" id="status1" value="NO1" class="form-check-input" th:checked='${notOprVO.notOprSep == "NO1"}'>
+					<label for="status1" class="form-check-inline">설비고장</label>
+					<input type="radio" name="notOprSep" id="status2" value="NO2" class="form-check-input" th:checked='${notOprVO.notOprSep == "NO2"}'>
+					<label for="status2" class="form-check-inline">설비점검</label>
+					<input type="radio" name="notOprSep" id="status3" value="NO3" class="form-check-input" th:checked='${notOprVO.notOprSep == "NO3"}'>
+					<label for="status3" class="form-check-inline">설비수리</label>
+					<div id="notice3" class="form-text notice"></div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">시작일자<span class="star">*</span></label>
+					<div class="col-sm-6">
+					<input type="Date" name="beginDate" class="req form-control" th:value="${{notOprVO.beginDate}}">	
+					<div id="notice4" class="form-text notice"></div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">종료일자</label>
+					<div class="col-sm-6">
+					<input type="Date" name="endDate" th:value="${{notOprVO.endDate}}" class="form-control">		
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">작업내용<span class="star">*</span></label>
+					<div class="col-sm-6">
+					<textarea name="contentsContents" placeholder="작업내용 입력" class="req form-control" th:text="${notOprVO.contentsContents}"></textarea>
+					<div id="notice5" class="form-text notice"></div>
+					</div>
+				</div>
+			</div>
+		</form>
+		
+		<div class="mb-5 d-md-flex justify-content-md-center">	
+			<div class="mb-4" th:if = "${notOprVO.notOprCode} == null">
+				<button type="button" id="saveBtn" class="btn btn-primary">등록완료</button>
+			</div>
+			<div class="mb-4" th:if = "${notOprVO.notOprCode} != null">
+				<button type="button" id="delBtn" class="btn btn-secondary me-sm-2 me-1" onclick="deleteNotOpr()">삭제</button>
+				<button type="button" id="updateBtn" class="btn btn-primary" onclick="updateNotOpr()">정보수정</button>
+			</div>
+		</div>
+
+		<script src="/js/notOpr/insertNotOpr.js"></script>
+	</div>
+</body>
+</html>
+
+<style>
+.star, .notice {
+	color: red;
+}
+
+ textarea {
+    width: 100%;
+    height: 10em;
+    resize: none;
+  }
+</style>

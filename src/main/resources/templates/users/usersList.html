@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>사용자 관리</title>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+
+</head>
+<body>
+	<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">공통관리 / </span> 사용자 관리
+		</h3>
+		
+		<div>
+			<div class="card card-body mb-4">
+				<h5>검색조건</h5>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">키워드검색</label>
+					<div class="col-sm-6">
+						<input type="search" id="keyword" placeholder="사용자코드 / 사용자명 입력" class="form-control">
+					</div>
+				</div>
+				<div class="mb-3">
+					<label class="col-sm-1">사용자권한</label>
+					<input type="checkbox" id="perm0" value="master" name="master" class="form-check-input">
+					<label for="perm0" class="form-check-inline">전체</label>
+					<div id="perm" style="display:inline-block;">
+						<input type="checkbox" id="perm1" value="PER00001" name="perm" class="form-check-input">
+						<label for="perm1" class="form-check-inline">영업관리</label>
+						<input type="checkbox" id="perm2" value="PER00002" name="perm" class="form-check-input">
+						<label for="perm2" class="form-check-inline">생산관리</label>
+						<input type="checkbox" id="perm3" value="PER00003" name="perm" class="form-check-input">
+						<label for="perm3" class="form-check-inline">자재관리</label>
+						<input type="checkbox" id="perm4" value="PER00004" name="perm" class="form-check-input">
+						<label for="perm4" class="form-check-inline">품질관리</label>
+						<input type="checkbox" id="perm5" value="PER00005" name="perm" class="form-check-input">
+						<label for="perm5" class="form-check-inline">설비관리</label>
+					</div>
+				</div>
+				<div>
+					<label class="col-sm-1 mb-5">사용자상태</label>
+					<input type="radio" name="usersStatus" id="status0" value="" checked class="form-check-input">
+					<label for="status0" class="form-check-inline">전체</label>
+					<input type="radio" name="usersStatus" id="status1" value="USY" class="form-check-input">
+					<label for="status1" class="form-check-inline">활성</label>
+					<input type="radio" name="usersStatus" id="status2" value="USN" class="form-check-input">
+					<label for="status2" class="form-check-inline">비활성</label>
+				</div>
+				<div class="d-md-flex justify-content-md-center">
+					<button type="reset" id="resetBtn" class="btn btn-secondary me-sm-2 me-1">초기화</button>
+					<button type="button" id="searchBtn" class="btn btn-primary">검색</button>	
+				</div>
+			</div>
+		</div>
+		
+		<div>
+			<div class="card card-body">
+				<h5>사용자 목록</h5>
+				<div id="usersList"></div>
+			</div>
+		</div>
+		
+		<script src="/js/users/usersList.js"></script>
+		
+	</div>
+</body>
+</html>

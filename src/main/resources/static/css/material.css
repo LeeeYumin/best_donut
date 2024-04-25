@@ -1,0 +1,15 @@
+.searchForm {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    width: -webkit-fill-available;
+}
+
+#materialsList {
+    margin-bottom: 20px;
+}
+
+.inbl {
+    display: inline-block;
+}

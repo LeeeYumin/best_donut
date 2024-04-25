@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.orders.mapper.OrdersMapper">
+	
+<!-- 1. 조회 -->
+	
+	<!-- 거래처 조회 -->
+	<select id="getCompany" resultType="map">
+		SELECT company_code   AS "companyCode"
+		       , company_name AS "companyName"
+		  FROM company
+		 WHERE company_sep = 'CO2'
+		 ORDER BY 1	
+	</select>
+	
+	<!-- 사용자 조회 -->
+	<select id="getUsers" resultType="UsersVO">
+
+	</select>
+	
+	<!-- 주문조회 -->
+	<select id="getOrders" resultType="OrdersVO">
+		WITH t AS 
+		    (
+		    SELECT o.orders_code         AS ocode
+		           , MAX(p.product_name) AS prod
+		           , COUNT(*)            AS cnt
+		      FROM orders o JOIN orders_detail d
+		                      ON o.orders_code = d.orders_code
+		                    JOIN product p
+		                      ON d.product_code = p.product_code
+		     GROUP BY o.orders_code
+		    )
+		SELECT o.orders_code
+		       , o.orders_date
+		       , o.due_date
+		       , o.total_orders_price
+		       , o.orders_status
+		       , c.company_name
+		       , u.users_name
+		       , CASE WHEN t.cnt = 1 THEN t.prod
+		              ELSE t.prod || ' 외 ' || CAST(t.cnt - 1 AS VARCHAR(20)) || '건' 
+		         END AS cnt_str
+		  FROM orders o  JOIN company c
+		                   ON o.company_code = c.company_code
+		                 JOIN users u
+		                   ON o.users_code = u.users_code
+		                 JOIN t
+		                   ON o.orders_code = t.ocode
+		 WHERE o.orders_status IN ( 'OP1', 'OP2' )
+			<if test="ordersCode != null and ordersCode != ''">
+				AND o.orders_code LIKE '%' || #{ordersCode} || '%'
+			</if>
+			<if test="companyName != null and companyName != ''">
+				AND c.company_name LIKE '%' || #{companyName} || '%'
+			</if>
+			<if test="usersName != null and usersName != ''">
+				AND u.users_name LIKE '%' || #{usersName} || '%'
+			</if>
+			<if test="dueStartDate != null">
+				AND TRUNC(o.due_date) <![CDATA[ >= ]]> #{dueStartDate}
+			</if>
+			<if test="dueEndDate != null">
+				AND TRUNC(o.due_date) <![CDATA[ <= ]]> #{dueEndDate}
+			</if>
+			<if test="ordersStartDate != null">
+				AND TRUNC(o.orders_date) <![CDATA[ >= ]]> #{ordersStartDate}
+			</if>
+			<if test="ordersEndDate != null">
+				AND TRUNC(o.orders_date) <![CDATA[ <= ]]> #{ordersEndDate}
+			</if>
+		 ORDER BY 1 DESC
+	</select>
+	
+	<!-- 생산요청 대상 주문조회(주문상태 "확인"만) -->
+	<select id="getProdReqOrders" resultType="OrdersVO">
+		WITH t AS 
+		    (
+		    SELECT o.orders_code         AS ocode
+		           , MAX(p.product_name) AS prod
+		           , COUNT(*)            AS cnt
+		      FROM orders o JOIN orders_detail d
+		                      ON o.orders_code = d.orders_code
+		                    JOIN product p
+		                      ON d.product_code = p.product_code
+		     GROUP BY o.orders_code
+		    )
+		SELECT o.orders_code
+		       , o.orders_date
+		       , o.due_date
+		       , o.total_orders_price
+		       , o.orders_status
+		       , c.company_name
+		       , u.users_name
+		       , CASE WHEN t.cnt = 1 THEN t.prod
+		              ELSE t.prod || ' 외 ' || CAST(t.cnt - 1 AS VARCHAR(20)) || '건' 
+		         END AS cnt_str
+		  FROM orders o  JOIN company c
+		                   ON o.company_code = c.company_code
+		                 JOIN users u
+		                   ON o.users_code = u.users_code
+		                 JOIN t
+		                   ON o.orders_code = t.ocode
+		 WHERE o.orders_status IN ( 'OP2' )
+			<if test="ordersCode != null and ordersCode != ''">
+				AND o.orders_code LIKE '%' || #{ordersCode} || '%'
+			</if>
+			<if test="companyName != null and companyName != ''">
+				AND c.company_name LIKE '%' || #{companyName} || '%'
+			</if>
+			<if test="usersName != null and usersName != ''">
+				AND u.users_name LIKE '%' || #{usersName} || '%'
+			</if>
+			<if test="dueStartDate != null">
+				AND TRUNC(o.due_date) <![CDATA[ >= ]]> #{dueStartDate}
+			</if>
+			<if test="dueEndDate != null">
+				AND TRUNC(o.due_date) <![CDATA[ <= ]]> #{dueEndDate}
+			</if>
+			<if test="ordersStartDate != null">
+				AND TRUNC(o.orders_date) <![CDATA[ >= ]]> #{ordersStartDate}
+			</if>
+			<if test="ordersEndDate != null">
+				AND TRUNC(o.orders_date) <![CDATA[ <= ]]> #{ordersEndDate}
+			</if>
+		 ORDER BY 1 DESC
+	</select>
+
+	<!-- 주문상세목록 조회 -->
+	<select id="getOrdersDetail" resultType="OrdersDetailVO" parameterType="String">
+		SELECT d.orders_detail_code
+		       , d.orders_cnt
+			   , d.supply_price
+			   , d.tax
+			   , d.total_supply_price
+			   , d.orders_code
+			   , d.product_code
+			   , p.product_name
+			   , p.stock_cnt
+		  FROM orders_detail d JOIN product p
+		                         ON d.product_code = p.product_code
+		 WHERE d.orders_code = #{ordersCode}
+		 ORDER BY 1
+	</select>
+	
+	<!-- 생산요청 조회 -->
+	<select id="getProdReq" resultType="ProdReqVO">
+		SELECT p.prod_req_code
+       		   , p.total_req_cnt
+	           , p.req_date
+	           , p.prod_req_status
+	           , u.users_name
+          FROM prod_req p JOIN users u
+                         ON p.users_code = u.users_code
+	  	 WHERE 1=1
+		<if test="prodReqCode != null and prodReqCode != ''">
+			AND p.prod_req_code LIKE '%' || #{prodReqCode} || '%'
+		</if>
+		<if test="usersName != null and usersName != ''">
+			AND u.users_name LIKE '%' || #{usersName} || '%'
+		</if>
+		<if test="prodReqStartDate != null">
+			AND TRUNC(p.req_date) <![CDATA[ >= ]]> #{prodReqStartDate}
+		</if>
+		<if test="prodReqEndDate != null">
+			AND TRUNC(p.req_date) <![CDATA[ <= ]]> #{prodReqEndDate}
+		</if>
+		 ORDER BY p.req_date DESC
+	</select>
+	
+	<!-- 생산요청상세목록 조회 -->
+	<select id="getProdReqDet" resultType="ProdReqDetailVO" parameterType="String">
+		SELECT r.prod_req_detail_code
+			   , r.req_cnt
+			   , r.prod_req_code
+			   , p.product_name
+		  FROM prod_req_detail r JOIN product p
+		                           ON r.product_code = p.product_code
+		 WHERE r.prod_req_code = #{prodReqCode}
+		 ORDER BY 1
+	</select>
+	
+	
+<!-- 2. 등록 -->
+	
+	<!-- 주문 등록 -->
+	<insert id="insertOrders" parameterType="OrdersVO">
+		<!--
+		selectKey : insert하고 난 후 자동 생성된 key값 받아서
+					다른 insert문에 바로 사용
+		 -->
+		<selectKey keyProperty="ordersCode" order="BEFORE" resultType="String">
+		 	SELECT seq_func('orders') FROM dual
+		</selectKey>		
+		INSERT INTO orders
+			(
+				orders_code
+				, orders_date
+				, due_date
+				, total_orders_price
+				, orders_status
+				, users_code
+				, company_code
+			)
+		VALUES 
+			(
+				 #{ordersCode}
+				, #{ordersDate}
+				, #{dueDate}
+				, #{totalOrdersPrice}
+				, 'OP1'
+				, #{usersCode}
+				, #{companyCode}
+			)
+	</insert>
+	
+	<!-- 주문상세 등록 -->
+	<insert id="insertOrdDet" parameterType="OrdersDetailVO">	
+		INSERT INTO orders_detail
+			(
+				orders_detail_code
+				, orders_cnt
+				, supply_price
+				, tax
+				, total_supply_price
+				, orders_code
+				, product_code
+			)
+		VALUES
+			(
+				seq_func('orders_detail')
+				, #{ordersCnt}
+				, #{supplyPrice}
+				, #{tax}
+				, #{totalSupplyPrice}
+				, #{ordersCode}
+				, #{productCode}
+			)
+	</insert>
+	
+	<!-- 생산요청 등록 -->
+	<insert id="insertProdReq" parameterType="ProdReqVO">
+		<selectKey keyProperty="prodReqCode" order="BEFORE" resultType="String">
+			SELECT seq_func('prod_req') FROM dual
+		</selectKey>
+	  	INSERT INTO prod_req
+			(
+				prod_req_code
+				, total_req_cnt
+				, req_date
+				, users_code
+				, prod_req_status
+			)
+		VALUES
+			(
+				#{prodReqCode}
+				, #{totalReqCnt}
+				, #{reqDate}
+				, 'USE00002'
+				, 'RS1'
+			)
+	</insert>
+	
+	<!-- 생산요청상세 등록 -->
+	<insert id="insertProdReqDet" parameterType="ProdReqDetailVO">
+		INSERT INTO prod_req_detail
+			(
+				prod_req_detail_code
+				, req_cnt
+				, prod_req_code
+				, product_code
+			)
+		VALUES
+			(
+				seq_func('prod_req_detail')
+				, #{reqCnt}
+				, #{prodReqCode}
+				, #{productCode}
+			)
+	</insert>
+	
+
+<!-- 3. 수정 -->
+
+	<!-- 주문 수정 -->
+	<update id="updateOrders" parameterType="OrdersVO">
+		UPDATE orders
+		   SET orders_date = #{ordersDate}
+			   , due_date = #{dueDate}
+			   , total_orders_price = #{totalOrdersPrice}
+			   , orders_status = #{ordersStatus}
+			   , users_code = #{usersCode}
+			   , company_code = #{companyCode}
+		 WHERE orders_code = #{ordersCode}
+		   AND orders_status = 'OP1'
+	</update>
+	
+		
+	<!-- 주문 상태 확인/미확인 변경 -->
+	<update id="updateOrdCheck" parameterType="OrdersVO">
+		UPDATE orders
+		   SET orders_status = #{ordersStatus}
+		 WHERE orders_code = #{ordersCode}
+	</update>
+	
+	<!-- 주문 상태 변경 -->
+	<update id="updateOrdStat" parameterType="ProdReqVO">
+		UPDATE orders
+		   SET orders_status = 'OP3'
+		 WHERE TRUNC(due_date) <![CDATA[ >= ]]> #{dueStartDate}
+		   AND TRUNC(due_date) <![CDATA[ <= ]]> #{dueEndDate}
+	</update>
+	
+	
+<!-- 4. 삭제 -->
+	
+	<!-- 주문삭제 -->
+	<delete id="deleteOrders" parameterType="String">
+		DELETE FROM orders
+		 WHERE orders_code = #{ordersCode}
+		   AND orders_status = 'OP1'
+	</delete>
+	
+	<!-- 주문상세삭제 -->
+	<delete id="deleteOrdDet" parameterType="String">
+		DELETE FROM orders_detail
+		 WHERE orders_code = #{ordersCode}
+	</delete>
+	
+</mapper>

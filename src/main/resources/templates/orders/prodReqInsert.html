@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+	<meta charset="UTF-8">
+	<title>생산요청등록</title>
+	<!-- Toast UI CDN -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+	<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
+</head>
+<body>
+	<!--  레이아웃 div -->
+	<div layout:fragment="content">
+		
+		<!-- title -->
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">영업관리 / </span> 생산요청등록
+		</h3>
+
+		<!-- 검색조건 -->
+		<div class="search">
+			<form name="searchForm" method="post">
+				<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"> -->
+				<div class="card mb-4">
+					<h5 class="card-header">검색조건</h5>
+					<div class="card-body demo-vertical-spacing demo-only-element">
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">오늘날짜</label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="today" readonly>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">납기일자</label>
+							<div class="col-sm-6 input-group">
+								<input type="week" class="form-control" name="dueWeek" onchange="getWeekDate()">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;"></label>
+							<div class="col-sm-6 input-group">
+								<input type="date" class="form-control" name="dueStartDate" id="dueStartDate" readonly>
+								<span class="input-group-text">~</span> 
+								<input type="date" class="form-control" name="dueEndDate" id="dueEndDate" readonly>
+							</div>
+						</div>
+
+						<div id="defaultFormControlHelp" class="form-text"></div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+							<button type="button" class="btn btn-primary me-md-2" id="searchBtn" onclick="searchOrders()">검색</button>
+							<button type="button" class="btn btn-primary me-md-2" id="resetBtn" onclick="searchReset()">초기화</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- 그리드 -->
+		<div class="ordersGrid">
+			<div class="card">
+				<!-- 주문 목록 -->
+				<h5 class="card-header">주문 목록</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="ordGrid"></div>
+				</div>
+				<!-- 제품별 주문량 -->
+				<h5 class="card-header">제품별 주문량</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element">
+					<div id="prodGrid"></div>
+				</div>
+				<!-- 생산요청 수량 -->
+				<h5 class="card-header">생산요청 수량</h5>
+				<div class="card-body demo-vertical-spacing demo-only-element row">
+					<div class="col-sm-6">
+						<div id="reqGrid"></div>
+					</div>
+					<div class="card col-sm-6" style="margin-top: 0 !important;">
+						<div class="card-body">
+							<form name="reqForm">
+
+								<div class="row mb-3">
+									<label class="col-sm-2 col-form-label" for="totalReqCnt">총요청수량 <span class="star">*</span></label>
+									<div class="col-sm-10">
+										<input type="number" class="form-control" id="totalReqCnt" name="totalReqCnt">
+									</div>
+								</div>
+
+								<div class="row mb-3">
+									<label class="col-sm-2 col-form-label" for="reqDate">요청일자 <span class="star">*</span></label>
+									<div class="col-sm-10">
+										<input type="date" class="form-control" id="reqDate" name="reqDate">
+									</div>
+								</div>
+
+								<div class="row justify-content-end">
+									<div class="col-sm-10">
+										<button type="button" class="btn btn-primary" onclick="prodReqFunc()">생산요청등록</button>
+									</div>
+								</div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- script import -->
+		<script src="/js/orders/prodReqInsert.js"></script>
+	</div>
+</body>
+
+</html>
+<style>
+	.star, .notice {
+		color: red;
+	}
+	</style>

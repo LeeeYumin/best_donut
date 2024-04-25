@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.comCode.mapper.ComCodeMapper">
+   	
+<!-- 공통코드 -->
+
+   	<!-- 공통코드 목록 SELECT -->
+   	<select id="getComCodeList" resultType="ComCodeVO">
+   		SELECT maincode
+ 			   , maincode_name
+ 	      FROM common_code
+ 	     WHERE 1=1
+ 	     <if test="maincode != null and maincode != ''">
+ 	     	AND maincode LIKE '%' || UPPER(#{maincode}) || '%'
+ 	     </if>
+ 	     <if test="maincodeName != null and maincodeName != ''">
+ 	     	AND maincode_name LIKE '%' || #{maincodeName} || '%'
+ 	     </if>
+ 	     ORDER BY 1
+   	</select>
+   	
+   	<!-- 공통코드 상세 목록 SELECT -->
+   	<select id="getComCodeDetList" resultType="ComCodeDetailVO">
+   		SELECT maincode
+   		       , subcode
+			   , subcode_name
+ 	      FROM common_code_detail
+ 	     WHERE 1=1
+ 	     <if test="maincode != null and maincode != ''">
+ 	     	AND maincode LIKE '%' || UPPER(#{maincode}) || '%'
+ 	     </if>
+ 	     <if test="subcode != null and subcode != ''">
+ 	     	AND subcode LIKE '%' || UPPER(#{subcode}) || '%'
+ 	     </if>
+ 	     <if test="subcodeName != null and subcodeName != ''">
+ 	     	AND subcode_name LIKE '%' || #{subcodeName} || '%'
+ 	     </if>
+ 	     ORDER BY subcode
+   	</select>
+   	
+   	<!-- 주코드 중복검사 -->
+   	<select id="valComCode" resultType="int">
+   		SELECT COUNT(*) cnt
+		  FROM common_code
+		 WHERE maincode = UPPER(#{maincode})
+   	</select>
+
+   	<!-- 부코드 중복검사 -->
+   	<select id="valComCodeDet" resultType="int">
+   		SELECT COUNT(*) cnt
+		  FROM common_code_detail
+		 WHERE subcode = UPPER(#{subcode})
+   	</select>
+   	
+   	<!-- 주코드 등록 -->
+   	<insert id="insertComCode" parameterType="ComCodeVO">   	
+		INSERT INTO common_code
+			(
+				maincode
+ 			    , maincode_name
+			)
+		VALUES
+			(
+				UPPER(#{maincode})
+				, #{maincodeName}
+			)
+   	</insert>
+   	
+   	<!-- 부코드 등록 -->
+   	<insert id="insertComCodeDet" parameterType="ComCodeDetailVO">   	
+		INSERT INTO common_code_detail
+			(
+				maincode
+				, subcode
+ 			    , subcode_name
+			)
+		VALUES
+			(
+				UPPER(#{maincode})
+				, UPPER(#{subcode})
+				, #{subcodeName}
+			)
+   	</insert>
+   	
+<!-- 거래처 -->
+	
+	<!-- 거래처 목록 -->
+	<select id="getCompanyList" resultType="CompanyVO">
+		SELECT company_code
+		       , company_name
+			   , company_sep
+			   , owner_name
+			   , tel
+			   , addr
+		  FROM company;
+		 ORDER BY 1	 
+	</select>
+	
+	<!-- 거래처 목록 검색 -->
+	<select id="getCompanySearchList" resultType="CompanyVO">
+		SELECT company_code
+		       , company_name
+			   , company_sep
+			   , owner_name
+			   , tel
+			   , addr || ' ' || addr_detail AS addr
+		  FROM company
+		 WHERE 1=1
+ 	     <if test="companyCode != null and companyCode != ''">
+ 	     	AND UPPER(company_code) LIKE '%' || UPPER(#{companyCode}) || '%'
+ 	     </if>
+ 	     <if test="companyName != null and companyName != ''">
+ 	     	AND company_name LIKE '%' || #{companyName} || '%'
+ 	     </if>
+ 	     <if test="ownerName != null and ownerName != ''">
+ 	     	AND owner_name LIKE '%' || #{ownerName} || '%'
+ 	     </if>
+ 	     <if test="addr != null and addr != ''">
+ 	     	AND addr || ' ' || addr_detail LIKE '%' || #{addr} || '%'
+ 	     </if>
+		 ORDER BY 1	 
+	</select>
+	
+	<!-- 거래처 등록 -->
+	<insert id="insertCompany" parameterType="CompanyVO">
+		INSERT INTO company
+			(
+			   company_code
+		       , company_name
+			   , company_sep
+			   , owner_name
+			   , tel
+			   , addr
+			   , addr_detail
+			   , postcode
+			)
+		VALUES
+			(
+			   seq_func('company')
+		       , #{companyName}
+			   , #{companySep}
+			   , #{ownerName}
+			   , #{tel}
+			   , #{addr}
+			   , #{addrDetail}
+			   , #{postcode}
+			)
+	</insert>
+   	
+</mapper>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.production.mapper.ProcessMapper">
+
+<!-- 당일 생산지시 조회 -->
+	<select id="getTodayIns" resultType="ProdInsVO">
+		SELECT instruct_date
+         , prod_instruct_code
+         , prod_instruct_status
+         , prod_plan_code
+         , pi.users_code
+         , u.users_name
+   		 FROM prod_instruct pi JOIN users u
+   		 						ON pi.users_code = u.users_code
+    	WHERE instruct_date = TRUNC(SYSDATE)
+	</select>
+	<select id="getTodayInsDetail" resultType="ProdInsDeVO" parameterType="String">
+		SELECT prod_instruct_detail_code
+         , pld.product_code
+         , p.product_name
+         , instruct_cnt
+         , not_prod_cnt
+         , prod_cnt
+         , prod_instruct_code
+         , mat_outgoing_status
+    FROM prod_instruct_detail pid JOIN prod_plan_detail pld
+                                    ON pid.prod_plan_detail_code = pld.prod_plan_detail_code
+                                  JOIN product p
+                                    ON pld.product_code = p.product_code
+    WHERE prod_instruct_code = #{prodInstructCode}
+    ORDER BY prod_instruct_detail_code
+	</select>
+<!-- 생산지시 상세 상태 함수 호출 -->
+	<select id="getInsDeStatus" resultType="String" parameterType="String">
+		SELECT CHECK_PRODINS_DETAIL_DONE(#{prodInstructDetailCode}) as ins_de_status
+		FROM dual
+	</select>
+	
+<!-- 공정진행 조회 -->
+  <select id="getProcessInfo" resultType="ProcessVO" parameterType="String">
+    SELECT pr.serial_num 
+      , pr.proc_name
+      , pr.eqm_code 
+      , pd.proc_detail_code
+      , pd.proc_code
+      , pd.begin_time
+      , pd.end_time
+      , pd.proc_status
+      , pd.users_code
+      , u.users_name
+      , pd.prod_instruct_detail_code
+    FROM proc_detail pd JOIN proc pr
+                         ON pd.proc_code = pr.proc_code
+                        LEFT JOIN users u
+                         ON u.users_code = pd.users_code
+    WHERE pd.prod_instruct_detail_code = #{prodInstructDetailCode}
+  </select>
+<!-- 공정자재 조회 -->  
+  <select id="getProcMatInfo" resultType="ProcessVO" parameterType="String">
+	 SELECT pm.proc_mat_code
+        , pm.proc_detail_code
+        , pm.mat_lot_code
+        , m.mat_name
+	      , pm.mat_cnt
+	 FROM proc_mat pm JOIN proc_detail pcd
+	                   ON pm.proc_detail_code = pcd.proc_detail_code
+	                  JOIN mat_detail md
+	                   ON pm.mat_lot_code = md.mat_lot_code
+	                  JOIN mat m
+	                   ON md.mat_code = m.mat_code
+	 WHERE pcd.proc_detail_code = #{procDetailCode}
+	 ORDER BY proc_mat_code
+  </select>
+
+<!-- 공정 (*프로시저 사용) -->
+	<insert id="updateProc" parameterType="ProcessVO" statementType="CALLABLE">
+		{ CALL PROC_UPDATE(#{prodInstructCode}, #{prodInstructDetailCode}, #{usersCode}, #{procDetailCode}, #{se}, #{eqmCode}, #{result, mode=OUT, jdbcType=VARCHAR, javaType=string}) }
+	</insert>
+	
+<!-- 공정에 사용되는 설비상태 & 가동현황 -->
+  <select id="getProcEqmInfo" resultType="ProcessVO">
+    SELECT p.proc_code
+         , p.serial_num
+         , p.eqm_code
+         , eqm_name
+         , opr_status
+         , eqm_status
+    FROM eqm e JOIN proc p
+                ON e.eqm_code = p.eqm_code
+    WHERE eqm_status != 'ES5'
+    ORDER BY p.serial_num
+  </select>
+<!-- 설비명으로 조회 --> 
+  <select id="getEqmAllInfo" resultType="ProcessVO" parameterType="String">
+	SELECT eqm_code
+		 , eqm_name
+		 , eqm_status
+		 , opr_status
+	FROM eqm
+	WHERE eqm_name LIKE REGEXP_REPLACE(#{eqmName}, '[0-9]+', '') || '%'
+	AND eqm_status != 'ES5'
+	<!-- AND NOT eqm_code = #{eqmCode} -->
+	ORDER BY eqm_code
+  </select>
+
+<!-- 공정에 사용되는 설비 변경 -->
+	<update id="updateProcEqm" parameterType="ProcessVO">
+		UPDATE proc
+		SET eqm_code = #{eqmCode}
+		WHERE proc_code = #{procCode}
+	</update>
+
+
+
+<!--======== 공정실적 ======================================================= -->
+	<select id="getProcResultDeList" resultType="ProdInsDeVO">
+		SELECT DISTINCT pi.prod_instruct_code
+				, pi.instruct_date
+				, u.users_name
+				, pid.prod_instruct_detail_code
+				, pld.product_code
+				, p.product_name
+				, instruct_cnt
+				, not_prod_cnt
+				, prod_cnt
+				, all_begin_time
+				, all_end_time
+				, pd.product_lot_code
+				, pd.warehousing_cnt - pd.check_done_cnt as fail_cnt
+				, pd.qlty_check_status <!--PQ1 미검사 / PQ2 검사완료-->
+				<!-- , pm.mat_lot_code -->
+		FROM prod_instruct pi JOIN prod_instruct_detail pid 
+							   ON pi.prod_instruct_code = pid.prod_instruct_code
+							  JOIN users u
+							   ON pi.users_code = u.users_code
+							  JOIN prod_plan_detail pld
+							   ON pid.prod_plan_detail_code = pld.prod_plan_detail_code
+							  JOIN product p
+							   ON pld.product_code = p.product_code
+							  JOIN proc_result pr
+							   ON pr.prod_instruct_detail_code = pid.prod_instruct_detail_code
+							  JOIN product_detail pd
+							   ON pd.proc_result_code = pr.proc_result_code
+							  JOIN proc_detail pcd
+							   ON pr.prod_instruct_detail_code = pcd.prod_instruct_detail_code
+							  JOIN proc_mat pm
+							   ON pcd.proc_detail_code = pm.proc_detail_code
+		<where>
+			<if test="searchStartDate != null">
+				TRUNC(instruct_date) <![CDATA[ >= ]]> TRUNC(#{searchStartDate}) 
+			</if>
+			<if test="searchEndDate != null">
+				AND TRUNC(instruct_date) <![CDATA[ <= ]]> TRUNC(#{searchEndDate}) 
+			</if>
+			<if test="prodInstructCode != null and prodInstructCode != ''">
+				AND prod_instruct_code LIKE '%' || UPPER(#{prodInstructCode}) || '%'
+			</if>
+			<if test="productLotCode != null and productLotCode != ''">
+				AND product_lot_code LIKE '%' || UPPER(#{productLotCode}) || '%'
+			</if>
+			<if test="productCode != null and productCode != ''">
+				AND product_code = #{productCode}
+			</if>
+			<if test="matLotCode != null and matLotCode != ''">
+				AND mat_lot_code LIKE '%' || UPPER(#{matLotCode}) || '%'
+			</if>
+				<!-- AND prod_instruct_status = 'IS3' -->
+				AND TRUNC(pi.instruct_date) <![CDATA[ >= ]]> TRUNC(ADD_MONTHS(SYSDATE,-6)) <!--6개월전까지데이터-->
+		</where>
+		ORDER BY prod_instruct_detail_code DESC
+	</select>
+
+
+</mapper>

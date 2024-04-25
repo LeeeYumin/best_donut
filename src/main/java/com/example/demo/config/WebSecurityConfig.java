@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -37,9 +34,18 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((requests) -> requests
-				.antMatchers("/*", "/home").permitAll()
-				//.antMatchers("/empList").hasAnyRole("ADMIN")
-				//.anyRequest().authenticated()
+//				.antMatchers("/**", "/home").permitAll()
+//				.antMatchers("/", "/login").permitAll()
+				.antMatchers("/comCodeInsert", "/insertusers", "/usersinfo", "/insertBom2").hasAnyRole("ADMIN")
+				.antMatchers("/ordersInsert", "/prodReqInsert", "/exportInsert").hasAnyRole("PER00001", "ADMIN")
+				.antMatchers("/prodPlan", "/prodInstruct").hasAnyRole("PER00002", "ADMIN")
+				.antMatchers("/materials/orders", "/materials/warehousing", "/materials/outgoing").hasAnyRole("PER00003", "ADMIN")
+				.antMatchers("/insertMatQuality", "/insertProQuality").hasAnyRole("PER00004", "ADMIN")
+				.antMatchers("/inserteqm", "/eqminfo", "/insertnotopr", "/notoprinfo").hasAnyRole("PER00005", "ADMIN")
+				.antMatchers("/companyInsert").hasAnyRole("PER00001", "PER00003", "ADMIN")
+				.antMatchers("/").hasAnyRole("PER00001", "PER00002", "PER00003", "PER00004", "PER00005", "ADMIN")
+				.antMatchers("/assets/**", "/css/**", "/fonts/**", "/js/**", "/scss/**", "/login", "/accessError", "/ajax/**", "/download/**").permitAll()
+				.anyRequest().authenticated()
 			)
 			// 람다식
 //			.formLogin((form) -> form
@@ -47,13 +53,13 @@ public class WebSecurityConfig {
 //					.permitAll()
 //			)
 			.formLogin().loginPage("/login")
-						.usernameParameter("userId")
+						.usernameParameter("userid")
 						.loginProcessingUrl("/userlogin")
 						.successHandler(successHandler())
 						.permitAll()
 			.and()
 //			.logout((logout) -> logout.permitAll())
-			.logout().logoutSuccessUrl("/customLogout")
+			.logout().logoutSuccessUrl("/login")
 					 .permitAll()
 			.and()
 //			.exceptionHandling().accessDeniedHandler(accessDeniedHandler());

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>설비 기기 등록/정보</title>
+</head>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+<body>
+	<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4" th:if="${eqmVO.eqmCode} == null">
+			<span class="text-muted fw-light">설비관리 / </span> 설비 기기 등록
+		</h3>
+		<h3 class="fw-bold py-1 mb-4" th:if="${eqmVO.eqmCode} != null">
+			<span class="text-muted fw-light">설비관리 / </span> 설비 기기 정보
+		</h3>
+		
+		<form name="insertForm" method="post" enctype="multipart/form-data">
+			<div class="card card-body mb-4 row">
+				<h5>정보입력</h5>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비코드<span class="star">*</span></label>
+					<div class="col-sm-6">
+					<input type="text" name="eqmCode" placeholder="자동생성" readonly th:value="${eqmVO.eqmCode}" class="form-control">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비명<span class="star">*</span></label>
+					<div class="col-sm-6">
+					<input type="search" name="eqmName" placeholder="설비명 입력" class="req form-control" th:value="${eqmVO.eqmName}" >
+					<div id="notice1" class="form-text notice"></div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">모델명<span class="star">*</span></label>
+					<div class="col-sm-6">
+					<input type="search" name="modelName" placeholder="모델명 입력" class="req form-control" th:value="${eqmVO.modelName}">
+					<div id="notice2" class="form-text notice"></div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">제조사</label>
+					<div class="col-sm-6">
+					<input type="search" name="maker" placeholder="제조사 입력" th:value="${eqmVO.maker}" class="form-control">		
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">용도</label>
+					<div class="col-sm-6">
+					<input type="search" name="purpose" placeholder="용도 입력" th:value="${eqmVO.purpose}" class="form-control">		
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">설치장소<span class="star">*</span></label>
+					<div class="col-sm-6">
+<!-- 					<input type="search" name="installPlace" placeholder="설치장소 입력" class="req form-control" th:value="${eqmVO.installPlace}"> -->
+						<select name="installPlace" th:value="${eqmVO.installPlace}" class="req form-select">
+							<option value="" th:if="${eqmVO.eqmCode} == null">설치장소 선택</option>
+							<option th:value="${eqmVO.installPlace}" th:text="${eqmVO.installPlace}" th:if="${eqmVO.eqmCode} != null"></option>
+							<option>A구역</option>
+							<option>B구역</option>
+							<option>C구역</option>
+							<option>D구역</option>
+							<option>E구역</option>
+						</select>
+					<div id="notice3" class="form-text notice"></div>		
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">구입처</label>
+					<div class="col-sm-6">
+					<input type="search" name="buyCompany" placeholder="구입처 입력" th:value="${eqmVO.buyCompany}" class="form-control">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">구입가격</label>
+					<div class="col-sm-6">
+					<input type="search" name="buyPrice" placeholder="구입가격 입력" th:value="${eqmVO.buyPrice}" class="form-control">		
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">구입일자<span class="star">*</span></label>
+					<div class="col-sm-6">
+					<input type="Date" name="buyDate" class="req form-control" th:value="${{eqmVO.buyDate}}">
+					<div id="notice4" class="form-text notice"></div>	
+					</div>
+				</div>	
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">폐기일자</label>
+					<div class="col-sm-6">
+					<input type="Date" name="dumpDate" th:value="${{eqmVO.dumpDate}}" class="form-control">
+					</div>
+				</div>	
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">점검주기</label>
+					<div class="col-sm-6">
+					<input type="search" name="checkCycle" placeholder="점검주기" th:value="${eqmVO.checkCycle}" class="form-control">		
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">최근점검일</label>
+					<div class="col-sm-6">
+					<input type="Date" name="lastCheckDate" th:value="${{eqmVO.lastCheckDate}}" class="form-control">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">설비사진</label>
+					<div class="col-sm-6">
+					<input type="file" name="uploadFile" class="form-control">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1">설비상태<span class="star">*</span></label>
+					<div class="col-sm-6">
+						<input type="radio" name="eqmStatus" id="status1" value="ES1" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES1"}' onchange="changeOption1()">
+						<label for="status1" class="form-check-inline">정상</label>
+						<input type="radio" name="eqmStatus" id="status2" value="ES2" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES2"}' onchange="changeOption1()">
+						<label for="status2" class="form-check-inline">설비고장</label>
+						<input type="radio" name="eqmStatus" id="status3" value="ES3" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES3"}' onchange="changeOption1()">
+						<label for="status3" class="form-check-inline">설비점검</label>
+						<input type="radio" name="eqmStatus" id="status4" value="ES4" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES4"}' onchange="changeOption1()">
+						<label for="status4" class="form-check-inline">설비수리</label>
+						<input type="radio" name="eqmStatus" id="status5" value="ES5" class="form-check-input" th:checked='${eqmVO.eqmStatus == "ES5"}' onchange="changeOption1()">
+						<label for="status5" class="form-check-inline">폐기</label>															
+						<div id="notice5" class="form-text notice"></div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1">가동현황<span class="star">*</span></label>
+					<div class="col-sm-6">
+						<input type="radio" name="oprStatus" id="status1" value="FO1" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO1"}' onchange="changeOption2()">
+						<label for="status1" class="form-check-inline">대기</label>
+						<input type="radio" name="oprStatus" id="status2" value="FO2" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO2"}' onchange="changeOption2()">
+						<label for="status2" class="form-check-inline">가동중</label>
+						<input type="radio" name="oprStatus" id="status3" value="FO3" class="form-check-input" th:checked='${eqmVO.oprStatus == "FO3"}' onchange="changeOption2()">
+						<label for="status3" class="form-check-inline">전원꺼짐</label>
+						<div id="notice6" class="form-text notice"></div>
+					</div>
+				</div>
+				<div th:if="${eqmVO.imageCode} == null">
+				</div>
+				<div th:if="${eqmVO.imageCode} != null">
+					<label class="col-sm-1">업로드<br>설비사진<span class="star"></span></label>
+					<img th:src="'/download/'+${eqmVO.imageCode}" width="400">
+				</div>
+			<div style="text-align: right;">Desingned by Freepik</div>
+			</div>
+		</form>
+<!-- 		[[${eqmVO.imageCode}]] -->
+		
+		<div class="mb-5 d-md-flex justify-content-md-center">	
+			<div class="mb-4" th:if = "${eqmVO.eqmCode} == null">
+				<button type="button" id="saveBtn" class="btn btn-primary">등록완료</button>
+			</div>
+			<div class="mb-4" th:if = "${eqmVO.eqmCode} != null">
+				<button type="button" id="delBtn" class="btn btn-secondary me-sm-2 me-1" onclick="deleteEqm()">삭제</button>
+				<button type="button" id="updateBtn" class="btn btn-primary" onclick="updateEqm()">정보수정</button>
+			</div>
+		</div>
+		
+		<script src="/js/eqm/insertEqm.js"></script>
+	</div>
+</body>
+</html>
+
+<style>
+.star, .notice {
+	color: red;
+}
+</style>

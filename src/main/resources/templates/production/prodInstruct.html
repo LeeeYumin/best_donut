@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 템플릿 주소 -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>prodInstruct</title>
+<!-- Toast UI CDN -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<style>
+.btn-insert,
+.btn-update {
+	width: 80px;
+	height: 38px;
+	font-size: 16px;
+	float: right;
+	margin-right: 25px;
+	margin-bottom: 10px;
+}
+.mgt-43 {
+	margin-top: 43px;
+}
+.mgb-50 {
+	margin-bottom: 50px;
+}
+.pdr-0 {
+	padding-right: 0px;
+}
+/* .plan-cnt-color {
+	background-color: rgb(177, 188, 219);
+} */
+.warn-alert {
+	font-weight: bold;
+	font-size: 16px;
+	padding-bottom: 10px;
+	padding-left: 20.8px;
+	margin-left: auto;
+}
+/* test */
+.tui-grid-cell.plan-cnt {
+	font-weight: bold;
+  /* background-color: rgba(195, 238, 255, 0.678); */
+}
+/* .tui-grid-cell.ins-done-cnt {
+  background-color: rgba(191, 227, 243, 0.548);
+} */
+</style>
+
+</head>
+
+<body>
+<!-- Thymeleaf 레이아웃 div -->
+	<div layout:fragment="content">
+
+
+<!-- TITLE -->
+		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 생산지시 등록</h3>
+<!-- 권한 -->
+<div sec:authentication="principal.usersVO.perm2" class="user" id="auth" style="display: none;"></div>
+
+<!-- 주간 생산계획 FORM  -->
+		<div class="card mgb-50">
+			<h4 class="card-header">주간 생산계획</h4>
+			 <div class="card-body" id="wplan"></div>
+		  <h5 class="card-header">상세</h5>
+				<div class="card-body" id="wplanD"></div>
+		</div>
+		
+
+<!-- 생산지시 등록 FORM -->
+		<div class="card mgb-50">
+      <div class="row">
+        <div class="col-sm-5">
+					<h4 class="card-header">생산지시 등록</h4>
+          	<div class="card-body mgt-43 pdr-0" id="piInsert"></div>
+        </div>
+        <div class="col-sm-7">
+          <h5 class="card-header">상세</h5>
+						<button type="button" class="btn btn-primary btn-sm btn-insert" id="insertBtn" onclick="insertInstruct()">등록</button>
+						<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
+          <div class="card-body" id="piDeInsert"></div>
+        </div>
+      </div>
+    </div>
+
+
+<!-- 공정설비 FORM -->
+		<div class="card">
+			<div class="row">
+				<div class="col-sm-7">
+					<h4 class="card-header">공정 사용설비 상태</h4>
+						<div class="card-body mgt-43" id="eqmOpr"></div>
+				</div>
+				<div class="col-sm-5">
+					<h5 class="card-header">공정별 보유 설비</h5>
+						<button type="button" class="btn btn-info btn-sm btn-update" id="updateBtn" onclick="updateProcEqm()">설비변경</button>
+						<div id="alertMsg2" class="warn-alert"><!-- 알림문구 --></div>
+						<div class="card-body" id="eqmAll"></div>
+				</div>
+			</div>
+		</div>	
+	
+
+
+		<!-- 로그인 정보 읽기 -->
+		<input type="hidden" id="usersCode" th:value="${session.usersCode}">
+		<input type="hidden" id="usersName" th:value="${session.usersName}">
+
+		<!-- script 태그 => 타임리프 div 안에서 작성 -->
+		<script src="/js/production/prodInstruct.js"></script>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+<head>
+<meta charset="UTF-8">
+<title>insertBom.html</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">BOM / </span> BOM 관리
+		</h3>
+		<div class="grade">
+		<button id="prodList" type="button">품목확인</button>
+		<button id="insertBom" type="button" onclick="location.href='insertBom2.html'">BOM작성</button>
+		<button id="cplBom" type="button">작성완료</button>
+		</div>
+
+		<div id="grid"></div>
+
+		<script src="/js/bom/insertBom.js"></script>
+
+</body>
+</html>
+
+<style>
+.grade {
+	margin-right : 10px;
+	padding : 10px;
+}
+
+</style>

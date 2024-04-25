@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>자재 불출 등록</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">자재관리 / </span> 자재 불출 등록
+		</h3>
+		
+		<div>
+			<div class="card mb-3">
+				<!-- 생산 지시 목록 -->
+				<div class="row">
+					<div class="col-sm-6">
+						<h5 class="card-header">생산 지시 목록</h5>
+						<div class="card-body" id="prodInsList"></div>
+					</div>
+					<div class="col-sm-6">
+						<h5 class="card-header">생산 지시 상세</h5>
+						<div class="card-body" id="prodInsDetail"></div>
+					</div>
+					<!-- BOM 목록 -->
+					<div class="col-sm-12">
+						<h5 class="card-header">BOM</h5>
+						<div class="card-body" id="BOMList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="card mb-3">
+				<!-- 자재 재고 목록 -->
+				<h5 class="card-header">자재 목록</h5>
+				<div class="card-body" id="matStockList"></div>
+			</div>
+		</div>
+		<div>
+			<div class="card">
+				<h5 class="card-header">불출 등록</h5>
+				<div class="card-body" id="matOutgoingList"></div>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3 mx-4">
+					<button type="button" class="btn btn-primary" id="outgoingBtn">불출</button>
+					<button type="button" class="btn btn-secondary" id="delBtn">삭제</button>
+				</div>
+			</div>
+		</div>
+		<!-- materialOutgoing.js -->
+		<script src="/js/materials/materialOutgoing.js"></script>
+	</div>
+</body>
+</html>

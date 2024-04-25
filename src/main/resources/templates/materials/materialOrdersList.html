@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" layout:decorate="~{layout/index}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>자재 발주 관리</title>
+	<link rel="stylesheet" href="/css/material.css">
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">자재관리 / </span> 자재 발주 관리
+		</h3>
+		<div sec:authentication="principal.usersVO.perm3" class="user" id="auth" style="display: none;"></div>
+
+		<!-- 검색 폼 -->
+		<div>
+			<div class="card mb-3">
+				<h5 class="card-header">검색조건</h5>
+				<div class="card-body">
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">거래처명</label>
+						<div class="col-sm-6 input-group">
+							<input type="text" class="form-control" name="companyName" id="companyName"
+								placeholder="검색하고자하는 거래처명을 입력하세요.">
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">발주일자</label>
+						<div class="col-sm-6 input-group">
+							<input type="date" class="form-control" name="sDate" id="sDate">
+							<span class="input-group-text">~</span>
+							<input type="date" class="form-control" name="eDate" id="eDate">
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-1 col-form-label" style="font-size: 0.8rem;">발주상태</label>
+						<div class="col-sm-6">
+							<div class="form-check-inline">
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus1"
+									value="" checked>
+								<label class="form-check-label" for="ordersStatus1">전체</label>
+							</div>
+							<div class="form-check-inline">
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus2"
+									value="OSP">
+								<label class="form-check-label" for="ordersStatus2">발주 진행 중</label>
+							</div>
+							<div class="form-check-inline">
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus3"
+									value="OSN">
+								<label class="form-check-label" for="ordersStatus3">미입고</label>
+							</div>
+							<div class="form-check-inline">
+								<input class="form-check-input" type="radio" name="ordersStatus" id="ordersStatus4"
+									value="OSY">
+								<label class="form-check-label" for="ordersStatus4">입고</label>
+							</div>
+						</div>
+					</div>
+					<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+						<button type="button" class="btn btn-primary me-md-2" id="searchBtn">검색</button>
+						<button type="button" class="btn btn-primary" id="resetBtn">초기화</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<div class="card">
+				<!-- 자재 발주 목록 -->
+				<h5 class="card-header">자재 발주 목록</h5>
+				<div class="card-body" id="materialOrderList"></div>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end mx-4">
+					<button type="button" class="btn btn-primary" id="excelBtn">EXCEL</button>
+					<button type="button" class="btn btn-secondary" id="cancelBtn">발주취소</button>
+				</div>
+				<!-- 자재 발주 상세 목록 -->
+				<h5 class="card-header">자재 발주서</h5>
+				<div class="card-body" id="materialOrderDetail"></div>
+			</div>
+		</div>
+
+		<!-- materialOrdersManagement.js -->
+		<script src="/js/materials/materialOrdersManagement.js"></script>
+	</div>
+</body>
+
+</html>

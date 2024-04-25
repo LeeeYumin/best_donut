@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>비가동 관리</title>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">설비관리 / </span> 비가동 관리
+		</h3>
+		
+		<div>
+			<div class="card card-body mb-4">
+				<h5>검색조건</h5>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">키워드검색</label>
+					<div class="col-sm-6">
+					<input type="text" id="keyword" placeholder="비가동코드 / 설비코드 / 설비명 / 담당자명 입력" class="form-control">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label" style="font-size: 15px;">비가동일자</label>
+					<div class="col-sm-6">
+					<input type="date" id="noneDate" class="form-control">
+					</div>
+				</div>
+				<div>
+					<label class="col-sm-1 mb-5">비가동구분</label>
+					<input type="radio" name="status" id="status0" value="" checked class="form-check-input">
+					<label for="status0" class="form-check-inline">전체</label>
+					<input type="radio" name="status" id="status1" value="NO1" class="form-check-input">
+					<label for="status1" class="form-check-inline">설비고장</label>
+					<input type="radio" name="status" id="status2" value="NO2" class="form-check-input">
+					<label for="status2" class="form-check-inline">설비점검</label>
+					<input type="radio" name="status" id="status3" value="NO3" class="form-check-input">
+					<label for="status3" class="form-check-inline">설비수리</label>
+				</div>
+				<div class="d-md-flex justify-content-md-center">
+					<button type="reset" id="resetBtn" class="btn btn-secondary me-sm-2 me-1">초기화</button>
+					<button type="button" id="searchBtn" class="btn btn-primary">검색</button>	
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<div class="card card-body">
+				<h5>비가동 목록</h5>
+				<div id="notOprList"></div>
+			</div>
+		</div>
+		
+		<script src="/js/notOpr/notOprList.js"></script>
+			
+	</div>
+</body>
+</html>

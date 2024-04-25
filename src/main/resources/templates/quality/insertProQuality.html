@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorate="~{layout/index}"> <!-- {폴더명/파일명} -->
+<head>
+<meta charset="UTF-8">
+<title>완제품 품질 등록</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.css">
+<script src="https://uicdn.toast.com/toast-ui.select-box/latest/toastui-select-box.js"></script>
+<link rel="stylesheet" href="/fonts/common.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+<div layout:fragment="content">
+		<h3 class="fw-bold py-1 mb-4">
+			<span class="text-muted fw-light">품질관리 / </span> 완제품 품질 등록
+		</h3>
+	<div>
+		<div class="card mb-3">
+			<div class="card-body">
+				<div class="row mb-3">
+					<div class="btnClass">
+						<label for="date" class="col-sm-1 col-form-label" style="font-size: 0.8rem;">생산완료일자</label>
+						<div class="col-sm-6 input-group">
+						<input type="date" class="form-control" id="inDate" max="2100-12-31" min="1970-01-01">
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px;"><br>
+						<button id="findBtn" type="button" class="btn btn-primary me-md-5" onclick="findProd()">검색</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div>
+		<div class="card mb-3">
+			<div class="card-body">
+				<div class="row mb-3">
+					<div class="grid1">
+						<div id="grid1">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div>
+		<div class="card mb-3">
+			<div class="card-body">
+				<div class="row mb-3">
+				<h4>완제품 품질 입력</h4>
+				<tr>
+				<img src="/assets/img/illustrations/foodinspect.png" style="width:500px;">
+				</tr>
+					<div class="grid2">
+						<div id="grid2">
+						</div>
+					</div>
+					<script src="/js/quality/insertProQuality.js"></script>
+					<div style="text-align: center;">
+						<div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px;">
+						<button id="saveBtn" type="button" class="btn btn-primary me-md-2" onclick="addProQual()" style="width: 80px;">등록</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+
+<style>
+h4 {
+	margin-top: 20px !important ;
+}
+</style>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.notOpr.mapper.NotOprMapper">
+
+	<!-- 전체조회 -->
+	<select id="getNotOpr" resultType="NotOprVO">
+		SELECT n.NOT_OPR_CODE
+	          , n.NOT_OPR_SEP
+	          , n.BEGIN_DATE
+	          , n.END_DATE
+	          , n.CONTENTS_CONTENTS
+	          , n.USERS_CODE
+	          , n.EQM_CODE
+	          , e.EQM_NAME
+	          , u.USERS_NAME
+		FROM NOT_OPR n
+		JOIN EQM e ON n.EQM_CODE = e.EQM_CODE
+		JOIN USERS u ON n.USERS_CODE = u.USERS_CODE
+		<include refid="condition"></include>
+		ORDER BY 1
+	</select>
+	
+	<sql id="condition">
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(n.NOT_OPR_CODE LIKE '%' || UPPER(#{keyword}) || '%'
+				OR n.EQM_CODE LIKE '%' ||  UPPER(#{keyword}) || '%'
+				OR e.EQM_NAME LIKE '%' ||  UPPER(#{keyword}) || '%'
+				OR u.USERS_NAME LIKE '%' ||  UPPER(#{keyword}) || '%')
+			</if>
+			<if test="noneDate != null">
+				<![CDATA[ AND (TRUNC(#{noneDate}) >= n.BEGIN_DATE
+				AND TRUNC(#{noneDate}) <= n.END_DATE 
+				OR n.END_DATE is null)]]>
+			</if>
+			<if test="status != null and status != ''">
+				AND n.NOT_OPR_SEP = #{status}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<!-- 등록 -->
+	<insert id="insertNotOpr" parameterType="NotOprVO">
+		INSERT INTO NOT_OPR(
+						NOT_OPR_CODE
+						, NOT_OPR_SEP
+						, BEGIN_DATE
+						, END_DATE
+						, CONTENTS_CONTENTS
+						, USERS_CODE
+						, EQM_CODE)
+		VALUES(
+			seq_func('not_opr')
+			, #{notOprSep}
+			, #{beginDate}
+			, #{endDate}
+			, #{contentsContents}
+			, #{usersCode}
+			, #{eqmCode})
+	</insert>
+	
+	<select id="getUsers" resultType="UsersVO">
+		SELECT USERS_CODE
+				, USERS_NAME
+				, POSITION
+				, LOCAL_TEL
+				, USERS_STATUS
+		FROM USERS
+		WHERE USERS_STATUS = 'USY'
+		ORDER BY 1
+	</select>
+	
+	<select id="getEqm" resultType="EqmVO">
+		SELECT EQM_CODE
+				, EQM_NAME
+				, MODEL_NAME
+				, MAKER
+				, PURPOSE
+				, INSTALL_PLACE
+				, BUY_COMPANY
+				, BUY_PRICE
+				, BUY_DATE
+				, DUMP_DATE
+				, CHECK_CYCLE
+				, LAST_CHECK_DATE
+				, EQM_STATUS
+				, OPR_STATUS
+		FROM EQM
+		WHERE (EQM_STATUS = 'ES1' OR EQM_STATUS = 'ES2')
+		AND (OPR_STATUS = 'FO1' OR OPR_STATUS = 'FO3')
+		ORDER BY 1
+	</select>
+	
+	
+	<!-- 단건조회 -->
+	<select id="getNotOprInfo" resultType="NotOprVO">
+		SELECT n.NOT_OPR_CODE
+	          , n.NOT_OPR_SEP
+	          , n.BEGIN_DATE
+	          , n.END_DATE
+	          , n.CONTENTS_CONTENTS
+	          , n.USERS_CODE
+	          , n.EQM_CODE
+	          , e.EQM_NAME
+	          , u.USERS_NAME
+		FROM NOT_OPR n
+		JOIN EQM e ON n.EQM_CODE = e.EQM_CODE
+		JOIN USERS u ON n.USERS_CODE = u.USERS_CODE
+		WHERE n.NOT_OPR_CODE = #{notOprCode}
+	</select>
+	
+	
+	<!-- 수정 -->
+	<update id="updateNotOpr" parameterType="NotOprVO">
+		UPDATE NOT_OPR
+		SET NOT_OPR_SEP = #{notOprSep}
+			, BEGIN_DATE = #{beginDate}
+			, END_DATE = #{endDate}
+			, CONTENTS_CONTENTS = #{contentsContents}
+			, USERS_CODE = #{usersCode}
+			, EQM_CODE = #{eqmCode}
+		WHERE NOT_OPR_CODE = #{notOprCode}
+	</update>
+	
+	
+	<!-- 삭제 -->
+	<delete id="deleteNotOpr" parameterType="String">
+		DELETE FROM NOT_OPR
+		WHERE NOT_OPR_CODE = #{notOprCode}
+	</delete>
+
+</mapper>

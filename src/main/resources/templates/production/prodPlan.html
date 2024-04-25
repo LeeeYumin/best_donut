@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 템플릿 주소 -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/index}">
+<head>
+<meta charset="UTF-8">
+<title>prodPlan</title>
+<!-- Toast UI CDN -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<style>
+.show-list {
+	display: block;
+}
+.btn-addinput,
+.btn-insert {
+	width: 80px;
+	height: 38px;
+	font-size: 16px;
+	
+	margin-left: auto; 
+	/* display:flex 적용되어 있어 float: right X */
+}
+.btn-addrow,
+.btn-delrow {
+	width: 80px;
+	height: 38px;
+	font-size: 16px;
+	margin-bottom: 5px;
+	margin-right: 3px;
+	float: right;
+	/* margin-left: auto; */
+}
+.mgb-50 {
+	margin-bottom: 50px;
+}
+.mgr-20 {
+	margin-right: 20px;
+}
+.pdt-10 {
+	padding-top: 10px;
+}
+.pdt-0 {
+	padding-top: 0px;
+}
+.warn-alert {
+	font-weight: bold;
+	font-size: 16px;
+	padding-bottom: 10px;
+	padding-left: 24px;
+}
+
+
+</style>
+</head>
+
+<body>
+<!-- Thymeleaf 레이아웃 div -->
+	<div layout:fragment="content">
+
+<!-- TITLE  -->
+		<h3 class="fw-bold py-1 mb-4"><span class="text-muted fw-light">생산관리 / </span> 생산계획 등록</h3>
+<!-- 권한 -->
+<div sec:authentication="principal.usersVO.perm2" class="user" id="auth" style="display: none;"></div>
+
+<!-- 주간 생산요청 FORM  -->
+		<div class="card mgb-50 show-list">
+			<div class="row">
+				<div class="col-sm-5">
+					<h4 class="card-header">주간 생산요청</h4>
+						<div class="card-body" id="plreq"></div>
+				</div>
+				<div class="col-sm-7">
+					<h5 class="card-header">상세</h5>
+						<div class="card-body" id="plreqD"></div>
+		 		</div>
+			</div>	
+		</div>
+		
+		
+<!-- 생산계획 등록 FORM -->
+		<div class="card">
+			<h4 class="card-header">생산계획</h4>
+				<button type="button" class="btn btn-primary btn-sm mgr-20 btn-insert" id="insertBtn" onclick="insertPlan()">등록</button>
+				<div id="alertMsg" class="warn-alert"><!-- 알림문구 --></div>
+				<div class="pdt-0 card-body" id="plInsert"></div>
+	
+			<h5 class="card-header">상세</h5>
+				<span>
+			 		<button type="button" class="btn btn-secondary btn-sm mgr-20 btn-delrow" id="delRowBtn">행삭제</button>		
+			 		<button type="button" class="btn btn-info btn-sm btn-addrow" id="addRowBtn">행추가</button>
+				</span>
+				<div class="pdt-10 card-body" id="plDeInsert"></div>
+		</div>
+
+		 
+		<!-- 모달 -->
+    <div class="col-lg-4 col-md-6">
+      <div class="mt-3">
+        <!-- 모달 버튼 -->
+				<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">
+					test
+				</button> -->
+
+        <!-- 제품선택 모달 -->
+        <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <!-- 모달 헤더 -->
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalCenterTitle">제품 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <!-- 모달 바디 -->
+              <div class="modal-body">
+	              <div class="row">
+	                <div class="col mb-3">
+	                  
+										<table class="table">
+											<tr>
+												<th>제품코드</th>
+												<th>제품명</th>
+											</tr>
+											<tr>
+												<td><input type="radio" name="productCode" value="PRO00001"/>  PRO00001</td>
+												<td>글레이즈드 도넛</td>
+											</tr>
+											<tr>
+												<td><input type="radio" name="productCode" value="PRO00002"/>  PRO00002</td>
+												<td>초코 도넛</td>
+											</tr>
+											<tr>
+												<td><input type="radio" name="productCode" value="PRO00003"/>  PRO00003</td>
+												<td>딸기 도넛</td>
+											</tr>
+											<tr>
+												<td><input type="radio" name="productCode" value="PRO00004"/>  PRO00004</td>
+												<td>녹차 도넛</td>
+											</tr>
+										</table>
+									</div>
+	              </div>
+              </div>
+              <!-- 모달 푸터 -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="closemodal()">
+                  닫기
+                </button>
+                <button type="button" class="btn btn-primary" id="saveProduct">등록</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+		
+		<!-- 로그인 정보 읽기 -->
+		<input type="hidden" id="usersCode" th:value="${session.usersCode}">
+		<input type="hidden" id="usersName" th:value="${session.usersName}">
+		<!-- script 태그 => 타임리프 div 안에서 작성 -->
+		<script src="/js/production/prodPlan.js"></script>
+	</div>
+
+</body>
+</html>
