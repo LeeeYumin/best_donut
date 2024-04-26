@@ -78,6 +78,7 @@
 		{ CALL PROC_UPDATE(#{prodInstructCode}, #{prodInstructDetailCode}, #{usersCode}, #{procDetailCode}, #{se}, #{eqmCode}, #{result, mode=OUT, jdbcType=VARCHAR, javaType=string}) }
 	</insert>
 	
+	
 <!-- 공정에 사용되는 설비상태 & 가동현황 -->
   <select id="getProcEqmInfo" resultType="ProcessVO">
     SELECT p.proc_code

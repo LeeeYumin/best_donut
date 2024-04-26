@@ -59,10 +59,6 @@ public class ProdPlanInsServiceImpl implements ProdPlanInsService {
 		return prodPlanInsMapper.getProdPlanAll(prodPlanCode);
 	}
 	
-//	@Override
-//	public List<ProdPlanDeVO> getProductInfo() { //제품정보
-//		return prodPlanInsMapper.getProductInfo();
-//	}
 	
 	//2)등록
 	@Override

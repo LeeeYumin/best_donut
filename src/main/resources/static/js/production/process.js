@@ -26,7 +26,7 @@ class InsStatus {
 function instructStatus(value){
   let result;
   if(value == "IS1") {
-      result = "지시완료";
+      result = "대기";
   } else if(value == "IS2") {
       result = "생산중";
   } else if(value == "IS3") {
