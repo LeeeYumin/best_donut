@@ -29,13 +29,66 @@
 		ORDER BY prd.prod_req_detail_code 
 	</select>
 
-<!-- 제품정보 -->
-  <select id="getProductInfo" resultType="ProdPlanDeVO">
-		SELECT product_code
-				, product_name
-		FROM product
-		ORDER BY product_code	
+<!-- 생산계획 등록 전 계획,상세 코드 조회 -->
+	<select id="beforeInsertPlanCode"  resultType="ProdPlanVO">
+		SELECT (SUBSTR(MAX(prod_plan_code),0,3)) || LPAD((TO_NUMBER(SUBSTR(MAX(prod_plan_code),4,8))+1), 5, '0') as prod_plan_code
+		FROM prod_plan
 	</select>
+
+<!-- 생산계획 등록(1건) -->
+	<insert id="insertProdPlan" parameterType="ProdPlanVO">
+		<selectKey keyProperty="prodPlanCode"
+				   order="BEFORE"
+				   resultType="String">
+		 SELECT seq_func('prod_plan') FROM dual
+		</selectKey>
+		INSERT INTO prod_plan
+			( prod_plan_code
+     		 , prod_req_code
+     		 , plan_date
+     		 , prod_plan_status
+     		 , users_code 
+     		 )
+		VALUES 
+			( #{prodPlanCode}
+			, #{prodReqCode}
+			, #{planDate}
+			, 'LS1'
+			, #{usersCode}
+			)
+	</insert>
+	<!--생산계획상세 등록(여러 건)  -->
+	<insert id="insertProdPlanDetail" parameterType="ProdPlanDeVO">
+		INSERT INTO prod_plan_detail
+			( PROD_PLAN_DETAIL_CODE
+     		 , PROD_PLAN_CODE
+     		 , PROD_REQ_DETAIL_CODE
+     		 , PRODUCT_CODE
+     		 , FIX_CNT
+     		 , REQ_CNT
+     		 , PLAN_CNT
+     		 , NOT_INSTRUCT_CNT
+     		 , INSTRUCT_DONE_CNT 
+     		 )
+		VALUES 
+			( seq_func('prod_plan_detail')
+			, #{prodPlanCode}
+			, #{prodReqDetailCode}
+			, #{productCode}
+			, #{fixCnt}
+			, #{reqCnt}
+			, #{planCnt}
+			, #{fixCnt} + #{reqCnt}
+			, 0
+			)
+	</insert>
+	<!-- 생산계획 등록 시 => 생산요청상태 수정 -->
+	<update id="updateProdReqStatus" parameterType="ProdPlanVO">
+		UPDATE prod_req
+		SET prod_req_status = 'RS2'
+		WHERE prod_req_code = #{prodReqCode}
+	</update>
+	
 	
 <!-- 생산계획 조회-->
 	<select id="getProdPlan" resultType="ProdPlanVO">
@@ -91,64 +144,6 @@
 		ORDER BY 1
 	</select>
 	
-<!-- 생산계획 등록 전 계획,상세 코드 조회 -->
-	<select id="beforeInsertPlanCode"  resultType="ProdPlanVO">
-		SELECT (SUBSTR(MAX(prod_plan_code),0,3)) || LPAD((TO_NUMBER(SUBSTR(MAX(prod_plan_code),4,8))+1), 5, '0') as prod_plan_code
-		FROM prod_plan
-	</select>
-<!-- 생산계획 등록(1건) -->
-	<insert id="insertProdPlan" parameterType="ProdPlanVO">
-		<selectKey keyProperty="prodPlanCode"
-				   order="BEFORE"
-				   resultType="String">
-		 SELECT seq_func('prod_plan') FROM dual
-		</selectKey>
-		INSERT INTO prod_plan
-			( prod_plan_code
-     		 , prod_req_code
-     		 , plan_date
-     		 , prod_plan_status
-     		 , users_code 
-     		 )
-		VALUES 
-			( #{prodPlanCode}
-			, #{prodReqCode}
-			, #{planDate}
-			, 'LS1'
-			, #{usersCode}
-			)
-	</insert>
-	<!--생산계획상세 등록(여러 건)  -->
-	<insert id="insertProdPlanDetail" parameterType="ProdPlanDeVO">
-		INSERT INTO prod_plan_detail
-			( PROD_PLAN_DETAIL_CODE
-     		 , PROD_PLAN_CODE
-     		 , PROD_REQ_DETAIL_CODE
-     		 , PRODUCT_CODE
-     		 , FIX_CNT
-     		 , REQ_CNT
-     		 , PLAN_CNT
-     		 , NOT_INSTRUCT_CNT
-     		 , INSTRUCT_DONE_CNT 
-     		 )
-		VALUES 
-			( seq_func('prod_plan_detail')
-			, #{prodPlanCode}
-			, #{prodReqDetailCode}
-			, #{productCode}
-			, #{fixCnt}
-			, #{reqCnt}
-			, #{planCnt}
-			, #{fixCnt} + #{reqCnt}
-			, 0
-			)
-	</insert>
-	<!-- 생산계획 등록 시 => 생산요청상태 수정 -->
-	<update id="updateProdReqStatus" parameterType="ProdPlanVO">
-		UPDATE prod_req
-		SET prod_req_status = 'RS2'
-		WHERE prod_req_code = #{prodReqCode}
-	</update>
 
 <!-- 생산계획 상세 (수량) 수정 -->
 	<update id="updateProdPlanDetail" parameterType="ProdPlanDeVO">
