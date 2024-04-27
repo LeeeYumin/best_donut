@@ -381,7 +381,19 @@ function beforeInsertCheck() {
 		return false;
 	}
 
-	//지시수량
+	//지시수량 체크
+	for(let i=0; i < piDeInsert.getData().length; i++) {
+		let inputins = parseInt(piDeInsert.getData()[i].instructCnt);
+		let notInsCnt = wplanD.getData()[i].notInstructCnt;
+		let product = piDeInsert.getData()[i].productName;
+
+		if(inputins > notInsCnt) {
+			alert.innerHTML = `<span style="color:red">※</span> ${product}의 미지시수량을 확인 후 지시수량을 입력하세요.`;
+			return false;
+		}
+	}
+
+	//지시수량 입력
 	for(let i=0; i < piDeInsert.getData().length; i++) {
 		let inputins = piDeInsert.getData()[i].instructCnt;
 		if(inputins == null || inputins == '') {
