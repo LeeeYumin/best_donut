@@ -339,10 +339,32 @@ matStockList.on('checkAll', function () {
     let appendData = [];
 
     for (let i = 0; i < checked.length; i++) {
-        const { matLotCode, matCode, matName, matUnit } = checked[i];
-        appendData.push({ matLotCode, matCode, matName, procNeedCnt, matUnit, prodInstructDetailCode });
+        let remainCnt = checked[i].remainCnt;
+
+        if (remainCnt < procNeedCnt) {
+            const { matLotCode, matCode, matName, matUnit } = checked[i];
+            appendData.push({ matLotCode, matCode, matName, procNeedCnt: remainCnt, matUnit, prodInstructDetailCode, _attributes: { checked: true } });
+            procNeedCnt -= remainCnt;
+        } else {
+            const { matLotCode, matCode, matName, matUnit } = checked[i];
+            appendData.push({ matLotCode, matCode, matName, procNeedCnt, matUnit, prodInstructDetailCode, _attributes: { checked: true } });
+            break;
+        }
     }
+
     matOutgoingList.appendRows(appendData);
+
+    // 추가된 자재만 체크 표시
+    let matOutgoingListData = matOutgoingList.getData();
+    for (let i = 0; i < matOutgoingListData.length; i++) {
+        for (let j = 0; j < checked.length; j++) {
+            if (matOutgoingListData[i].matLotCode == checked[j].matLotCode) {
+                matStockList.check(j)
+            }else{
+                matStockList.uncheck(j)
+            }
+        }
+    }
 });
 // 자재 재고 테이블 모두 선택 해제 시 불출 테이블에서도 데이터 삭제
 matStockList.on('uncheckAll', function () {
@@ -368,6 +390,17 @@ matStockList.on('uncheckAll', function () {
 matStockList.on('check', function (ev) {
     let checked = matStockList.getRow(ev.rowKey);
     let procNeedCnt = BOMList.getValue(BOMList.getFocusedCell().rowKey, 'procNeedCnt');
+    let matOutgoingListData = matOutgoingList.getData();
+    let alreadyCnt = 0;
+
+    // 이미 추가된 자재 수량 구하기
+    for (let i = 0; i < matOutgoingListData.length; i++) {
+        if (matOutgoingListData[i].matCode == checked.matCode) {
+            alreadyCnt += matOutgoingListData[i].procNeedCnt
+        }
+    }
+    procNeedCnt -= alreadyCnt;
+
     let prodInstructDetailCode = prodInsDetail.getValue(prodInsDetail.getFocusedCell().rowKey, 'prodInstructDetailCode');
     const { matLotCode, matCode, remainCnt, matName, matUnit } = checked;
 
@@ -382,14 +415,10 @@ matStockList.on('check', function (ev) {
         });
         matStockList.uncheck(ev.rowKey);
     } else if (checked.remainCnt < procNeedCnt) {
-        matOutgoingList.appendRow({ matLotCode, matCode, matName, procNeedCnt: remainCnt, matUnit, prodInstructDetailCode });
+        matOutgoingList.appendRow({ matLotCode, matCode, matName, procNeedCnt: remainCnt, matUnit, prodInstructDetailCode, _attributes: { checked: true } });
     } else {
-        matOutgoingList.appendRow({ matLotCode, matCode, matName, procNeedCnt, matUnit, prodInstructDetailCode })
+        matOutgoingList.appendRow({ matLotCode, matCode, matName, procNeedCnt, matUnit, prodInstructDetailCode, _attributes: { checked: true } })
     }
-
-    // 추가된 행 체크
-    let appendRowKey = matOutgoingList.getData().length - 1;
-    matOutgoingList.check(appendRowKey);
 });
 
 // 체크 해제한 자재 불출 테이블에서 삭제

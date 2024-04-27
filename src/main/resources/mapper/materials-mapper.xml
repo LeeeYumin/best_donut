@@ -72,11 +72,11 @@
    		<!-- 자재 자재 재고 업데이트 -->
    		IF v_mat_code = 'MAT00002' THEN
 			UPDATE mat
-	   		   SET stock_cnt = stock_cnt - ROUND(v_remain_cnt / 30, 1)
+	   		   SET stock_cnt = stock_cnt - NVL(ROUND(v_remain_cnt / 30, 1), 0)
 	   		 WHERE mat_code = v_mat_code;
 		ELSE
 	   		UPDATE mat
-	   		   SET stock_cnt = stock_cnt - v_remain_cnt
+	   		   SET stock_cnt = stock_cnt - NVL(v_remain_cnt, 0)
 	   		 WHERE mat_code = v_mat_code;
 		END IF;
 		   		
@@ -96,7 +96,7 @@
    			 
    			 UPDATE mat_detail
    			 	SET remain_cnt = 0
-   			  WHERE mat_lot_code = lot_record.mat_lot_code;   			 
+   			  WHERE mat_lot_code = lot_record.mat_lot_code;
    		END LOOP;
    		COMMIT;
    		CLOSE lot_cursor;
@@ -121,14 +121,16 @@
 				mat_orders_code,
 			    prod_plan_code,
 			    mat_total_orders_price,
-			    company_code
+			    company_code,
+			    users_code
 			)
 		VALUES 
 			(
 				 #{matOrdersCode},
 			     #{prodPlanCode},
 			     #{matTotalOrdersPrice},
-			     #{companyCode}
+			     #{companyCode},
+			     #{usersCode}			     
 			)	
    	</insert>
 	
