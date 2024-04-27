@@ -193,6 +193,7 @@
 	   		, remain_cnt = #{goodCnt}
 	   		, delivery_cnt = 0
 	   		, qlty_check_status = 'PQ2'
+	   		, product_status = 'PD1'
 	 WHERE PRODUCT_LOT_CODE = #{productLotCode}
 </update>
 
