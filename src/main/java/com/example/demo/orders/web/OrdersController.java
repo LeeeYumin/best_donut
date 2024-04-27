@@ -72,7 +72,7 @@ public class OrdersController {
 	
 	@PostMapping("ajax/prodReqOrdersList")	// fetch 함수에 들어가는 uri
 	@ResponseBody
-	public List<OrdersVO> getProdReqOrders(OrdersVO vo){
+	public List<OrdersVO> getProdReqOrders(@RequestBody OrdersVO vo){
 		return ordersService.getProdReqOrders(vo);
 	}
 	
