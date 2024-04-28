@@ -381,6 +381,14 @@ function beforeInsertCheck() {
 		return false;
 	}
 
+	//미지시수량 0개인 경우
+		let not = wplanD.getData()[0].notInstructCnt;
+		if(not == 0) {
+			alert.innerHTML = `<span style="color:red">※</span> 이미 지시완료된 생산계획 건입니다.`;
+			return false;
+		}
+	
+
 	//지시수량 체크
 	for(let i=0; i < piDeInsert.getData().length; i++) {
 		let inputins = parseInt(piDeInsert.getData()[i].instructCnt);
