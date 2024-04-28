@@ -202,7 +202,7 @@ function findMat() {
   getMatInfo(matLotCode, inoutDate, inoutDate2);
 }
 
-//부적합기준(total) 변경 + 적합수량보다 많이 입력할 경우 알림
+//부적합기준(total) 변경 + 입고수량보다 많이 입력할 경우 알림
 grid.on('afterChange', event => {
   console.log(event.changes[0]); //0번째 배열에 정보가 들어있음
   let ev = event.changes[0];
