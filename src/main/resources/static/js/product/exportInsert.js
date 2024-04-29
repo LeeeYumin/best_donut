@@ -16,6 +16,7 @@ const ordGrid = new tui.Grid({
 	el : document.getElementById('ordGrid'),
 	scrollX : false,
 	scrollY : true,
+	bodyHeight : 300,
 	header:[
 		align = 'center',
 	],
