@@ -53,10 +53,12 @@ public class ProdPlanInsServiceImpl implements ProdPlanInsService {
 	public List<ProdPlanVO> getProdPlan(ProdPlanVO vo) { //계획
 		return prodPlanInsMapper.getProdPlan(vo);
 	}
+
 	@Override
 	public List<ProdPlanAllVO> getProdPlanAll(String prodPlanCode) { //상세
 		return prodPlanInsMapper.getProdPlanAll(prodPlanCode);
 	}
+	
 	
 	//2)등록
 	@Override
@@ -163,18 +165,5 @@ public class ProdPlanInsServiceImpl implements ProdPlanInsService {
 		
 		return result;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

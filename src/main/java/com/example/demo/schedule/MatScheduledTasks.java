@@ -13,7 +13,7 @@ public class MatScheduledTasks {
 	MaterialsService materialsService;
 	
 	// 발주 상태 업데이트(스케쥴러)
-	@Scheduled(cron = "0 0/1 9-18 ? * MON-FRI")
+	@Scheduled(cron = "0 0 9-18/1 ? * MON-FRI")
 	public void updateOrderStatus() {
 		materialsService.updateMatOrderStatus();
 	}

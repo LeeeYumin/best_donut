@@ -1,3 +1,4 @@
+//이 함수 먼저 실행(위치)
 getMatInfo('','','');
 
 class CustomNumberEditor {
@@ -25,6 +26,8 @@ class CustomNumberEditor {
 		this.el.select();
 	}
 }
+
+// grid 생성
 const grid = new tui.Grid({
   el : document.getElementById('grid'),
   bodyHeight: 500,
@@ -84,14 +87,14 @@ const grid = new tui.Grid({
       formatter : 'listItemText',
       editingEvent : 'click',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '적합', value: 'IV1' },
-                  { text: '부적합', value: 'IV2' },
-                  { text: '차량검사 해당없음', value: 'IV3' }
-                ],
-              }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '적합', value: 'IV1' },
+            { text: '부적합', value: 'IV2' },
+            { text: '차량검사 해당없음', value: 'IV3' }
+          ],
+        }
             }
     },
     {
@@ -101,13 +104,13 @@ const grid = new tui.Grid({
       formatter : 'listItemText',
       // defaultValue : 'PFN',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '무', value: 'PFN' },
-                  { text: '유', value: 'PFY' }
-                ]
-              }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '무', value: 'PFN' },
+            { text: '유', value: 'PFY' }
+          ]
+        }
             }
     },
     {
@@ -117,13 +120,13 @@ const grid = new tui.Grid({
       formatter : 'listItemText',
       // defaultValue : 'PSY',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '양호', value: 'PSY' },
-                  { text: '불량', value: 'PSN' }
-                ]
-              }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '양호', value: 'PSY' },
+            { text: '불량', value: 'PSN' }
+          ]
+        }
             }
     },
     {
@@ -133,13 +136,13 @@ const grid = new tui.Grid({
       formatter : 'listItemText',
       // defaultValue : 'MCY',
       editor: {
-              type: 'select',
-              options: {
-                listItems: [
-                  { text: '적합', value: 'MCY' },
-                  { text: '부적합', value: 'MCN' }
-                ]
-              }
+        type: 'select',
+        options: {
+          listItems: [
+            { text: '적합', value: 'MCY' },
+            { text: '부적합', value: 'MCN' }
+          ]
+        }
             }
     },
     {
@@ -179,6 +182,7 @@ const grid = new tui.Grid({
   ]
 });
 
+//사이드바 자재품질등록 클릭시 grid에 출력
 async function getMatInfo(matLotCode, inoutDate, inoutDate2){
   const param = `matLotCode=${matLotCode}&inoutDate=${inoutDate}&inoutDate2=${inoutDate2}`
   await fetch("ajax/matInfo?"+param)
@@ -189,7 +193,8 @@ async function getMatInfo(matLotCode, inoutDate, inoutDate2){
   })
 };
 
-//자재lot, 날짜 범위로 검색
+
+//자재lot, 날짜(범위)로 검색
 function findMat() {
   let matLotCode = document.querySelector('#matLOT').value;
   let inoutDate = document.querySelector('#inDate').value; //#id
@@ -235,6 +240,7 @@ async function insertMat() {
     .then (res => {
       console.log(res);
 
+      //sweetalter2
       if(res){
         Swal.fire({
           position: "center",

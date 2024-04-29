@@ -8,6 +8,7 @@ class CustomNumberEditor {
 		el.type = 'number';
 		el.min = 0;
 		//el.max = 1000;
+		el.style.width = '100%';
 		el.step = 100;
 		this.el = el;
 	}

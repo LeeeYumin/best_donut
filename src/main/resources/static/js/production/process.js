@@ -26,7 +26,7 @@ class InsStatus {
 function instructStatus(value){
   let result;
   if(value == "IS1") {
-      result = "지시완료";
+      result = "대기";
   } else if(value == "IS2") {
       result = "생산중";
   } else if(value == "IS3") {
@@ -266,6 +266,24 @@ const procMat = new tui.Grid({
   ]
 });
 
+// async function getProcessInfo(pidCode){
+//   let response = await fetch(`/ajax/processInfo?prodInsDetailCode=${pidCode}`);
+//   let res = response.json();
+
+//   procInfo.resetData(res);
+// };
+
+//공정진행하기
+function getProcessInfo(pidCode){
+	fetch(`/ajax/processInfo?prodInsDetailCode=${pidCode}`)
+	.then(res => res.json())
+	.then(res => {
+		//console.log(res);
+
+		procInfo.resetData(res);
+	})
+};
+
 //공정진행 정보 조회
 //생산지시 상세 클릭 시 아래에 출력
 todayInsD.on('click', e => {
@@ -273,12 +291,6 @@ todayInsD.on('click', e => {
   getProcessInfo(pidCode);
 });
 
-async function getProcessInfo(pidCode){
-  let response = await fetch(`/ajax/processInfo?prodInsDetailCode=${pidCode}`);
-  let res = response.json();
-
-  procInfo.resetData(res);
-};
 
 //공정자재 정보 조회
 //공정진행 목록 클릭 시 옆에 출력

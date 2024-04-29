@@ -1,84 +1,85 @@
 // getMatAdmin();
 getMatAdminStart();
 
-	const grid = new tui.Grid({
-		el : document.getElementById('grid'),
-		bodyHeight: 500,
-		scrollX : false,
-		scrollY : true,
-		rowHeaders: ['checkbox'],
-		columns : [
-			{
-				header : '자재LOT코드',
-				name : 'matLotCode',
-				align : "center",
-				sortable: true,
-			},
-			{
-				header : '자재코드',
-				name : 'matCode',
-				align : "center",
-				sortable: true,
-			},
-			{
-				header : '자재명',
-				name : 'matName',
-				align : "center",
-			},
-			{
-				header : '입고일자',
-				name : 'inoutDate',
-				align : "center",
-			},
-			{
-				header : '적합여부',
-				name : 'lastResult',
-				align : "center",
-				formatter : 'listItemText',
-				editor: {
-					type: 'select',
-					options: {
+// grid 생성
+const grid = new tui.Grid({
+	el : document.getElementById('grid'),
+	bodyHeight: 500,
+	scrollX : false,
+	scrollY : true,
+	rowHeaders: ['checkbox'],
+	columns : [
+		{
+			header : '자재LOT코드',
+			name : 'matLotCode',
+			align : "center",
+			sortable: true,
+		},
+		{
+			header : '자재코드',
+			name : 'matCode',
+			align : "center",
+			sortable: true,
+		},
+		{
+			header : '자재명',
+			name : 'matName',
+			align : "center",
+		},
+		{
+			header : '입고일자',
+			name : 'inoutDate',
+			align : "center",
+		},
+		{
+			header : '적합여부',
+			name : 'lastResult',
+			align : "center",
+			formatter : 'listItemText',
+			editor: {
+				type: 'select',
+				options: {
+				listItems: [
+						{ text: '적합', value: 'MCY' },
+				{ text: '부적합', value: 'MCN' }
+					]
+					}
+				}
+		},
+		{
+			header : '검사 종결여부',
+			name : 'qltyCheckStatus',
+			align : "center",
+			formatter : 'listItemText',
+			editor: {
+				type: 'select',
+				options: {
 					listItems: [
-							{ text: '적합', value: 'MCY' },
-					{ text: '부적합', value: 'MCN' }
-						]
-		        }
-					}
-			},
-			{
-				header : '검사 종결여부',
-				name : 'qltyCheckStatus',
-				align : "center",
-				formatter : 'listItemText',
-				editor: {
-					type: 'select',
-					options: {
-						listItems: [
-							{ text: '미검사', value: 'MI1' },
-							{ text: '검사완료', value: 'MI2' }
-						]
-					}
-				}
-			},
-			{
-				header : '입고수량',
-				name : 'warehousingCnt',
-				align : "center",
-				formatter : function(data){
-					return priceFormat(data.value);
-				}
-			},
-			{
-				header : '적합수량',
-				name : 'checkDoneCnt',
-				align : "center",
-				formatter : function(data){
-					return priceFormat(data.value);
+						{ text: '미검사', value: 'MI1' },
+						{ text: '검사완료', value: 'MI2' }
+					]
 				}
 			}
-		]
+		},
+		{
+			header : '입고수량',
+			name : 'warehousingCnt',
+			align : "center",
+			formatter : function(data){
+				return priceFormat(data.value);
+			}
+		},
+		{
+			header : '적합수량',
+			name : 'checkDoneCnt',
+			align : "center",
+			formatter : function(data){
+				return priceFormat(data.value);
+			}
+		}
+	]
 
-	});
+});
 
 
 	grid.on('beforeChange', ev => {

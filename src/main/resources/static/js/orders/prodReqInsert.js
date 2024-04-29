@@ -235,6 +235,7 @@ function getOrdersList(param){
 		headers: jsonHeaders,
 		body : JSON.stringify(param)
 	};
+	console.log(data);
 
 	fetch('ajax/prodReqOrdersList', data)
 	.then(res => res.json())
@@ -300,6 +301,18 @@ async function prodReqFunc() {
 	const dueEndDate = dateFormat(searchForm.dueEndDate.value);
 
 	const param = {totalReqCnt, reqDate, prodReqDetList, dueStartDate, dueEndDate}
+
+	if(totalReqCnt == 0) {
+		Swal.fire({
+			position: "center",
+			icon: "error",
+			title: "생산요청등록 실패",
+			text: "생산요청수량이 지정되지 않았습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+		return;
+	}
 
 	let result = false;
 

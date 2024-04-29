@@ -48,7 +48,8 @@ public class EqmController {
 	
 	@PostMapping("/ajax/inserteqm")
 	@ResponseBody
-	public int insertEqm(EqmVO vo, FileVO fvo, MultipartFile uploadFile, Model model) throws IllegalStateException, IOException {
+	public int insertEqm(EqmVO vo, FileVO fvo, MultipartFile uploadFile, Model model)
+			throws IllegalStateException, IOException {
 		// 파일업로드
 		// String uploadFolder = "/donutFile";
 		

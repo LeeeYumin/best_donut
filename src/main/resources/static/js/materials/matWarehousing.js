@@ -137,7 +137,7 @@ function checkValidation() {
                     timer: 1500
                 });
                 validation = 0;
-                matWarehousing.focusAt(i, 3)
+                matWarehousing.focusAt(warehousingData[i].rowKey, 3)
                 break;
                 // 수량이 숫자인지 체크
             } else if (isNaN(Number(warehousingData[i].ordersCnt))) {
@@ -149,7 +149,7 @@ function checkValidation() {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                matWarehousing.focusAt(i, 3);
+                matWarehousing.focusAt(warehousingData[i].rowKey, 3);
                 validation = 0;
                 break;
                 // 유통기한이 빈 값이 아닌지 체크
@@ -157,13 +157,13 @@ function checkValidation() {
                 Swal.fire({
                     position: "center",
                     icon: "warning",
-                    title: '유통기한을 입력해주세요.',
+                    title: warehousingData[i].matName + ' 유통기한을 입력해주세요.',
                     text: ' ',
                     showConfirmButton: false,
                     timer: 1500
                 });
                 validation = 0;
-                matWarehousing.focusAt(i, 4)
+                matWarehousing.focusAt(warehousingData[i].rowKey, 4)
                 break;
             }
         }

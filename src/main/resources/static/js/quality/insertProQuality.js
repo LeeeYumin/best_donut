@@ -98,6 +98,7 @@ function findProd() {
   getProDetail(endDate);
 }
 
+// grid2 (하단) 생성
 const grid2 = new tui.Grid({
   el : document.getElementById('grid2'),
   scrollX : false,

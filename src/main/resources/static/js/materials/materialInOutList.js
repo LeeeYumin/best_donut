@@ -74,6 +74,9 @@ const warehousingList = new tui.Grid({
             header: '수량',
             name: 'inoutCnt',
             align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            },
         }
     ]
 });
@@ -110,6 +113,9 @@ const outgoingList = new tui.Grid({
             header: '수량',
             name: 'inoutCnt',
             align: 'center',
+            formatter: function (cnt) {
+                return priceFormat(cnt.value);
+            },
         },
         {
             header: '구분',

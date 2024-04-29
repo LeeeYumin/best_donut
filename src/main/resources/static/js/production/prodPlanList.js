@@ -53,6 +53,34 @@ class ProdReqCode {
 	}
 }
 
+class CustomNumberEditor {
+	constructor(props) {
+		const el = document.createElement('input');
+		const { maxLength } = props.columnInfo.editor.options;
+	
+		el.type = 'number';
+		el.min = 0;
+		el.max = 1000;
+		el.step = 100;
+		el.style.width = '100%';
+		this.el = el;
+	}
+	
+	getElement() {
+		return this.el;
+	}
+	
+	getValue() {
+		return this.el.value;
+	}
+	
+	mounted() {
+		this.el.select();
+	}
+	};
+
+//============================================================
+
 /* < 생산계획 목록 > */
 const plList = new tui.Grid({
 	el : document.getElementById('plList'),
@@ -189,7 +217,11 @@ const plAll = new tui.Grid({
 			header : '고정수량',
 			name : 'fixCnt',
 			align: 'center',
-			editor: 'text',
+			editor: {
+				type: CustomNumberEditor,
+				options: {
+				}
+			},
 			formatter: function(price) {
 				return priceFormat(price.value);
 			},

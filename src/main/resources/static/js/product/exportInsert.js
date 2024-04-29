@@ -239,6 +239,19 @@ async function insertProdOut() {
 		return;
 	}
 
+	// 재고 검사
+	if(detGrid.validate().length != 0){
+		Swal.fire({
+			position: "center",
+			icon: "error",
+			title: "출고 등록 실패",
+			text: "재고수량이 충분하지 않습니다.",
+			showConfirmButton: false,
+			timer: 1500
+		});
+		return;
+	}
+
 	// promise
 	let res = await fetch("ajax/prodInoutProcess",{
 		method: 'POST',
