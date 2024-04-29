@@ -15,7 +15,7 @@ setToday();
 // (1) 주문목록 그리드
 const ordGrid = new tui.Grid({
 	el : document.getElementById('ordGrid'),
-  bodyHeight: 200,
+  	bodyHeight : 200,
 	scrollX : false,
 	scrollY : true,
 	// rowHeaders: ['checkbox'],

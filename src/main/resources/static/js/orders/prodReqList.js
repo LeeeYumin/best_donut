@@ -16,6 +16,7 @@ const prodReqGrid = new tui.Grid({
 	el : document.getElementById('prodReqGrid'),
 	scrollX : false,
 	scrollY : true,
+	bodyHeight : 300,
 	rowHeaders: ['checkbox'],
 	header:[
 		align = 'center',
