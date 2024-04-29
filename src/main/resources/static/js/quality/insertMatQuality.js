@@ -202,12 +202,13 @@ function findMat() {
   getMatInfo(matLotCode, inoutDate, inoutDate2);
 }
 
-//부적합기준(total) 변경 + 적합수량보다 많이 입력할 경우 알림
+//부적합기준(total) 변경 + 입고수량보다 많이 입력할 경우 알림
 grid.on('afterChange', event => {
   console.log(event.changes[0]); //0번째 배열에 정보가 들어있음
   let ev = event.changes[0];
   if (ev.value == 'IV2' || ev.value == 'PFY' || ev.value == 'PSN'){
-    grid.setValue(ev.rowKey,'lastResult','MCN');
+      //IV2 차량검사 부적합 PFY 이물질 유 PSN 포장상태 불량
+    grid.setValue(ev.rowKey,'lastResult','MCN'); //total값은 부적합
   }
 
   let vehicle = grid.getRow(ev.rowKey).warehousingVehiclesCheck;
@@ -215,11 +216,13 @@ grid.on('afterChange', event => {
   let pack = grid.getRow(ev.rowKey).packStatus;
 
   if (vehicle == 'IV1' && foreign == 'PFN' && pack == 'PSY'){
+      //위와 반대로 다 적합일 경우 total값 적합으로 변경
     grid.setValue(ev.rowKey,'lastResult','MCY');
   }
 
   console.log(event.changes[0].columnName);
   if(event.changes[0].columnName == 'goodCnt'){
+    //적합수량 유효성 검사
     if(event.changes[0].value > grid.getValue(ev.rowKey,'inoutCnt')){
       alert("입고수량을 초과하였습니다");
       grid.setValue(ev.rowKey,'goodCnt',null);

@@ -18,19 +18,19 @@
       	 WHERE b.apply_status = 'BAY'
 	 ORDER BY  b.bom_code,d.mat_code
    	</select>
-   	
+
    	<!-- 자재 불출용 BOM 조회 -->
    	<select id="getMatOutBom">
    		SELECT DISTINCT d.bom_code,
                			b.product_code,
                			p.product_name,
-               			d.mat_code, 
+               			d.mat_code,
                			m.mat_name,
-   	           			d.need_cnt, 
-   	           			d.unit, 
+   	           			d.need_cnt,
+   	           			d.unit,
    	          			d.proc_code,
                			md.unit mat_unit
-          FROM bom_detail d 
+          FROM bom_detail d
           	JOIN mat m ON d.mat_code = m.mat_code
           	JOIN mat_detail md ON d.mat_code = md.mat_code
     		JOIN bom b ON d.bom_code = b.bom_code
@@ -41,7 +41,7 @@
                                 AND apply_status='BAY')
       ORDER BY mat_code
    	</select>
-   	
+
    	<!-- BOM관리 품목확인 -->
    	<select id="getProdBom" resultType="BomVO">
 		SELECT b.bom_code
@@ -53,7 +53,7 @@
 		    FROM bom b JOIN product p
 		      ON b.product_code = p.product_code
    	</select>
-   	
+
    	<!-- BOM목록 -->
    	<select id="getListBom" resultType="BomVO">
 		SELECT b.bom_code
@@ -65,7 +65,7 @@
 		    FROM bom b JOIN product p
 		      ON b.product_code = p.product_code
    	</select>
-   	
+
    	<!-- BOM목록 / grid2 공정보기  -->
    <select id="bomselList" resultType="BomVO">
 	SELECT m.mat_name
@@ -78,7 +78,7 @@
 			  ON m.mat_code = d.mat_code
 	        WHERE d.bom_code = #{bomCode}
    </select>
-   
+
    <!-- BOM작성화면 / 조회 -->
    <select id="selectBom" resultType="BomVO">
 		SELECT b.bom_code
@@ -91,9 +91,9 @@
 		  FROM bom_detail b JOIN mat m
 		                      ON b.mat_code = m.mat_code
    </select>
-   
+
    <!-- BOM작성화면 / bom grid -->
-	<select id="selectBom2" resultType="BomVO">	
+	<select id="selectBom2" resultType="BomVO">
 	SELECT DISTINCT m.MAT_CODE
 			    	, m.MAT_NAME
 					, d.NEED_CNT
@@ -103,19 +103,19 @@
 	FROM mat m JOIN bom_detail d
 		ON m.MAT_CODE = d.MAT_CODE
     order by mat_code
-	</select>  
-	
-	<!-- BOM작성화면 / bom 작성 --> 
+	</select>
+
+	<!-- BOM작성화면 / bom 작성 -->
 	<insert id="insertNewBom" parameterType="InsertBomVO">
 		   	<selectKey keyProperty="bomCode" order="BEFORE" resultType="String">
 			SELECT seq_func('bom') FROM dual
 		</selectKey>
 		DECLARE
 		BEGIN
-			UPDATE BOM 
-	        SET APPLY_STATUS = 'BAN'
+			UPDATE BOM
+	        SET APPLY_STATUS = 'BAN' <!--미적용-->
 	        WHERE PRODUCT_CODE = #{productCode};
-		
+
 		insert into BOM (
 						BOM_CODE
 						, APPLY_DATE
@@ -126,15 +126,15 @@
 				values (
 						#{bomCode}
 						, sysdate
-						,'BAY'
+						,'BAY' <!--적용-->
 						, #{productCode}
 						, #{usersCode}
-						); 
+						);
 		END;
 	</insert>
-	
+
 	<!-- BOM작성화면 / bom_detail 등록 -->
-	<insert id="insertNewBom2" parameterType="BomVO">	
+	<insert id="insertNewBom2" parameterType="BomVO">
 		INSERT INTO bom_detail
 				(bom_detail_code
 				, need_cnt
